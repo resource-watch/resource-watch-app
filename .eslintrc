@@ -21,7 +21,8 @@
   "rules": {
     "no-console": ["error", {
       "allow": ["warn", "error", "info"]
-    }]
+    }],
+    "import/no-dynamic-require": 0
   },
   "settings": {
     "import/resolver": {
