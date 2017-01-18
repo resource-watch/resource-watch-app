@@ -1,0 +1,43 @@
+{
+  "name": "resource-watch-app",
+  "version": "1.0.0",
+  "description": "Resource Watch is an open platform for everyone to explore accurate, up-to-date insights about our planet.",
+  "main": "server.js",
+  "scripts": {
+    "test": "eslint .",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/resource-watch/resource-watch-app.git"
+  },
+  "author": "Vizzuality <info@vizzuality.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/resource-watch/resource-watch-app/issues"
+  },
+  "homepage": "https://github.com/resource-watch/resource-watch-app#readme",
+  "dependencies": {
+    "autoprefixer": "^6.6.1",
+    "babel-core": "^6.21.0",
+    "babel-loader": "^6.2.10",
+    "babel-preset-es2015": "^6.18.0",
+    "babel-preset-react": "^6.16.0",
+    "babel-preset-stage-2": "^6.18.0",
+    "body-parser": "^1.16.0",
+    "dotenv": "^4.0.0",
+    "express": "^4.14.0",
+    "html-webpack-plugin": "^2.26.0",
+    "morgan": "^1.7.0",
+    "pretty-error": "^2.0.2",
+    "webpack": "^1.14.0",
+    "webpack-dev-middleware": "^1.9.0"
+  },
+  "devDependencies": {
+    "eslint": "^3.13.1",
+    "eslint-config-airbnb": "^14.0.0",
+    "eslint-plugin-import": "^2.2.0",
+    "eslint-plugin-jsx-a11y": "^3.0.2",
+    "eslint-plugin-react": "^6.9.0"
+  }
+}
