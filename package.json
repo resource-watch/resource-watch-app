@@ -4,7 +4,7 @@
   "description": "Resource Watch is an open platform for everyone to explore accurate, up-to-date insights about our planet.",
   "main": "server.js",
   "scripts": {
-    "test": "eslint .",
+    "test": "./node_modules/.bin/eslint **/*.js **/*.jsx",
     "build": "NODE_ENV=production ./node_modules/.bin/webpack --config ./config/webpack.config.js"
   },
   "repository": {

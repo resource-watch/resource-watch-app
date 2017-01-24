@@ -19,7 +19,7 @@ const Routes = ({ history }) => (
 );
 
 Routes.propTypes = {
-  history: React.PropTypes.object
+  history: React.PropTypes.object.isRequired,
 };
 
 export default connect()(Routes);

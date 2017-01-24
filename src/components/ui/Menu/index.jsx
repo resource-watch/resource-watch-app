@@ -13,7 +13,7 @@ class Menu extends React.Component {
       );
     });
     return (
-      <nav className={`c-menu -${this.props.orientation}`}>
+      <nav className={`c-menu -${this.props.orientation} -align-${this.props.align}`}>
         <ul>
           {items}
         </ul>
@@ -25,11 +25,13 @@ class Menu extends React.Component {
 
 Menu.propTypes = {
   items: React.PropTypes.array,
-  orientation: React.PropTypes.string
+  align: React.PropTypes.string,
+  orientation: React.PropTypes.string,
 };
 
 Menu.defaultProps = {
   items: [],
+  align: 'right',
   orientation: 'horizontal'
 };
 

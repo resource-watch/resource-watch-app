@@ -2,17 +2,17 @@ import React from 'react';
 import Header from './components/layout/Header';
 import './styles/app.scss';
 
-class App extends React.Component {
-
-  render() {
-    return (
-      <div>
-        <Header />
-        { this.props.children }
-      </div>
-    );
-  }
-
+function App(props) {
+  return (
+    <div>
+      <Header />
+      { props.children }
+    </div>
+  );
 }
+
+App.propTypes = {
+  children: React.PropTypes.element.isRequired,
+};
 
 export default App;

@@ -16,7 +16,7 @@ import Routes from './routes';
  */
 const reducer = combineReducers({
   ...reducers,
-  routing: routerReducer
+  routing: routerReducer,
 });
 
 /**
