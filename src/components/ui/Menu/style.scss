@@ -1,3 +1,8 @@
+@import "../../../styles/config";
+
+$menu-item-color: $white;
+$menu-link-color: $white;
+
 .c-menu {
   &.-align-right {
     display: flex;
@@ -16,12 +21,19 @@
       margin-left: 1rem;
       margin-right: 1rem;
 
+      color: $menu-item-color;
+
       &:first-child {
         margin-left: 0;
       }
 
       &:last-child {
         margin-right: 0;
+      }
+
+      > a {
+        color: $menu-item-color;
+        text-decoration: none;
       }
     }
   }

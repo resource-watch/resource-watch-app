@@ -60,7 +60,7 @@ class Globe extends React.Component {
     const ambientLight = new THREE.AmbientLight(0x444444); // Soft white light
     this.pointLight = new THREE.PointLight(0xcccccc, 1);
 
-    this.pointLight.position.set(-this.props.width / 2, this.props.height / 2, 500);
+    this.pointLight.position.set(this.props.width / 2, this.props.height / 2, 500);
 
     this.scene.add(ambientLight);
     this.camera.add(this.pointLight);
