@@ -1,8 +1,9 @@
 import React from 'react';
 import * as THREE from 'three';
 import orbitControl from './control';
-import earthImage from './images/earth-clouds.jpg';
+import earthImage from './images/earth-low.jpg';
 import earthBumpImage from './images/earth-bump.jpg';
+import cloudsImage from './images/clouds-low.png';
 import './style.scss';
 
 const Control = orbitControl(THREE);
@@ -19,6 +20,7 @@ class Globe extends React.Component {
   componentDidMount() {
     this.createScene();
     this.addEarth();
+    this.addClouds();
     this.addLights();
     this.addControls();
 
@@ -43,7 +45,9 @@ class Globe extends React.Component {
     this.renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
 
     this.camera.position.z = far;
+
     this.renderer.setSize(width, height);
+    this.scene.add(this.camera);
 
     // Appending canvas
     this.el.appendChild(this.renderer.domElement);
@@ -54,13 +58,12 @@ class Globe extends React.Component {
    */
   addLights() {
     const ambientLight = new THREE.AmbientLight(0x444444); // Soft white light
-    this.pointLight = new THREE.PointLight(0xf6f6f6, 1);
+    this.pointLight = new THREE.PointLight(0xcccccc, 1);
 
-    // TODO: translate point of light
-    // this.pointLight.position.set(-this.props.width / 2, this.props.height / 2, 1000);
+    this.pointLight.position.set(-this.props.width / 2, this.props.height / 2, 500);
 
     this.scene.add(ambientLight);
-    this.scene.add(this.pointLight);
+    this.camera.add(this.pointLight);
   }
 
   /**
@@ -72,7 +75,7 @@ class Globe extends React.Component {
       bumpMap: this.imageLoader.load(this.props.earthBumpImage),
       bumpScale: 5
     });
-    const geometry = new THREE.SphereGeometry(this.props.radius, 40, 30);
+    const geometry = new THREE.SphereGeometry(this.props.radius, 32, 32);
     this.earth = new THREE.Mesh(geometry, material);
     this.earth.updateMatrix();
     this.scene.add(this.earth);
@@ -90,7 +93,17 @@ class Globe extends React.Component {
     this.control.enableZoom = false;
     this.control.rotateSpeed = this.props.velocity;
     this.control.autoRotateSpeed = this.props.velocity;
-    window.control = this.control
+  }
+
+  addClouds() {
+    const material = new THREE.MeshBasicMaterial({
+      map: this.imageLoader.load(cloudsImage),
+      transparent: true
+    });
+    const geometry = new THREE.SphereGeometry(this.props.radius + 1, 64, 64);
+    this.clouds = new THREE.Mesh(geometry, material);
+    this.clouds.updateMatrix();
+    this.scene.add(this.clouds);
   }
 
   /**
@@ -98,8 +111,8 @@ class Globe extends React.Component {
    */
   draw() {
     requestAnimationFrame(this.draw.bind(this));
-    this.pointLight.position.copy(this.camera.position);
     this.control.update();
+    this.clouds.rotation.y += 0.0002;
     this.renderer.render(this.scene, this.camera);
   }
 

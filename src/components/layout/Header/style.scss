@@ -1,0 +1,35 @@
+@import "../../../styles/config";
+
+$header-height: rem(130);
+$header-bg-color: $dark-pink;
+$header-bg-image: url("header-bg-texture.png");
+
+.c-header {
+  height: $header-height;
+
+  background-color: $header-bg-color;
+  background-image: $header-bg-image;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+
+  > .main-navigation {
+    @include container;
+
+    > .brand {
+      @include span(12);
+
+      @media (min-width: $middle-screen) {
+        @include span(4);
+      }
+    }
+
+    > .menu {
+      @include span(12);
+
+      @media (min-width: $middle-screen) {
+        @include span(8 last);
+      }
+    }
+  }
+}
