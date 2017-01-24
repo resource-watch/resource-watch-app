@@ -5,10 +5,7 @@ import { Link } from 'react-router';
 import './style.scss';
 
 const navigationLinks = [
-  {
-    name: 'Pulse',
-    path: '/pulse'
-  }
+  { name: 'Pulse', path: '/pulse' },
 ];
 
 class Header extends React.Component {

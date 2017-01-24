@@ -1,0 +1,13 @@
+.c-menu {
+  > ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  &.-horizontal > ul {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
