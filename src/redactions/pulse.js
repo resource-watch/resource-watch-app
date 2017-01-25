@@ -2,6 +2,10 @@
 import 'whatwg-fetch';
 import { Deserializer } from 'jsonapi-serializer';
 
+// We should merge the layerSpecPulse with the response of the datasets
+import layerSpecPulse from 'utils/layers/layerSpecPulse.json';
+
+
 /**
  * CONSTANTS
 */
@@ -17,7 +21,7 @@ const DESERIALIZER = new Deserializer({ keyForAttribute: 'camelCase' });
  * REDUCER
 */
 const initialState = {
-  list: [],
+  layers: [],
   loading: false,
   error: false,
   active: null
@@ -26,7 +30,7 @@ const initialState = {
 export default function (state = initialState, action) {
   switch (action.type) {
     case GET_DATASETS_SUCCESS:
-      return Object.assign({}, state, { list: action.payload, loading: false, error: false });
+      return Object.assign({}, state, { layers: action.payload, loading: false, error: false });
     case GET_DATASETS_ERROR:
       return Object.assign({}, state, { error: true, loading: false });
     case GET_DATASETS_LOADING:
@@ -60,7 +64,7 @@ export function getDatasets() {
         // Fetch from server ok -> Dispatch datasets
         dispatch({
           type: GET_DATASETS_SUCCESS,
-          payload: datasets
+          payload: layerSpecPulse
         });
       });
     })

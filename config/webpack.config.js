@@ -58,6 +58,7 @@ const config = {
       constants: 'src/constants',
       containers: 'src/containers',
       redactions: 'src/redactions',
+      selectors: 'src/selectors',
       data: 'src/data',
       fonts: 'src/fonts',
       main: 'src/main',
