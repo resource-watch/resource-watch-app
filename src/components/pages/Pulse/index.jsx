@@ -1,5 +1,5 @@
 import React from 'react';
-import Globe from '../../vis/Globe';
+import Globe from 'components/vis/Globe';
 
 class Pulse extends React.Component {
 
@@ -10,7 +10,12 @@ class Pulse extends React.Component {
       </div>
     );
   }
-
 }
+
+Pulse.propTypes = {
+  pulse: React.PropTypes.object,
+  getDatasets: React.PropTypes.func
+};
+
 
 export default Pulse;
