@@ -7,7 +7,7 @@ class Pulse extends React.Component {
     return (
       <div>
         <h1>Planet pulse</h1>
-        <Globe radius={294} />
+        <Globe />
       </div>
     );
   }
