@@ -6,10 +6,11 @@
 /*
  * Configuring grid
  */
-
 $large-screen: 1400px;
 $middle-screen: 800px;
 $small-screen: 320px;
+
+$max-width: 1040px;
 
 $susy: (
   /* Tells Susy to use 12 columns */
@@ -28,6 +29,7 @@ $susy: (
 
 // Colors
 $white: #fff;
+$black: #000;
 $dark-pink: #c32d7b;
 
 // Theme
