@@ -8,8 +8,6 @@ $header-gradient-color-1: rgba(#c32d7b, 0.8);
 $header-gradient-color-2: rgba(#c90e39, 0.7);
 
 .c-header {
-  display: flex;
-  flex-direction: column;
   background-color: $header-bg-color;
   background-image: $header-bg-image,
     linear-gradient(
