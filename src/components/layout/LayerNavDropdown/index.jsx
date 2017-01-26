@@ -1,6 +1,8 @@
 import React from 'react';
 import './style.scss';
 
+import Switch from 'components/ui/Switch';
+
 class LayerNavDropdown extends React.Component {
 
   constructor(props) {
@@ -10,12 +12,12 @@ class LayerNavDropdown extends React.Component {
   }
 
   triggerClick(e) {
-    console.info(e.currentTarget.dataset.id);
+    this.props.toggleActiveLayer(e.currentTarget.dataset.id);
   }
 
   render() {
     return (
-      <div className="c-layer-nav-dopdown">
+      <div className="c-layer-nav-dropdown">
         <ul>
           {this.props.layers.map((layer) => {
             return (
@@ -24,7 +26,10 @@ class LayerNavDropdown extends React.Component {
                 key={layer.id}
                 onClick={this.triggerClick}
               >
-                <span>{layer.name}</span>
+                <Switch active={layer.active} />
+                <span className="name">
+                  {layer.name}
+                </span>
               </li>
             );
           })}
@@ -36,11 +41,8 @@ class LayerNavDropdown extends React.Component {
 }
 
 LayerNavDropdown.propTypes = {
-  layers: React.PropTypes.array
-};
-
-LayerNavDropdown.defaultProps = {
-  layers: {}
+  layers: React.PropTypes.array,
+  toggleActiveLayer: React.PropTypes.func
 };
 
 export default LayerNavDropdown;

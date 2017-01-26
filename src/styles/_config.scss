@@ -28,14 +28,32 @@ $susy: (
  */
 
 // Colors
-$white: #fff;
-$black: #000;
-$dark-pink: #c32d7b;
+$color-white: #fff;
+$color-black: #000;
+$color-dark-pink: #c32d7b;
+
+// Fonts
+$font-size-default: 14px;
 
 // Theme
-$base-bg-color: $white;
+$base-bg-color: $color-white;
 
 // Text
-$base-font-color: $dark-pink;
+$base-font-color: $color-dark-pink;
 $base-font-family: Lato, Helvetica, Arial, sans;
 $base-line-height: 1.5;
+
+// Times
+$animation-time: .16s;
+$animation-time-2: .24s;
+$animation-time-3: .5s;
+$animation-time-4: .75s;
+
+// Eases
+$ease-in-cubic: cubic-bezier(0.550, 0.055, 0.675, 0.190);
+$ease-out-cubic: cubic-bezier(0.215, 0.610, 0.355, 1.000);
+$ease-in-out-cubic: cubic-bezier(0.645, 0.045, 0.355, 1.000);
+
+$ease-in-sine: cubic-bezier(0.470, 0.000, 0.745, 0.715);
+$ease-out-sine: cubic-bezier(0.390, 0.575, 0.565, 1.000);
+$ease-in-out-sine: cubic-bezier(0.445, 0.050, 0.550, 0.950);

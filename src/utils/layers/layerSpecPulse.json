@@ -1,22 +1,22 @@
 [
   {
+    "id": "ccdaede2-5343-49d6-8ea9-769528c3ab92",
+    "name": "SPEI",
+    "group": "Drought"
+  },
+  {
     "id": "76f53ba4-b1d9-4385-8bab-f56aa707d961",
-    "name": "Drought 1",
+    "name": "Agricultural areas (EarthStat)",
     "group": "Drought"
   },
   {
     "id": "0eb7ef57-037b-4356-8902-04a39cf4bd24",
-    "name": "Drought 2",
+    "name": "Groundwater Depletion (GRACE)",
     "group": "Drought"
   },
   {
     "id": "bc60a695-ab95-4264-8058-bd61d13c4918",
-    "name": "Drought 3",
-    "group": "Drought"
-  },
-  {
-    "id": "ccdaede2-5343-49d6-8ea9-769528c3ab92",
-    "name": "Drought 4",
+    "name": "Forecasts / Climate projections",
     "group": "Drought"
   },
 

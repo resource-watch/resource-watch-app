@@ -1,0 +1,30 @@
+@import "../../../styles/config";
+
+$switch-width: 20px;
+$switch-height: 10px;
+$switch-margin: 1px;
+
+.c-switch {
+  display: flex;
+
+  .switch-element {
+    width: $switch-width;
+    height: $switch-height;
+    border-radius: $switch-height;
+    background: #ccc;
+
+    span {
+      display: block;
+      position: absolute;
+      width: $switch-height - ($switch-margin * 2);
+      height: $switch-height - ($switch-margin * 2);
+      background: $color-dark-pink;
+      border-radius: 50%;
+      margin: $switch-margin;
+      transition: transform $animation-time $ease-in-out-sine;
+    }
+
+    // Switch position
+    &.-active > span { transform: translate(($switch-width / 2),0); }
+  }
+}

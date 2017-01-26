@@ -1,6 +1,6 @@
 import React from 'react';
 import Globe from 'components/vis/Globe';
-import LayerNav from 'components/ui/LayerNav';
+import LayerNav from 'components/layout/LayerNav';
 
 import './style.scss';
 
@@ -12,10 +12,13 @@ class Pulse extends React.Component {
   }
 
   render() {
+    console.log(this.props.activeLayer);
     return (
       <div className="c-page">
         <div className="l-container">
-          <LayerNav layersGroup={this.props.layersGroup} />
+          <LayerNav
+            layersGroup={this.props.layersGroup}
+          />
         </div>
         <Globe radius={294} />
       </div>
@@ -25,7 +28,8 @@ class Pulse extends React.Component {
 
 Pulse.propTypes = {
   pulse: React.PropTypes.object,
-  layersGroup: React.PropTypes.object,
+  layersGroup: React.PropTypes.array,
+  activeLayer: React.PropTypes.object,
   getDatasets: React.PropTypes.func
 };
 

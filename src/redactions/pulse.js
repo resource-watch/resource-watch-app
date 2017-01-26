@@ -4,6 +4,7 @@ import { Deserializer } from 'jsonapi-serializer';
 
 // We should merge the layerSpecPulse with the response of the datasets
 import layerSpecPulse from 'utils/layers/layerSpecPulse.json';
+import layerExamplePulse from 'utils/layers/layerExamplePulse.json';
 
 
 /**
@@ -24,7 +25,7 @@ const initialState = {
   layers: [],
   loading: false,
   error: false,
-  active: null
+  layerActive: null
 };
 
 export default function (state = initialState, action) {
@@ -36,7 +37,7 @@ export default function (state = initialState, action) {
     case GET_DATASETS_LOADING:
       return Object.assign({}, state, { loading: true, error: false });
     case SET_ACTIVE_DATASET:
-      return Object.assign({}, state, { active: action.payload });
+      return Object.assign({}, state, { layerActive: (state.layerActive !== action.payload) ? action.payload : null });
     default:
       return state;
   }
@@ -52,7 +53,7 @@ export function getDatasets() {
     // Waiting for fetch from server -> Dispatch loading
     dispatch({ type: GET_DATASETS_LOADING });
     // TODO: remove the date now
-    fetch(new Request(`${config.API_URL}/dataset?app=rw&tags=planetpulse&includes=layer&page[size]=${Date.now()}`))
+    fetch(new Request(`${config.API_URL}/dataset?app=rw&tags=realtime&includes=layer&page[size]=${Date.now()}`))
     .then((response) => {
       if (response.ok) return response.json();
       throw new Error(response.statusText);
@@ -64,7 +65,9 @@ export function getDatasets() {
         // Fetch from server ok -> Dispatch datasets
         dispatch({
           type: GET_DATASETS_SUCCESS,
-          payload: layerSpecPulse
+          payload: layerSpecPulse.map((layer) => {
+            return Object.assign({}, layerExamplePulse.attributes, layer);
+          })
         });
       });
     })
@@ -78,7 +81,7 @@ export function getDatasets() {
   };
 }
 
-export function setActiveDataset(id) {
+export function toggleActiveLayer(id) {
   return {
     type: SET_ACTIVE_DATASET,
     payload: id
