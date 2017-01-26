@@ -11,10 +11,6 @@ const imageLoader = new THREE.TextureLoader();
 
 class Globe extends React.Component {
 
-  constructor(props) {
-    super(props);
-  }
-
   /**
    * Create canvas and start
    */
@@ -48,10 +44,12 @@ class Globe extends React.Component {
     this.camera = new THREE.PerspectiveCamera(fov, width / height, near, far);
     this.renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
 
-    this.camera.position.z = 124;
-
     this.renderer.setSize(width, height);
+    this.renderer.setPixelRatio(window.devicePixelRatio);
     this.scene.add(this.camera);
+
+    this.camera.position.z = 124;
+    window.globe = this;
 
     // Appending canvas
     this.el.appendChild(this.renderer.domElement);
@@ -74,7 +72,7 @@ class Globe extends React.Component {
     });
     const geometry = new THREE.SphereGeometry(radius, segments, rings);
     const earth = new THREE.Mesh(geometry, material);
-
+    earth.updateMatrix();
     this.scene.add(earth);
   }
 
@@ -92,7 +90,11 @@ class Globe extends React.Component {
     const y = 350;
     const z = 250;
 
-    pointLight.position.set(x, y, z);
+    if (this.props.lightPosition === 'left') {
+      pointLight.position.set(-x, y, z);
+    } else {
+      pointLight.position.set(x, y, z);
+    }
 
     this.scene.add(ambientLight);
     this.camera.add(pointLight);
@@ -112,7 +114,7 @@ class Globe extends React.Component {
     controls.autoRotate = this.props.autorotate;
     controls.enablePan = false;
     controls.enableZoom = this.props.enableZoom;
-    controls.zoomSpeed = this.props.zoomSpeed,
+    controls.zoomSpeed = this.props.zoomSpeed;
     controls.rotateSpeed = this.props.rotateSpeed;
     controls.autoRotateSpeed = this.props.autoRotateSpeed;
 
@@ -128,6 +130,30 @@ class Globe extends React.Component {
     this.clouds = new THREE.Mesh(geometry, material);
     this.clouds.updateMatrix();
     this.scene.add(this.clouds);
+  }
+
+  /**
+   * Change globe position
+   * @param  {Number} offsetX
+   * @param  {Number} offsetY
+   */
+  changePosition(offsetX, offsetY) {
+    const width = this.props.width;
+    const height = this.props.height;
+    const oX = offsetX ? (width * offsetX * -1) / 1000 : 0;
+    const oY = offsetY ? (width * offsetY * -1) / 1000 : 0;
+
+    this.camera.setViewOffset(width, height, oX, oY, width, height);
+  }
+
+  /**
+   * Reset globe position
+   */
+  resetPosition() {
+    const width = this.props.width;
+    const height = this.props.height;
+
+    this.camera.setViewOffset(width, height, 0, 0, width, height);
   }
 
   /**
@@ -149,7 +175,7 @@ class Globe extends React.Component {
    */
   render() {
     return (
-      <div ref={(node) => this.el = node} className="c-globe"></div>
+      <div ref={node => (this.el = node)} className="c-globe" />
     );
   }
 
@@ -190,6 +216,7 @@ Globe.propTypes = {
   autoRotateSpeed: React.PropTypes.number,
   rotateSpeed: React.PropTypes.number,
   enableZoom: React.PropTypes.bool,
+  zoomSpeed: React.PropTypes.number,
   enableDamping: React.PropTypes.bool,
   dampingFactor: React.PropTypes.number,
   earthImagePath: React.PropTypes.string,
