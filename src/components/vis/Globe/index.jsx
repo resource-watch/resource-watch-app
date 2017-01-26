@@ -52,6 +52,10 @@ class Globe extends React.Component {
 
     // Appending canvas
     this.el.appendChild(this.renderer.domElement);
+
+    if (config && config.env !== 'production') {
+      this.addStats();
+    }
   }
 
   /**
@@ -120,7 +124,33 @@ class Globe extends React.Component {
     this.controls = controls;
   }
 
+  /**
+   * Method to change layers to earth
+   * @param  {String} imagePath
+   */
+  changeTexture(imagePath) {
+    if (this.clouds) {
+      this.scene.remove(this.clouds);
+      this.clouds = null;
+    }
+    const material = new THREE.MeshBasicMaterial({
+      map: imageLoader.load(imagePath),
+      transparent: true
+    });
+    const geometry = new THREE.SphereGeometry(50.1, 64, 64);
+    this.currentTexture = new THREE.Mesh(geometry, material);
+    this.currentTexture.updateMatrix();
+    this.scene.add(this.currentTexture);
+  }
+
+  /**
+   * Add clouds to earth
+   */
   addClouds() {
+    if (this.currentTexture) {
+      this.scene.remove(this.currentTexture);
+      this.currentTexture = null;
+    }
     const material = new THREE.MeshBasicMaterial({
       map: imageLoader.load(cloudsImage),
       transparent: true
@@ -153,6 +183,23 @@ class Globe extends React.Component {
     const height = this.props.height;
 
     this.camera.setViewOffset(width, height, 0, 0, width, height);
+  }
+
+  /**
+   * Add stats
+   */
+  addStats() {
+    const scriptElement = document.createElement('script');
+    scriptElement.onload = function onLoad() {
+      const stats = new Stats();
+      document.body.appendChild(stats.dom);
+      requestAnimationFrame(function loop() {
+        stats.update();
+        requestAnimationFrame(loop);
+      });
+    };
+    scriptElement.src = '//rawgit.com/mrdoob/stats.js/master/build/stats.min.js';
+    document.head.appendChild(scriptElement);
   }
 
   /**
