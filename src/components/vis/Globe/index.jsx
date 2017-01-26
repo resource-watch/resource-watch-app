@@ -1,9 +1,9 @@
 import React from 'react';
 import * as THREE from 'three';
-import orbitControls from './controls';
-import earthImage from './images/earth.jpg';
+import orbitControls from 'three-orbit-controls';
+import earthImage from './images/earth-min.jpg';
 import earthBumpImage from './images/earth-bump.jpg';
-import cloudsImage from './images/clouds.png';
+import cloudsImage from './images/clouds-min.png';
 import './style.scss';
 
 const OrbitControls = orbitControls(THREE);
@@ -49,7 +49,6 @@ class Globe extends React.Component {
     this.scene.add(this.camera);
 
     this.camera.position.z = 124;
-    window.globe = this;
 
     // Appending canvas
     this.el.appendChild(this.renderer.domElement);

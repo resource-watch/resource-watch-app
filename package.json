@@ -49,6 +49,7 @@
     "style-loader": "^0.13.1",
     "susy": "^2.2.12",
     "three": "^0.83.0",
+    "three-orbit-controls": "^82.1.0",
     "url-loader": "^0.5.7",
     "webpack": "^1.14.0",
     "webpack-dev-middleware": "^1.9.0"
