@@ -1,9 +1,9 @@
 import React from 'react';
 import * as THREE from 'three';
 import orbitControls from './controls';
-import earthImage from './images/earth-low.jpg';
+import earthImage from './images/earth.jpg';
 import earthBumpImage from './images/earth-bump.jpg';
-import cloudsImage from './images/clouds-low.png';
+import cloudsImage from './images/clouds.png';
 import './style.scss';
 
 const OrbitControls = orbitControls(THREE);
@@ -21,6 +21,7 @@ class Globe extends React.Component {
   componentDidMount() {
     this.createScene();
     this.creteaEarth();
+    this.addClouds();
     this.addLights();
     this.addControls();
 
@@ -86,7 +87,7 @@ class Globe extends React.Component {
     }
 
     const ambientLight = new THREE.AmbientLight(this.props.ambientLightColor);
-    const pointLight = new THREE.PointLight(this.props.pointLightColor);
+    const pointLight = new THREE.PointLight(this.props.pointLightColor, 0.885);
     const x = 400;
     const y = 350;
     const z = 250;
@@ -118,16 +119,16 @@ class Globe extends React.Component {
     this.controls = controls;
   }
 
-  // addClouds() {
-  //   const material = new THREE.MeshBasicMaterial({
-  //     map: this.imageLoader.load(cloudsImage),
-  //     transparent: true
-  //   });
-  //   const geometry = new THREE.SphereGeometry(this.props.radius + 1, 64, 64);
-  //   this.clouds = new THREE.Mesh(geometry, material);
-  //   this.clouds.updateMatrix();
-  //   this.scene.add(this.clouds);
-  // }
+  addClouds() {
+    const material = new THREE.MeshBasicMaterial({
+      map: imageLoader.load(cloudsImage),
+      transparent: true
+    });
+    const geometry = new THREE.SphereGeometry(50.1, 64, 64);
+    this.clouds = new THREE.Mesh(geometry, material);
+    this.clouds.updateMatrix();
+    this.scene.add(this.clouds);
+  }
 
   /**
    * Draw globe and start animation
