@@ -20,7 +20,13 @@ class Pulse extends React.Component {
             layersGroup={this.props.layersGroup}
           />
         </div>
-        <Globe radius={294} />
+
+        <Globe
+          pointLightColor={0xcccccc}
+          ambientLightColor={0x444444}
+          enableZoom
+          lightPosition={'right'}
+        />
       </div>
     );
   }

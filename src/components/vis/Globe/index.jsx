@@ -1,25 +1,22 @@
 import React from 'react';
 import * as THREE from 'three';
-import orbitControl from './control';
-import earthImage from './images/earth-low.jpg';
+import orbitControls from 'three-orbit-controls';
+import earthImage from './images/earth-min.jpg';
 import earthBumpImage from './images/earth-bump.jpg';
-import cloudsImage from './images/clouds-low.png';
+import cloudsImage from './images/clouds-min.png';
 import './style.scss';
 
-const Control = orbitControl(THREE);
+const OrbitControls = orbitControls(THREE);
+const imageLoader = new THREE.TextureLoader();
 
 class Globe extends React.Component {
 
-  constructor(props) {
-    super(props);
-  }
-
   /**
-   * Create canvas and start globe here
+   * Create canvas and start
    */
   componentDidMount() {
     this.createScene();
-    this.addEarth();
+    this.creteaEarth();
     this.addClouds();
     this.addLights();
     this.addControls();
@@ -33,77 +30,176 @@ class Globe extends React.Component {
    * Then append canvas.
    */
   createScene() {
+    if (this.scene) {
+      throw new Error('Scene has been created before.');
+    }
+
     const width = this.props.width;
     const height = this.props.height;
     const fov = 75;
-    const near = 1;
+    const near = 0.01;
     const far = 1000;
 
     this.scene = new THREE.Scene();
-    this.imageLoader = new THREE.TextureLoader();
     this.camera = new THREE.PerspectiveCamera(fov, width / height, near, far);
     this.renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
 
-    this.camera.position.z = far;
-
     this.renderer.setSize(width, height);
+    this.renderer.setPixelRatio(window.devicePixelRatio);
     this.scene.add(this.camera);
+
+    this.camera.position.z = 124;
 
     // Appending canvas
     this.el.appendChild(this.renderer.domElement);
+
+    if (config && config.env !== 'production') {
+      this.addStats();
+    }
+  }
+
+  /**
+   * Create and add Earth
+   */
+  creteaEarth() {
+    if (!this.scene) {
+      throw new Error('Scene should be created before.');
+    }
+    const radius = 50;
+    const segments = 32;
+    const rings = 32;
+    const material = new THREE.MeshPhongMaterial({
+      map: imageLoader.load(this.props.earthImagePath),
+      bumpMap: imageLoader.load(this.props.earthBumpImagePath),
+      bumpScale: 0.005
+    });
+    const geometry = new THREE.SphereGeometry(radius, segments, rings);
+    const earth = new THREE.Mesh(geometry, material);
+    earth.updateMatrix();
+    this.scene.add(earth);
   }
 
   /**
    * Add lights to scene
    */
   addLights() {
-    const ambientLight = new THREE.AmbientLight(0x444444); // Soft white light
-    this.pointLight = new THREE.PointLight(0xcccccc, 1);
+    if (!this.scene) {
+      throw new Error('Scene and camera should be created before.');
+    }
 
-    this.pointLight.position.set(this.props.width / 2, this.props.height / 2, 500);
+    const ambientLight = new THREE.AmbientLight(this.props.ambientLightColor);
+    const pointLight = new THREE.PointLight(this.props.pointLightColor, 0.885);
+    const x = 400;
+    const y = 350;
+    const z = 250;
+
+    if (this.props.lightPosition === 'left') {
+      pointLight.position.set(-x, y, z);
+    } else {
+      pointLight.position.set(x, y, z);
+    }
 
     this.scene.add(ambientLight);
-    this.camera.add(this.pointLight);
-  }
-
-  /**
-   * Add earth sphere
-   */
-  addEarth() {
-    const material = new THREE.MeshPhongMaterial({
-      map: this.imageLoader.load(this.props.earthImage),
-      bumpMap: this.imageLoader.load(this.props.earthBumpImage),
-      bumpScale: 5
-    });
-    const geometry = new THREE.SphereGeometry(this.props.radius, 32, 32);
-    this.earth = new THREE.Mesh(geometry, material);
-    this.earth.updateMatrix();
-    this.scene.add(this.earth);
+    this.camera.add(pointLight);
   }
 
   /**
    * Add controls
    */
   addControls() {
-    this.control = new Control(this.camera, this.renderer.domElement);
-    this.control.enableDamping = true;
-    this.control.dampingFactor = 0.1;
-    this.control.autoRotate = this.props.autorotate;
-    this.control.enablePan = false;
-    this.control.enableZoom = false;
-    this.control.rotateSpeed = this.props.velocity;
-    this.control.autoRotateSpeed = this.props.velocity;
+    const controls = new OrbitControls(this.camera, this.renderer.domElement);
+
+    // Configuring controls
+    controls.minDistance = 50 + 30;
+    controls.maxDistance = 124;
+    controls.enableDamping = this.props.enableDamping;
+    controls.dampingFactor = this.props.dampingFactor;
+    controls.autoRotate = this.props.autorotate;
+    controls.enablePan = false;
+    controls.enableZoom = this.props.enableZoom;
+    controls.zoomSpeed = this.props.zoomSpeed;
+    controls.rotateSpeed = this.props.rotateSpeed;
+    controls.autoRotateSpeed = this.props.autoRotateSpeed;
+
+    this.controls = controls;
   }
 
-  addClouds() {
+  /**
+   * Method to change layers to earth
+   * @param  {String} imagePath
+   */
+  changeTexture(imagePath) {
+    if (this.clouds) {
+      this.scene.remove(this.clouds);
+      this.clouds = null;
+    }
     const material = new THREE.MeshBasicMaterial({
-      map: this.imageLoader.load(cloudsImage),
+      map: imageLoader.load(imagePath),
       transparent: true
     });
-    const geometry = new THREE.SphereGeometry(this.props.radius + 1, 64, 64);
+    const geometry = new THREE.SphereGeometry(50.1, 64, 64);
+    this.currentTexture = new THREE.Mesh(geometry, material);
+    this.currentTexture.updateMatrix();
+    this.scene.add(this.currentTexture);
+  }
+
+  /**
+   * Add clouds to earth
+   */
+  addClouds() {
+    if (this.currentTexture) {
+      this.scene.remove(this.currentTexture);
+      this.currentTexture = null;
+    }
+    const material = new THREE.MeshBasicMaterial({
+      map: imageLoader.load(cloudsImage),
+      transparent: true
+    });
+    const geometry = new THREE.SphereGeometry(50.1, 64, 64);
     this.clouds = new THREE.Mesh(geometry, material);
     this.clouds.updateMatrix();
     this.scene.add(this.clouds);
+  }
+
+  /**
+   * Change globe position
+   * @param  {Number} offsetX
+   * @param  {Number} offsetY
+   */
+  changePosition(offsetX, offsetY) {
+    const width = this.props.width;
+    const height = this.props.height;
+    const oX = offsetX ? (width * offsetX * -1) / 1000 : 0;
+    const oY = offsetY ? (width * offsetY * -1) / 1000 : 0;
+
+    this.camera.setViewOffset(width, height, oX, oY, width, height);
+  }
+
+  /**
+   * Reset globe position
+   */
+  resetPosition() {
+    const width = this.props.width;
+    const height = this.props.height;
+
+    this.camera.setViewOffset(width, height, 0, 0, width, height);
+  }
+
+  /**
+   * Add stats
+   */
+  addStats() {
+    const scriptElement = document.createElement('script');
+    scriptElement.onload = function onLoad() {
+      const stats = new Stats();
+      document.body.appendChild(stats.dom);
+      requestAnimationFrame(function loop() {
+        stats.update();
+        requestAnimationFrame(loop);
+      });
+    };
+    scriptElement.src = '//rawgit.com/mrdoob/stats.js/master/build/stats.min.js';
+    document.head.appendChild(scriptElement);
   }
 
   /**
@@ -111,8 +207,12 @@ class Globe extends React.Component {
    */
   draw() {
     requestAnimationFrame(this.draw.bind(this));
-    this.control.update();
-    this.clouds.rotation.y += 0.0002;
+    if (this.controls) {
+      this.controls.update();
+    }
+    if (this.clouds) {
+      this.clouds.rotation.y += 0.0002;
+    }
     this.renderer.render(this.scene, this.camera);
   }
 
@@ -121,35 +221,52 @@ class Globe extends React.Component {
    */
   render() {
     return (
-      <div ref={(node) => this.el = node} className="c-globe"></div>
+      <div ref={node => (this.el = node)} className="c-globe" />
     );
   }
 
 }
 
 Globe.defaultProps = {
-  autorotate: false,
-  velocity: 0.05,
+  // Size
   width: window.innerWidth,
   height: window.innerHeight,
-  radius: (window.innerHeight / 2) * 0.8,
-  earthImage: earthImage,
-  earthBumpImage: earthBumpImage,
+
+  // Lights
+  ambientLightColor: 0x262626,
+  pointLightColor: 0xdddddd,
+  lightPosition: 'left',
+
+  // Controls
+  autorotate: false,
+  autoRotateSpeed: 2.0, // It depends on autorotate
+  rotateSpeed: 1.0,
+  enableZoom: false,
+  zoomSpeed: 1.0,
+  enableDamping: true, // Set true to enable inertia
+  dampingFactor: 0.25,
+  radius: 50,
+
+  // Earth textures
+  earthImagePath: earthImage,
+  earthBumpImagePath: earthBumpImage,
 };
 
 Globe.propTypes = {
-  // Enable auto rotation and set velocity
-  autorotate: React.PropTypes.bool,
-  velocity: React.PropTypes.number,
-
-  // Size
   width: React.PropTypes.number,
   height: React.PropTypes.number,
-  radius: React.PropTypes.number,
-
-  // Basemaps
-  earthImage: React.PropTypes.string,
-  earthBumpImage: React.PropTypes.string,
+  ambientLightColor: React.PropTypes.number,
+  pointLightColor: React.PropTypes.number,
+  lightPosition: React.PropTypes.string,
+  autorotate: React.PropTypes.bool,
+  autoRotateSpeed: React.PropTypes.number,
+  rotateSpeed: React.PropTypes.number,
+  enableZoom: React.PropTypes.bool,
+  zoomSpeed: React.PropTypes.number,
+  enableDamping: React.PropTypes.bool,
+  dampingFactor: React.PropTypes.number,
+  earthImagePath: React.PropTypes.string,
+  earthBumpImagePath: React.PropTypes.string,
 };
 
 export default Globe;
