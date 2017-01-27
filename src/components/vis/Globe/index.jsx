@@ -18,6 +18,7 @@ class Globe extends React.Component {
   componentDidMount() {
     this.createScene();
     this.creteaEarth();
+    this.addHalo();
     this.setTexture();
     this.addLights();
     this.addControls();
@@ -42,7 +43,7 @@ class Globe extends React.Component {
       const geometry = new THREE.SphereGeometry(50.1, 64, 64);
       const material = new THREE.MeshBasicMaterial({
         map: mapImage,
-        transparent: true
+        transparent: true,
       });
       this.currentTexture = new THREE.Mesh(geometry, material);
     } else {
@@ -99,12 +100,47 @@ class Globe extends React.Component {
     const material = new THREE.MeshPhongMaterial({
       map: imageLoader.load(this.props.earthImagePath),
       bumpMap: imageLoader.load(this.props.earthBumpImagePath),
-      bumpScale: 0.005
+      bumpScale: 0.005,
     });
     const geometry = new THREE.SphereGeometry(radius, segments, rings);
     const earth = new THREE.Mesh(geometry, material);
     earth.updateMatrix();
     this.scene.add(earth);
+  }
+
+  addHalo() {
+    if (!this.scene) {
+      throw new Error('Scene and camera should be created before.');
+    }
+
+    const vertexShaderString = `
+      varying vec3 vNormal;
+      void main()
+      {
+        vNormal = normalize( normalMatrix * normal );
+        gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
+      }
+    `;
+    const fragmentShaderString = `
+      varying vec3 vNormal;
+      void main()
+      {
+        float intensity = pow( 0.7 - dot( vNormal, vec3( 0.0, 0.0, 1.0 ) ), 4.0 );
+        gl_FragColor = vec4( 0.3, 0.3, 0.7, 0.8 ) * intensity;
+      }
+    `;
+    const material = new THREE.ShaderMaterial({
+      uniforms: {},
+      vertexShader: vertexShaderString,
+      fragmentShader: fragmentShaderString,
+      side: THREE.BackSide,
+      blending: THREE.AdditiveBlending,
+      transparent: true,
+    });
+    const geometry = new THREE.SphereGeometry(58, 32, 32);
+    const halo = new THREE.Mesh(geometry, material);
+
+    this.scene.add(halo);
   }
 
   /**

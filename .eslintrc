@@ -23,13 +23,6 @@
   "rules": {
     "no-console": ["error", {
       "allow": ["warn", "error", "info"]
-    }],
-    "comma-dangle": ["error", {
-      "arrays": "only-multiline",
-      "objects": "only-multiline",
-      "imports": "never",
-      "exports": "never",
-      "functions": "never",
     }]
   },
   "settings": {
