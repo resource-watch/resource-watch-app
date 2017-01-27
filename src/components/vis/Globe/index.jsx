@@ -39,8 +39,11 @@ class Globe extends React.Component {
   setTexture() {
     const mapImage = this.props.texture ?
       imageLoader.load(this.props.texture) : cloudsMapImage;
+    const radius = 50.1;
+    const segments = 64;
+    const rings = 64;
     if (!this.currentTexture) {
-      const geometry = new THREE.SphereGeometry(50.1, 64, 64);
+      const geometry = new THREE.SphereGeometry(radius, segments, rings);
       const material = new THREE.MeshBasicMaterial({
         map: mapImage,
         transparent: true,
@@ -126,7 +129,7 @@ class Globe extends React.Component {
       void main()
       {
         float intensity = pow( 0.7 - dot( vNormal, vec3( 0.0, 0.0, 1.0 ) ), 4.0 );
-        gl_FragColor = vec4( 0.3, 0.3, 0.7, 0.8 ) * intensity;
+        gl_FragColor = vec4( 0.32, 0.32, 0.9, 0.7 ) * intensity;
       }
     `;
     const material = new THREE.ShaderMaterial({
@@ -238,9 +241,9 @@ class Globe extends React.Component {
     if (this.controls) {
       this.controls.update();
     }
-    // if (this.clouds) {
-    //   this.clouds.rotation.y += 0.0002;
-    // }
+    if (!this.props.texture) {
+      this.currentTexture.rotation.y += 0.0002;
+    }
     this.renderer.render(this.scene, this.camera);
   }
 
@@ -278,7 +281,7 @@ Globe.defaultProps = {
   // Earth textures
   earthImagePath: earthImage,
   earthBumpImagePath: earthBumpImage,
-  texture: cloudsImage,
+  texture: null,
 };
 
 Globe.propTypes = {

@@ -9,8 +9,7 @@ class Pulse extends React.Component {
         <Globe pointLightColor={0xcccccc}
           ambientLightColor={0x444444}
           enableZoom={true}
-          lightPosition={'right'}
-        />
+          lightPosition={'right'} />
       </div>
     );
   }
