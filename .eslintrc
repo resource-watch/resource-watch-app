@@ -24,13 +24,6 @@
     "no-console": ["error", {
       "allow": ["warn", "error", "info"]
     }],
-    "comma-dangle": ["error", {
-      "arrays": "only-multiline",
-      "objects": "only-multiline",
-      "imports": "never",
-      "exports": "never",
-      "functions": "never",
-    }],
     "react/forbid-prop-types": 0,
     "react/require-default-props": 0
   },
