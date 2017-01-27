@@ -36,7 +36,7 @@
       "width":2048,
       "height":1024,
       "srs":null,
-      "urlTemplate":"https://{account}.carto.com/api/v1/map/static/bbox/{token_groupid}/{bbox}/{width}/{height}.{format}"
+      "urlTemplate":"https://{{account}}.carto.com/api/v1/map/static/bbox/{{token_groupid}}/{{bbox}}/{{width}}/{{height}}.{{format}}"
     },
     "legendConfig": {
       "marks": {

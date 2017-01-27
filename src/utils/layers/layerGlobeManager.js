@@ -1,14 +1,15 @@
 /* eslint import/no-unresolved: 0 */
 /* eslint import/extensions: 0 */
 
+import { substitution } from 'utils/utils';
+
 export default class LayerGlobeManager {
 
   // Constructor
   constructor(map, options = {}) {
     this.map = map;
     this.requests = {};
-    this.onLayerAddedSuccess = options.onLayerAddedSuccess;
-    this.onLayerAddedError = options.onLayerAddedError;
+    this.options = {};
   }
 
   /*
@@ -19,7 +20,7 @@ export default class LayerGlobeManager {
       cartodb: this.addCartoLayer
     }[layer.provider];
 
-    if (method) method.call(this, layer, opts);
+    return method && method.call(this, layer, opts);
   }
 
   /**
@@ -27,12 +28,11 @@ export default class LayerGlobeManager {
    * - addCartoLayer
    */
   addCartoLayer(layer, opts) {
-    const options = opts;
-
     if (this.requests[layer.id]) {
       if (this.requests[layer.id].readyState !== 4) {
         this.requests[layer.id].abort();
         delete this.requests[layer.id];
+        delete this.options[layer.id];
       }
     }
 
@@ -41,17 +41,43 @@ export default class LayerGlobeManager {
     xmlhttp.setRequestHeader('Content-Type', 'application/json');
     xmlhttp.send(JSON.stringify(layer.layerConfig.body));
 
-    xmlhttp.onreadystatechange = () => {
+    this.requests[layer.id] = xmlhttp;
+    this.options[layer.id] = opts;
+
+    xmlhttp.onreadystatechange = function onStateChange() {
       if (xmlhttp.readyState === 4) {
         if (xmlhttp.status === 200) {
           const data = JSON.parse(xmlhttp.responseText);
-          console.log(data);
+          const { layerConfig, staticImageConfig } = layer;
+
+          const texture = substitution(staticImageConfig.urlTemplate, [{
+            key: 'account',
+            value: layerConfig.account
+          }, {
+            key: 'token_groupid',
+            value: data.layergroupid
+          }, {
+            key: 'bbox',
+            value: staticImageConfig.bbox.join(',')
+          }, {
+            key: 'format',
+            value: staticImageConfig.format
+          }, {
+            key: 'width',
+            value: staticImageConfig.width
+          }, {
+            key: 'height',
+            value: staticImageConfig.height
+          }, {
+            key: 'srs',
+            value: staticImageConfig.srs
+          }]);
+          this.options[layer.id].onLayerAddedSuccess(texture);
         } else {
           console.log('error');
+          this.options[layer.id].onLayerAddedError('error');
         }
       }
-    };
-
-    this.requests[layer.id] = xmlhttp;
+    }.bind(this);
   }
 }
