@@ -8,6 +8,7 @@ import './style.scss';
 
 const OrbitControls = orbitControls(THREE);
 const imageLoader = new THREE.TextureLoader();
+const cloudsMapImage = imageLoader.load(cloudsImage);
 
 class Globe extends React.Component {
 
@@ -17,12 +18,39 @@ class Globe extends React.Component {
   componentDidMount() {
     this.createScene();
     this.creteaEarth();
-    this.addClouds();
+    this.setTexture();
     this.addLights();
     this.addControls();
 
     // Start!
     this.draw();
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.texture) {
+      this.setTexture();
+    }
+  }
+
+  /**
+   * Method to change layers to earth
+   */
+  setTexture() {
+    const mapImage = this.props.texture ?
+      imageLoader.load(this.props.texture) : cloudsMapImage;
+    if (!this.currentTexture) {
+      const geometry = new THREE.SphereGeometry(50.1, 64, 64);
+      const material = new THREE.MeshBasicMaterial({
+        map: mapImage,
+        transparent: true
+      });
+      this.currentTexture = new THREE.Mesh(geometry, material);
+    } else {
+      this.currentTexture.map = mapImage;
+      this.currentTexture.material.needsUpdate = true;
+    }
+    this.currentTexture.updateMatrix();
+    this.scene.add(this.currentTexture);
   }
 
   /**
@@ -125,43 +153,6 @@ class Globe extends React.Component {
   }
 
   /**
-   * Method to change layers to earth
-   * @param  {String} imagePath
-   */
-  changeTexture(imagePath) {
-    if (this.clouds) {
-      this.scene.remove(this.clouds);
-      this.clouds = null;
-    }
-    const material = new THREE.MeshBasicMaterial({
-      map: imageLoader.load(imagePath),
-      transparent: true
-    });
-    const geometry = new THREE.SphereGeometry(50.1, 64, 64);
-    this.currentTexture = new THREE.Mesh(geometry, material);
-    this.currentTexture.updateMatrix();
-    this.scene.add(this.currentTexture);
-  }
-
-  /**
-   * Add clouds to earth
-   */
-  addClouds() {
-    if (this.currentTexture) {
-      this.scene.remove(this.currentTexture);
-      this.currentTexture = null;
-    }
-    const material = new THREE.MeshBasicMaterial({
-      map: imageLoader.load(cloudsImage),
-      transparent: true
-    });
-    const geometry = new THREE.SphereGeometry(50.1, 64, 64);
-    this.clouds = new THREE.Mesh(geometry, material);
-    this.clouds.updateMatrix();
-    this.scene.add(this.clouds);
-  }
-
-  /**
    * Change globe position
    * @param  {Number} offsetX
    * @param  {Number} offsetY
@@ -200,6 +191,7 @@ class Globe extends React.Component {
     };
     scriptElement.src = '//rawgit.com/mrdoob/stats.js/master/build/stats.min.js';
     document.head.appendChild(scriptElement);
+    return this;
   }
 
   /**
@@ -210,9 +202,9 @@ class Globe extends React.Component {
     if (this.controls) {
       this.controls.update();
     }
-    if (this.clouds) {
-      this.clouds.rotation.y += 0.0002;
-    }
+    // if (this.clouds) {
+    //   this.clouds.rotation.y += 0.0002;
+    // }
     this.renderer.render(this.scene, this.camera);
   }
 
@@ -250,6 +242,7 @@ Globe.defaultProps = {
   // Earth textures
   earthImagePath: earthImage,
   earthBumpImagePath: earthBumpImage,
+  texture: cloudsImage,
 };
 
 Globe.propTypes = {
@@ -267,6 +260,7 @@ Globe.propTypes = {
   dampingFactor: React.PropTypes.number,
   earthImagePath: React.PropTypes.string,
   earthBumpImagePath: React.PropTypes.string,
+  texture: React.PropTypes.string,
 };
 
 export default Globe;
