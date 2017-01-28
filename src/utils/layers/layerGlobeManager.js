@@ -1,15 +1,12 @@
-/* eslint import/no-unresolved: 0 */
-/* eslint import/extensions: 0 */
-
 import { substitution } from 'utils/utils';
 
 export default class LayerGlobeManager {
 
   // Constructor
-  constructor(map, options = {}) {
+  constructor(map, defaults = {}) {
     this.map = map;
-    this.requests = {};
-    this.options = {};
+    this.layer = {};
+    this.defaults = defaults;
   }
 
   /*
@@ -20,36 +17,50 @@ export default class LayerGlobeManager {
       cartodb: this.addCartoLayer
     }[layer.provider];
 
+    // Check for active request to prevent adding more than one layer at a time
+    this.abortRequest();
+
     return method && method.call(this, layer, opts);
   }
 
   /**
    * PRIVATE METHODS
+   * - abortRequest
    * - addCartoLayer
-   */
-  addCartoLayer(layer, opts) {
-    if (this.requests[layer.id]) {
-      if (this.requests[layer.id].readyState !== 4) {
-        this.requests[layer.id].abort();
-        delete this.requests[layer.id];
-        delete this.options[layer.id];
+  */
+  abortRequest() {
+    if (this.layer.request) {
+      if (this.layer.request.readyState !== 4) {
+        // Abort the request && reset the layer
+        this.layer.request.abort();
+        this.layer = {};
       }
     }
+  }
 
+  addCartoLayer(layer, opts) {
+    // Set the layer && opts
+    this.layer = {
+      ...layer,
+      options: opts
+    };
+
+    // Create new request...
     const xmlhttp = new XMLHttpRequest();
-    xmlhttp.open('POST', `https://${layer.layerConfig.account}.carto.com/api/v1/map`);
+    xmlhttp.open('POST', `https://${this.layer.layerConfig.account}.carto.com/api/v1/map`);
     xmlhttp.setRequestHeader('Content-Type', 'application/json');
-    xmlhttp.send(JSON.stringify(layer.layerConfig.body));
+    xmlhttp.send(JSON.stringify(this.layer.layerConfig.body));
 
-    this.requests[layer.id] = xmlhttp;
-    this.options[layer.id] = opts;
+    // ...and add it to the current layer
+    this.layer.request = xmlhttp;
 
     xmlhttp.onreadystatechange = function onStateChange() {
       if (xmlhttp.readyState === 4) {
         if (xmlhttp.status === 200) {
           const data = JSON.parse(xmlhttp.responseText);
-          const { layerConfig, staticImageConfig } = layer;
+          const { layerConfig, staticImageConfig } = this.layer;
 
+          // Parse the staticImageConfig.urlTemplate with the current options
           const texture = substitution(staticImageConfig.urlTemplate, [{
             key: 'account',
             value: layerConfig.account
@@ -72,10 +83,9 @@ export default class LayerGlobeManager {
             key: 'srs',
             value: staticImageConfig.srs
           }]);
-          this.options[layer.id].onLayerAddedSuccess(texture);
+          this.layer.options.onLayerAddedSuccess(texture);
         } else {
-          console.log('error');
-          this.options[layer.id].onLayerAddedError('error');
+          this.layer.options.onLayerAddedError('Error or canceled');
         }
       }
     }.bind(this);

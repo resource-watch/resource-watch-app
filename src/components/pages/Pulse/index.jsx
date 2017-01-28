@@ -25,20 +25,22 @@ class Pulse extends React.Component {
       if (nextProps.activeLayer) {
         this.layerGlobeManager.addLayer(nextProps.activeLayer, {
           onLayerAddedSuccess: function success(texture) {
+            console.info(texture);
             this.setState({ texture });
           }.bind(this),
           onLayerAddedError: function error(err) {
             console.error(err);
+            this.setState({ texture: null });
           }.bind(this)
         });
       } else {
+        this.layerGlobeManager.abortRequest();
         this.setState({ texture: null });
       }
     }
   }
 
   render() {
-    console.log(this.state.texture);
     return (
       <div className="c-page">
         <div className="l-container">
