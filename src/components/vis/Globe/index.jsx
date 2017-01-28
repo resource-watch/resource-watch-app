@@ -18,6 +18,7 @@ class Globe extends React.Component {
   componentDidMount() {
     this.createScene();
     this.creteaEarth();
+    this.addHalo();
     this.setTexture();
     this.addLights();
     this.addControls();
@@ -38,11 +39,14 @@ class Globe extends React.Component {
   setTexture() {
     const mapImage = this.props.texture ?
       imageLoader.load(this.props.texture) : cloudsMapImage;
+    const radius = 50.1;
+    const segments = 64;
+    const rings = 64;
     if (!this.currentTexture) {
-      const geometry = new THREE.SphereGeometry(50.1, 64, 64);
+      const geometry = new THREE.SphereGeometry(radius, segments, rings);
       const material = new THREE.MeshBasicMaterial({
         map: mapImage,
-        transparent: true
+        transparent: true,
       });
       this.currentTexture = new THREE.Mesh(geometry, material);
     } else {
@@ -99,12 +103,47 @@ class Globe extends React.Component {
     const material = new THREE.MeshPhongMaterial({
       map: imageLoader.load(this.props.earthImagePath),
       bumpMap: imageLoader.load(this.props.earthBumpImagePath),
-      bumpScale: 0.005
+      bumpScale: 0.005,
     });
     const geometry = new THREE.SphereGeometry(radius, segments, rings);
     const earth = new THREE.Mesh(geometry, material);
     earth.updateMatrix();
     this.scene.add(earth);
+  }
+
+  addHalo() {
+    if (!this.scene) {
+      throw new Error('Scene and camera should be created before.');
+    }
+
+    const vertexShaderString = `
+      varying vec3 vNormal;
+      void main()
+      {
+        vNormal = normalize( normalMatrix * normal );
+        gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
+      }
+    `;
+    const fragmentShaderString = `
+      varying vec3 vNormal;
+      void main()
+      {
+        float intensity = pow( 0.7 - dot( vNormal, vec3( 0.0, 0.0, 1.0 ) ), 4.0 );
+        gl_FragColor = vec4( 0.32, 0.32, 0.9, 0.7 ) * intensity;
+      }
+    `;
+    const material = new THREE.ShaderMaterial({
+      uniforms: {},
+      vertexShader: vertexShaderString,
+      fragmentShader: fragmentShaderString,
+      side: THREE.BackSide,
+      blending: THREE.AdditiveBlending,
+      transparent: true,
+    });
+    const geometry = new THREE.SphereGeometry(58, 32, 32);
+    const halo = new THREE.Mesh(geometry, material);
+
+    this.scene.add(halo);
   }
 
   /**
@@ -202,9 +241,9 @@ class Globe extends React.Component {
     if (this.controls) {
       this.controls.update();
     }
-    // if (this.clouds) {
-    //   this.clouds.rotation.y += 0.0002;
-    // }
+    if (!this.props.texture) {
+      this.currentTexture.rotation.y += 0.0002;
+    }
     this.renderer.render(this.scene, this.camera);
   }
 
@@ -242,7 +281,7 @@ Globe.defaultProps = {
   // Earth textures
   earthImagePath: earthImage,
   earthBumpImagePath: earthBumpImage,
-  texture: cloudsImage,
+  texture: null,
 };
 
 Globe.propTypes = {
