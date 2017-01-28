@@ -26,7 +26,7 @@ class LayerNavDropdown extends React.Component {
                 key={layer.id}
                 onClick={this.triggerClick}
               >
-                <Switch active={layer.active} />
+                <Switch active={(this.props.layerActive === layer.id)} />
                 <span className="name">
                   {layer.name}
                 </span>
@@ -42,6 +42,7 @@ class LayerNavDropdown extends React.Component {
 
 LayerNavDropdown.propTypes = {
   layers: React.PropTypes.array,
+  layerActive: React.PropTypes.string,
   toggleActiveLayer: React.PropTypes.func
 };
 

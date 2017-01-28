@@ -3,7 +3,7 @@ import LayerNavDropdown from 'components/layout/LayerNavDropdown';
 import { toggleActiveLayer } from 'redactions/pulse';
 
 const mapStateToProps = state => ({
-
+  layerActive: state.pulse.layerActive,
 });
 
 const mapDispatchToProps = dispatch => ({
