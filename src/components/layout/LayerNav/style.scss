@@ -17,6 +17,7 @@
       margin: 0 24px 0 0;
       &:last-child { margin: 0; }
 
+      // NAME
       > .name {
         display: inline-block;
         text-transform: uppercase;
@@ -33,20 +34,25 @@
         }
       }
 
-      > .c-layer-nav-dropdown {
+      // DROPDOWN
+      > .dropdown {
         opacity: 0;
         visibility: hidden;
       }
 
       &:hover {
-        > .name {
-          border-color: rgba($color-white, .2);
-        }
-
-        > .c-layer-nav-dropdown {
+        // DROPDOWN
+        > .dropdown {
           opacity: 1;
           visibility: visible;
         }
+      }
+
+      &.-active {
+        // NAME
+        > .name {
+          border-color: rgba($color-white, .2);
+        }        
       }
     }
   }

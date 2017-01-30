@@ -7,7 +7,7 @@ import getActiveLayersPulse from 'selectors/layersActivePulse';
 const mapStateToProps = state => ({
   pulse: state.pulse,
   layersGroup: getLayersGroupPulse(state),
-  activeLayer: getActiveLayersPulse(state)
+  layerActive: getActiveLayersPulse(state)
 });
 
 const mapDispatchToProps = dispatch => ({

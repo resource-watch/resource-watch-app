@@ -17,7 +17,7 @@ class LayerNavDropdown extends React.Component {
 
   render() {
     return (
-      <div className="c-layer-nav-dropdown">
+      <div className="c-layer-nav-dropdown dropdown">
         <ul>
           {this.props.layers.map((layer) => {
             return (
@@ -43,7 +43,7 @@ class LayerNavDropdown extends React.Component {
 LayerNavDropdown.propTypes = {
   layers: React.PropTypes.array,
   layerActive: React.PropTypes.string,
-  toggleActiveLayer: React.PropTypes.func
+  toggleActiveLayer: React.PropTypes.func,
 };
 
 export default LayerNavDropdown;

@@ -1,8 +1,13 @@
 import React from 'react';
+
+// Helpers
 import LayerGlobeManager from 'utils/layers/LayerGlobeManager';
+
+// Components
 import Globe from 'components/vis/Globe';
 import LayerNav from 'components/layout/LayerNav';
 
+// Styles
 import './style.scss';
 
 class Pulse extends React.Component {
@@ -19,11 +24,11 @@ class Pulse extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const lastId = (this.props.activeLayer) ? this.props.activeLayer.id : null;
-    const newId = (nextProps.activeLayer) ? nextProps.activeLayer.id : null;
+    const lastId = (this.props.layerActive) ? this.props.layerActive.id : null;
+    const newId = (nextProps.layerActive) ? nextProps.layerActive.id : null;
     if (lastId !== newId) {
-      if (nextProps.activeLayer) {
-        this.layerGlobeManager.addLayer(nextProps.activeLayer, {
+      if (nextProps.layerActive) {
+        this.layerGlobeManager.addLayer(nextProps.layerActive, {
           onLayerAddedSuccess: function success(texture) {
             console.info(texture);
             this.setState({ texture });
@@ -31,7 +36,7 @@ class Pulse extends React.Component {
           onLayerAddedError: function error(err) {
             console.error(err);
             this.setState({ texture: null });
-          }.bind(this)
+          }.bind(this),
         });
       } else {
         this.layerGlobeManager.abortRequest();
@@ -45,13 +50,14 @@ class Pulse extends React.Component {
       <div className="c-page">
         <div className="l-container">
           <LayerNav
+            layerActive={this.props.layerActive}
             layersGroup={this.props.layersGroup}
           />
         </div>
         <Globe
           pointLightColor={0xcccccc}
           ambientLightColor={0x444444}
-          enableZoom={true}
+          enableZoom
           lightPosition={'right'}
           texture={this.state.texture}
         />
@@ -61,10 +67,9 @@ class Pulse extends React.Component {
 }
 
 Pulse.propTypes = {
-  pulse: React.PropTypes.object,
   layersGroup: React.PropTypes.array,
-  activeLayer: React.PropTypes.object,
-  getDatasets: React.PropTypes.func
+  layerActive: React.PropTypes.object,
+  getDatasets: React.PropTypes.func,
 };
 
 
