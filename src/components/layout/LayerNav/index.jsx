@@ -8,19 +8,21 @@ class LayerNav extends React.Component {
   render() {
     return (
       <div className="c-layer-nav">
-        <ul>
-          {this.props.layersGroup.map((group, i) => {
-            const activeGroup = (this.props.layerActive && this.props.layerActive.group === group.name) ? '-active' : '';
-            return (
-              <li key={i} className={activeGroup}>
-                <span className="name">
-                  {group.name}
-                </span>
-                <LayerNavDropdown layers={group.layers} />
-              </li>
-            );
-          })}
-        </ul>
+        <div className="l-container">
+          <ul className="layer-nav-list">
+            {this.props.layersGroup.map((group, i) => {
+              const activeGroup = (this.props.layerActive && this.props.layerActive.group === group.name) ? '-active' : '';
+              return (
+                <li key={i} className={activeGroup}>
+                  <span className="name">
+                    {group.name}
+                  </span>
+                  <LayerNavDropdown layers={group.layers} />
+                </li>
+              );
+            })}
+          </ul>
+        </div>
       </div>
     );
   }

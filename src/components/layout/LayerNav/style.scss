@@ -4,8 +4,10 @@
   position: absolute;
   top: 0;
   left: 0;
+  width: 100%;
 
-  > ul {
+  // List
+  .layer-nav-list {
     display: flex;
     justify-content: flex-start;
     padding: 0;
@@ -52,7 +54,7 @@
         // NAME
         > .name {
           border-color: rgba($color-white, .2);
-        }        
+        }
       }
     }
   }
