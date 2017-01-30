@@ -6,7 +6,7 @@ import { browserHistory } from 'react-router';
 import thunk from 'redux-thunk';
 import { syncHistoryWithStore, routerReducer, routerMiddleware } from 'react-router-redux';
 
-import * as reducers from './reducers';
+import * as reducers from './redactions';
 import Routes from './routes';
 
 /**

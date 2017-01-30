@@ -1,19 +1,76 @@
 import React from 'react';
-import Globe from '../../vis/Globe';
+
+// Helpers
+import LayerGlobeManager from 'utils/layers/LayerGlobeManager';
+
+// Components
+import Globe from 'components/vis/Globe';
+import LayerNav from 'components/layout/LayerNav';
+
+// Styles
+import './style.scss';
 
 class Pulse extends React.Component {
 
+  constructor(props) {
+    super(props);
+    this.state = {};
+    this.layerGlobeManager = new LayerGlobeManager();
+  }
+
+  componentWillMount() {
+    // This is not sending anything, for the moment
+    this.props.getDatasets();
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const lastId = (this.props.layerActive) ? this.props.layerActive.id : null;
+    const newId = (nextProps.layerActive) ? nextProps.layerActive.id : null;
+    if (lastId !== newId) {
+      if (nextProps.layerActive) {
+        this.layerGlobeManager.addLayer(nextProps.layerActive, {
+          onLayerAddedSuccess: function success(texture) {
+            console.info(texture);
+            this.setState({ texture });
+          }.bind(this),
+          onLayerAddedError: function error(err) {
+            console.error(err);
+            this.setState({ texture: null });
+          }.bind(this),
+        });
+      } else {
+        this.layerGlobeManager.abortRequest();
+        this.setState({ texture: null });
+      }
+    }
+  }
+
   render() {
     return (
-      <div>
-        <Globe pointLightColor={0xcccccc}
+      <div className="c-page">
+        <div className="l-container">
+          <LayerNav
+            layerActive={this.props.layerActive}
+            layersGroup={this.props.layersGroup}
+          />
+        </div>
+        <Globe
+          pointLightColor={0xcccccc}
           ambientLightColor={0x444444}
-          enableZoom={true}
-          lightPosition={'right'} />
+          enableZoom
+          lightPosition={'right'}
+          texture={this.state.texture}
+        />
       </div>
     );
   }
-
 }
+
+Pulse.propTypes = {
+  layersGroup: React.PropTypes.array,
+  layerActive: React.PropTypes.object,
+  getDatasets: React.PropTypes.func,
+};
+
 
 export default Pulse;

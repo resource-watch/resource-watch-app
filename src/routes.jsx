@@ -5,8 +5,8 @@ import { IndexRoute, Router, Route } from 'react-router';
 
 // Components
 import App from './App';
-import Home from './components/pages/Home';
-import Pulse from './components/pages/Pulse';
+import Home from './containers/pages/Home';
+import Pulse from './containers/pages/Pulse';
 
 function Routes(props) {
   return (

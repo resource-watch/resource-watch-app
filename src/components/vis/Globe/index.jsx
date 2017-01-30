@@ -271,9 +271,9 @@ Globe.defaultProps = {
   // Controls
   autorotate: false,
   autoRotateSpeed: 2.0, // It depends on autorotate
-  rotateSpeed: 1.0,
+  rotateSpeed: 0.25,
   enableZoom: false,
-  zoomSpeed: 1.0,
+  zoomSpeed: 0.25,
   enableDamping: true, // Set true to enable inertia
   dampingFactor: 0.25,
   radius: 50,

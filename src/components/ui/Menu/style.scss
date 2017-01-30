@@ -1,7 +1,7 @@
 @import "../../../styles/config";
 
-$menu-item-color: $white;
-$menu-link-color: $white;
+$menu-item-color: $color-white;
+$menu-link-color: $color-white;
 
 .c-menu {
   &.-align-right {
@@ -21,6 +21,7 @@ $menu-link-color: $white;
       margin-left: 1rem;
       margin-right: 1rem;
 
+      font-size: 16px;
       color: $menu-item-color;
 
       &:first-child {
