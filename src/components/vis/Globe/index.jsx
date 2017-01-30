@@ -12,6 +12,13 @@ const cloudsMapImage = imageLoader.load(cloudsImage);
 
 class Globe extends React.Component {
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      texture: props.texture
+    };
+  }
+
   /**
    * Create canvas and start
    */
@@ -27,18 +34,20 @@ class Globe extends React.Component {
     this.draw();
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    this.setTexture();
+  }
+
   componentWillReceiveProps(nextProps) {
-    if (nextProps.texture) {
-      this.setTexture();
-    }
+    this.setState({ texture: nextProps.texture || null });
   }
 
   /**
    * Method to change layers to earth
    */
   setTexture() {
-    const mapImage = this.props.texture ?
-      imageLoader.load(this.props.texture) : cloudsMapImage;
+    const mapImage = this.state.texture ?
+      imageLoader.load(this.state.texture) : cloudsMapImage;
     const radius = 50.1;
     const segments = 64;
     const rings = 64;
@@ -50,7 +59,7 @@ class Globe extends React.Component {
       });
       this.currentTexture = new THREE.Mesh(geometry, material);
     } else {
-      this.currentTexture.map = mapImage;
+      this.currentTexture.material.map = mapImage;
       this.currentTexture.material.needsUpdate = true;
     }
     this.currentTexture.updateMatrix();
@@ -241,7 +250,7 @@ class Globe extends React.Component {
     if (this.controls) {
       this.controls.update();
     }
-    if (!this.props.texture) {
+    if (!this.state.texture) {
       this.currentTexture.rotation.y += 0.0002;
     }
     this.renderer.render(this.scene, this.camera);
