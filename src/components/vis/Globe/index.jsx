@@ -252,6 +252,8 @@ class Globe extends React.Component {
     }
     if (!this.state.texture) {
       this.currentTexture.rotation.y += 0.0002;
+    } else if (this.currentTexture.rotation.y !== 0) {
+      this.currentTexture.rotation.y = 0;
     }
     this.renderer.render(this.scene, this.camera);
   }
