@@ -32,11 +32,21 @@ $color-white: #fff;
 $color-black: #000;
 $color-dark-pink: #c32d7b;
 
+
+// Borders
+$border-color-1: #eee;
+$border-color-2: #ccc;
+
 // Fonts
-$font-size-default: 14px;
+$font-size-extra-small:   10px;
+$font-size-small:         12px;
+$font-size-default:       14px;
+$font-size-big:           16px;
+$font-size-extra-big:     18px;
+$font-size-huge:          22px;
 
 // Theme
-$base-bg-color: $color-white;
+$bg-color-1: $color-white;
 
 // Text
 $base-font-color: $color-dark-pink;

@@ -5,7 +5,7 @@ export function substitution(string, params) {
   // Keys to search should be in this format {{key}}
   let str = string;
   params.forEach((param) => {
-    str = str.replace(new RegExp(`{{${param.key}}}`, 'g'), param.value);
+    str = str.replace(new RegExp(`{${param.key}}`, 'g'), param.value);
   });
   return str;
 }
@@ -24,7 +24,7 @@ export function concatenation(string, params) {
       return null;
     })).join(' AND ')}`;
     sql = (sql) ? `WHERE ${sql}` : '';
-    str = str.replace(new RegExp(`{{${param.key}}}`, 'g'), sql);
+    str = str.replace(new RegExp(`{${param.key}}`, 'g'), sql);
   });
   return str;
 }
