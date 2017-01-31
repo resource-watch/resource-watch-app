@@ -6,8 +6,8 @@ import Home from 'components/pages/Home';
 // });
 //
 // const mapDispatchToProps = dispatch => ({
-//   getDatasets: () => {
-//     dispatch(getDatasets());
+//   getLayers: () => {
+//     dispatch(getLayers());
 //   },
 // });
 

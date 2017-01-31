@@ -6,6 +6,9 @@ import LayerGlobeManager from 'utils/layers/LayerGlobeManager';
 // Components
 import Globe from 'components/vis/Globe';
 import LayerNav from 'components/layout/LayerNav';
+import Legend from 'components/layout/Legend';
+import LayerDescription from 'components/layout/LayerDescription';
+
 
 // Styles
 import './style.scss';
@@ -20,7 +23,7 @@ class Pulse extends React.Component {
 
   componentWillMount() {
     // This is not sending anything, for the moment
-    this.props.getDatasets();
+    this.props.getLayers();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -48,13 +51,19 @@ class Pulse extends React.Component {
   render() {
     return (
       <div className="c-page">
-        <div className="l-container">
-          <LayerNav
-            layerActive={this.props.layerActive}
-            layersGroup={this.props.layersGroup}
-          />
-        </div>
+        <LayerNav
+          layerActive={this.props.layerActive}
+          layersGroup={this.props.layersGroup}
+        />
+        <Legend
+          layerActive={this.props.layerActive}
+        />
+        <LayerDescription
+          layerActive={this.props.layerActive}
+        />
         <Globe
+          width={window.innerWidth}
+          height={window.innerHeight - 130} // TODO: 130 is the header height
           pointLightColor={0xcccccc}
           ambientLightColor={0x444444}
           enableZoom
@@ -69,7 +78,7 @@ class Pulse extends React.Component {
 Pulse.propTypes = {
   layersGroup: React.PropTypes.array,
   layerActive: React.PropTypes.object,
-  getDatasets: React.PropTypes.func,
+  getLayers: React.PropTypes.func,
 };
 
 
