@@ -1,6 +1,7 @@
 /* global config */
 import 'whatwg-fetch';
 import find from 'lodash/find';
+import compact from 'lodash/compact';
 import { Deserializer } from 'jsonapi-serializer';
 
 // We should merge the layerSpecPulse with the response of the layers
@@ -55,22 +56,25 @@ export function getLayers() {
     // Waiting for fetch from server -> Dispatch loading
     dispatch({ type: GET_LAYERS_LOADING });
     // TODO: remove the date now
-    fetch(new Request(`${config.API_URL}/layer?app=rw&tags=real_time&page[size]=${Date.now() / 100000}`))
+    fetch(new Request(`${config.API_URL}/dataset?app=rw&tags=real_time&includes=layer&page[size]=${Date.now() / 100000}`))
     .then((response) => {
       if (response.ok) return response.json();
       throw new Error(response.statusText);
     })
     .then((data) => {
       // Transforn JSON-API-like data
-      DESERIALIZER.deserialize(data, (err, layers) => {
+      DESERIALIZER.deserialize(data, (err, datasets) => {
         if (err) throw new Error('Error deserializing json api');
         // Fetch from server ok -> Dispatch layers
+
+        const layersParsed = compact(datasets.map((dataset) => {
+          const layerSpec = find(layerSpecPulse, { id: dataset.layer[0].attributes.id });
+          return Object.assign({}, layerSpec, dataset.layer[0].attributes);
+        }));
+
         dispatch({
           type: GET_LAYERS_SUCCESS,
-          payload: layers.map((layer) => {
-            const layerSpec = find(layerSpecPulse, { id: layer.id });
-            return Object.assign({}, layerSpec, layer);
-          }),
+          payload: layersParsed,
         });
       });
     })
