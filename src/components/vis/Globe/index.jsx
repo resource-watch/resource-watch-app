@@ -272,7 +272,7 @@ class Globe extends React.Component {
 Globe.defaultProps = {
   // Size
   width: window.innerWidth,
-  height: window.innerHeight, // Just for th moment
+  height: window.innerHeight,
 
   // Lights
   ambientLightColor: 0x262626,

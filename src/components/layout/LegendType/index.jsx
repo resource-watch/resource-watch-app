@@ -7,7 +7,22 @@ class LegendType extends React.Component {
     const config = this.props.config;
     switch (config.type) {
       case 'basic': {
-        return null;
+        const items = config.items;
+
+        return (
+          <div className={`type -${config.type}`}>
+            <div className="type-list">
+              {items.map((item, i) => {
+                return (
+                  <div className="type-list-item" key={i}>
+                    <span className="color" style={{ background: item.color }} />
+                    <span className="name">{item.name}{config.unit}</span>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        );
       }
 
       case 'gradient': {
@@ -53,7 +68,7 @@ class LegendType extends React.Component {
               {config.items.map((item, i) => {
                 return (
                   <div className="type-list-item" style={{ width: `${100 / config.items.length}%` }} key={i}>
-                    <span className="value">{item.value}{config.unit}</span>
+                    <span className="value">{item.value}</span>
                   </div>
                 );
               })}
