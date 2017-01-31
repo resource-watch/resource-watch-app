@@ -1,0 +1,69 @@
+@import "~susy/sass/susy";
+@import "~bourbon/app/assets/stylesheets/settings/px-to-em";
+@import "~bourbon/app/assets/stylesheets/functions/strip-units";
+@import "~bourbon/app/assets/stylesheets/functions/px-to-rem";
+
+/*
+ * Configuring grid
+ */
+$large-screen: 1400px;
+$middle-screen: 800px;
+$small-screen: 320px;
+
+$max-width: 1040px;
+
+$susy: (
+  /* Tells Susy to use 12 columns */
+  columns: 12,
+  /* Tells Susy that the container has a max-width of 1120px */
+  container: 1040px,
+  /* Tells Susy to use border-box */
+  global-box-sizing: border-box
+);
+
+@include border-box-sizing;
+
+/*
+ * Configuring project settings
+ */
+
+// Colors
+$color-white: #fff;
+$color-black: #000;
+$color-dark-pink: #c32d7b;
+
+
+// Borders
+$border-color-1: #eee;
+$border-color-2: #ccc;
+
+// Fonts
+$font-size-extra-small:   10px;
+$font-size-small:         12px;
+$font-size-default:       14px;
+$font-size-big:           16px;
+$font-size-extra-big:     18px;
+$font-size-huge:          22px;
+
+// Theme
+$bg-color-1: $color-white;
+
+// Text
+$base-font-color: $color-dark-pink;
+$base-font-family: Lato, Helvetica, Arial, sans;
+$base-line-height: 1.5;
+
+// Times
+$animation-time: .16s;
+$animation-time-2: .24s;
+$animation-time-3: .5s;
+$animation-time-4: .75s;
+
+// Eases
+$ease-in-cubic: cubic-bezier(0.550, 0.055, 0.675, 0.190);
+$ease-out-cubic: cubic-bezier(0.215, 0.610, 0.355, 1.000);
+$ease-in-out-cubic: cubic-bezier(0.645, 0.045, 0.355, 1.000);
+
+$ease-in-sine: cubic-bezier(0.470, 0.000, 0.745, 0.715);
+$ease-out-sine: cubic-bezier(0.390, 0.575, 0.565, 1.000);
+$ease-in-out-sine: cubic-bezier(0.445, 0.050, 0.550, 0.950);

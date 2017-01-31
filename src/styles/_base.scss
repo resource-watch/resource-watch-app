@@ -1,0 +1,12 @@
+@import "config";
+
+body {
+  font-family: $base-font-family;
+  line-height: $base-line-height;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  font-size: $font-size-default;
+  background-color: $bg-color-1;
+}

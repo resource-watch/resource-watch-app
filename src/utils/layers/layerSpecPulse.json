@@ -1,0 +1,67 @@
+[
+  {
+    "id": "667ae321-649e-4caa-b761-35e370c776b0",
+    "name": "SPEI",
+    "group": "Earth"
+  },
+  {
+    "id": "33eb5a8a-95a3-43a5-9326-1fc338d6d873",
+    "name": "Earthquakes Over the Past 30 days",
+    "group": "Earth"
+  },
+  {
+    "id": "3a6c18d8-bc56-418f-a390-e559f269d9c5",
+    "name": "Potential Landslide Areas",
+    "group": "Earth"
+  },
+
+  {
+    "id": "6f1f8b5d-a6ba-436f-a7bf-b6812d0f3a20",
+    "name": "Drought Monitor",
+    "group": "Drought"
+  },
+
+  {
+    "id": "13aa4fe5-a986-4ee0-ae59-058317c53035",
+    "name": "Acute Food Insecurity (WAITING FOR FEWS)",
+    "group": "Society"
+  },
+  {
+    "id": "2b7d5bca-bdcc-4d75-9901-155eebf9bb8c",
+    "name": "News Sources",
+    "group": "Society"
+  },
+  {
+    "id": "b508a5f8-28f2-41c6-b0f7-eac918083062",
+    "name": "Conflict and Protest Data for African/Asia States",
+    "group": "Society"
+  },
+
+  {
+    "id": "4d84ab8f-2625-4283-8474-617770604f93",
+    "name": "Estimated C02 emission",
+    "group": "Climate"
+  },
+  {
+    "id": "0f6cccf6-d14f-4c5e-9606-3a6ff372b08d",
+    "name": "Most and least pollutive countries in 2011",
+    "group": "Climate"
+  },
+  {
+    "id": "ee28328a-2bd2-4995-834d-5db04f3e4574",
+    "name": "Worldwide emission by type in 2011",
+    "group": "Climate"
+  },
+
+
+  {
+    "id": "855a05d1-4af2-4f74-8982-6b74153bc327",
+    "name": "Current Floods",
+    "group": "Flooding"
+  },
+  {
+    "id": "d936031f-51fa-45d8-b945-b52175106fc3",
+    "name": "Floods News Reports",
+    "group": "Flooding"
+  }
+]

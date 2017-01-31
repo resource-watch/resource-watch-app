@@ -1,0 +1,13 @@
+version: '2'
+services:
+  app:
+    build: .
+    ports:
+      - "5000:3000"
+    env_file: .env
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      API_URL: https://api.resourcewatch.org
+    restart: always
+    container_name: resourcewatch-app
