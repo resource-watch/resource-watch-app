@@ -13,7 +13,7 @@ function Routes(props) {
     <Router history={props.history}>
       <Route path="/" component={App}>
         <IndexRoute component={Home} />
-        <Route path="pulse">
+        <Route path="planet-pulse">
           <IndexRoute component={Pulse} />
         </Route>
       </Route>
