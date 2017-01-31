@@ -9,7 +9,7 @@ const navigationLinks = [
   { name: 'Insights', path: '/insights' },
   { name: 'Explore', path: '/explore' },
   { name: 'Dashboards', path: '/dashboards' },
-  { name: 'Planet Pulse', path: '/pulse' },
+  { name: 'Planet Pulse', path: '/planet-pulse' },
 ];
 
 class Header extends React.Component {
