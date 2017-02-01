@@ -8,6 +8,7 @@ import Globe from 'components/vis/Globe';
 import LayerNav from 'components/layout/LayerNav';
 import Legend from 'components/layout/Legend';
 import LayerDescription from 'components/layout/LayerDescription';
+import Spinner from 'components/ui/Spinner';
 
 
 // Styles
@@ -31,14 +32,23 @@ class Pulse extends React.Component {
     const newId = (nextProps.layerActive) ? nextProps.layerActive.id : null;
     if (lastId !== newId) {
       if (nextProps.layerActive) {
+        this.setState({
+          loading: true
+        });
         this.layerGlobeManager.addLayer(nextProps.layerActive, {
           onLayerAddedSuccess: function success(texture) {
             console.info(texture);
-            this.setState({ texture });
+            this.setState({
+              texture,
+              loading: false
+            });
           }.bind(this),
           onLayerAddedError: function error(err) {
             console.error(err);
-            this.setState({ texture: null });
+            this.setState({
+              texture: null,
+              loading: false
+            });
           }.bind(this),
         });
       } else {
@@ -60,6 +70,9 @@ class Pulse extends React.Component {
         />
         <LayerDescription
           layerActive={this.props.layerActive}
+        />
+        <Spinner
+          isLoading={this.state.loading}
         />
         <Globe
           width={window.innerWidth}
