@@ -24,36 +24,19 @@
 
 
   {
-    "id": "13aa4fe5-a986-4ee0-ae59-058317c53035",
+    "id": "0ac7bf69-388a-48b0-a869-c3240031c4bf",
     "name": "Acute Food Insecurity (WAITING FOR FEWS)",
     "group": "Society"
   },
   {
-    "id": "2b7d5bca-bdcc-4d75-9901-155eebf9bb8c",
+    "id": "0e3457f2-b9b0-4902-bfc9-014e12d8c21a",
     "name": "News Sources",
     "group": "Society"
   },
   {
-    "id": "b508a5f8-28f2-41c6-b0f7-eac918083062",
+    "id": "a180e159-ece6-4a23-9a14-eafcaf19a35e",
     "name": "Conflict and Protest Data for African/Asia States",
     "group": "Society"
-  },
-
-
-  {
-    "id": "4d84ab8f-2625-4283-8474-617770604f93",
-    "name": "Estimated C02 emission",
-    "group": "Climate"
-  },
-  {
-    "id": "0f6cccf6-d14f-4c5e-9606-3a6ff372b08d",
-    "name": "Most and least pollutive countries in 2011",
-    "group": "Climate"
-  },
-  {
-    "id": "ee28328a-2bd2-4995-834d-5db04f3e4574",
-    "name": "Worldwide emission by type in 2011",
-    "group": "Climate"
   },
 
 

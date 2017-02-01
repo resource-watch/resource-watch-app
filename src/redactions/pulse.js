@@ -2,6 +2,7 @@
 import 'whatwg-fetch';
 import find from 'lodash/find';
 import compact from 'lodash/compact';
+import flatten from 'lodash/flatten';
 
 // We should merge the layerSpecPulse with the response of the layers
 import layerSpecPulse from 'utils/layers/layerSpecPulse.json';
@@ -60,14 +61,20 @@ export function getLayers() {
     })
     .then((response) => {
       const datasets = response.data;
-      const layersParsed = compact(datasets.map((dataset) => {
-        const layerSpec = find(layerSpecPulse, { id: dataset.attributes.layer[0].attributes.id });
-        return Object.assign({}, layerSpec, dataset.attributes.layer[0].attributes);
+
+      const layers = flatten(datasets.map((dataset) => {
+        return compact(dataset.attributes.layer.map((layer) => {
+          if (!layer.attributes.default && layer.attributes.staticImageConfig) {
+            const layerSpec = find(layerSpecPulse, { id: layer.attributes.id });
+            return Object.assign({}, layerSpec, layer.attributes);
+          }
+          return null;
+        }));
       }));
 
       dispatch({
         type: GET_LAYERS_SUCCESS,
-        payload: layersParsed,
+        payload: layers,
       });
     })
     .catch((err) => {
