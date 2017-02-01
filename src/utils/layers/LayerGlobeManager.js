@@ -23,19 +23,6 @@ export default class LayerGlobeManager {
     return method && method.call(this, layer, opts);
   }
 
-  getBody(account, body) {
-    return Object.assign({}, body, {
-      layers: body.layers.map((l) => {
-        return Object.assign({}, l, {
-          options: Object.assign({}, l.options, {
-            user_name: account,
-            cartocss_version: l.options.cartocssVersion,
-          }),
-        });
-      }),
-    });
-  }
-
   /**
    * PRIVATE METHODS
    * - abortRequest
@@ -59,11 +46,10 @@ export default class LayerGlobeManager {
     };
 
     // Create new request...
-    const body = this.getBody(this.layer.layerConfig.account, this.layer.layerConfig.body);
     const xmlhttp = new XMLHttpRequest();
     xmlhttp.open('POST', `https://${this.layer.layerConfig.account}.carto.com/api/v1/map`);
     xmlhttp.setRequestHeader('Content-Type', 'application/json');
-    xmlhttp.send(JSON.stringify(body));
+    xmlhttp.send(JSON.stringify(this.layer.layerConfig.body));
 
     // cartocss_version: l.options.cartocssVersion
     // Object.assign({}, l.options, {

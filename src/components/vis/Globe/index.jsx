@@ -34,12 +34,16 @@ class Globe extends React.Component {
     this.draw();
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    this.setTexture();
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.texture !== this.props.texture) {
+      this.setState({ texture: nextProps.texture || null });
+    }
   }
 
-  componentWillReceiveProps(nextProps) {
-    this.setState({ texture: nextProps.texture || null });
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.texture !== this.state.texture) {
+      this.setTexture();
+    }
   }
 
   /**
