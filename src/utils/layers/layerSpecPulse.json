@@ -2,17 +2,17 @@
   {
     "id": "667ae321-649e-4caa-b761-35e370c776b0",
     "name": "SPEI",
-    "group": "Earth"
+    "group": "Hazard"
   },
   {
     "id": "33eb5a8a-95a3-43a5-9326-1fc338d6d873",
     "name": "Earthquakes Over the Past 30 days",
-    "group": "Earth"
+    "group": "Hazard"
   },
   {
     "id": "3a6c18d8-bc56-418f-a390-e559f269d9c5",
     "name": "Potential Landslide Areas",
-    "group": "Earth"
+    "group": "Hazard"
   },
 
 
