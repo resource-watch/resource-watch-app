@@ -1,4 +1,5 @@
 const path = require('path');
+const basicAuth = require('basic-auth');
 const express = require('express');
 
 const indexPath = path.join(process.cwd(), 'dist/index.html');
