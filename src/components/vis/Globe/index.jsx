@@ -1,4 +1,5 @@
 import React from 'react';
+import {debounce} from 'lodash';
 import * as THREE from 'three';
 import orbitControls from 'three-orbit-controls';
 import earthImage from './images/earth-min.jpg';
@@ -15,7 +16,9 @@ class Globe extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      texture: props.texture
+      texture: props.texture,
+      height: props.height,
+      width: props.width,
     };
   }
 
@@ -32,17 +35,34 @@ class Globe extends React.Component {
 
     // Start!
     this.draw();
+
+    window.addEventListener('resize', debounce(function onResize() {
+      const nextWidth = this.el.clientWidth || this.el.innerWidth;
+      const nextHeight = this.el.clientHeight || this.el.innerHeight;
+      this.setState({ width: nextWidth, height: nextHeight });
+    }.bind(this), 250));
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.texture !== this.props.texture) {
       this.setState({ texture: nextProps.texture || null });
     }
+    if (nextProps.width !== this.props.width) {
+      this.setState({ width: nextProps.width });
+    }
+    if (nextProps.height !== this.props.height) {
+      this.setState({ height: nextProps.height });
+    }
   }
 
   componentDidUpdate(prevProps, prevState) {
     if (prevState.texture !== this.state.texture) {
       this.setTexture();
+      this.slideToRight();
+    }
+    if ((prevState.width !== this.state.width) ||
+      (prevState.height !== this.state.height)) {
+      this.update();
     }
   }
 
@@ -52,7 +72,7 @@ class Globe extends React.Component {
   setTexture() {
     const mapImage = this.state.texture ?
       imageLoader.load(this.state.texture) : cloudsMapImage;
-    const radius = 50.1;
+    const radius = 50.2;
     const segments = 64;
     const rings = 64;
     if (!this.currentTexture) {
@@ -70,6 +90,14 @@ class Globe extends React.Component {
     this.scene.add(this.currentTexture);
   }
 
+  slideToRight() {
+    if (this.state.texture) {
+      this.changePosition(180, 0);
+    } else {
+      this.resetPosition();
+    }
+  }
+
   /**
    * Initialize three.js and create scene, camera and renderer.
    * Then append canvas.
@@ -79,8 +107,8 @@ class Globe extends React.Component {
       throw new Error('Scene has been created before.');
     }
 
-    const width = this.props.width;
-    const height = this.props.height;
+    const width = this.state.width;
+    const height = this.state.height;
     const fov = 75;
     const near = 0.01;
     const far = 1000;
@@ -116,7 +144,7 @@ class Globe extends React.Component {
     const material = new THREE.MeshPhongMaterial({
       map: imageLoader.load(this.props.earthImagePath),
       bumpMap: imageLoader.load(this.props.earthBumpImagePath),
-      bumpScale: 0.005,
+      bumpScale: 0.01,
     });
     const geometry = new THREE.SphereGeometry(radius, segments, rings);
     const earth = new THREE.Mesh(geometry, material);
@@ -210,8 +238,8 @@ class Globe extends React.Component {
    * @param  {Number} offsetY
    */
   changePosition(offsetX, offsetY) {
-    const width = this.props.width;
-    const height = this.props.height;
+    const width = this.state.width;
+    const height = this.state.height;
     const oX = offsetX ? (width * offsetX * -1) / 1000 : 0;
     const oY = offsetY ? (width * offsetY * -1) / 1000 : 0;
 
@@ -222,8 +250,8 @@ class Globe extends React.Component {
    * Reset globe position
    */
   resetPosition() {
-    const width = this.props.width;
-    const height = this.props.height;
+    const width = this.state.width;
+    const height = this.state.height;
 
     this.camera.setViewOffset(width, height, 0, 0, width, height);
   }
@@ -244,6 +272,12 @@ class Globe extends React.Component {
     scriptElement.src = '//rawgit.com/mrdoob/stats.js/master/build/stats.min.js';
     document.head.appendChild(scriptElement);
     return this;
+  }
+
+  update() {
+    this.camera.aspect = this.state.width / this.state.height;
+    this.camera.updateProjectionMatrix();
+    this.renderer.setSize(this.state.width, this.state.height);
   }
 
   /**
