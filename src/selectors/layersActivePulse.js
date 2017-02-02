@@ -14,7 +14,4 @@ const getActiveLayersPulse = (_pulse) => {
 };
 
 // Export the selector
-export default createSelector(
-  pulse,
-  getActiveLayersPulse
-);
+export default createSelector(pulse, getActiveLayersPulse);

@@ -1,8 +1,6 @@
 /* global config */
 import 'whatwg-fetch';
-import find from 'lodash/find';
-import compact from 'lodash/compact';
-import flatten from 'lodash/flatten';
+import { find, compact, flatten } from 'lodash';
 
 // We should merge the layerSpecPulse with the response of the layers
 import layerSpecPulse from 'utils/layers/layerSpecPulse.json';
@@ -61,7 +59,6 @@ export function getLayers() {
     })
     .then((response) => {
       const datasets = response.data;
-
       const layers = flatten(datasets.map((dataset) => {
         return compact(dataset.attributes.layer.map((layer) => {
           if (!layer.attributes.default && layer.attributes.staticImageConfig) {
