@@ -5,12 +5,14 @@ const express = require('express');
 const indexPath = path.join(process.cwd(), 'dist/index.html');
 
 function auth(username, password) {
-  const user = basicAuth(req);
-  if (!user || user.name !== username || user.pass !== password) {
-    res.set('WWW-Authenticate', 'Basic realm=Authorization Required');
-    return res.sendStatus(401);
-  }
-  return next();
+  return function authMiddleware(req, res, next) {
+    const user = basicAuth(req);
+    if (!user || user.name !== username || user.pass !== password) {
+      res.set('WWW-Authenticate', 'Basic realm=Authorization Required');
+      return res.sendStatus(401);
+    }
+    return next();
+  };
 }
 
 module.exports = (app) => {
