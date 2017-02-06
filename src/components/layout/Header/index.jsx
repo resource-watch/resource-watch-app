@@ -1,16 +1,25 @@
 import React from 'react';
 import { Link } from 'react-router';
 import Button from 'components/ui/Button';
+import Dropdown from 'components/ui/Dropdown';
 
 import Logo from 'components/layout/Logo';
 import Menu from 'components/ui/Menu';
 import './style.scss';
 
-const navigationLinks = [
-  { name: 'Insights', path: '/insights' },
-  { name: 'Explore', path: '/explore' },
-  { name: 'Dashboards', path: '/dashboards' },
+const dashboard = [
+  { name: 'Places', path: '/dashboards' },
+];
+
+const explore = [
   { name: 'Planet Pulse', path: '/planet-pulse' },
+  { name: 'All Data', path: '/explore' },
+];
+
+const navigationLinks = [
+  { name: <Dropdown title="Explore Data" items={explore}/> },
+  { name: <Dropdown title="Dashboard" items={dashboard}/> },
+  { name: 'Insights', path: '/insights' },
   { name: <Button title='Get Involved' /> },
 ];
 
