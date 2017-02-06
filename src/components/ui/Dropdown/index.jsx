@@ -7,11 +7,12 @@ class Dropdown extends React.Component {
     super(props);
 
     this.state = {
-      active: false
+      active: this.props.active || false
     };
 
-    // bindings
+    // Bindings
     this.handleClick = this.handleClick.bind(this);
+    this.handleScreenClick = this.handleScreenClick.bind(this);
   }
 
   componentWillReceiveProp(newProps) {
@@ -32,7 +33,7 @@ class Dropdown extends React.Component {
     const className = `c-dropdown${this.state.active ? ' -active' : ''}`
 
     return (
-      <div className={className} onClick={this.handleClick}>
+      <div ref={(node) => { this.el = node; }} className={className} onClick={this.handleClick}>
         {this.props.title}
         <ul className="dropdown">
           {items}
@@ -43,6 +44,14 @@ class Dropdown extends React.Component {
 
   handleClick(e) {
     this.setState({ active: !this.state.active });
+    window.addEventListener('click', this.handleScreenClick);
+  }
+
+  handleScreenClick(e) {
+    if (this.el.contains && !this.el.contains(e.target)) {
+      this.setState({ active: false });
+      window.removeEventListener('click', this.handleScreenClick);
+    }
   }
 }
 
