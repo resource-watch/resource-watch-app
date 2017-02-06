@@ -1,3 +1,5 @@
+$output-bourbon-deprecation-warnings: false;
+
 @import "~susy/sass/susy";
 @import "~bourbon/app/assets/stylesheets/settings/px-to-em";
 @import "~bourbon/app/assets/stylesheets/functions/strip-units";

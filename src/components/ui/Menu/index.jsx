@@ -8,7 +8,8 @@ class Menu extends React.Component {
     const items = this.props.items.map((item, i) => {
       return (
         <li key={`menu-item-${i}`}>
-          <Link to={item.path}>{item.name}</Link>
+          { item.path ? <Link to={item.path}>{item.name}</Link> :
+            item.name }
         </li>
       );
     });
