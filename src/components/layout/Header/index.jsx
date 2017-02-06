@@ -17,8 +17,8 @@ const explore = [
 ];
 
 const navigationLinks = [
-  { name: <Dropdown title="Explore Data" items={explore}/> },
-  { name: <Dropdown title="Dashboard" items={dashboard}/> },
+  { name: <Dropdown title="Explore Data" items={explore} active={false} /> },
+  { name: <Dropdown title="Dashboard" items={dashboard} active={false} /> },
   { name: 'Insights', path: '/insights' },
   { name: <Button title='Get Involved' /> },
 ];
@@ -43,7 +43,6 @@ class Header extends React.Component {
       </header>
     );
   }
-
 }
 
 export default Header;
