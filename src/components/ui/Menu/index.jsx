@@ -3,12 +3,14 @@ import { Link } from 'react-router';
 import './style.scss';
 
 const Menu = ({ items, orientation, align }) => {
-  const listItems = items.map(item => (
-    <li key={`menu-item-${item.name}`}>
-      <Link to={item.path}>{item.name}</Link>
-    </li>
-  ));
-
+  const listItems = items.map((item, i) => {
+    return (
+      <li key={`menu-item-${item.name}`}>
+        { item.path ? <Link to={item.path}>{item.name}</Link> :
+          item.name }
+      </li>
+    );
+  });
   return (
     <nav className={`c-menu -${orientation} -align-${align}`}>
       <ul>
@@ -16,7 +18,7 @@ const Menu = ({ items, orientation, align }) => {
       </ul>
     </nav>
   );
-};
+}
 
 Menu.propTypes = {
   items: React.PropTypes.array,
