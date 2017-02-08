@@ -10,23 +10,22 @@
     "Stats": true
   },
   "parserOptions": {
-    "ecmaVersion": 7,
+    "ecmaVersion": 2017,
     "ecmaFeatures": {
       "jsx": true
     },
     "sourceType": "module"
   },
   "plugins": [
-    "react"
+    "react",
+    "import"
   ],
-  "extends": "airbnb",
-  "rules": {
-    "no-console": ["error", {
-      "allow": ["warn", "error", "info"]
-    }],
-    "react/forbid-prop-types": 0,
-    "react/require-default-props": 0
-  },
+  "extends": [
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "plugin:import/errors",
+    "plugin:import/warnings"
+  ],
   "settings": {
     "import/resolver": {
       "webpack": {

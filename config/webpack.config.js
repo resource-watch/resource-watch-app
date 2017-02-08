@@ -64,7 +64,7 @@ const config = {
       main: 'src/main',
       utils: 'src/utils',
     },
-    extensions: ['', '.js', '.jsx', '.json', 'css', '.scss'],
+    extensions: ['', '.js', '.jsx', '.json', '.css', '.scss'],
   },
 
   plugins: [
