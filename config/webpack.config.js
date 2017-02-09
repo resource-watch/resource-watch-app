@@ -51,20 +51,9 @@ const config = {
 
   resolve: {
     root: [
-      rootPath
+      path.join(rootPath, 'src')
     ],
-    alias: {
-      components: 'src/components',
-      constants: 'src/constants',
-      containers: 'src/containers',
-      redactions: 'src/redactions',
-      selectors: 'src/selectors',
-      data: 'src/data',
-      fonts: 'src/fonts',
-      main: 'src/main',
-      utils: 'src/utils'
-    },
-    extensions: ['', '.js', '.jsx', '.json', '.css', '.scss']
+    extensions: ['', '.js', '.jsx']
   },
 
   plugins: [
