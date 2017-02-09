@@ -12,14 +12,12 @@ class LegendType extends React.Component {
         return (
           <div className={`type -${config.type}`}>
             <div className="type-list">
-              {items.map((item, i) => {
-                return (
-                  <div className="type-list-item" key={i}>
-                    <span className="color" style={{ background: item.color }} />
-                    <span className="name">{item.name}{config.unit}</span>
-                  </div>
-                );
-              })}
+              {items.map(item => (
+                <div className="type-list-item" key={`type-list-item-${item.name}`}>
+                  <span className="color" style={{ background: item.color }} />
+                  <span className="name">{item.name}{config.unit}</span>
+                </div>
+                ))}
             </div>
           </div>
         );
@@ -39,13 +37,11 @@ class LegendType extends React.Component {
               </div>
             </div>
             <div className="type-list">
-              {values.map((item, i) => {
-                return (
-                  <div className="type-list-item" key={i}>
-                    <span className="value">{item.value}{config.unit}</span>
-                  </div>
-                );
-              })}
+              {values.map(item => (
+                <div className="type-list-item" key={`type-list-item-${item.name}`}>
+                  <span className="value">{item.value}{config.unit}</span>
+                </div>
+                ))}
             </div>
           </div>
         );
@@ -56,22 +52,26 @@ class LegendType extends React.Component {
         return (
           <div className={`type -${config.type}`}>
             <div className="type-list">
-              {config.items.map((item, i) => {
-                return (
-                  <div className="type-list-item" style={{ width: `${100 / config.items.length}%` }} key={i}>
-                    <span className="color" style={{ background: item.color }} />
-                  </div>
-                );
-              })}
+              {config.items.map(item => (
+                <div
+                  className="type-list-item"
+                  style={{ width: `${100 / config.items.length}%` }}
+                  key={`type-list-item-${item.name}`}
+                >
+                  <span className="color" style={{ background: item.color }} />
+                </div>
+                ))}
             </div>
             <div className="type-list">
-              {config.items.map((item, i) => {
-                return (
-                  <div className="type-list-item" style={{ width: `${100 / config.items.length}%` }} key={i}>
-                    <span className="value">{item.value}</span>
-                  </div>
-                );
-              })}
+              {config.items.map(item => (
+                <div
+                  className="type-list-item"
+                  style={{ width: `${100 / config.items.length}%` }}
+                  key={`type-list-item-${item.name}`}
+                >
+                  <span className="value">{item.value}</span>
+                </div>
+                ))}
             </div>
           </div>
         );
@@ -95,7 +95,7 @@ class LegendType extends React.Component {
 
 LegendType.propTypes = {
   // PROPS
-  config: React.PropTypes.object,
+  config: React.PropTypes.object
 };
 
 

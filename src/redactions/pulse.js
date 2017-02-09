@@ -22,7 +22,7 @@ const initialState = {
   layers: [],
   loading: false,
   error: false,
-  layerActive: null,
+  layerActive: null
 };
 
 export default function (state = initialState, action) {
@@ -35,7 +35,7 @@ export default function (state = initialState, action) {
       return Object.assign({}, state, { loading: true, error: false });
     case SET_ACTIVE_LAYER:
       return Object.assign({}, state, {
-        layerActive: (state.layerActive !== action.payload) ? action.payload : null,
+        layerActive: (state.layerActive !== action.payload) ? action.payload : null
       });
     default:
       return state;
@@ -48,6 +48,15 @@ export default function (state = initialState, action) {
  * - setActiveDataset
 */
 export function getLayers() {
+  function getLayerFromDataset(dataset) {
+    return compact(dataset.attributes.layer.map((layer) => {
+      if (!layer.attributes.default && layer.attributes.staticImageConfig) {
+        const layerSpec = find(layerSpecPulse, { id: layer.attributes.id });
+        return Object.assign({}, layerSpec, layer.attributes);
+      }
+      return null;
+    }));
+  }
   return (dispatch) => {
     // Waiting for fetch from server -> Dispatch loading
     dispatch({ type: GET_LAYERS_LOADING });
@@ -59,26 +68,17 @@ export function getLayers() {
     })
     .then((response) => {
       const datasets = response.data;
-      const layers = flatten(datasets.map((dataset) => {
-        return compact(dataset.attributes.layer.map((layer) => {
-          if (!layer.attributes.default && layer.attributes.staticImageConfig) {
-            const layerSpec = find(layerSpecPulse, { id: layer.attributes.id });
-            return Object.assign({}, layerSpec, layer.attributes);
-          }
-          return null;
-        }));
-      }));
-
+      const layers = flatten(datasets.map(getLayerFromDataset));
       dispatch({
         type: GET_LAYERS_SUCCESS,
-        payload: layers,
+        payload: layers
       });
     })
     .catch((err) => {
       // Fetch from server ko -> Dispatch error
       dispatch({
         type: GET_LAYERS_ERROR,
-        payload: err.message,
+        payload: err.message
       });
     });
   };
@@ -87,6 +87,6 @@ export function getLayers() {
 export function toggleActiveLayer(id) {
   return {
     type: SET_ACTIVE_LAYER,
-    payload: id,
+    payload: id
   };
 }

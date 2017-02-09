@@ -12,19 +12,13 @@
   "parserOptions": {
     "ecmaVersion": 2017,
     "ecmaFeatures": {
-      "jsx": true
+      "jsx": true,
+      "experimentalObjectRestSpread": true
     },
     "sourceType": "module"
   },
-  "plugins": [
-    "react",
-    "import"
-  ],
   "extends": [
-    "eslint:recommended",
-    "plugin:react/recommended",
-    "plugin:import/errors",
-    "plugin:import/warnings"
+    "vizzuality"
   ],
   "settings": {
     "import/resolver": {

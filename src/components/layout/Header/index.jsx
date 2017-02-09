@@ -9,30 +9,26 @@ const navigationLinks = [
   { name: 'Insights', path: '/insights' },
   { name: 'Explore', path: '/explore' },
   { name: 'Dashboards', path: '/dashboards' },
-  { name: 'Planet Pulse', path: '/planet-pulse' },
+  { name: 'Planet Pulse', path: '/planet-pulse' }
 ];
 
-class Header extends React.Component {
+function Header() {
+  return (
+    <header className="c-header">
+      <div className="header-secondary">
+        {/* Language selector */}
+      </div>
 
-  render() {
-    return (
-      <header className="c-header">
-        <div className="header-secondary">
-          {/* Language selector */}
+      <div className="header-main">
+        <div className="brand">
+          <Link to="/"><Logo /></Link>
         </div>
-
-        <div className="header-main">
-          <div className="brand">
-            <Link to="/"><Logo /></Link>
-          </div>
-          <div className="menu">
-            <Menu items={navigationLinks} />
-          </div>
+        <div className="menu">
+          <Menu items={navigationLinks} />
         </div>
-      </header>
-    );
-  }
-
+      </div>
+    </header>
+  );
 }
 
 export default Header;

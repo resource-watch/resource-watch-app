@@ -11,17 +11,17 @@ const rootPath = process.cwd();
 const config = {
 
   entry: [
-    path.join(rootPath, 'src/main.jsx'),
+    path.join(rootPath, 'src/main.jsx')
   ],
 
   output: {
     path: path.join(rootPath, 'dist/'),
     filename: '[name]-[hash].js',
-    publicPath: '/',
+    publicPath: '/'
   },
 
   externals: {
-    leaflet: 'L',
+    leaflet: 'L'
   },
 
   module: {
@@ -29,29 +29,29 @@ const config = {
       {
         test: /\.jsx?$/,
         loader: 'babel-loader',
-        exclude: /node_modules/,
+        exclude: /node_modules/
       }, {
         test: /\.css$/,
-        loader: 'style-loader!css-loader',
+        loader: 'style-loader!css-loader'
       }, {
         test: /\.(scss|sass)$/,
-        loader: 'style-loader!css-loader!sass-loader!postcss-loader',
+        loader: 'style-loader!css-loader!sass-loader!postcss-loader'
       }, {
         test: /\.json$/,
-        loader: 'json',
+        loader: 'json'
       }, {
         test: /\.(eot|ttf|woff2|woff)$/,
-        loader: 'url-loader?prefix=fonts/&context=/src/fonts',
+        loader: 'url-loader?prefix=fonts/&context=/src/fonts'
       }, {
         test: /\.(png|jpg|gif|svg)$/,
-        loader: 'url-loader?prefix=image/&limit=5000&context=/src/images',
-      },
-    ],
+        loader: 'url-loader?prefix=image/&limit=5000&context=/src/images'
+      }
+    ]
   },
 
   resolve: {
     root: [
-      rootPath,
+      rootPath
     ],
     alias: {
       components: 'src/components',
@@ -62,16 +62,16 @@ const config = {
       data: 'src/data',
       fonts: 'src/fonts',
       main: 'src/main',
-      utils: 'src/utils',
+      utils: 'src/utils'
     },
-    extensions: ['', '.js', '.jsx', '.json', '.css', '.scss'],
+    extensions: ['', '.js', '.jsx', '.json', '.css', '.scss']
   },
 
   plugins: [
     new HtmlWebpackPlugin({
       template: 'src/index.html',
       inject: 'body',
-      filename: 'index.html',
+      filename: 'index.html'
     }),
     new webpack.optimize.OccurenceOrderPlugin(),
     new webpack.HotModuleReplacementPlugin(),
@@ -79,10 +79,10 @@ const config = {
     new webpack.DefinePlugin({
       config: {
         NODE_ENV: JSON.stringify(process.env.NODE_ENV),
-        API_URL: JSON.stringify(process.env.API_URL),
-      },
-    }),
-  ],
+        API_URL: JSON.stringify(process.env.API_URL)
+      }
+    })
+  ]
 
 };
 
@@ -93,9 +93,9 @@ if (process.env.NODE_ENV === 'production') {
       warnings: false,
       dead_code: true,
       drop_debugger: true,
-      drop_console: true,
+      drop_console: true
     },
-    comments: false,
+    comments: false
   }));
 } else {
   config.devtool = 'eval-source-map';

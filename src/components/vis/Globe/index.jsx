@@ -1,5 +1,5 @@
 import React from 'react';
-import {debounce} from 'lodash';
+import { debounce } from 'lodash';
 import * as THREE from 'three';
 import orbitControls from 'three-orbit-controls';
 import earthImage from './images/earth-min.jpg';
@@ -18,7 +18,7 @@ class Globe extends React.Component {
     this.state = {
       texture: props.texture,
       height: props.height,
-      width: props.width,
+      width: props.width
     };
   }
 
@@ -36,11 +36,11 @@ class Globe extends React.Component {
     // Start!
     this.draw();
 
-    window.addEventListener('resize', debounce(function onResize() {
+    window.addEventListener('resize', debounce(() => {
       const nextWidth = this.el.clientWidth || this.el.innerWidth;
       const nextHeight = this.el.clientHeight || this.el.innerHeight;
       this.setState({ width: nextWidth, height: nextHeight });
-    }.bind(this), 250));
+    }, 250));
   }
 
   componentWillReceiveProps(nextProps) {
@@ -79,7 +79,7 @@ class Globe extends React.Component {
       const geometry = new THREE.SphereGeometry(radius, segments, rings);
       const material = new THREE.MeshBasicMaterial({
         map: mapImage,
-        transparent: true,
+        transparent: true
       });
       this.currentTexture = new THREE.Mesh(geometry, material);
     } else {
@@ -144,7 +144,7 @@ class Globe extends React.Component {
     const material = new THREE.MeshPhongMaterial({
       map: imageLoader.load(this.props.earthImagePath),
       bumpMap: imageLoader.load(this.props.earthBumpImagePath),
-      bumpScale: 0.01,
+      bumpScale: 0.01
     });
     const geometry = new THREE.SphereGeometry(radius, segments, rings);
     const earth = new THREE.Mesh(geometry, material);
@@ -179,7 +179,7 @@ class Globe extends React.Component {
       fragmentShader: fragmentShaderString,
       side: THREE.BackSide,
       blending: THREE.AdditiveBlending,
-      transparent: true,
+      transparent: true
     });
     const geometry = new THREE.SphereGeometry(58, 32, 32);
     const halo = new THREE.Mesh(geometry, material);
@@ -330,7 +330,7 @@ Globe.defaultProps = {
   // Earth textures
   earthImagePath: earthImage,
   earthBumpImagePath: earthBumpImage,
-  texture: null,
+  texture: null
 };
 
 Globe.propTypes = {
@@ -348,7 +348,7 @@ Globe.propTypes = {
   dampingFactor: React.PropTypes.number,
   earthImagePath: React.PropTypes.string,
   earthBumpImagePath: React.PropTypes.string,
-  texture: React.PropTypes.string,
+  texture: React.PropTypes.string
 };
 
 export default Globe;

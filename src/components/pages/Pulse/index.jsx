@@ -10,7 +10,6 @@ import Legend from 'components/layout/Legend';
 import LayerDescription from 'components/layout/LayerDescription';
 import Spinner from 'components/ui/Spinner';
 
-
 // Styles
 import './style.scss';
 
@@ -49,7 +48,7 @@ class Pulse extends React.Component {
               texture: null,
               loading: false
             });
-          }.bind(this),
+          }.bind(this)
         });
       } else {
         this.layerGlobeManager.abortRequest();
@@ -91,7 +90,7 @@ class Pulse extends React.Component {
 Pulse.propTypes = {
   layersGroup: React.PropTypes.array,
   layerActive: React.PropTypes.object,
-  getLayers: React.PropTypes.func,
+  getLayers: React.PropTypes.func
 };
 
 

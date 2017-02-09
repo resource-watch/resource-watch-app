@@ -19,7 +19,7 @@ class LayerDescription extends React.Component {
 
 LayerDescription.propTypes = {
   // PROPS
-  layerActive: React.PropTypes.object,
+  layerActive: React.PropTypes.object
 };
 
 

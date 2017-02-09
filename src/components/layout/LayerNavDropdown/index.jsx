@@ -1,7 +1,7 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
 import React from 'react';
-import './style.scss';
-
 import Switch from 'components/ui/Switch';
+import './style.scss';
 
 class LayerNavDropdown extends React.Component {
 
@@ -19,20 +19,18 @@ class LayerNavDropdown extends React.Component {
     return (
       <div className="c-layer-nav-dropdown dropdown">
         <ul>
-          {this.props.layers.map((layer) => {
-            return (
-              <li
-                data-id={layer.id}
-                key={layer.id}
-                onClick={this.triggerClick}
-              >
-                <Switch active={(this.props.layerActive === layer.id)} />
-                <span className="name">
-                  {layer.name}
-                </span>
-              </li>
-            );
-          })}
+          {this.props.layers.map(layer => (
+            <li
+              data-id={layer.id}
+              key={layer.id}
+              onClick={this.triggerClick}
+            >
+              <Switch active={(this.props.layerActive === layer.id)} />
+              <span className="name">
+                {layer.name}
+              </span>
+            </li>
+            ))}
         </ul>
       </div>
     );
@@ -43,7 +41,7 @@ class LayerNavDropdown extends React.Component {
 LayerNavDropdown.propTypes = {
   layers: React.PropTypes.array,
   layerActive: React.PropTypes.string,
-  toggleActiveLayer: React.PropTypes.func,
+  toggleActiveLayer: React.PropTypes.func
 };
 
 export default LayerNavDropdown;

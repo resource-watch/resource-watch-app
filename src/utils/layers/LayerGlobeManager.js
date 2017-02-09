@@ -40,7 +40,7 @@ export default class LayerGlobeManager {
     // Set the layer && opts
     this.layer = {
       ...layer,
-      options: opts,
+      options: opts
     };
 
     // Create new request...
@@ -69,25 +69,25 @@ export default class LayerGlobeManager {
           // Parse the staticImageConfig.urlTemplate with the current options
           const texture = substitution(staticImageConfig.urlTemplate, [{
             key: 'account',
-            value: layerConfig.account,
+            value: layerConfig.account
           }, {
             key: 'token_groupid',
-            value: data.layergroupid,
+            value: data.layergroupid
           }, {
             key: 'bbox',
-            value: staticImageConfig.bbox.join(','),
+            value: staticImageConfig.bbox.join(',')
           }, {
             key: 'format',
-            value: staticImageConfig.format,
+            value: staticImageConfig.format
           }, {
             key: 'width',
-            value: staticImageConfig.width,
+            value: staticImageConfig.width
           }, {
             key: 'height',
-            value: staticImageConfig.height,
+            value: staticImageConfig.height
           }, {
             key: 'srs',
-            value: staticImageConfig.srs,
+            value: staticImageConfig.srs
           }]);
           this.layer.options.onLayerAddedSuccess(texture);
         } else {

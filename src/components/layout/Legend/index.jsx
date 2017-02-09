@@ -28,11 +28,11 @@ class Legend extends React.Component {
 }
 
 Legend.propTypes = {
-  layerActive: React.PropTypes.object,
+  layerActive: React.PropTypes.object
 };
 
 Legend.defaultProps = {
-  layerActive: null,
+  layerActive: null
 };
 
 export default Legend;

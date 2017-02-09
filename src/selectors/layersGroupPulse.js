@@ -10,7 +10,7 @@ const getLayersGroupPulse = (_pulse) => {
   // We will improve this by merging the layerSpec with the dataset.layer
   const groups = map(groupBy(_pulse.layers, 'group'), (layers, key) => ({
     name: key,
-    layers,
+    layers
   }));
   return groups;
 };

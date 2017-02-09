@@ -12,6 +12,11 @@ function Spinner({ isLoading, style }) {
   );
 }
 
+Spinner.defaultProps = {
+  isLoading: false,
+  style: { color: 'red' }
+};
+
 Spinner.propTypes = {
   isLoading: React.PropTypes.bool,
   style: React.PropTypes.object

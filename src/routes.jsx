@@ -1,4 +1,3 @@
-/* eslint-disable react/forbid-prop-types */
 import React from 'react';
 import { connect } from 'react-redux';
 import { IndexRoute, Router, Route } from 'react-router';
@@ -22,7 +21,7 @@ function Routes(props) {
 }
 
 Routes.propTypes = {
-  history: React.PropTypes.object.isRequired,
+  history: React.PropTypes.object.isRequired
 };
 
 export default connect()(Routes);
