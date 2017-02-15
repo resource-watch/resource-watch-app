@@ -1,11 +1,14 @@
 import React from 'react';
+import Icon from 'components/ui/Icon';
+
 import './style.scss';
 
 function Logo() {
   return (
-    <svg className="c-logo">
-      <use xmlnsXlink="http://www.w3.org/1999/xlink" xlinkHref="#icon-logo" />
-    </svg>
+    <Icon
+      name="icon-logo"
+      className="c-logo"
+    />
   );
 }
 
