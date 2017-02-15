@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import LayerNavDropdown from 'components/layout/LayerNavDropdown';
+import LayerNavDropdown from 'components/pulse/LayerNavDropdown';
 import { toggleActiveLayer } from 'redactions/pulse';
 
 const mapStateToProps = state => ({

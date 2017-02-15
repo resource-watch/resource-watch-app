@@ -5,9 +5,9 @@ import LayerGlobeManager from 'utils/layers/LayerGlobeManager';
 
 // Components
 import Globe from 'components/vis/Globe';
-import LayerNav from 'components/layout/LayerNav';
-import Legend from 'components/layout/Legend';
-import LayerDescription from 'components/layout/LayerDescription';
+import LayerNav from 'components/pulse/LayerNav';
+import Legend from 'components/pulse/Legend';
+import LayerDescription from 'components/pulse/LayerDescription';
 import Spinner from 'components/ui/Spinner';
 
 // Styles

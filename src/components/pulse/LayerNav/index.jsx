@@ -1,5 +1,5 @@
 import React from 'react';
-import LayerNavDropdown from 'containers/layout/LayerNavDropdown';
+import LayerNavDropdown from 'containers/pulse/LayerNavDropdown';
 import './style.scss';
 
 const LayerNav = ({ layerActive, layersGroup }) => {
