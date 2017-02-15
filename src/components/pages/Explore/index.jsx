@@ -14,7 +14,12 @@ class Explore extends React.Component {
     this.state = {};
   }
 
+  componentWillMount() {
+    this.props.getDatasets();
+  }
+
   render() {
+    console.log(this.props.paginatedDatasets);
     return (
       <div className="c-page">
         Explore
@@ -24,6 +29,12 @@ class Explore extends React.Component {
 }
 
 Explore.propTypes = {
+  // STORE
+  explore: React.PropTypes.object,
+  paginatedDatasets: React.PropTypes.array,
+
+  // ACTIONS
+  getDatasets: React.PropTypes.func
 };
 
 

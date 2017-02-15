@@ -1,14 +1,17 @@
 import { connect } from 'react-redux';
-import Home from 'components/pages/Explore';
+import Explore from 'components/pages/Explore';
+import { getDatasets } from 'redactions/explore';
+import getpaginatedDatasets from 'selectors/explore/datasetsPaginatedExplore';
 
-// const mapStateToProps = state => ({
-//   pulse: state.pulse
-// });
-//
-// const mapDispatchToProps = dispatch => ({
-//   getLayers: () => {
-//     dispatch(getLayers());
-//   },
-// });
+const mapStateToProps = state => ({
+  explore: state.explore,
+  paginatedDatasets: getpaginatedDatasets(state)
+});
 
-export default connect(null, null)(Home);
+const mapDispatchToProps = dispatch => ({
+  getDatasets: () => {
+    dispatch(getDatasets());
+  }
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Explore);
