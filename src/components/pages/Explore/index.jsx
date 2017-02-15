@@ -3,6 +3,7 @@ import React from 'react';
 // Helpers
 
 // Components
+import Sidebar from 'components/layout/Sidebar';
 
 // Styles
 import './style.scss';
@@ -19,10 +20,15 @@ class Explore extends React.Component {
   }
 
   render() {
-    console.log(this.props.paginatedDatasets);
     return (
       <div className="c-page">
-        Explore
+        <Sidebar>
+          <h2>Explore</h2>
+        </Sidebar>
+
+        <div className="c-map">
+
+        </div>
       </div>
     );
   }
