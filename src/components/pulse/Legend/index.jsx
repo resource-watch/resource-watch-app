@@ -1,5 +1,5 @@
 import React from 'react';
-import LegendType from 'components/layout/LegendType';
+import LegendType from 'components/pulse/LegendType';
 
 import './style.scss';
 
