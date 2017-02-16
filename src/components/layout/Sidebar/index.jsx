@@ -48,5 +48,5 @@ export default class Sidebar extends React.Component {
 }
 
 Sidebar.propTypes = {
-  children: React.PropTypes.object
+  children: React.PropTypes.array
 };

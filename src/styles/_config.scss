@@ -1,5 +1,5 @@
+// Susy
 $output-bourbon-deprecation-warnings: false;
-
 @import "~susy/sass/susy";
 @import "~bourbon/app/assets/stylesheets/settings/px-to-em";
 @import "~bourbon/app/assets/stylesheets/functions/strip-units";
@@ -30,9 +30,10 @@ $susy: (
  */
 
 // Colors
+$color-primary: #c32d7b;
+$color-secondary: #3bb2d0;
 $color-white: #fff;
 $color-black: #000;
-$color-dark-pink: #c32d7b;
 $color-text: #393f44;
 
 
@@ -52,7 +53,7 @@ $font-size-huge:          22px;
 $bg-color-1: $color-white;
 
 // Text
-$base-font-color: $color-dark-pink;
+$base-font-color: $color-primary;
 $base-font-family: Lato, Helvetica, Arial, sans;
 $base-line-height: 1.5;
 

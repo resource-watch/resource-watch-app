@@ -4,6 +4,7 @@ import React from 'react';
 
 // Components
 import Sidebar from 'components/layout/Sidebar';
+import Paginator from 'components/ui/Paginator';
 
 // Styles
 import './style.scss';
@@ -20,10 +21,19 @@ class Explore extends React.Component {
   }
 
   render() {
+    const { explore } = this.props;
     return (
       <div className="c-page">
         <Sidebar>
           <h2>Explore</h2>
+          <Paginator
+            options={{
+              page: explore.datasets.page,
+              limit: explore.datasets.limit,
+              size: explore.datasets.list.length
+            }}
+            onChange={page => this.props.setDatasetsPage(page)}
+          />
         </Sidebar>
 
         <div className="c-map">
@@ -40,7 +50,8 @@ Explore.propTypes = {
   paginatedDatasets: React.PropTypes.array,
 
   // ACTIONS
-  getDatasets: React.PropTypes.func
+  getDatasets: React.PropTypes.func,
+  setDatasetsPage: React.PropTypes.func
 };
 
 
