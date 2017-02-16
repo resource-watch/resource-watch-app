@@ -4,6 +4,7 @@ import React from 'react';
 
 // Components
 import Sidebar from 'components/layout/Sidebar';
+import DatasetList from 'components/explore/DatasetList';
 import Paginator from 'components/ui/Paginator';
 
 // Styles
@@ -21,11 +22,17 @@ class Explore extends React.Component {
   }
 
   render() {
-    const { explore } = this.props;
+    const { explore, paginatedDatasets } = this.props;
+
     return (
       <div className="c-page">
         <Sidebar>
           <h2>Explore</h2>
+          <DatasetList
+            active={explore.datasets.active}
+            list={paginatedDatasets}
+          />
+
           <Paginator
             options={{
               page: explore.datasets.page,

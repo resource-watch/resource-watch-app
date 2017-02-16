@@ -1,0 +1,23 @@
+@import "../../../styles/config";
+
+.c-dataset-list {
+  padding: 24px;
+
+  > .list {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+
+    > .list-item {
+      width: span(4);
+      margin-right: gutter();
+      &:nth-child(3n) {
+        margin-right: 0;
+      }
+      &:nth-child(n + 4) {
+        margin-top: gutter();
+      }
+    }
+  }
+}

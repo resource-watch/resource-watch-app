@@ -15,12 +15,10 @@ $small-screen: 320px;
 $max-width: 1040px;
 
 $susy: (
-  /* Tells Susy to use 12 columns */
   columns: 12,
-  /* Tells Susy that the container has a max-width of 1120px */
-  container: 1040px,
-  /* Tells Susy to use border-box */
-  global-box-sizing: border-box
+  container: $max-width,
+  global-box-sizing: border-box,
+  gutters: 0.5
 );
 
 @include border-box-sizing;
