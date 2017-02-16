@@ -58,10 +58,17 @@ export default function (state = initialState, action) {
     }
 
     case SET_DATASETS_ACTIVE: {
-      const active = [].concat(state.datasets.active);
-      const idActive = active.indexOf(action.payload);
+      const active = state.datasets.active.slice(0);
+      const index = active.indexOf(action.payload);
+      // Toggle the active dataset
+      if (index !== -1) {
+        active.splice(index, 1);
+      } else {
+        active.push(action.payload);
+      }
+
       const datasets = Object.assign({}, state.datasets, {
-        active: (idActive !== -1) ? active.splice(idActive, 1) : active.push(idActive)
+        active
       });
 
       return Object.assign({}, state, { datasets });
