@@ -18,7 +18,7 @@ $switch-margin: 1px;
       position: absolute;
       width: $switch-height - ($switch-margin * 2);
       height: $switch-height - ($switch-margin * 2);
-      background: $color-dark-pink;
+      background: $color-primary;
       border-radius: 50%;
       margin: $switch-margin;
       transition: transform $animation-time $ease-in-out-sine;

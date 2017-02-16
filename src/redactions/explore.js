@@ -90,6 +90,7 @@ export default function (state = initialState, action) {
 /**
  * ACTIONS
  * - getDatasets
+ * - setDatasetsPage
  * - toggleDatasetActive
 */
 export function getDatasets() {
@@ -131,6 +132,13 @@ export function getDatasets() {
           payload: err.message
         });
       });
+  };
+}
+
+export function setDatasetsPage(page) {
+  return {
+    type: SET_DATASETS_PAGE,
+    payload: page
   };
 }
 
