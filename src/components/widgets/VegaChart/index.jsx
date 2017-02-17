@@ -7,13 +7,17 @@ import './style.scss';
 
 class VegaChart extends React.Component {
 
-  componentDidMount() {
-    this.resizeEvent = () => {
-      this.handleResize();
-    };
-    window.addEventListener('resize', debounce(this.resizeEvent, 100));
+  constructor(props) {
+    super(props);
 
+    // BINDINGS
+    this.triggerResize = debounce(this.triggerResize.bind(this), 250);
+  }
+
+  componentDidMount() {
+    this.mounted = true;
     this.renderChart();
+    window.addEventListener('resize', this.triggerResize);
   }
 
   shouldComponentUpdate(nextProps) {
@@ -26,7 +30,8 @@ class VegaChart extends React.Component {
   }
 
   componentWillUnmount() {
-    window.removeEventListener('resize', this.resizeEvent);
+    this.mounted = false;
+    window.removeEventListener('resize', this.triggerResize);
   }
 
   setSize() {
@@ -45,11 +50,10 @@ class VegaChart extends React.Component {
 
     const data = Object.assign({}, this.props.data, size);
 
-    this.props.toggleLoading(true);
-    console.log('hello');
+    if (this.mounted) this.props.toggleLoading(true);
     vega.parse.spec(data, {}, (err, chart) => {
-      this.props.toggleLoading(false);
-      if (!err) {
+      if (this.mounted) this.props.toggleLoading(false);
+      if (!err && this.mounted) {
         this.vis = chart({
           el: this.chart,
           renderer: 'svg'
@@ -59,7 +63,7 @@ class VegaChart extends React.Component {
     });
   }
 
-  handleResize() {
+  triggerResize() {
     this.renderChart();
   }
 
