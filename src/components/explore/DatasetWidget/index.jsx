@@ -1,8 +1,8 @@
 import React from 'react';
-import find from 'lodash/find';
 
 // Components
 import Button from 'components/ui/Button';
+import DatasetWidgetChart from 'components/explore/DatasetWidgetChart';
 
 // Styles
 import './style.scss';
@@ -76,13 +76,19 @@ class DatasetWidget extends React.Component {
   }
 
   render() {
+    const { hasWidget, hasLayer } = this.state;
     const element = this.getWidgetOrLayer();
 
     return (
       <div className="c-dataset-list-item">
-        <div className="list-item-preview">
 
-        </div>
+        {hasWidget &&
+          <DatasetWidgetChart widget={element} />
+        }
+        {!hasWidget && hasLayer &&
+          <p>Layer preview</p>
+        }
+
         <div className="list-item-info">
           <h3>{element.name}</h3>
 
