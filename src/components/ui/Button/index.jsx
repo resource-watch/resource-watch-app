@@ -6,10 +6,7 @@ class Button extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      properties: props.properties,
-      className: props.className
-    };
+    this.state = {};
 
     // BINDINGS
     this.triggerClick = this.triggerClick.bind(this);
