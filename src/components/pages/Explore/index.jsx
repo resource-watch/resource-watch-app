@@ -3,6 +3,7 @@ import React from 'react';
 // Helpers
 
 // Components
+import Title from 'components/ui/Title';
 import Sidebar from 'components/layout/Sidebar';
 import DatasetList from 'components/explore/DatasetList';
 import Paginator from 'components/ui/Paginator';
@@ -27,7 +28,9 @@ class Explore extends React.Component {
     return (
       <div className="c-page">
         <Sidebar>
-          <h2>Explore</h2>
+          <Title className="-primary -huge">
+            Explore
+          </Title>
           <DatasetList
             active={explore.datasets.active}
             list={paginatedDatasets}

@@ -1,6 +1,7 @@
 import React from 'react';
 
 // Components
+import Title from 'components/ui/Title';
 import Button from 'components/ui/Button';
 import DatasetWidgetChart from 'components/explore/DatasetWidgetChart';
 import DatasetLayerChart from 'components/explore/DatasetLayerChart';
@@ -105,7 +106,9 @@ class DatasetWidget extends React.Component {
 
         <div className="info">
           <div className="detail">
-            <h3>{element.name}</h3>
+            <Title className="-default -secondary">
+              {element.name}
+            </Title>
           </div>
           <div className="actions">
             {/* Layer Button */}

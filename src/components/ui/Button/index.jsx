@@ -37,7 +37,7 @@ class Button extends React.Component {
     return (
       <button
         {...properties}
-        className={`c-button ${properties.className}`}
+        className={`c-button ${properties.className || ''}`}
         onClick={(onClick) ? this.triggerClick : null}
         onMouseOver={(onMouseOver) ? this.triggerMouseOver : null}
         onMouseOut={(onMouseOut) ? this.triggerMouseOut : null}
