@@ -6,13 +6,10 @@ class Button extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      properties: props.properties,
-      className: props.className
-    };
-
     // BINDINGS
     this.triggerClick = this.triggerClick.bind(this);
+    this.triggerMouseOver = this.triggerMouseOver.bind(this);
+    this.triggerMouseOut = this.triggerMouseOut.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -22,17 +19,28 @@ class Button extends React.Component {
   }
 
   triggerClick(e) {
-    this.props.onClick && this.props.onClick(e);
+    this.props.onClick(e);
   }
 
+  triggerMouseOver(e) {
+    this.props.onMouseOver(e);
+  }
+
+  triggerMouseOut(e) {
+    this.props.onMouseOut(e);
+  }
+
+
   render() {
-    const { className, children, properties } = this.props;
+    const { children, properties, onClick, onMouseOver, onMouseOut } = this.props;
 
     return (
       <button
         {...properties}
-        className={`c-button ${className}`}
-        onClick={this.triggerClick}
+        className={`c-button ${properties.className}`}
+        onClick={(onClick) ? this.triggerClick : null}
+        onMouseOver={(onMouseOver) ? this.triggerMouseOver : null}
+        onMouseOut={(onMouseOut) ? this.triggerMouseOut : null}
       >
         {children}
       </button>
@@ -43,8 +51,9 @@ class Button extends React.Component {
 Button.propTypes = {
   children: React.PropTypes.any,
   properties: React.PropTypes.object,
-  className: React.PropTypes.bool,
-  onClick: React.PropTypes.func
+  onClick: React.PropTypes.func,
+  onMouseOver: React.PropTypes.func,
+  onMouseOut: React.PropTypes.func
 };
 
 export default Button;

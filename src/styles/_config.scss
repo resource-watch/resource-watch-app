@@ -30,13 +30,18 @@ $susy: (
 // Colors
 $color-primary: #c32d7b;
 $color-secondary: #3bb2d0;
+$color-tertiary: #f4f5f6;
 $color-white: #fff;
 $color-black: #000;
-$color-text: #393f44;
+$color-gray: #e3e4e6;
+$color-green: #65b60d;
+
+$color-text-1: #393f44;
+$color-text-2: #999ba1;
 
 
 // Borders
-$border-color-1: #eee;
+$border-color-1: #e3e4e6;
 $border-color-2: #ccc;
 
 // Fonts
@@ -46,6 +51,11 @@ $font-size-default:       14px;
 $font-size-big:           16px;
 $font-size-extra-big:     18px;
 $font-size-huge:          22px;
+
+// Weights
+$font-weight-light: 400;
+$font-weight-regular: 400;
+$font-weight-bold: 700;
 
 // Theme
 $bg-color-1: $color-white;

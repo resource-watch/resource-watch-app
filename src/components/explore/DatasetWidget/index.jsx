@@ -3,6 +3,7 @@ import React from 'react';
 // Components
 import Button from 'components/ui/Button';
 import DatasetWidgetChart from 'components/explore/DatasetWidgetChart';
+import DatasetLayerChart from 'components/explore/DatasetLayerChart';
 
 // Styles
 import './style.scss';
@@ -36,6 +37,11 @@ class DatasetWidget extends React.Component {
     });
   }
 
+  /**
+   * HELPERS
+   * - getWidgetOrLayer
+   * - getButton
+  */
   getWidgetOrLayer() {
     if (this.state.hasWidget) { return this.state.widget.attributes; }
     if (this.state.hasLayer) { return this.state.layer.attributes; }
@@ -45,10 +51,14 @@ class DatasetWidget extends React.Component {
   getButton() {
     const { active, layer } = this.state;
     const buttonText = (active) ? 'Active' : 'Add to map';
+    const buttonClass = (active) ? '-active' : '';
+
     if (layer) {
       return (
         <Button
-          properties={{}}
+          properties={{
+            className: `-primary -fullwidth ${buttonClass}`
+          }}
           onClick={this.triggerToggleLayer}
         >
           {buttonText}
@@ -57,7 +67,10 @@ class DatasetWidget extends React.Component {
     }
     return (
       <Button
-        properties={{ disabled: true }}
+        properties={{
+          disabled: true,
+          className: '-primary -fullwidth -disabled'
+        }}
         onClick={this.triggerToggleLayer}
       >
         Not displayable
@@ -81,19 +94,24 @@ class DatasetWidget extends React.Component {
 
     return (
       <div className="c-dataset-list-item">
-
+        {/* If it has widget we want to renderize the default widget one */}
         {hasWidget &&
           <DatasetWidgetChart widget={element} />
         }
+        {/* If it doesn't have widget but has layer we want to renderize the default layer one */}
         {!hasWidget && hasLayer &&
-          <p>Layer preview</p>
+          <DatasetLayerChart layer={element} />
         }
 
-        <div className="list-item-info">
-          <h3>{element.name}</h3>
+        <div className="info">
+          <div className="detail">
+            <h3>{element.name}</h3>
+          </div>
+          <div className="actions">
+            {/* Layer Button */}
+            {this.getButton()}
+          </div>
 
-          {/* Layer Button */}
-          {this.getButton()}
         </div>
       </div>
     );
