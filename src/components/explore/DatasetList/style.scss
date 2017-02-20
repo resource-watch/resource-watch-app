@@ -1,8 +1,6 @@
 @import "../../../styles/config";
 
 .c-dataset-list {
-  padding: 24px;
-
   > .list {
     width: 100%;
     display: flex;
@@ -14,9 +12,11 @@
       flex-direction: column;
       width: span(4);
       margin-right: gutter();
+
       &:nth-child(3n) {
         margin-right: 0;
       }
+
       &:nth-child(n + 4) {
         margin-top: gutter();
       }
