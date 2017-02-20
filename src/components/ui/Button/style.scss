@@ -1,27 +1,55 @@
 @import "../../../styles/config";
 
-.c-icon {
-  width: 20px;
-  height: 20px;
-  flex-shrink: 0;
+.c-button {
+  appearance: none;
+  display: inline-block;
+  margin: 0;
+  padding: rem(8px);
+  border: 1px solid transparent;
+  border-radius: 4px;
+  background: none;
+  outline: none;
+  text-transform: uppercase;
+  font-size: rem(12px);
+  font-weight: $font-weight-bold;
+  letter-spacing: rem(0.8px);
+  cursor: pointer;
 
-  &.-small {
-    width: 14px;
-    height: 14px;
+  // Types
+  &.-primary {
+    color: $color-text-2;
+    background: $color-gray;
+    border-color: $border-color-1;
+
+    // States
+    &:hover {
+      color: $color-white;
+      background: $color-primary;
+    }
+
+    &.-active {
+      background: $color-green;
+      color: $color-white;
+
+      &:hover {
+        background: darken($color-green, 10%);
+      }
+    }
+
+    &.-disabled {
+      background: $color-white;
+      border-color: $border-color-1;
+      color: $color-text-2;
+      cursor: default;
+    }
   }
 
-  &.-medium {
-    width: 24px;
-    height: 24px;
+  &.-secondary {
+
   }
 
-  &.-big {
-    width: 32px;
-    height: 32px;
-  }
-
-  &.-huge {
-    width: 65px;
-    height: 65px;
+  // Helpers
+  &.-fullwidth {
+    width: 100%;
   }
 }

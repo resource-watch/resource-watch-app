@@ -10,6 +10,8 @@
     justify-content: flex-start;
 
     > .list-item {
+      display: flex;
+      flex-direction: column;
       width: span(4);
       margin-right: gutter();
       &:nth-child(3n) {

@@ -14,6 +14,7 @@ function Spinner({ isLoading, className, style }) {
 
 Spinner.propTypes = {
   isLoading: React.PropTypes.bool,
+  className: React.PropTypes.string,
   style: React.PropTypes.object
 };
 
