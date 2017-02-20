@@ -6,8 +6,6 @@ class Button extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {};
-
     // BINDINGS
     this.triggerClick = this.triggerClick.bind(this);
     this.triggerMouseOver = this.triggerMouseOver.bind(this);
