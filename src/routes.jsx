@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { IndexRoute, Router, Route } from 'react-router';
+import { onEnterExploreUrlParams, onChangeExploreUrlParams } from 'redactions/routes';
 
 // Components
 import App from './App';
@@ -15,7 +16,7 @@ function Routes(props) {
         <IndexRoute component={Home} />
 
         <Route path="explore">
-          <IndexRoute component={Explore} />
+          <IndexRoute component={Explore} onEnter={onEnterExploreUrlParams} onChange={onChangeExploreUrlParams} />
         </Route>
 
         <Route path="planet-pulse">

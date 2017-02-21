@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import Explore from 'components/pages/Explore';
-import { getDatasets, setDatasetsPage } from 'redactions/explore';
+import { getDatasets, setDatasetsPage, setUrlParams } from 'redactions/explore';
 import getpaginatedDatasets from 'selectors/explore/datasetsPaginatedExplore';
 
 const mapStateToProps = state => ({
@@ -14,6 +14,7 @@ const mapDispatchToProps = dispatch => ({
   },
   setDatasetsPage: (page) => {
     dispatch(setDatasetsPage(page));
+    dispatch(setUrlParams());
   }
 });
 
