@@ -106,9 +106,20 @@ class DatasetWidget extends React.Component {
 
         <div className="info">
           <div className="detail">
+            {/* Title */}
             <Title className="-default -secondary">
               {element.name}
             </Title>
+
+            {/* Description */}
+            {element.description &&
+              <p>{element.description}</p>
+            }
+
+            {/* Source */}
+            {element.source &&
+              <p>Source: {element.source}</p>
+            }
           </div>
           <div className="actions">
             {/* Layer Button */}
