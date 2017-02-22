@@ -38,47 +38,54 @@ class Map extends React.Component {
 
     this.map = L.map(this.mapNode, mapOptions);
 
-    // if (this.props.mapConfig && this.props.mapConfig.bounds) {
-    //   this.fitBounds(this.props.mapConfig.bounds.geometry);
-    // }
+    if (this.props.mapConfig && this.props.mapConfig.bounds) {
+      this.fitBounds(this.props.mapConfig.bounds.geometry);
+    }
 
     // SETTERS
-    // this.setAttribution();
-    // this.setZoomControl();
+    this.setAttribution();
+    this.setZoomControl();
     this.setBasemap();
-    // this.setMapEventListeners();
+    this.setMapEventListeners();
 
 
     // Add layers
-    // this.setLayerManager();
-    // this.addLayers(this.props.layersActive, this.props.filters);
+    this.setLayerManager();
+    this.addLayers(this.props.layersActive, this.props.filters);
   }
 
   componentWillReceiveProps(nextProps) {
     this.state.sidebarOpen !== nextProps.sidebarOpen &&
       this.setState({ sidebarOpen: nextProps.sidebarOpen });
-  //   if (nextProps.mapConfig.bounds && nextProps.mapConfig.bounds.id) {
-  //     const sidebarWidth = (nextProps.sidebar && nextProps.sidebar.width) ? nextProps.sidebar.width : 0;
-  //     if (this.props.mapConfig.bounds && this.props.mapConfig.bounds.id !== nextProps.mapConfig.bounds.id) {
-  //       this.fitBounds(nextProps.mapConfig.bounds.geometry, sidebarWidth || 0);
-  //     } else if (!this.props.mapConfig.bounds) {
-  //       this.fitBounds(nextProps.mapConfig.bounds.geometry, sidebarWidth || 0);
-  //     }
-  //   }
 
-  //   if (nextProps.sidebar && this.props.sidebar && this.props.mapConfig.bounds) {
-  //     if (nextProps.sidebar.width !== this.props.sidebar.width) {
-  //       this.fitBounds(this.props.mapConfig.bounds.geometry, nextProps.sidebar.width || 0);
-  //     }
-  //   }
+    if (nextProps.mapConfig.bounds && nextProps.mapConfig.bounds.id) {
+      // const sidebarWidth = (nextProps.sidebar && nextProps.sidebar.width) ? nextProps.sidebar.width : 0;
+      // Provisional
+      const sidebarWidth = 200;
+      if (this.props.mapConfig.bounds && this.props.mapConfig.bounds.id !== nextProps.mapConfig.bounds.id) {
+        this.fitBounds(nextProps.mapConfig.bounds.geometry, sidebarWidth || 0);
+      } else if (!this.props.mapConfig.bounds) {
+        this.fitBounds(nextProps.mapConfig.bounds.geometry, sidebarWidth || 0);
+      }
+    }
 
-  //   const filtersChanged = !isEqual(nextProps.filters, this.props.filters);
-  //   const layersActiveChanged = !isEqual(nextProps.layersActive, this.props.layersActive);
-  //   if (filtersChanged || layersActiveChanged) {
-  //     this.removeLayers();
-  //     this.addLayers(nextProps.layersActive, nextProps.filters);
-  //   }
-  // }
+
+    // Provisional
+    const sidebarWidth = 200;
+    // if (nextProps.sidebar && this.props.sidebar && this.props.mapConfig.bounds) {
+    if (this.props.mapConfig.bounds) {
+      if (sidebarWidth !== (sidebarWidth + 1)) {
+        this.fitBounds(this.props.mapConfig.bounds.geometry, sidebarWidth || 0);
+      }
+    }
+
+    const filtersChanged = !isEqual(nextProps.filters, this.props.filters);
+    const layersActiveChanged = !isEqual(nextProps.layersActive, this.props.layersActive);
+    if (filtersChanged || layersActiveChanged) {
+      this.removeLayers();
+      this.addLayers(nextProps.layersActive, nextProps.filters);
+    }
+  }
 
   // shouldComponentUpdate(nextProps, nextState) {
   //   const loadingChanged = this.state.loading !== nextState.loading;
@@ -86,12 +93,12 @@ class Map extends React.Component {
   //   return loadingChanged || sidebarWidthChanged;
   // }
 
-  // componentWillUnmount() {
-  //   this._mounted = false;
-  //   // Remember to remove the listeners before removing the map
-  //   // or they will stay in memory
-  //   this.props.setMapParams && this.removeMapEventListeners();
-  //   this.map.remove();
+  componentWillUnmount() {
+    this._mounted = false;
+    // Remember to remove the listeners before removing the map
+    // or they will stay in memory
+    this.props.setMapParams && this.removeMapEventListeners();
+    this.map.remove();
   }
 
 
@@ -122,10 +129,6 @@ class Map extends React.Component {
     this.tileLayer = L.tileLayer(config.BASEMAP_TILE_URL, {})
                       .addTo(this.map)
                       .setZIndex(0);
-
-    this.labelLayer = L.tileLayer(config.BASEMAP_LABEL_URL, {})
-                       .addTo(this.map)
-                       .setZIndex(1000);
   }
 
   // GETTERS
@@ -212,6 +215,7 @@ Map.propTypes = {
   mapConfig: React.PropTypes.object,
   filters: React.PropTypes.object,
   sidebar: React.PropTypes.object,
+  sidebarOpen: React.PropTypes.bool,
   LayerManager: React.PropTypes.func,
   layersActive: React.PropTypes.array,
   // ACTIONS

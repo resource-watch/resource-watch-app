@@ -8,20 +8,35 @@ import Sidebar from 'containers/explore/Sidebar';
 import DatasetList from 'components/explore/DatasetList';
 import Paginator from 'components/ui/Paginator';
 import Map from 'containers/explore/Map';
+import LayerManager from 'utils/layers/LayerManager';
 
 // Styles
 import './style.scss';
+
+const mapConfig = {
+  zoom: 11,
+  latLng: {
+    lat: 0,
+    lng: 0
+  }
+};
 
 class Explore extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {};
+    // this.state = {
+    //   activeLayers: this.props.activeLayers
+    // };
   }
 
   componentWillMount() {
     this.props.getDatasets();
   }
+
+  // componentWillReceiveProps(nextProps) {
+  //   this.setState({ activeLayers: nextProps.activeLayers });
+  // }
 
   render() {
     const { explore, paginatedDatasets } = this.props;
@@ -47,7 +62,11 @@ class Explore extends React.Component {
           />
         </Sidebar>
 
-        <Map />
+        <Map
+          LayerManager={LayerManager}
+          mapConfig={mapConfig}
+          layersActive={this.props.layersActive}
+        />
       </div>
     );
   }
@@ -57,6 +76,7 @@ Explore.propTypes = {
   // STORE
   explore: React.PropTypes.object,
   paginatedDatasets: React.PropTypes.array,
+  layersActive: React.PropTypes.array,
 
   // ACTIONS
   getDatasets: React.PropTypes.func,
