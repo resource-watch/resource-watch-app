@@ -1,6 +1,7 @@
 /* global config */
 import 'whatwg-fetch';
 import find from 'lodash/find';
+import { replace } from 'react-router-redux';
 
 /**
  * CONSTANTS
@@ -58,17 +59,8 @@ export default function (state = initialState, action) {
     }
 
     case SET_DATASETS_ACTIVE: {
-      const active = state.datasets.active.slice(0);
-      const index = active.indexOf(action.payload);
-      // Toggle the active dataset
-      if (index !== -1) {
-        active.splice(index, 1);
-      } else {
-        active.push(action.payload);
-      }
-
       const datasets = Object.assign({}, state.datasets, {
-        active
+        active: action.payload
       });
 
       return Object.assign({}, state, { datasets });
@@ -149,9 +141,47 @@ export function setDatasetsPage(page) {
   };
 }
 
-export function toggleDatasetActive(id) {
+export function setDatasetsActive(active) {
   return {
     type: SET_DATASETS_ACTIVE,
-    payload: id
+    payload: active
+  };
+}
+
+
+export function toggleDatasetActive(id) {
+  return (dispatch, state) => {
+    const { explore } = state();
+    const active = explore.datasets.active.slice(0);
+    const index = active.indexOf(id);
+
+    // Toggle the active dataset
+    if (index !== -1) {
+      active.splice(index, 1);
+    } else {
+      active.push(id);
+    }
+
+    dispatch({
+      type: SET_DATASETS_ACTIVE,
+      payload: active
+    });
+  };
+}
+
+// Let's use {replace} instead of {push}, that's how we will allow users to
+// go away from the current page
+export function setUrlParams() {
+  return (dispatch, state) => {
+    const { explore } = state();
+    const { active, page } = explore.datasets;
+    const locationDescriptor = {
+      pathname: '/explore',
+      query: {
+        active: active.length ? active.join(',') : undefined,
+        page
+      }
+    };
+    dispatch(replace(locationDescriptor));
   };
 }
