@@ -7,6 +7,7 @@ import Title from 'components/ui/Title';
 import Sidebar from 'components/layout/Sidebar';
 import DatasetList from 'components/explore/DatasetList';
 import Paginator from 'components/ui/Paginator';
+import Map from 'components/vis/Map';
 
 // Styles
 import './style.scss';
@@ -46,9 +47,7 @@ class Explore extends React.Component {
           />
         </Sidebar>
 
-        <div className="c-map">
-
-        </div>
+        <Map />
       </div>
     );
   }

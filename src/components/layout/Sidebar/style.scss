@@ -19,6 +19,7 @@ $min-width-sidebar-closed: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
   transform: translate(calc(-100% + #{$min-width-sidebar-closed}),0);
   transition: all $animation-time-2 $ease-in-out-sine;
+  z-index: 3;
 
   &.-opened {
     transform: translate(0,0);

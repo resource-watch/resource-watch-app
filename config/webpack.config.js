@@ -68,7 +68,9 @@ const config = {
     new webpack.DefinePlugin({
       config: {
         NODE_ENV: JSON.stringify(process.env.NODE_ENV),
-        API_URL: JSON.stringify(process.env.API_URL)
+        API_URL: JSON.stringify(process.env.API_URL),
+        BASEMAP_TILE_URL: JSON.stringify(process.env.BASEMAP_TILE_URL),
+        BASEMAP_LABEL_URL: JSON.stringify(process.env.BASEMAP_LABEL_URL)
       }
     })
   ]
