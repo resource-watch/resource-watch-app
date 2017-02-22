@@ -4,10 +4,10 @@ import React from 'react';
 
 // Components
 import Title from 'components/ui/Title';
-import Sidebar from 'components/layout/Sidebar';
+import Sidebar from 'containers/explore/Sidebar';
 import DatasetList from 'components/explore/DatasetList';
 import Paginator from 'components/ui/Paginator';
-import Map from 'components/vis/Map';
+import Map from 'containers/explore/Map';
 
 // Styles
 import './style.scss';

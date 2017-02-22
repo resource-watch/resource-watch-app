@@ -20,7 +20,8 @@ class Map extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      loading: false
+      loading: false,
+      sidebarOpen: this.props.sidebarOpen
     };
   }
 
@@ -53,7 +54,9 @@ class Map extends React.Component {
     // this.addLayers(this.props.layersActive, this.props.filters);
   }
 
-  // componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps(nextProps) {
+    this.state.sidebarOpen !== nextProps.sidebarOpen &&
+      this.setState({ sidebarOpen: nextProps.sidebarOpen });
   //   if (nextProps.mapConfig.bounds && nextProps.mapConfig.bounds.id) {
   //     const sidebarWidth = (nextProps.sidebar && nextProps.sidebar.width) ? nextProps.sidebar.width : 0;
   //     if (this.props.mapConfig.bounds && this.props.mapConfig.bounds.id !== nextProps.mapConfig.bounds.id) {
@@ -89,7 +92,7 @@ class Map extends React.Component {
   //   // or they will stay in memory
   //   this.props.setMapParams && this.removeMapEventListeners();
   //   this.map.remove();
-  // }
+  }
 
 
   // SETTERS
@@ -193,8 +196,10 @@ class Map extends React.Component {
   // RENDER
   render() {
     // const spinnerStyles = { marginLeft: this.props.sidebar && +this.props.sidebar.width ? `${+this.props.sidebar.width / 2}px` : 0 };
+    const mapClass = !this.state.sidebarOpen ? '-fullWidth' : '';
+
     return (
-      <div className="c-map">
+      <div className={`c-map ${mapClass}`}>
         {/*this.state.loading && <Spinner isLoading style={spinnerStyles} />*/}
         <div ref={(node) => { this.mapNode = node; }} className="map-leaflet" />
       </div>

@@ -8,10 +8,6 @@ export default class Sidebar extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      opened: true
-    };
-
     this.triggerToggle = this.triggerToggle.bind(this);
   }
 
@@ -20,21 +16,19 @@ export default class Sidebar extends React.Component {
    * - triggerToggle
   */
   triggerToggle() {
-    this.setState({
-      opened: !this.state.opened
-    });
+    this.props.setSidebar(!this.props.sidebarOpen);
   }
 
   render() {
-    const openedClass = (this.state.opened) ? '-opened' : '';
+    const openedClass = (this.props.sidebarOpen) ? '-opened' : '';
 
     return (
       <aside ref={(node) => { this.sidebarNode = node; }} className={`c-sidebar ${openedClass}`}>
         <button type="button" className={`l-sidebar-toggle btn-toggle ${openedClass}`} onClick={this.triggerToggle}>
-          {this.state.opened &&
+          {this.props.sidebarOpen &&
             <Icon className="-little" name="icon-arrow-left" />
           }
-          {!this.state.opened &&
+          {!this.props.sidebarOpen &&
             <Icon className="-little" name="icon-arrow-right" />
           }
         </button>
