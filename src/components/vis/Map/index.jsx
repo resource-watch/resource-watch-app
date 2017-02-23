@@ -48,7 +48,6 @@ class Map extends React.Component {
     this.setBasemap();
     this.setMapEventListeners();
 
-
     // Add layers
     this.setLayerManager();
     this.addLayers(this.props.layersActive, this.props.filters);

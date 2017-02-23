@@ -8,6 +8,7 @@ import Sidebar from 'containers/explore/Sidebar';
 import DatasetList from 'components/explore/DatasetList';
 import Paginator from 'components/ui/Paginator';
 import Map from 'containers/explore/Map';
+import Legend from 'components/pulse/Legend';
 import LayerManager from 'utils/layers/LayerManager';
 
 // Styles
@@ -54,13 +55,21 @@ class Explore extends React.Component {
             onChange={page => this.props.setDatasetsPage(page)}
           />
         </Sidebar>
-
         <Map
           LayerManager={LayerManager}
           mapConfig={mapConfig}
           layersActive={this.props.layersActive}
           toggledDataset={this.props.toggledDataset}
         />
+
+        <div className="legend-container">
+          <h5 className="title">Legend</h5>
+          <div className="legend-collection">
+            {this.props.layersActive.reverse().map((layer, i) => (
+                <Legend key={i} layerActive={layer} className={{ color: '-dark' }} />
+            ))}
+          </div>
+        </div>
       </div>
     );
   }
