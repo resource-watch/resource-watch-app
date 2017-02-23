@@ -66,6 +66,7 @@ class Explore extends React.Component {
           LayerManager={LayerManager}
           mapConfig={mapConfig}
           layersActive={this.props.layersActive}
+          toggledDataset={this.props.toggledDataset}
         />
       </div>
     );

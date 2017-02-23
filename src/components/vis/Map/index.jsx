@@ -81,17 +81,32 @@ class Map extends React.Component {
 
     const filtersChanged = !isEqual(nextProps.filters, this.props.filters);
     const layersActiveChanged = !isEqual(nextProps.layersActive, this.props.layersActive);
+
     if (filtersChanged || layersActiveChanged) {
-      this.removeLayers();
-      this.addLayers(nextProps.layersActive, nextProps.filters);
+      if (nextProps.toggledDataset) {
+        let layer;
+        const datasetId = nextProps.toggledDataset;
+
+        if (this.props.layersActive.length < nextProps.layersActive.length) {
+          layer = nextProps.layersActive.filter((l) => l.dataset === datasetId)[0];
+          this.addLayer(layer);
+        } else if (this.props.layersActive.length > nextProps.layersActive.length) {
+          layer = this.props.layersActive.filter((l) => l.dataset === datasetId)[0];
+          this.removeLayer(layer);
+        } else {
+          // Order layers
+        }
+      } else {
+        this.addLayers(nextProps.layersActive);
+      }
     }
   }
 
-  // shouldComponentUpdate(nextProps, nextState) {
-  //   const loadingChanged = this.state.loading !== nextState.loading;
-  //   const sidebarWidthChanged = this.props.sidebar ? (+this.props.sidebar.width !== +nextProps.sidebar.width) : false;
-  //   return loadingChanged || sidebarWidthChanged;
-  // }
+  shouldComponentUpdate(nextProps, nextState) {
+    const loadingChanged = this.state.loading !== nextState.loading;
+    const sidebarWidthChanged = this.props.sidebar ? (+this.props.sidebar.width !== +nextProps.sidebar.width) : false;
+    return loadingChanged || sidebarWidthChanged;
+  }
 
   componentWillUnmount() {
     this._mounted = false;

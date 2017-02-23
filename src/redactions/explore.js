@@ -11,6 +11,7 @@ const GET_DATASETS_ERROR = 'explore/GET_DATASETS_ERROR';
 const GET_DATASETS_LOADING = 'explore/GET_DATASETS_LOADING';
 
 const SET_DATASETS_ACTIVE = 'explore/SET_DATASETS_ACTIVE';
+const TOGGLE_DATASET_ACTIVE = 'explore/TOGGLE_DATASET_ACTIVE';
 const SET_DATASETS_PAGE = 'explore/SET_DATASETS_PAGE';
 const SET_DATASETS_FILTERS = 'explore/SET_DATASETS_FILTERS';
 const SET_DATASETS_GRID = 'explore/SET_DATASETS_GRID';
@@ -27,7 +28,8 @@ const initialState = {
     error: false,
     active: [],
     page: 1,
-    limit: 6
+    limit: 6,
+    toggledDataset: null
   },
   filters: {},
   grid: 'default',
@@ -67,6 +69,15 @@ export default function (state = initialState, action) {
       });
 
       return Object.assign({}, state, { datasets });
+    }
+
+    case TOGGLE_DATASET_ACTIVE: {
+      const newDatasets = Object.assign({}, state.datasets, {
+        active: action.payload.active,
+        toggledDataset: action.payload.id
+      });
+
+      return Object.assign({}, state, { datasets: newDatasets });
     }
 
     case SET_DATASETS_PAGE: {
@@ -170,8 +181,8 @@ export function toggleDatasetActive(id) {
     }
 
     dispatch({
-      type: SET_DATASETS_ACTIVE,
-      payload: active
+      type: TOGGLE_DATASET_ACTIVE,
+      payload: Object.assign({}, {active, id})
     });
   };
 }
