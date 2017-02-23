@@ -2,7 +2,7 @@ import React from 'react';
 import L from 'leaflet/dist/leaflet';
 import 'leaflet/dist/leaflet.css';
 import isEqual from 'lodash/isEqual';
-// import Spinner from '../ui/Spinner';
+import Spinner from 'components/ui/Spinner';
 import './style.scss';
 
 const MAP_CONFIG = {
@@ -213,12 +213,12 @@ class Map extends React.Component {
 
   // RENDER
   render() {
-    // const spinnerStyles = { marginLeft: this.props.sidebar && +this.props.sidebar.width ? `${+this.props.sidebar.width / 2}px` : 0 };
+    const spinnerStyles = { marginLeft: this.props.sidebar && +this.props.sidebar.width ? `${+this.props.sidebar.width / 2}px` : 0 };
     const mapClass = !this.state.sidebarOpen ? '-fullWidth' : '';
 
     return (
       <div className={`c-map ${mapClass}`}>
-        {/*this.state.loading && <Spinner isLoading style={spinnerStyles} />*/}
+        {this.state.loading && <Spinner isLoading style={spinnerStyles} />}
         <div ref={(node) => { this.mapNode = node; }} className="map-leaflet" />
       </div>
     );
