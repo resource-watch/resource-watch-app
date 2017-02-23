@@ -24,7 +24,7 @@ const getActiveLayers = (_datasets, _activeLayers) => {
           name: dataset.attributes.name,
           subtitle: dataset.attributes.subtitle,
           ...dataset.attributes.layer[0].attributes,
-          order: i
+          order: i + 1
         };
 
         layerList.push(Object.assign({}, layer));

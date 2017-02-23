@@ -21,7 +21,7 @@ class Map extends React.Component {
     super(props);
     this.state = {
       loading: false,
-      sidebarOpen: this.props.sidebarOpen
+      sidebarOpen: true
     };
   }
 
@@ -55,30 +55,6 @@ class Map extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    this.state.sidebarOpen !== nextProps.sidebarOpen &&
-      this.setState({ sidebarOpen: nextProps.sidebarOpen });
-
-    if (nextProps.mapConfig.bounds && nextProps.mapConfig.bounds.id) {
-      // const sidebarWidth = (nextProps.sidebar && nextProps.sidebar.width) ? nextProps.sidebar.width : 0;
-      // Provisional
-      const sidebarWidth = 200;
-      if (this.props.mapConfig.bounds && this.props.mapConfig.bounds.id !== nextProps.mapConfig.bounds.id) {
-        this.fitBounds(nextProps.mapConfig.bounds.geometry, sidebarWidth || 0);
-      } else if (!this.props.mapConfig.bounds) {
-        this.fitBounds(nextProps.mapConfig.bounds.geometry, sidebarWidth || 0);
-      }
-    }
-
-
-    // Provisional
-    const sidebarWidth = 200;
-    // if (nextProps.sidebar && this.props.sidebar && this.props.mapConfig.bounds) {
-    if (this.props.mapConfig.bounds) {
-      if (sidebarWidth !== (sidebarWidth + 1)) {
-        this.fitBounds(this.props.mapConfig.bounds.geometry, sidebarWidth || 0);
-      }
-    }
-
     const filtersChanged = !isEqual(nextProps.filters, this.props.filters);
     const layersActiveChanged = !isEqual(nextProps.layersActive, this.props.layersActive);
 
@@ -100,11 +76,17 @@ class Map extends React.Component {
         this.addLayers(nextProps.layersActive);
       }
     }
+
+    if (this.props.sidebarOpen !== nextProps.sidebarOpen) {
+      this.setState({ sidebarOpen: nextProps.sidebarOpen }, () => {
+        // this.map && this.fitCenter();
+      });
+    }
   }
 
   shouldComponentUpdate(nextProps, nextState) {
     const loadingChanged = this.state.loading !== nextState.loading;
-    const sidebarWidthChanged = this.props.sidebar ? (+this.props.sidebar.width !== +nextProps.sidebar.width) : false;
+    const sidebarWidthChanged = this.props.sidebarOpen !== nextProps.sidebarOpen;
     return loadingChanged || sidebarWidthChanged;
   }
 
@@ -210,10 +192,15 @@ class Map extends React.Component {
     this.layerManager.removeLayers();
   }
 
+  fitCenter() {
+    this.state.sidebarOpen ?
+      this.map.setView(new L.LatLng(MAP_CONFIG.latLng.lat, MAP_CONFIG.latLng.lng), MAP_CONFIG.zoom) :
+      this.map.setView(new L.LatLng(MAP_CONFIG.latLng.lat, -39.4201), MAP_CONFIG.zoom);
+  }
 
   // RENDER
   render() {
-    const spinnerStyles = { marginLeft: this.props.sidebar && +this.props.sidebar.width ? `${+this.props.sidebar.width / 2}px` : 0 };
+    const spinnerStyles = { marginLeft: this.state.sidebarOpen ? (window.innerWidth / 4) : (window.innerWidth / 2) };
     const mapClass = !this.state.sidebarOpen ? '-fullWidth' : '';
 
     return (

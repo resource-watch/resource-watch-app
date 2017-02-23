@@ -25,18 +25,11 @@ class Explore extends React.Component {
 
   constructor(props) {
     super(props);
-    // this.state = {
-    //   activeLayers: this.props.activeLayers
-    // };
   }
 
   componentWillMount() {
     this.props.getDatasets();
   }
-
-  // componentWillReceiveProps(nextProps) {
-  //   this.setState({ activeLayers: nextProps.activeLayers });
-  // }
 
   render() {
     const { explore, paginatedDatasets } = this.props;
@@ -78,6 +71,7 @@ Explore.propTypes = {
   explore: React.PropTypes.object,
   paginatedDatasets: React.PropTypes.array,
   layersActive: React.PropTypes.array,
+  toggledDataset: React.PropTypes.string,
 
   // ACTIONS
   getDatasets: React.PropTypes.func,
