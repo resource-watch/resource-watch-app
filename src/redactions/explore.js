@@ -28,12 +28,14 @@ const initialState = {
     error: false,
     active: [],
     page: 1,
-    limit: 6,
-    toggledDataset: null
+    limit: 6
   },
   filters: {},
   grid: 'default',
-  sidebarOpen: true
+  sidebar: {
+    open: true,
+    width: 0
+  }
 };
 
 export default function (state = initialState, action) {
@@ -71,15 +73,6 @@ export default function (state = initialState, action) {
       return Object.assign({}, state, { datasets });
     }
 
-    case TOGGLE_DATASET_ACTIVE: {
-      const newDatasets = Object.assign({}, state.datasets, {
-        active: action.payload.active,
-        toggledDataset: action.payload.id
-      });
-
-      return Object.assign({}, state, { datasets: newDatasets });
-    }
-
     case SET_DATASETS_PAGE: {
       const datasets = Object.assign({}, state.datasets, {
         page: action.payload
@@ -96,7 +89,12 @@ export default function (state = initialState, action) {
     }
 
     case SET_SIDEBAR: {
-      return Object.assign({}, state, { sidebarOpen: action.payload });
+      return Object.assign({}, state, {
+        sidebar: {
+          open: action.payload.open,
+          width: action.payload.width
+        }
+      });
     }
 
     default:
@@ -181,8 +179,8 @@ export function toggleDatasetActive(id) {
     }
 
     dispatch({
-      type: TOGGLE_DATASET_ACTIVE,
-      payload: Object.assign({}, {active, id})
+      type: SET_DATASETS_ACTIVE,
+      payload: active
     });
   };
 }
@@ -204,9 +202,9 @@ export function setUrlParams() {
   };
 }
 
-export function setSidebar(isOpen) {
+export function setSidebar(open, width) {
   return {
     type: SET_SIDEBAR,
-    payload: isOpen
+    payload: { open, width }
   };
 }

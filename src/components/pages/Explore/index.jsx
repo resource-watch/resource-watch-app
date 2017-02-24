@@ -16,7 +16,7 @@ import {SortableContainer, SortableElement, SortableHandle, arrayMove} from 'rea
 import './style.scss';
 
 const mapConfig = {
-  zoom: 11,
+  zoom: 3,
   latLng: {
     lat: 0,
     lng: 0

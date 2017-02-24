@@ -3,11 +3,11 @@ import Sidebar from 'components/layout/Sidebar';
 import { setSidebar } from 'redactions/explore';
 
 const mapStateToProps = state => ({
-  sidebarOpen: state.explore.sidebarOpen
+  sidebar: state.explore.sidebar
 });
 
 const mapDispatchToProps = dispatch => ({
-  setSidebar: (isOpen) => { dispatch(setSidebar(isOpen)); }
+  setSidebar: (open, width) => { dispatch(setSidebar(open, width)); }
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Sidebar);

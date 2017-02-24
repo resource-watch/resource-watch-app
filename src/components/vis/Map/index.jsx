@@ -21,7 +21,8 @@ class Map extends React.Component {
     super(props);
     this.state = {
       loading: false,
-      sidebarOpen: true
+      sidebarOpen: props.sidebar.open,
+      sidebarWidth: props.sidebar.width
     };
   }
 
@@ -56,37 +57,45 @@ class Map extends React.Component {
   componentWillReceiveProps(nextProps) {
     const filtersChanged = !isEqual(nextProps.filters, this.props.filters);
     const layersActiveChanged = !isEqual(nextProps.layersActive, this.props.layersActive);
+    const _this = this;
 
     if (filtersChanged || layersActiveChanged) {
-      if (this.props.layersActive.length && nextProps.layersActive.length) {
-        let layer;
-        const datasetId = nextProps.toggledDataset;
+      const newLayers = nextProps.layersActive.map(l => l.dataset);
+      const oldLayers = this.props.layersActive.map(l => l.dataset);
 
-        if (this.props.layersActive.length < nextProps.layersActive.length) {
-          layer = nextProps.layersActive.filter((l) => l.dataset === datasetId)[0];
-          this.addLayer(layer);
-        } else if (this.props.layersActive.length > nextProps.layersActive.length) {
-          layer = this.props.layersActive.filter((l) => l.dataset === datasetId)[0];
-          this.removeLayer(layer);
-        } else {
-          Object.keys(this.layerManager._mapLayers).forEach(key => {
-            const order = nextProps.layersActive.filter(l => l.id === key)[0].order;
-            this.layerManager._mapLayers[key].setZIndex(order);
-          });
-        }
+      const setNew = new Set(newLayers);
+      const setOld = new Set(oldLayers);
+      const union = new Set([...newLayers, ...oldLayers]);
+      const difference = newLayers.filter(n => !setOld.has(n));
+      let layer;
+
+      // Test whether old & new layers are the same & only have to change the order
+      if (newLayers.length === oldLayers.length && !difference.length) {
+        this.layerManager.setZIndex(nextProps.layersActive);
       } else {
-        this.addLayers(nextProps.layersActive);
+        union.forEach(parsedLayer => {
+          if (!setOld.has(parsedLayer)) {
+            layer = nextProps.layersActive.filter(l => l.dataset === parsedLayer)[0];
+            this.addLayer(layer);
+          } else if (!setNew.has(parsedLayer)) {
+            layer = _this.props.layersActive.filter(l => l.dataset === parsedLayer)[0];
+            this.removeLayer(layer);
+          }
+        });
       }
     }
 
-    if (this.props.sidebarOpen !== nextProps.sidebarOpen) {
-      this.setState({ sidebarOpen: nextProps.sidebarOpen });
+    if (this.props.sidebar.width !== nextProps.sidebar.width) {
+      this.setState({
+        sidebarOpen: nextProps.sidebar.open,
+        sidebarWidth: nextProps.sidebar.width
+      });
     }
   }
 
   shouldComponentUpdate(nextProps, nextState) {
     const loadingChanged = this.state.loading !== nextState.loading;
-    const sidebarWidthChanged = this.props.sidebarOpen !== nextProps.sidebarOpen;
+    const sidebarWidthChanged = this.props.sidebar.width !== nextProps.sidebar.width;
     return loadingChanged || sidebarWidthChanged;
   }
 
@@ -192,15 +201,16 @@ class Map extends React.Component {
     this.layerManager.removeLayers();
   }
 
-  fitCenter() {
-    this.state.sidebarOpen ?
-      this.map.setView(new L.LatLng(MAP_CONFIG.latLng.lat, MAP_CONFIG.latLng.lng), MAP_CONFIG.zoom) :
-      this.map.setView(new L.LatLng(MAP_CONFIG.latLng.lat, -39.4201), MAP_CONFIG.zoom);
+  setSpinnerPosition() {
+    const windowWidth = window.innerWidth;
+    const sidebarWidth = this.state.sidebarWidth;
+
+    return ((windowWidth - sidebarWidth) / 2);
   }
 
   // RENDER
   render() {
-    const spinnerStyles = { marginLeft: this.state.sidebarOpen ? (window.innerWidth / 4) : (window.innerWidth / 2) };
+    const spinnerStyles = { marginLeft: this.setSpinnerPosition()};
     const mapClass = !this.state.sidebarOpen ? '-fullWidth' : '';
 
     return (
@@ -217,7 +227,6 @@ Map.propTypes = {
   mapConfig: React.PropTypes.object,
   filters: React.PropTypes.object,
   sidebar: React.PropTypes.object,
-  sidebarOpen: React.PropTypes.bool,
   LayerManager: React.PropTypes.func,
   layersActive: React.PropTypes.array,
   // ACTIONS

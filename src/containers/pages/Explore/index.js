@@ -8,8 +8,7 @@ const mapStateToProps = state => ({
   explore: state.explore,
   paginatedDatasets: getpaginatedDatasets(state),
   allDatasets: state.explore.datasets.list,
-  layersActive: getActiveLayers(state),
-  toggledDataset: state.explore.datasets.toggledDataset
+  layersActive: getActiveLayers(state)
 });
 
 const mapDispatchToProps = dispatch => ({
