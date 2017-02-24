@@ -27,6 +27,23 @@
 
     .legend-collection {
       overflow: auto;
+
+      > ul {
+        margin: 0;
+        padding: 0;
+
+        > li {
+          display: flex;
+          align-items: center;
+          list-style: none;
+          visibility: visible !important;
+        }
+      }
+
+      .handler {
+        cursor: move;
+        margin-right: 15px;
+      }
     }
 
     & .c-legend {

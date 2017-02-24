@@ -58,7 +58,7 @@ class Map extends React.Component {
     const layersActiveChanged = !isEqual(nextProps.layersActive, this.props.layersActive);
 
     if (filtersChanged || layersActiveChanged) {
-      if (nextProps.toggledDataset) {
+      if (this.props.layersActive.length && nextProps.layersActive.length) {
         let layer;
         const datasetId = nextProps.toggledDataset;
 
@@ -69,7 +69,10 @@ class Map extends React.Component {
           layer = this.props.layersActive.filter((l) => l.dataset === datasetId)[0];
           this.removeLayer(layer);
         } else {
-          // Order layers
+          Object.keys(this.layerManager._mapLayers).forEach(key => {
+            const order = nextProps.layersActive.filter(l => l.id === key)[0].order;
+            this.layerManager._mapLayers[key].setZIndex(order);
+          });
         }
       } else {
         this.addLayers(nextProps.layersActive);
@@ -77,9 +80,7 @@ class Map extends React.Component {
     }
 
     if (this.props.sidebarOpen !== nextProps.sidebarOpen) {
-      this.setState({ sidebarOpen: nextProps.sidebarOpen }, () => {
-        // this.map && this.fitCenter();
-      });
+      this.setState({ sidebarOpen: nextProps.sidebarOpen });
     }
   }
 
