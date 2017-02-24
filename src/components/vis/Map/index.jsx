@@ -21,7 +21,8 @@ class Map extends React.Component {
     super(props);
     this.state = {
       loading: false,
-      sidebarOpen: true
+      sidebarOpen: props.sidebar.open,
+      sidebarWidth: props.sidebar.width
     };
   }
 
@@ -83,14 +84,17 @@ class Map extends React.Component {
       });
     }
 
-    if (this.props.sidebarOpen !== nextProps.sidebarOpen) {
-      this.setState({ sidebarOpen: nextProps.sidebarOpen });
+    if (this.props.sidebar.open !== nextProps.sidebar.open) {
+      this.setState({
+        sidebarOpen: nextProps.sidebar.open,
+        sidebarWidth: nextProps.sidebar.width
+      });
     }
   }
 
   shouldComponentUpdate(nextProps, nextState) {
     const loadingChanged = this.state.loading !== nextState.loading;
-    const sidebarWidthChanged = this.props.sidebarOpen !== nextProps.sidebarOpen;
+    const sidebarWidthChanged = this.props.sidebar.open !== nextProps.sidebar.open;
     return loadingChanged || sidebarWidthChanged;
   }
 
@@ -196,15 +200,16 @@ class Map extends React.Component {
     this.layerManager.removeLayers();
   }
 
-  fitCenter() {
-    this.state.sidebarOpen ?
-      this.map.setView(new L.LatLng(MAP_CONFIG.latLng.lat, MAP_CONFIG.latLng.lng), MAP_CONFIG.zoom) :
-      this.map.setView(new L.LatLng(MAP_CONFIG.latLng.lat, -39.4201), MAP_CONFIG.zoom);
+  setSpinnerPosition() {
+    const windowWidth = window.innerWidth;
+    const sidebarWidth = this.state.sidebarWidth;
+
+    return ((windowWidth - sidebarWidth) / 2);
   }
 
   // RENDER
   render() {
-    const spinnerStyles = { marginLeft: this.state.sidebarOpen ? (window.innerWidth / 4) : (window.innerWidth / 2) };
+    const spinnerStyles = { marginLeft: this.setSpinnerPosition()};
     const mapClass = !this.state.sidebarOpen ? '-fullWidth' : '';
 
     return (
@@ -221,7 +226,6 @@ Map.propTypes = {
   mapConfig: React.PropTypes.object,
   filters: React.PropTypes.object,
   sidebar: React.PropTypes.object,
-  sidebarOpen: React.PropTypes.bool,
   LayerManager: React.PropTypes.func,
   layersActive: React.PropTypes.array,
   // ACTIONS

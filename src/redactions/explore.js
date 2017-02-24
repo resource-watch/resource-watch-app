@@ -32,7 +32,10 @@ const initialState = {
   },
   filters: {},
   grid: 'default',
-  sidebarOpen: true
+  sidebar: {
+    open: true,
+    width: 0
+  }
 };
 
 export default function (state = initialState, action) {
@@ -86,7 +89,12 @@ export default function (state = initialState, action) {
     }
 
     case SET_SIDEBAR: {
-      return Object.assign({}, state, { sidebarOpen: action.payload });
+      return Object.assign({}, state, {
+        sidebar: {
+          open: action.payload.open,
+          width: action.payload.width
+        }
+      });
     }
 
     default:
@@ -194,9 +202,9 @@ export function setUrlParams() {
   };
 }
 
-export function setSidebar(isOpen) {
+export function setSidebar(open, width) {
   return {
     type: SET_SIDEBAR,
-    payload: isOpen
+    payload: { open, width }
   };
 }
