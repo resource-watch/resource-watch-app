@@ -57,30 +57,34 @@ class Map extends React.Component {
   componentWillReceiveProps(nextProps) {
     const filtersChanged = !isEqual(nextProps.filters, this.props.filters);
     const layersActiveChanged = !isEqual(nextProps.layersActive, this.props.layersActive);
+    const _this = this;
 
     if (filtersChanged || layersActiveChanged) {
-      if (nextProps.toggledDataset) {
-        let layer;
-        const datasetId = nextProps.toggledDataset;
+      const newLayers = nextProps.layersActive.map(l => l.dataset);
+      const oldLayers = this.props.layersActive.map(l => l.dataset);
 
-        if (this.props.layersActive.length < nextProps.layersActive.length) {
-          layer = nextProps.layersActive.filter((l) => l.dataset === datasetId)[0];
+      const setNew = new Set(newLayers);
+      const setOld = new Set(oldLayers);
+      const union = new Set([...newLayers, ...oldLayers]);
+      let layer;
+
+      if (setNew.size === setOld.size) setOld.clear();
+
+      union.forEach(parsedLayer => {
+        if (!setOld.has(parsedLayer)) {
+          layer = nextProps.layersActive.filter(l => l.dataset === parsedLayer)[0];
           this.addLayer(layer);
-        } else if (this.props.layersActive.length > nextProps.layersActive.length) {
-          layer = this.props.layersActive.filter((l) => l.dataset === datasetId)[0];
+        } else if (!setNew.has(parsedLayer)) {
+          layer = _this.props.layersActive.filter(l => l.dataset === parsedLayer)[0];
           this.removeLayer(layer);
         } else {
-          // Order layers
+          // Order
         }
-      } else {
-        this.addLayers(nextProps.layersActive);
-      }
+      });
     }
 
     if (this.props.sidebarOpen !== nextProps.sidebarOpen) {
-      this.setState({ sidebarOpen: nextProps.sidebarOpen }, () => {
-        // this.map && this.fitCenter();
-      });
+      this.setState({ sidebarOpen: nextProps.sidebarOpen });
     }
   }
 

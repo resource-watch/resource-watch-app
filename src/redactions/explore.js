@@ -28,8 +28,7 @@ const initialState = {
     error: false,
     active: [],
     page: 1,
-    limit: 6,
-    toggledDataset: null
+    limit: 6
   },
   filters: {},
   grid: 'default',
@@ -69,15 +68,6 @@ export default function (state = initialState, action) {
       });
 
       return Object.assign({}, state, { datasets });
-    }
-
-    case TOGGLE_DATASET_ACTIVE: {
-      const newDatasets = Object.assign({}, state.datasets, {
-        active: action.payload.active,
-        toggledDataset: action.payload.id
-      });
-
-      return Object.assign({}, state, { datasets: newDatasets });
     }
 
     case SET_DATASETS_PAGE: {
@@ -181,8 +171,8 @@ export function toggleDatasetActive(id) {
     }
 
     dispatch({
-      type: TOGGLE_DATASET_ACTIVE,
-      payload: Object.assign({}, {active, id})
+      type: SET_DATASETS_ACTIVE,
+      payload: active
     });
   };
 }
