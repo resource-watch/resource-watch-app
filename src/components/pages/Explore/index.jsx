@@ -5,6 +5,7 @@ import React from 'react';
 // Components
 import Title from 'components/ui/Title';
 import Sidebar from 'components/layout/Sidebar';
+import DatasetListHeader from 'containers/explore/DatasetListHeader';
 import DatasetList from 'components/explore/DatasetList';
 import Paginator from 'components/ui/Paginator';
 
@@ -31,6 +32,10 @@ class Explore extends React.Component {
           <Title className="-primary -huge">
             Explore
           </Title>
+          <DatasetListHeader
+            list={explore.datasets.list}
+            mode={explore.datasets.mode}
+          />
           <DatasetList
             active={explore.datasets.active}
             list={paginatedDatasets}

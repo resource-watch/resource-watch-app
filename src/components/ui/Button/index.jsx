@@ -12,12 +12,6 @@ class Button extends React.Component {
     this.triggerMouseOut = this.triggerMouseOut.bind(this);
   }
 
-  componentWillReceiveProps(nextProps) {
-    this.setState({
-      className: nextProps.className
-    });
-  }
-
   triggerClick(e) {
     this.props.onClick(e);
   }

@@ -12,7 +12,7 @@ const GET_DATASETS_LOADING = 'explore/GET_DATASETS_LOADING';
 const SET_DATASETS_ACTIVE = 'explore/SET_DATASETS_ACTIVE';
 const SET_DATASETS_PAGE = 'explore/SET_DATASETS_PAGE';
 const SET_DATASETS_FILTERS = 'explore/SET_DATASETS_FILTERS';
-const SET_DATASETS_GRID = 'explore/SET_DATASETS_GRID';
+const SET_DATASETS_MODE = 'explore/SET_DATASETS_MODE';
 
 /**
  * REDUCER
@@ -24,10 +24,10 @@ const initialState = {
     error: false,
     active: [],
     page: 1,
-    limit: 6
+    limit: 6,
+    mode: 'grid' // 'grid' or 'list'
   },
-  filters: {},
-  grid: 'default'
+  filters: {} // ?
 };
 
 export default function (state = initialState, action) {
@@ -81,13 +81,17 @@ export default function (state = initialState, action) {
       return Object.assign({}, state, { datasets });
     }
 
+    case SET_DATASETS_MODE: {
+      const datasets = Object.assign({}, state.datasets, {
+        mode: action.payload
+      });
+      return Object.assign({}, state, { datasets });
+    }
+
     case SET_DATASETS_FILTERS: {
       return Object.assign({}, state, { filters: action.payload });
     }
 
-    case SET_DATASETS_GRID: {
-      return Object.assign({}, state, { grid: action.payload });
-    }
 
     default:
       return state;
@@ -153,5 +157,12 @@ export function toggleDatasetActive(id) {
   return {
     type: SET_DATASETS_ACTIVE,
     payload: id
+  };
+}
+
+export function setDatasetsMode(mode) {
+  return {
+    type: SET_DATASETS_MODE,
+    payload: mode
   };
 }

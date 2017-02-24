@@ -1,0 +1,15 @@
+@import "../../../styles/config";
+
+.c-dataset-list-header {
+  display: flex;
+  justify-content: space-between;
+
+  .total {
+
+  }
+
+  .actions {
+    display: flex;
+    justify-content: flex-start;
+  }
+}
