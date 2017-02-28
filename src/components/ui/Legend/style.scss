@@ -37,7 +37,7 @@
   }
 }
 
-.-sort,
+.legend-item-sort,
 .c-legend-map .legend-item {
   z-index: 10;
   list-style: none;
@@ -47,7 +47,7 @@
   width: 100%;
   padding: 14px 15px;
   border-bottom: 1px solid $color-grey;
-  background-color: rgba(255, 255, 255, .9);
+  background-color: $color-white;
 
   &:last-child {
     border-bottom: 0;
@@ -78,4 +78,8 @@
       padding: 0 8px 0 0;
     }
   }
+}
+
+.legend-item-sort {
+  background-color: rgba(255, 255, 255, .9);
 }

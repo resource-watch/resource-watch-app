@@ -76,7 +76,7 @@ class Legend extends React.Component {
         <h5 className="title">Legend</h5>
         <SortableList
           items={this.getLegendItems()}
-          helperClass="-sort"
+          helperClass="legend-item-sort"
           onSortEnd={this.onSortEnd}
           onSortStart={this.onSortStart}
           onSortMove={this.onSortMove}
