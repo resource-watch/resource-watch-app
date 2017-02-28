@@ -202,9 +202,9 @@ export function setUrlParams() {
   };
 }
 
-export function setSidebar(open, width) {
+export function setSidebar(options) {
   return {
     type: SET_SIDEBAR,
-    payload: { open, width }
+    payload: options
   };
 }

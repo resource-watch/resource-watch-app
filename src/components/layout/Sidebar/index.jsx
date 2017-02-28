@@ -24,9 +24,12 @@ export default class Sidebar extends React.Component {
    * - triggerToggle
   */
   triggerToggle() {
-    const width = this.sidebarNode.offsetWidth;
-    const open = !this.state.open;
-    this.props.setSidebar(open, width);
+    const options = {
+      width: this.sidebarNode.offsetWidth,
+      open: !this.state.open
+    };
+
+    this.props.setSidebar(options);
   }
 
   render() {

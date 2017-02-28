@@ -7,7 +7,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  setSidebar: (open, width) => { dispatch(setSidebar(open, width)); }
+  setSidebar: (options) => { dispatch(setSidebar(options)); }
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Sidebar);
