@@ -21,8 +21,10 @@ class Map extends React.Component {
     super(props);
     this.state = {
       loading: false,
-      sidebarOpen: props.sidebar.open,
-      sidebarWidth: props.sidebar.width
+      sidebar: {
+        open: props.sidebar.open,
+        width: props.sidebar.width
+      }
     };
   }
 
@@ -76,10 +78,10 @@ class Map extends React.Component {
         union.forEach(parsedLayer => {
           if (!setOld.has(parsedLayer)) {
             layer = nextProps.layersActive.filter(l => l.dataset === parsedLayer)[0];
-            this.addLayer(layer);
+            this.addLayers(layer);
           } else if (!setNew.has(parsedLayer)) {
             layer = _this.props.layersActive.filter(l => l.dataset === parsedLayer)[0];
-            this.removeLayer(layer);
+            this.removeLayers(layer);
           }
         });
       }
@@ -87,8 +89,7 @@ class Map extends React.Component {
 
     if (this.props.sidebar.width !== nextProps.sidebar.width) {
       this.setState({
-        sidebarOpen: nextProps.sidebar.open,
-        sidebarWidth: nextProps.sidebar.width
+        sidebar: nextProps.sidebar,
       });
     }
   }
@@ -179,31 +180,26 @@ class Map extends React.Component {
   }
 
   // LAYER METHODS
-  addLayer(layer, filters) {
-    this.setState({
-      loading: true
-    });
-    this.layerManager.addLayer(layer, filters || this.props.filters);
-  }
-
   addLayers(layers, filters) {
     if (!layers) return;
-    layers.forEach((layer) => {
-      this.addLayer(layer, filters);
+    const arrayLayers = layers instanceof Array ? layers : [layers];
+
+    arrayLayers.forEach((layer) => {
+      this.setState({
+        loading: true
+      });
+      this.layerManager.addLayer(layer, filters || this.props.filters);
     });
   }
 
-  removeLayer(layer) {
-    this.layerManager.removeLayer(layer.id);
-  }
-
-  removeLayers() {
-    this.layerManager.removeLayers();
+  removeLayers(layer) {
+    if (layer) this.layerManager.removeLayer(layer.id);
+    else this.layerManager.removeLayers();
   }
 
   setSpinnerPosition() {
     const windowWidth = window.innerWidth;
-    const sidebarWidth = this.state.sidebarWidth;
+    const sidebarWidth = this.state.sidebar.width;
 
     return ((windowWidth - sidebarWidth) / 2);
   }
@@ -211,7 +207,7 @@ class Map extends React.Component {
   // RENDER
   render() {
     const spinnerStyles = { marginLeft: this.setSpinnerPosition()};
-    const mapClass = !this.state.sidebarOpen ? '-fullWidth' : '';
+    const mapClass = !this.state.sidebar.open ? '-fullWidth' : '';
 
     return (
       <div className={`c-map ${mapClass}`}>

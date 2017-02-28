@@ -90,10 +90,7 @@ export default function (state = initialState, action) {
 
     case SET_SIDEBAR: {
       return Object.assign({}, state, {
-        sidebar: {
-          open: action.payload.open,
-          width: action.payload.width
-        }
+        sidebar: action.payload
       });
     }
 
@@ -202,9 +199,9 @@ export function setUrlParams() {
   };
 }
 
-export function setSidebar(open, width) {
+export function setSidebar(options) {
   return {
     type: SET_SIDEBAR,
-    payload: { open, width }
+    payload: options
   };
 }
