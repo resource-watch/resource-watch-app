@@ -13,29 +13,68 @@
   border-radius: 3px;
   padding: 15px;
 
-  .title {
+  > .title {
     margin: 0;
+    padding: 0;
     text-transform: uppercase;
     color: $color-dark-grey;
   }
 
-  .c-legend-list {
+  > .legend-list {
     margin: 0;
     padding: 0;
     width: 100%;
     overflow: auto;
+    background-color: $color-grey;
   }
 
-  .c-legend-item {
+  .legend-item {
+    list-style: none;
     display: flex;
     align-items: center;
-    list-style: none;
+    justify-content: space-between;
     width: 100%;
-    // visibility: visible !important;
+    padding: 14px 0;
+    border-bottom: 1px solid $color-grey;
+    background-color: $color-white;
+
+    &:last-child {
+      border-bottom: 0;
+    }
+
+    .legend-info {
+      flex-grow: 1;
+    }
+
+    .legend-item-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+
+    h3 {
+      font-weight: 500;
+      font-size: $font-size-default;
+      color: $color-white;
+      margin: 0;
+      margin-bottom: 3px;
+
+      &.-dark { color: $color-text-1; }
+
+      .category {
+        font-weight: 400;
+        text-transform: capitalize;
+        padding: 0 8px 0 0;
+      }
+    }
   }
 
   .handler {
     cursor: move;
-    margin-right: 15px;
+    margin-left: 15px;
+    margin-right: 5px;
+
+    svg { fill: $color-dark-grey; }
   }
 }
+

@@ -8,7 +8,7 @@
     & .type-list {
       display: flex;
 
-      &:first-child { margin-top: 6px; }
+      &:last-child { margin-top: 6px; }
 
       .type-list-item {
         .color {

@@ -34,13 +34,6 @@ class Explore extends React.Component {
     this.props.getDatasets();
   }
 
-  // componentWillReceiveProps(nextProps) {
-  //   this.setState({
-  //     layersActive: nextProps.layersActive
-  //   });
-  // }
-
-
   render() {
     const { explore, paginatedDatasets } = this.props;
 
@@ -71,7 +64,11 @@ class Explore extends React.Component {
           toggledDataset={this.props.toggledDataset}
         />
 
-       <Legend layersActive={this.props.layersActive} className={{ color: '-dark' }} />
+      <Legend
+        layersActive={this.props.layersActive}
+        className={{ color: '-dark' }}
+        setDatasetsActive={this.props.setDatasetsActive}
+      />
       </div>
     );
   }

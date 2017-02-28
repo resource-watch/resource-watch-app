@@ -6,11 +6,17 @@ import './style.scss';
 
 const SortableItem = SortableElement(({value}) => value);
 
-const DragHandle = SortableHandle(() => <span className="handler"><svg width="6" height="18" viewBox="0 0 6 18"><title>Drag and drop</title><path d="M1 14a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm0-4a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm0-4a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm0-4a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm4 12a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm-4 4a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm4 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm0-8a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm0-4a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm0-4a1 1 0 1 0 0-2 1 1 0 0 0 0 2z" fillRule="evenodd"/></svg></span>);
+const DragHandle = SortableHandle(() => (
+  <span className="handler">
+    <svg className="c-icon -small icon-Row-Dragger">
+      <use xlinkHref="#icon-Row-Dragger"></use>
+    </svg>
+  </span>
+));
 
 const SortableList = SortableContainer(({items}) => {
   return (
-    <ul className="c-legend-list">
+    <ul className="legend-list">
       {items.map((value, index) =>
         <SortableItem key={`item-${index}`} index={index} value={value} />
       )}
@@ -25,6 +31,8 @@ class Legend extends React.Component {
 
     // BINDINGS
     this.onSortEnd = this.onSortEnd.bind(this);
+    this.onSortStart = this.onSortStart.bind(this);
+    this.onSortMove = this.onSortMove.bind(this);
   }
 
   onSortEnd({oldIndex, newIndex}) {
@@ -33,11 +41,17 @@ class Legend extends React.Component {
     this.props.setDatasetsActive(newLayersActive.reverse());
   };
 
+  onSortStart(opts) {
+    const node = opts.node;
+  }
+
+  onSortMove(ev) {
+  }
+
   getLegendItems() {
     return this.props.layersActive.reverse().map((layer, i) => (
-      <li key={i} className="c-legend-item">
-        <DragHandle />
-        <div>
+      <li key={i} className="legend-item">
+        <div className="legend-info">
           <header className="legend-item-header">
             <h3 className={this.props.className.color}>
               <span className="name">{layer.name}</span>
@@ -45,6 +59,7 @@ class Legend extends React.Component {
           </header>
           <LegendType config={layer.legendConfig} className={this.props.className} />
         </div>
+        <DragHandle />
       </li>
     ));
   }
@@ -55,7 +70,15 @@ class Legend extends React.Component {
         <h5 className="title">Legend</h5>
         <SortableList
           items={this.getLegendItems()}
+          helperClass="-sortable"
           onSortEnd={this.onSortEnd}
+          onSortStart={this.onSortStart}
+          onSortMove={this.onSortMove}
+          axis="y"
+          lockAxis="y"
+          lockToContainerEdges
+          lockOffset="50%"
+          hideSortableGhost={false}
           useDragHandle
         />
       </div>
@@ -64,7 +87,7 @@ class Legend extends React.Component {
 }
 
 Legend.propTypes = {
-  layerActive: React.PropTypes.array,
+  layersActive: React.PropTypes.array,
   className: React.PropTypes.object
 };
 
