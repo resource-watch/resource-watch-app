@@ -26,13 +26,18 @@ class Explore extends React.Component {
     super(props);
 
     this.state = {
-      layersActive: this.props.layersActive
+      layersActive: props.layersActive
     }
   }
 
   componentWillMount() {
     this.props.getDatasets();
   }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState({ layersActive: nextProps.layersActive });
+  }
+
 
   render() {
     const { explore, paginatedDatasets } = this.props;
@@ -60,12 +65,12 @@ class Explore extends React.Component {
         <Map
           LayerManager={LayerManager}
           mapConfig={mapConfig}
-          layersActive={this.props.layersActive}
+          layersActive={this.state.layersActive}
           toggledDataset={this.props.toggledDataset}
         />
 
       <Legend
-        layersActive={this.props.layersActive}
+        layersActive={this.state.layersActive}
         className={{ color: '-dark' }}
         setDatasetsActive={this.props.setDatasetsActive}
       />

@@ -13,7 +13,7 @@ class LegendType extends React.Component {
           <div className={`type -${config.type}`}>
             <div className="type-list">
               {items.map(item => (
-                <div className="type-list-item" key={`type-list-item-${item.name}`}>
+                <div className="type-list-item" key={`type-list-item-${item.value || item.name}`}>
                   <span className="color" style={{ background: item.color }} />
                   <span className={`name ${this.props.className.color}`}>{item.name || item.value}{config.unit}</span>
                 </div>
@@ -38,7 +38,7 @@ class LegendType extends React.Component {
             </div>
             <div className="type-list">
               {values.map(item => (
-                <div className="type-list-item" key={`type-list-item-${item.name}`}>
+                <div className="type-list-item" key={`type-list-item-${item.value || item.name}`}>
                   <span className={`value ${this.props.className.color}`}>{item.value || item.name}{config.unit}</span>
                 </div>
                 ))}

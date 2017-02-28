@@ -36,9 +36,12 @@ class Legend extends React.Component {
   }
 
   onSortEnd({oldIndex, newIndex}) {
-    const newLayersOrder = arrayMove(this.props.layersActive, oldIndex, newIndex);
-    const newLayersActive = newLayersOrder.map(l => l.dataset);
-    this.props.setDatasetsActive(newLayersActive.reverse());
+    const reversed = this.props.layersActive.reverse();
+    const newLayersOrder = arrayMove(reversed, oldIndex, newIndex);
+    // Unreverse layers to set them in their real order
+    const newLayersActive = newLayersOrder.map(l => l.dataset).reverse();
+
+    this.props.setDatasetsActive(newLayersActive);
   };
 
   onSortStart(opts) {
@@ -49,7 +52,10 @@ class Legend extends React.Component {
   }
 
   getLegendItems() {
-    return this.props.layersActive.reverse().map((layer, i) => (
+    // Reverse layers to show first the last one added
+    const layersActiveReversed = this.props.layersActive.slice().reverse();
+
+    return layersActiveReversed.map((layer, i) => (
       <li key={i} className="legend-item">
         <div className="legend-info">
           <header className="legend-item-header">
