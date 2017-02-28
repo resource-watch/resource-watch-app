@@ -76,7 +76,7 @@ class Legend extends React.Component {
         <h5 className="title">Legend</h5>
         <SortableList
           items={this.getLegendItems()}
-          helperClass="-sortable"
+          helperClass="-sort"
           onSortEnd={this.onSortEnd}
           onSortStart={this.onSortStart}
           onSortMove={this.onSortMove}
@@ -84,7 +84,6 @@ class Legend extends React.Component {
           lockAxis="y"
           lockToContainerEdges
           lockOffset="50%"
-          hideSortableGhost={false}
           useDragHandle
         />
       </div>
