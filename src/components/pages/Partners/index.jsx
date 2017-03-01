@@ -1,8 +1,7 @@
 import React from 'react';
-import './style.scss';
 import partners from 'components/common/Partners/partners.json';
-
-// Images
+import PartnerBlock from 'components/common/Partners/PartnerBlock';
+import './style.scss';
 
 function Partners(props) {
   return (
@@ -17,15 +16,20 @@ function Partners(props) {
 
       <section className="l-section -bg-grey">
         <div className="l-container">
-          <header>
-            <h1 className="c-text -header-big -primary -thin">We have a massive opportunity to build a sustainable society</h1>
+          <header className="row">
+            <div className="column small-12 medium-8">
+              <h1 className="c-text -header-big -primary -thin">We have a massive opportunity to build a sustainable society</h1>
+            </div>
           </header>
-          <article>
-            <p className="c-text -extra-big">Mauris non tempor quam, et lacinia sapien. Mauris accumsan eros eget libero posuere vulputate. Etiam elit elit, elementum sed varius at, adipiscing vitae est. Sed nec felis pellentesque, lacinia dui sed, ultricies sapien. Pellentesque orci lectus, consectetur vel posuere posuere, rutrum eu ipsum. Aliquam</p>
-          </article>
-          <article>
-            <p className="c-text -extra-big">eget odio sed ligula iaculis consequat at eget orci. Mauris molestie sit amet metus mattis varius.  Mauris non tempor quam, et lacinia sapien. Mauris accumsan eros eget libero posuere vulputate. Etiam elit elit, elementum sed varius at, adipiscing vitae est. Sed nec felis pellentesque.</p>
-          </article>
+
+          <div className="row">
+            <article className="column small-12 medium-6">
+              <p className="c-text -extra-big">Mauris non tempor quam, et lacinia sapien. Mauris accumsan eros eget libero posuere vulputate. Etiam elit elit, elementum sed varius at, adipiscing vitae est. Sed nec felis pellentesque, lacinia dui sed, ultricies sapien. Pellentesque orci lectus, consectetur vel posuere posuere, rutrum eu ipsum. Aliquam</p>
+            </article>
+            <article className="column small-12 medium-6">
+              <p className="c-text -extra-big">eget odio sed ligula iaculis consequat at eget orci. Mauris molestie sit amet metus mattis varius.  Mauris non tempor quam, et lacinia sapien. Mauris accumsan eros eget libero posuere vulputate. Etiam elit elit, elementum sed varius at, adipiscing vitae est. Sed nec felis pellentesque.</p>
+            </article>
+          </div>
         </div>
       </section>
 
@@ -33,13 +37,7 @@ function Partners(props) {
         <div className="l-container">
           <div className="row">
             {partners.map((p, i) => (
-              <article key={i} className="block column small-12 medium-6">
-                <div className="logo-container">
-                  <img src={require(`images/partners/${p.img}`)} className="logo" />
-                </div>
-                <p className="c-text -extra-big">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate.</p>
-                <a href={p.url} className="c-text -extra-big">Read more</a>
-              </article>
+              <PartnerBlock key={i} partner={p} />
             ))}
           </div>
         </div>
@@ -47,10 +45,14 @@ function Partners(props) {
 
       <section className="l-section -bg-dark -light">
         <div className="l-container">
-          <h3 className="c-text -header-normal -thin">See yourself as part of this team?</h3>
-          <button className="c-btn -secondary -filled">
-            Get in touch
-          </button>
+          <div className="row">
+            <div className="c-banner column small-12">
+              <h3 className="c-text -header-normal -normal">See yourself as part<br/> of this team?</h3>
+              <button className="c-btn -primary -filled">
+                Get in touch
+              </button>
+            </div>
+          </div>
         </div>
       </section>
     </div>
