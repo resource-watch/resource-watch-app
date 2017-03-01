@@ -43,7 +43,7 @@ function Partners(props) {
         </div>
       </section>
 
-      <section className="l-section -bg-dark -light">
+      <section className="l-section -bg -bg-dark -light">
         <div className="l-container">
           <div className="row">
             <div className="c-banner column small-12">

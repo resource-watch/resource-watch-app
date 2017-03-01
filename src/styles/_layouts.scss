@@ -13,6 +13,11 @@
     margin-bottom: 30px;
   }
 
+  &.-bg {
+    background-size: cover;
+    background-position: center;
+  }
+
   &.-header { padding-bottom: 0; }
 
   &.-light * { color: $color-white; }
