@@ -4,6 +4,7 @@ import LegendType from 'components/pulse/LegendType';
 import './style.scss';
 
 class Legend extends React.Component {
+
   render() {
     if (this.props.layerActive) {
       return (
@@ -12,11 +13,11 @@ class Legend extends React.Component {
             <ul className="c-legend-list">
               <li className="c-legend-item">
                 <header className="legend-item-header">
-                  <h3>
+                  <h3 className={this.props.className.color}>
                     <span className="name">{this.props.layerActive.name}</span>
                   </h3>
                 </header>
-                <LegendType config={this.props.layerActive.legendConfig} />
+                <LegendType config={this.props.layerActive.legendConfig} className={this.props.className} />
               </li>
             </ul>
           </div>
@@ -28,7 +29,8 @@ class Legend extends React.Component {
 }
 
 Legend.propTypes = {
-  layerActive: React.PropTypes.object
+  layerActive: React.PropTypes.object,
+  className: React.PropTypes.object
 };
 
 Legend.defaultProps = {
