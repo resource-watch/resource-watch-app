@@ -37,8 +37,7 @@
   }
 }
 
-.legend-item-sort,
-.c-legend-map .legend-item {
+.c-legend-unit {
   z-index: 10;
   list-style: none;
   display: flex;
@@ -78,8 +77,9 @@
       padding: 0 8px 0 0;
     }
   }
+
+  &.-sort {
+    background-color: rgba(255, 255, 255, .9);
+  }
 }
 
-.legend-item-sort {
-  background-color: rgba(255, 255, 255, .9);
-}

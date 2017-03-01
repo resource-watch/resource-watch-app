@@ -8,8 +8,8 @@ const SortableItem = SortableElement(({value}) => value);
 
 const DragHandle = SortableHandle(() => (
   <span className="handler">
-    <svg className="c-icon -small icon-Row-Dragger">
-      <use xlinkHref="#icon-Row-Dragger"></use>
+    <svg className="c-icon -small icon-drag-dots">
+      <use xlinkHref="#icon-drag-dots"></use>
     </svg>
   </span>
 ));
@@ -56,7 +56,7 @@ class Legend extends React.Component {
     const layersActiveReversed = this.props.layersActive.slice().reverse();
 
     return layersActiveReversed.map((layer, i) => (
-      <li key={i} className="legend-item">
+      <li key={i} className="c-legend-unit">
         <div className="legend-info">
           <header className="legend-item-header">
             <h3 className={this.props.className.color}>
@@ -76,7 +76,7 @@ class Legend extends React.Component {
         <h5 className="title">Legend</h5>
         <SortableList
           items={this.getLegendItems()}
-          helperClass="legend-item-sort"
+          helperClass="c-legend-unit -sort"
           onSortEnd={this.onSortEnd}
           onSortStart={this.onSortStart}
           onSortMove={this.onSortMove}
