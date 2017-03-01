@@ -1,0 +1,28 @@
+@import "../../../styles/config";
+
+.l-container {
+  overflow: hidden;
+}
+
+article,
+.block {
+  @include span(6);
+
+  &:nth-child(odd) {
+    margin-right: 0;
+  }
+}
+
+.block {
+  padding: 0 45px;
+  text-align: center;
+  margin-bottom: 160px;
+
+  .logo-container {
+    height: 70px;
+  }
+
+  .desc {
+    margin-bottom: 30px;
+  }
+}

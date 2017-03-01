@@ -34,10 +34,13 @@ $color-tertiary: #f4f5f6;
 $color-white: #fff;
 $color-black: #000;
 $color-gray: #e3e4e6;
+$pale-grey: #f4f5f6;
+$battleship-grey: #6c7379;
 $color-green: #65b60d;
 
-$color-text-1: #393f44;
+$color-text-1: $battleship-grey;
 $color-text-2: #999ba1;
+$color-text-headers: #393f44;
 
 
 // Borders
@@ -51,6 +54,8 @@ $font-size-default:       14px;
 $font-size-big:           16px;
 $font-size-extra-big:     18px;
 $font-size-huge:          22px;
+$font-size-header-normal: 38px;
+$font-size-header-big:    48px;
 
 // Weights
 $font-weight-light: 300;
@@ -61,7 +66,7 @@ $font-weight-bold: 700;
 $bg-color-1: $color-white;
 
 // Text
-$base-font-color: $color-primary;
+$base-font-color: $color-text-1;
 $base-font-family: Lato, Helvetica, Arial, sans;
 $base-line-height: 1.5;
 

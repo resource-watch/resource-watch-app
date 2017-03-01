@@ -8,6 +8,7 @@ import App from './App';
 import Home from './containers/pages/Home';
 import Explore from './containers/pages/Explore';
 import Pulse from './containers/pages/Pulse';
+import Partners from './containers/pages/Partners';
 
 function Routes(props) {
   return (
@@ -21,6 +22,10 @@ function Routes(props) {
 
         <Route path="planet-pulse">
           <IndexRoute component={Pulse} />
+        </Route>
+
+        <Route path="partners">
+          <IndexRoute component={Partners} />
         </Route>
       </Route>
     </Router>

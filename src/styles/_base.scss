@@ -9,4 +9,20 @@ body {
 
   font-size: $font-size-default;
   background-color: $bg-color-1;
+  color: $base-font-color;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: $color-text-headers;
+  line-height: normal;
+}
+
+a {
+  text-decoration: none;
+  color: $color-secondary;
 }

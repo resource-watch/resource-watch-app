@@ -35,7 +35,7 @@ class Explore extends React.Component {
     const { explore, paginatedDatasets } = this.props;
 
     return (
-      <div className="c-page">
+      <div className="c-page -dark">
         <Sidebar>
           <Title className="-primary -huge">
             Explore
