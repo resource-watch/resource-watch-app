@@ -1,6 +1,7 @@
 @import "config";
 
 body {
+  box-sizing: border-box;
   font-family: $base-font-family;
   line-height: $base-line-height;
   text-rendering: optimizeLegibility;
@@ -9,4 +10,8 @@ body {
 
   font-size: $font-size-default;
   background-color: $bg-color-1;
+
+  & * {
+    box-sizing: border-box;
+  }
 }

@@ -10,16 +10,8 @@
     > .list-item {
       display: flex;
       flex-direction: column;
-      width: span(4);
-      margin-right: gutter();
-
-      &:nth-child(3n) {
-        margin-right: 0;
-      }
-
-      &:nth-child(n + 4) {
-        margin-top: gutter();
-      }
+      padding: 0 6px;
+      margin-bottom: 12px;
     }
   }
 }
