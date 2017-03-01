@@ -1,9 +1,8 @@
-// Susy
-$output-bourbon-deprecation-warnings: false;
-@import "~susy/sass/susy";
-@import "~bourbon/app/assets/stylesheets/settings/px-to-em";
-@import "~bourbon/app/assets/stylesheets/functions/strip-units";
-@import "~bourbon/app/assets/stylesheets/functions/px-to-rem";
+
+// Rem function
+@function rem($px) {
+  @return ($px/16) * 1rem;
+}
 
 /*
  * Configuring grid
@@ -14,14 +13,6 @@ $small-screen: 320px;
 
 $max-width: 1040px;
 
-$susy: (
-  columns: 12,
-  container: $max-width,
-  global-box-sizing: border-box,
-  gutters: 0.5
-);
-
-@include border-box-sizing;
 
 /*
  * Configuring project settings
