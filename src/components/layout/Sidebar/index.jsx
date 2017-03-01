@@ -15,6 +15,14 @@ export default class Sidebar extends React.Component {
     this.triggerToggle = this.triggerToggle.bind(this);
   }
 
+  componentDidMount() {
+    const options = {
+      width: this.sidebarNode.offsetWidth,
+      open: true
+    };
+    this.props.setSidebar(options);
+  }
+
   componentWillReceiveProps(nextProps) {
     this.setState({ open: nextProps.sidebar.open });
   }
@@ -28,7 +36,6 @@ export default class Sidebar extends React.Component {
       width: this.sidebarNode.offsetWidth,
       open: !this.state.open
     };
-
     this.props.setSidebar(options);
   }
 

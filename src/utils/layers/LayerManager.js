@@ -186,4 +186,11 @@ export default class LayerManager {
       }
     }.bind(this);
   }
+
+  setZIndex(layersActive) {
+    Object.keys(this._mapLayers).forEach(key => {
+      const order = layersActive.filter(l => l.id === key)[0].order;
+      this._mapLayers[key].setZIndex(order);
+    });
+  }
 }

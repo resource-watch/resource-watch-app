@@ -1,13 +1,12 @@
 import React from 'react';
 
-// Helpers
-
 // Components
 import Title from 'components/ui/Title';
 import Sidebar from 'containers/explore/Sidebar';
 import DatasetList from 'components/explore/DatasetList';
 import Paginator from 'components/ui/Paginator';
 import Map from 'containers/explore/Map';
+import Legend from 'components/ui/Legend';
 import LayerManager from 'utils/layers/LayerManager';
 
 // Styles
@@ -25,11 +24,20 @@ class Explore extends React.Component {
 
   constructor(props) {
     super(props);
+
+    this.state = {
+      layersActive: props.layersActive
+    }
   }
 
   componentWillMount() {
     this.props.getDatasets();
   }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState({ layersActive: nextProps.layersActive });
+  }
+
 
   render() {
     const { explore, paginatedDatasets } = this.props;
@@ -54,13 +62,18 @@ class Explore extends React.Component {
             onChange={page => this.props.setDatasetsPage(page)}
           />
         </Sidebar>
-
         <Map
           LayerManager={LayerManager}
           mapConfig={mapConfig}
-          layersActive={this.props.layersActive}
+          layersActive={this.state.layersActive}
           toggledDataset={this.props.toggledDataset}
         />
+
+      <Legend
+        layersActive={this.state.layersActive}
+        className={{ color: '-dark' }}
+        setDatasetsActive={this.props.setDatasetsActive}
+      />
       </div>
     );
   }

@@ -29,10 +29,10 @@ $min-width-sidebar-closed: 10px;
     position: relative;
     overflow: auto;
     width: 100%;
-    padding: rem(32px) rem(24px);
+    padding: 32px 24px;
 
     > * {
-      padding: 0 0 rem(32px);
+      padding: 0 0 32px;
       &:last-child {
         padding: 0;
       }

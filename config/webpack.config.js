@@ -56,6 +56,10 @@ const config = {
     extensions: ['', '.js', '.jsx']
   },
 
+  sassLoader: {
+    includePaths: [path.resolve("node_modules/foundation-sites/scss/")]
+  },
+
   plugins: [
     new HtmlWebpackPlugin({
       template: 'src/index.html',

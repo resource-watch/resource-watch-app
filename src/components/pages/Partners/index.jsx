@@ -31,17 +31,17 @@ function Partners(props) {
 
       <section className="l-section">
         <div className="l-container">
-          {
-            partners.map((p, i) => (
-              <article key={i} className="block">
+          <div className="row">
+            {partners.map((p, i) => (
+              <article key={i} className="block column small-12 medium-6">
                 <div className="logo-container">
                   <img src={require(`images/partners/${p.img}`)} className="logo" />
                 </div>
                 <p className="c-text -extra-big">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate.</p>
                 <a href={p.url} className="c-text -extra-big">Read more</a>
               </article>
-            ))
-          }
+            ))}
+          </div>
         </div>
       </section>
 

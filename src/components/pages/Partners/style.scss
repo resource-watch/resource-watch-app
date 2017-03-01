@@ -1,16 +1,11 @@
 @import "../../../styles/config";
 
 .l-container {
-  overflow: hidden;
 }
 
 article,
 .block {
-  @include span(6);
 
-  &:nth-child(odd) {
-    margin-right: 0;
-  }
 }
 
 .block {

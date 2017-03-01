@@ -51,7 +51,6 @@ class Map extends React.Component {
     this.setBasemap();
     this.setMapEventListeners();
 
-
     // Add layers
     this.setLayerManager();
     this.addLayers(this.props.layersActive, this.props.filters);
@@ -69,24 +68,26 @@ class Map extends React.Component {
       const setNew = new Set(newLayers);
       const setOld = new Set(oldLayers);
       const union = new Set([...newLayers, ...oldLayers]);
+      const difference = newLayers.filter(n => !setOld.has(n));
       let layer;
 
-      if (setNew.size === setOld.size) setOld.clear();
-
-      union.forEach(parsedLayer => {
-        if (!setOld.has(parsedLayer)) {
-          layer = nextProps.layersActive.filter(l => l.dataset === parsedLayer)[0];
-          this.addLayers(layer);
-        } else if (!setNew.has(parsedLayer)) {
-          layer = _this.props.layersActive.filter(l => l.dataset === parsedLayer)[0];
-          this.removeLayers(layer);
-        } else {
-          // Order
-        }
-      });
+      // Test whether old & new layers are the same & only have to change the order
+      if (newLayers.length === oldLayers.length && !difference.length) {
+        this.layerManager.setZIndex(nextProps.layersActive);
+      } else {
+        union.forEach(parsedLayer => {
+          if (!setOld.has(parsedLayer)) {
+            layer = nextProps.layersActive.filter(l => l.dataset === parsedLayer)[0];
+            this.addLayers(layer);
+          } else if (!setNew.has(parsedLayer)) {
+            layer = _this.props.layersActive.filter(l => l.dataset === parsedLayer)[0];
+            this.removeLayers(layer);
+          }
+        });
+      }
     }
 
-    if (this.props.sidebar.open !== nextProps.sidebar.open) {
+    if (this.props.sidebar.width !== nextProps.sidebar.width) {
       this.setState({
         sidebar: nextProps.sidebar,
       });
@@ -95,7 +96,7 @@ class Map extends React.Component {
 
   shouldComponentUpdate(nextProps, nextState) {
     const loadingChanged = this.state.loading !== nextState.loading;
-    const sidebarWidthChanged = this.props.sidebar.open !== nextProps.sidebar.open;
+    const sidebarWidthChanged = this.props.sidebar.width !== nextProps.sidebar.width;
     return loadingChanged || sidebarWidthChanged;
   }
 
