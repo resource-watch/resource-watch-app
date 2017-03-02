@@ -3,3 +3,26 @@
   max-width: $max-width;
   margin: 0 auto;
 }
+
+.l-section {
+  padding-top: 70px;
+  padding-bottom: 70px;
+
+  header h1 {
+    margin: 0;
+    margin-bottom: 30px;
+  }
+
+  &.-bg {
+    background-size: cover;
+    background-position: center;
+  }
+
+  &.-header { padding-bottom: 0; }
+
+  &.-light * { color: $color-white; }
+
+  &.-bg-grey { background-color: $pale-grey; }
+  &.-bg-dark { background-color: $color-black; }
+  &.-bg-light { background-color: $color-white; }
+}
