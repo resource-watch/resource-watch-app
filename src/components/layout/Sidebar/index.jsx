@@ -55,7 +55,7 @@ export default class Sidebar extends React.Component {
         </button>
 
         <div className="sidebar-content">
-          <Breadcrumbs items={this.props.breadcrumbsRoute}/>
+          <Breadcrumbs items={this.props.breadcrumbs}/>
           {this.props.children}
         </div>
       </aside>
@@ -67,5 +67,5 @@ Sidebar.propTypes = {
   children: React.PropTypes.array,
   sidebar: React.PropTypes.object,
   setSidebar: React.PropTypes.func,
-  breadcrumbsRoute: React.PropTypes.array
+  breadcrumbs: React.PropTypes.array
 };
