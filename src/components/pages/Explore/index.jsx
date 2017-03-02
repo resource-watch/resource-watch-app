@@ -20,6 +20,11 @@ const mapConfig = {
   }
 };
 
+const breadcrumbs = [
+  {name: 'Home', url: '/'},
+  {name: 'Explore', url: '/explore'}
+];
+
 class Explore extends React.Component {
 
   constructor(props) {
@@ -44,7 +49,7 @@ class Explore extends React.Component {
 
     return (
       <div className="c-page">
-        <Sidebar>
+        <Sidebar breadcrumbs={breadcrumbs} >
           <Title className="-primary -huge">
             Explore
           </Title>
