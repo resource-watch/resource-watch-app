@@ -63,15 +63,11 @@ class Pulse extends React.Component {
   }
 
   onZoomIn() {
-    console.info('onZoomIn', this.globe);
-    console.info('controls', this.globe.controls);
-    console.info('earth', this.globe.earth);
+    this.globe.camera.translateZ(-5);
   }
 
   onZoomOut() {
-    console.info('onZoomOut', this.globe);
-    console.info('controls', this.globe.controls);
-    console.info('earth', this.globe.earth);
+    this.globe.camera.translateZ(5);
   }
 
   render() {
