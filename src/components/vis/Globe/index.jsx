@@ -1,5 +1,5 @@
 import React from 'react';
-import { debounce } from 'lodash';
+import debounce from 'lodash/debounce';
 import * as THREE from 'three';
 import orbitControls from 'three-orbit-controls';
 import earthImage from './images/earth-min.jpg';
