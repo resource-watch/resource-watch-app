@@ -1,6 +1,5 @@
 import React from 'react';
 import Icon from 'components/ui/Icon';
-import Breadcrumbs from 'components/ui/Breadcrumbs';
 
 import './style.scss';
 
@@ -55,7 +54,6 @@ export default class Sidebar extends React.Component {
         </button>
 
         <div className="sidebar-content">
-          <Breadcrumbs items={this.props.breadcrumbs}/>
           {this.props.children}
         </div>
       </aside>
@@ -66,6 +64,5 @@ export default class Sidebar extends React.Component {
 Sidebar.propTypes = {
   children: React.PropTypes.array,
   sidebar: React.PropTypes.object,
-  setSidebar: React.PropTypes.func,
-  breadcrumbs: React.PropTypes.array
+  setSidebar: React.PropTypes.func
 };
