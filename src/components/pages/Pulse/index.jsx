@@ -98,9 +98,6 @@ class Pulse extends React.Component {
         />
         <ZoomControl
           ref={zoomControl => this.zoomControl = zoomControl}
-          value={10}
-          maxValue={20}
-          minValue={0}
           onZoomIn={this.onZoomIn}
           onZoomOut={this.onZoomOut}
         />
