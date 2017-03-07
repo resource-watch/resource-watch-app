@@ -9,6 +9,7 @@ import LayerNav from 'components/pulse/LayerNav';
 import Legend from 'components/pulse/Legend';
 import LayerDescription from 'components/pulse/LayerDescription';
 import Spinner from 'components/ui/Spinner';
+import ZoomControl from 'components/ui/ZoomControl';
 
 // Styles
 import './style.scss';
@@ -57,6 +58,18 @@ class Pulse extends React.Component {
     }
   }
 
+  onZoomIn() {
+    console.info('onZoomIn', this.globe);
+    //this.globe.camera.position.z += 1;
+    //this.globe.update();
+  }
+
+  onZoomOut() {
+    console.info('onZoomOut', this.globe);
+    //this.globe.camera.position.z -= 1;
+    //this.globe.update();
+  }
+
   render() {
     return (
       <div className="c-page -dark">
@@ -74,6 +87,7 @@ class Pulse extends React.Component {
           isLoading={this.state.loading}
         />
         <Globe
+          ref={(globe) => { this.globe = globe; }}
           width={window.innerWidth}
           height={window.innerHeight - 130} // TODO: 130 is the header height
           pointLightColor={0xcccccc}
@@ -81,6 +95,11 @@ class Pulse extends React.Component {
           enableZoom
           lightPosition={'right'}
           texture={this.state.texture}
+        />
+        <ZoomControl
+          value={5}
+          onZoomIn={this.onZoomIn}
+          onZoomOut={this.onZoomOut}
         />
       </div>
     );

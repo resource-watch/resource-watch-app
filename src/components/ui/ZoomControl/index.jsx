@@ -1,5 +1,5 @@
 import React from 'react';
-import Button from 'components/ui/Button';
+import Icon from 'components/ui/Icon';
 import './style.scss';
 
 
@@ -35,26 +35,24 @@ class ZoomControl extends React.Component {
   }
 
   render() {
-    const { properties, onZoomIn, onZoomOut } = this.props;
+    const { className, onZoomIn, onZoomOut } = this.props;
 
     return (
-      <ul
-        {...properties}
-        className={`c-zoom-control ${properties.className || ''}`}
+      <div
+        className={`c-zoom-control btn-group ${className || ''}`}
       >
-        <li>
-          <Button onClick={(onZoomIn) ? this.triggerZoomIn : null} />
-        </li>
-        <li>
-          <Button onClick={(onZoomOut) ? this.triggerZoomOut : null} />
-        </li>
-      </ul>
+        <button onClick={(onZoomIn) ? this.triggerZoomIn : null}>
+          <Icon className="-little" name="icon-plus" />
+        </button>
+        <button onClick={(onZoomOut) ? this.triggerZoomOut : null} >
+          <Icon className="-little" name="icon-arrow-left" />
+        </button>
+      </div>
     );
   }
 }
 
 ZoomControl.propTypes = {
-  properties: React.PropTypes.object,
   maxValue: React.PropTypes.number,
   minValue: React.PropTypes.number,
   value: React.PropTypes.number,

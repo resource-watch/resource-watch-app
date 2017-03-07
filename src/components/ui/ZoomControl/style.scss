@@ -2,4 +2,10 @@
 
 .c-zoom-control {
 
+  button {
+    cursor: pointer; /* Pointer/hand icon */
+    display: block; /* Make the buttons appear below each other */
+    padding: rem(4);
+  }
+
 }
