@@ -13,9 +13,9 @@ class LegendType extends React.Component {
           <div className={`type -${config.type}`}>
             <div className="type-list">
               {items.map(item => (
-                <div className="type-list-item" key={`type-list-item-${item.name}`}>
+                <div className="type-list-item" key={`type-list-item-${item.value || item.name}`}>
                   <span className="color" style={{ background: item.color }} />
-                  <span className="name">{item.name}{config.unit}</span>
+                  <span className={`name ${this.props.className.color}`}>{item.name || item.value}{config.unit}</span>
                 </div>
                 ))}
             </div>
@@ -38,8 +38,8 @@ class LegendType extends React.Component {
             </div>
             <div className="type-list">
               {values.map(item => (
-                <div className="type-list-item" key={`type-list-item-${item.name}`}>
-                  <span className="value">{item.value}{config.unit}</span>
+                <div className="type-list-item" key={`type-list-item-${item.value || item.name}`}>
+                  <span className={`value ${this.props.className.color}`}>{item.value || item.name}{config.unit}</span>
                 </div>
                 ))}
             </div>
@@ -56,7 +56,7 @@ class LegendType extends React.Component {
                 <div
                   className="type-list-item"
                   style={{ width: `${100 / config.items.length}%` }}
-                  key={`type-list-item-${item.name}`}
+                  key={`type-list-item-${item.name || item.value}`}
                 >
                   <span className="color" style={{ background: item.color }} />
                 </div>
@@ -67,9 +67,9 @@ class LegendType extends React.Component {
                 <div
                   className="type-list-item"
                   style={{ width: `${100 / config.items.length}%` }}
-                  key={`type-list-item-${item.name}`}
+                  key={`type-list-item-${item.name || item.value}`}
                 >
-                  <span className="value">{item.value}</span>
+                  <span className={`value ${this.props.className.color}`}>{item.value || item.name}</span>
                 </div>
                 ))}
             </div>
@@ -95,7 +95,8 @@ class LegendType extends React.Component {
 
 LegendType.propTypes = {
   // PROPS
-  config: React.PropTypes.object
+  config: React.PropTypes.object,
+  className: React.PropTypes.object
 };
 
 

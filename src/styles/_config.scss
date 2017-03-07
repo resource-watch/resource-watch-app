@@ -1,6 +1,4 @@
-// Susy
 $output-bourbon-deprecation-warnings: false;
-@import "~susy/sass/susy";
 @import "~bourbon/app/assets/stylesheets/settings/px-to-em";
 @import "~bourbon/app/assets/stylesheets/functions/strip-units";
 @import "~bourbon/app/assets/stylesheets/functions/px-to-rem";
@@ -14,14 +12,6 @@ $small-screen: 320px;
 
 $max-width: 1040px;
 
-$susy: (
-  columns: 12,
-  container: $max-width,
-  global-box-sizing: border-box,
-  gutters: 0.5
-);
-
-@include border-box-sizing;
 
 /*
  * Configuring project settings
@@ -33,11 +23,16 @@ $color-secondary: #3bb2d0;
 $color-tertiary: #f4f5f6;
 $color-white: #fff;
 $color-black: #000;
-$color-gray: #e3e4e6;
+$pale-grey: #f4f5f6;
+$battleship-grey: #6c7379;
+$color-grey: #e3e4e6;
+$color-dark-grey: #9aa2a9;
 $color-green: #65b60d;
 
-$color-text-1: #393f44;
+$color-text-1: $battleship-grey;
 $color-text-2: #999ba1;
+$color-dark-pink: #c32d7b;
+$color-text-headers: #393f44;
 
 
 // Borders
@@ -51,6 +46,8 @@ $font-size-default:       14px;
 $font-size-big:           16px;
 $font-size-extra-big:     18px;
 $font-size-huge:          22px;
+$font-size-header-normal: 38px;
+$font-size-header-big:    48px;
 
 // Weights
 $font-weight-light: 300;
@@ -61,7 +58,7 @@ $font-weight-bold: 700;
 $bg-color-1: $color-white;
 
 // Text
-$base-font-color: $color-primary;
+$base-font-color: $color-text-1;
 $base-font-family: Lato, Helvetica, Arial, sans;
 $base-line-height: 1.5;
 

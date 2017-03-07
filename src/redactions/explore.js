@@ -11,9 +11,12 @@ const GET_DATASETS_ERROR = 'explore/GET_DATASETS_ERROR';
 const GET_DATASETS_LOADING = 'explore/GET_DATASETS_LOADING';
 
 const SET_DATASETS_ACTIVE = 'explore/SET_DATASETS_ACTIVE';
+const TOGGLE_DATASET_ACTIVE = 'explore/TOGGLE_DATASET_ACTIVE';
 const SET_DATASETS_PAGE = 'explore/SET_DATASETS_PAGE';
 const SET_DATASETS_FILTERS = 'explore/SET_DATASETS_FILTERS';
 const SET_DATASETS_GRID = 'explore/SET_DATASETS_GRID';
+
+const SET_SIDEBAR = 'explore/SET_SIDEBAR';
 
 /**
  * REDUCER
@@ -28,7 +31,11 @@ const initialState = {
     limit: 6
   },
   filters: {},
-  grid: 'default'
+  grid: 'default',
+  sidebar: {
+    open: true,
+    width: 0
+  }
 };
 
 export default function (state = initialState, action) {
@@ -79,6 +86,12 @@ export default function (state = initialState, action) {
 
     case SET_DATASETS_GRID: {
       return Object.assign({}, state, { grid: action.payload });
+    }
+
+    case SET_SIDEBAR: {
+      return Object.assign({}, state, {
+        sidebar: action.payload
+      });
     }
 
     default:
@@ -152,7 +165,7 @@ export function setDatasetsActive(active) {
 export function toggleDatasetActive(id) {
   return (dispatch, state) => {
     const { explore } = state();
-    const active = explore.datasets.active.slice(0);
+    const active = explore.datasets.active.slice();
     const index = active.indexOf(id);
 
     // Toggle the active dataset
@@ -183,5 +196,12 @@ export function setUrlParams() {
       }
     };
     dispatch(replace(locationDescriptor));
+  };
+}
+
+export function setSidebar(options) {
+  return {
+    type: SET_SIDEBAR,
+    payload: options
   };
 }

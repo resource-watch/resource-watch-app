@@ -12,9 +12,9 @@ class DatasetList extends React.Component {
     const { active, list } = this.props;
     return (
       <div className="c-dataset-list">
-        <div className="list">
+        <div className="list row">
           {list.map(dataset =>
-            <div className="list-item" key={dataset.id}>
+            <div className="list-item column small-12 medium-4" key={dataset.id}>
               <DatasetWidget
                 active={active.includes(dataset.id)}
                 dataset={dataset.id}
