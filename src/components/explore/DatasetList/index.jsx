@@ -30,7 +30,8 @@ class DatasetList extends React.Component {
 }
 
 DatasetList.propTypes = {
-  list: React.PropTypes.array
+  list: React.PropTypes.array,
+  active: React.PropTypes.array
 };
 
 export default DatasetList;

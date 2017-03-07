@@ -41,12 +41,22 @@ class DatasetWidget extends React.Component {
   /**
    * HELPERS
    * - getWidgetOrLayer
+   * - getDescription
    * - getButton
   */
   getWidgetOrLayer() {
     if (this.state.hasWidget) { return this.state.widget.attributes; }
     if (this.state.hasLayer) { return this.state.layer.attributes; }
     return null;
+  }
+
+  getDescription(_text) {
+    let text = _text;
+    if (typeof text === 'string' && text.length > 70) {
+      text = text.replace(/^(.{70}[^\s]*).*/, '$1');
+      return `${text}...`;
+    }
+    return text;
   }
 
   getButton() {
@@ -80,6 +90,7 @@ class DatasetWidget extends React.Component {
     );
   }
 
+
   /**
    * UI EVENTS
    * - triggerToggleLayer (e)
@@ -106,9 +117,20 @@ class DatasetWidget extends React.Component {
 
         <div className="info">
           <div className="detail">
+            {/* Title */}
             <Title className="-default -secondary">
               {element.name}
             </Title>
+
+            {/* Description */}
+            {element.description &&
+              <p>{this.getDescription(element.description)}</p>
+            }
+
+            {/* Source */}
+            {element.source &&
+              <p>Source: {element.source}</p>
+            }
           </div>
           <div className="actions">
             {/* Layer Button */}

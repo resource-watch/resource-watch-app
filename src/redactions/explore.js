@@ -28,7 +28,7 @@ const initialState = {
     error: false,
     active: [],
     page: 1,
-    limit: 6
+    limit: 9
   },
   filters: {},
   grid: 'default',
