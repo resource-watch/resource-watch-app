@@ -75,11 +75,13 @@ class Explore extends React.Component {
           toggledDataset={this.props.toggledDataset}
         />
 
-      <Legend
-        layersActive={this.state.layersActive}
-        className={{ color: '-dark' }}
-        setDatasetsActive={this.props.setDatasetsActive}
-      />
+      {this.state.layersActive && this.state.layersActive.length &&
+        <Legend
+          layersActive={this.state.layersActive}
+          className={{ color: '-dark' }}
+          setDatasetsActive={this.props.setDatasetsActive}
+        />
+      }
       </div>
     );
   }
