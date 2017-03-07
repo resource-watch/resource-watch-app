@@ -52,8 +52,8 @@ class DatasetWidget extends React.Component {
 
   getDescription(_text) {
     let text = _text;
-    if (typeof text === 'string' && text.length > 150) {
-      text = text.replace(/^(.{150}[^\s]*).*/, '$1');
+    if (typeof text === 'string' && text.length > 70) {
+      text = text.replace(/^(.{70}[^\s]*).*/, '$1');
       return `${text}...`;
     }
     return text;
