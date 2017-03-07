@@ -23,7 +23,7 @@ class Pulse extends React.Component {
 
     // Bindings
     this.onZoomIn = this.onZoomIn.bind(this);
-    this.onZoomIn = this.onZoomOut.bind(this);
+    this.onZoomOut = this.onZoomOut.bind(this);
   }
 
   componentWillMount() {
@@ -65,11 +65,13 @@ class Pulse extends React.Component {
   onZoomIn() {
     console.info('onZoomIn', this.globe);
     console.info('controls', this.globe.controls);
+    console.info('earth', this.globe.earth);
   }
 
   onZoomOut() {
     console.info('onZoomOut', this.globe);
     console.info('controls', this.globe.controls);
+    console.info('earth', this.globe.earth);
   }
 
   render() {
