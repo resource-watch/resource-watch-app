@@ -1,0 +1,10 @@
+
+.c-banner {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  text-align: center;
+
+  &.-left { align-items: flex-start; }
+  &.-rigth { align-items: flex-end; }
+}

@@ -1,0 +1,8 @@
+@import "../../../styles/config";
+
+.l-section {
+  &.-bg {
+    background-image: url('http://resourcewatch.org/assets/bg-header.jpg');
+    background-position: top center;
+  }
+}

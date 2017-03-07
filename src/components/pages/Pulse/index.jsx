@@ -59,7 +59,7 @@ class Pulse extends React.Component {
 
   render() {
     return (
-      <div className="c-page">
+      <div className="c-page -dark">
         <LayerNav
           layerActive={this.props.layerActive}
           layersGroup={this.props.layersGroup}

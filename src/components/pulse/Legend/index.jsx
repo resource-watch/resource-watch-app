@@ -34,7 +34,8 @@ Legend.propTypes = {
 };
 
 Legend.defaultProps = {
-  layerActive: null
+  layerActive: null,
+  className: {}
 };
 
 export default Legend;
