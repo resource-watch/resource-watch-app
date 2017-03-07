@@ -1,6 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router';
 import CompoundMenu from 'components/ui/CompoundMenu';
+import partners from 'components/common/Partners/partners.json';
+import Carousel from 'components/ui/Carousel';
 
 // import Menu from 'components/ui/Menu';
 import './style.scss';
@@ -30,14 +32,18 @@ const getInvolved = [
   { name: 'Join the community', path: '#' }
 ];
 
+const items = () => {
+  return partners.map((p, i) => <img key={i} className="-img" src={require(`images/partners/${p.img}`)}/> );
+};
+
 function Footer() {
   const menuData = [data, about, insights, getInvolved];
 
   return (
     <footer className="c-footer">
-      <div className="footer-partners">
-        {/* partners */}
+      <div className="footer-intro">
         <h5 className=""><Link to="/partners">Partners</Link></h5>
+        <Carousel items={items()} />
       </div>
 
       <div className="footer-main">
