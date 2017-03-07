@@ -1,0 +1,16 @@
+@import "../../../styles/config";
+
+$footer-main-height: rem(100);
+$footer-secondary-height: rem(30);
+$footer-bg-color: $color-primary;
+$footer-gradient-color-1: rgba(#c32d7b, 0.8);
+$footer-gradient-color-2: rgba(#c90e39, 0.7);
+
+.c-footer {
+
+  .footer-main {
+    border-top: 1px solid $border-color-1;
+    padding-top: rem(32);
+    padding-bottom: rem(50);
+  }
+}
