@@ -17,6 +17,7 @@ const config = {
   output: {
     path: path.join(rootPath, 'dist/'),
     filename: '[name]-[hash].js',
+    chunkFilename: '[name]-chunk.js',
     publicPath: '/'
   },
 
@@ -25,39 +26,57 @@ const config = {
   },
 
   module: {
-    loaders: [
+    rules: [
       {
-        test: /\.jsx?$/,
-        loader: 'babel-loader',
-        exclude: /node_modules/
+        test: /\.(js|jsx)?$/,
+        exclude: /node_modules/,
+        use: ['babel-loader']
       }, {
         test: /\.css$/,
-        loader: 'style-loader!css-loader'
+        use: ['style-loader', 'css-loader']
       }, {
         test: /\.(scss|sass)$/,
-        loader: 'style-loader!css-loader!sass-loader!postcss-loader'
-      }, {
-        test: /\.json$/,
-        loader: 'json'
+        use: [{
+          loader: 'style-loader'
+        }, {
+          loader: 'css-loader'
+        }, {
+          loader: 'sass-loader',
+          options: {
+            includePaths: [path.resolve('node_modules/foundation-sites/scss/')]
+          }
+        }, {
+          loader: 'postcss-loader'
+        }]
       }, {
         test: /\.(eot|ttf|woff2|woff)$/,
-        loader: 'url-loader?prefix=fonts/&context=/src/fonts'
+        use: [{
+          loader: 'url-loader',
+          options: {
+            prefix: 'fonts/',
+            context: '/src/fonts'
+          }
+        }]
       }, {
         test: /\.(png|jpg|gif|svg)$/,
-        loader: 'url-loader?prefix=image/&limit=5000&context=/src/images'
+        use: [{
+          loader: 'url-loader',
+          options: {
+            prefix: 'image/',
+            limit: 5000,
+            context: '/src/images'
+          }
+        }]
       }
     ]
   },
 
   resolve: {
-    root: [
-      path.join(rootPath, 'src')
+    modules: [
+      path.join(rootPath, 'src'),
+      path.resolve('./node_modules')
     ],
-    extensions: ['', '.js', '.jsx']
-  },
-
-  sassLoader: {
-    includePaths: [path.resolve("node_modules/foundation-sites/scss/")]
+    extensions: ['.js', '.jsx']
   },
 
   plugins: [
@@ -66,9 +85,6 @@ const config = {
       inject: 'body',
       filename: 'index.html'
     }),
-    new webpack.optimize.OccurenceOrderPlugin(),
-    new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoErrorsPlugin(),
     new webpack.DefinePlugin({
       config: {
         NODE_ENV: JSON.stringify(process.env.NODE_ENV),
@@ -93,6 +109,7 @@ if (process.env.NODE_ENV === 'production') {
   }));
 } else {
   config.devtool = 'eval-source-map';
+  config.plugins.push(new webpack.HotModuleReplacementPlugin());
 }
 
 module.exports = config;
