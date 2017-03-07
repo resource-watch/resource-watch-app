@@ -97,7 +97,10 @@ class Pulse extends React.Component {
           texture={this.state.texture}
         />
         <ZoomControl
-          value={5}
+          ref={zoomControl => this.zoomControl = zoomControl}
+          value={10}
+          maxValue={20}
+          minValue={0}
           onZoomIn={this.onZoomIn}
           onZoomOut={this.onZoomOut}
         />
