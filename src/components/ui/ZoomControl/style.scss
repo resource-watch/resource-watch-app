@@ -3,13 +3,34 @@
 .c-zoom-control {
 
   position: absolute;
-  top: 80px;
+  top: 30px;
   right: 30px;
 
   button {
     cursor: pointer; /* Pointer/hand icon */
     display: block; /* Make the buttons appear below each other */
     padding: rem(4);
-  }
+    width: 40px;
+    height: 40px;
+    border-style: solid;
+    border-width: 1px;
+    background-color: Transparent;
 
+    svg {
+      fill: $color-white;
+    }
+
+    &:first-child {
+      border-radius: 3px 3px 0px 0px;
+    }
+
+    &:last-child {
+      border-radius: 0px 0px 3px 3px;
+    }
+
+    &:focus {
+      outline: none;
+    }
+
+  }
 }
