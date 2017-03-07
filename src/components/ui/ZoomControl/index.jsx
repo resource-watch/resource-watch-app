@@ -22,15 +22,15 @@ class ZoomControl extends React.Component {
     const newValue = this.state.value + 1;
     if (newValue <= this.props.maxValue) {
       this.setState({ value: newValue });
-      this.props.onZoomIn(this.state.value);
+      this.props.onZoomIn(newValue);
     }
   }
 
   triggerZoomOut() {
     const newValue = this.state.value - 1;
     if (newValue >= this.props.minValue) {
-      this.setState({ value: this.state.value - 1 });
-      this.props.onZoomOut(this.state.value);
+      this.setState({ value: newValue });
+      this.props.onZoomOut(newValue);
     }
   }
 
@@ -55,7 +55,6 @@ class ZoomControl extends React.Component {
 
 ZoomControl.propTypes = {
   properties: React.PropTypes.object,
-  orientation: React.PropTypes.string,
   maxValue: React.PropTypes.number,
   minValue: React.PropTypes.number,
   value: React.PropTypes.number,
@@ -67,7 +66,6 @@ ZoomControl.propTypes = {
 };
 
 ZoomControl.defaultProps = {
-  orientation: 'horizontal',
   maxValue: 10,
   minValue: 0,
   value: 2
