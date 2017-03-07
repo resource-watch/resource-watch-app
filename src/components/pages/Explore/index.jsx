@@ -8,6 +8,7 @@ import Paginator from 'components/ui/Paginator';
 import Map from 'containers/explore/Map';
 import Legend from 'components/ui/Legend';
 import LayerManager from 'utils/layers/LayerManager';
+import Breadcrumbs from 'components/ui/Breadcrumbs';
 
 // Styles
 import './style.scss';
@@ -19,6 +20,10 @@ const mapConfig = {
     lng: 0
   }
 };
+
+const breadcrumbs = [
+  {name: 'Home', url: '/'}
+];
 
 class Explore extends React.Component {
 
@@ -45,6 +50,7 @@ class Explore extends React.Component {
     return (
       <div className="c-page -dark">
         <Sidebar>
+          <Breadcrumbs items={breadcrumbs}/>
           <Title className="-primary -huge">
             Explore
           </Title>
