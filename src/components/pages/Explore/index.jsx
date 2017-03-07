@@ -22,8 +22,7 @@ const mapConfig = {
 };
 
 const breadcrumbs = [
-  {name: 'Home', url: '/'},
-  {name: 'Explore', url: '/explore'}
+  {name: 'Home', url: '/'}
 ];
 
 class Explore extends React.Component {

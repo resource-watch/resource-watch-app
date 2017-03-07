@@ -32,10 +32,10 @@
     }
 
     a {
-      color: $color-secondary;
+      color: $color-dark-grey;
       text-decoration: none;
 
-      &:hover { opacity: .6; }
+      &:hover { color: $color-secondary; }
     }
   }
 }
