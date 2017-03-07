@@ -20,6 +20,10 @@ class Pulse extends React.Component {
     super(props);
     this.state = {};
     this.layerGlobeManager = new LayerGlobeManager();
+
+    // Bindings
+    this.onZoomIn = this.onZoomIn.bind(this);
+    this.onZoomIn = this.onZoomOut.bind(this);
   }
 
   componentWillMount() {
@@ -60,14 +64,12 @@ class Pulse extends React.Component {
 
   onZoomIn() {
     console.info('onZoomIn', this.globe);
-    //this.globe.camera.position.z += 1;
-    //this.globe.update();
+    console.info('controls', this.globe.controls);
   }
 
   onZoomOut() {
     console.info('onZoomOut', this.globe);
-    //this.globe.camera.position.z -= 1;
-    //this.globe.update();
+    console.info('controls', this.globe.controls);
   }
 
   render() {
@@ -87,7 +89,7 @@ class Pulse extends React.Component {
           isLoading={this.state.loading}
         />
         <Globe
-          ref={(globe) => { this.globe = globe; }}
+          ref={globe => this.globe = globe}
           width={window.innerWidth}
           height={window.innerHeight - 130} // TODO: 130 is the header height
           pointLightColor={0xcccccc}

@@ -45,7 +45,7 @@ class ZoomControl extends React.Component {
           <Icon className="-little" name="icon-plus" />
         </button>
         <button onClick={(onZoomOut) ? this.triggerZoomOut : null} >
-          <Icon className="-little" name="icon-arrow-left" />
+          <Icon className="-little" name="icon-minus" />
         </button>
       </div>
     );
