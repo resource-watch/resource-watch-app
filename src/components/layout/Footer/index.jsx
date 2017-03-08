@@ -33,7 +33,9 @@ const getInvolved = [
 
 const items = partners.map((p, i) => (
   <div key={i} className="item">
-    <img className="-img" src={require(`images/partners/${p.img}`)}/>
+    <Link to={`/partners/${p.name}`}>
+      <img className="-img" src={require(`images/partners/${p.img}`)}/>
+    </Link>
   </div>
 ));
 

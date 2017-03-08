@@ -20,14 +20,16 @@ const navigationLinks = [
   { name: <Button properties={{ className: '-inverse -primary'}}>Get Involved</Button> }
 ];
 
-function Header() {
+function Header(props) {
+  const mainClass = props.fullScreen ? '-fullScreen' : '';
+
   return (
     <header className="c-header">
       <div className="header-secondary">
         {/* Language selector */}
       </div>
 
-      <div className="header-main">
+      <div className={`header-main ${mainClass}`}>
         <div className="brand">
           <Link to="/"><Logo /></Link>
         </div>
@@ -38,5 +40,9 @@ function Header() {
     </header>
   );
 }
+
+Header.propTypes = {
+  fullScreen: React.PropTypes.bool
+};
 
 export default Header;
