@@ -9,6 +9,7 @@ import Home from './containers/pages/Home';
 import Explore from './containers/pages/Explore';
 import Pulse from './containers/pages/Pulse';
 import Partners from './containers/pages/Partners';
+import PartnerDetail from './containers/pages/Partners/PartnerDetail';
 
 function Routes(props) {
   return (
@@ -26,6 +27,10 @@ function Routes(props) {
 
         <Route path="partners">
           <IndexRoute component={Partners} />
+
+          <Route path=":partner">
+            <IndexRoute component={PartnerDetail} />
+          </Route>
         </Route>
       </Route>
     </Router>

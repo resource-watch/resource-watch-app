@@ -1,11 +1,12 @@
 import React from 'react';
 import partners from 'components/common/Partners/partners.json';
 import PartnerBlock from 'components/common/Partners/PartnerBlock';
+import Banner from 'components/common/Banner';
 import './style.scss';
 
 function Partners(props) {
   return (
-    <div className="c-page">
+    <div className="c-page partners">
       <section className="l-section -header">
         <div className="l-container">
           <header>
@@ -43,18 +44,12 @@ function Partners(props) {
         </div>
       </section>
 
-      <section className="l-section -bg -bg-dark -light">
-        <div className="l-container">
-          <div className="row">
-            <div className="c-banner column small-12">
-              <h3 className="c-text -header-normal -normal">See yourself as part<br/> of this team?</h3>
-              <button className="c-btn -primary -filled">
-                Get in touch
-              </button>
-            </div>
-          </div>
-        </div>
-      </section>
+      <Banner>
+        <h3 className="c-text -header-normal -normal">See yourself as part<br/> of this team?</h3>
+        <button className="c-btn -primary -filled">
+          Get in touch
+        </button>
+      </Banner>
     </div>
   );
 }

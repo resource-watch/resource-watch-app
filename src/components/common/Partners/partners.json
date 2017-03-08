@@ -1,105 +1,126 @@
 [
   {
+    "name": "Astro Digital",
     "img": "astrodigital.png",
     "description": "",
     "url": ""
   },
   {
+    "name": "Carto",
     "img": "cartodb.png",
     "description": "",
     "url": "https://carto.com"
   },
   {
+    "name": "Danida",
     "img": "danida.png",
     "description": "",
     "url": ""
   },
   {
+    "name": "Descartes Labs",
     "img": "descarteslabs.png",
     "description": "",
     "url": ""
   },
   {
+    "name": "Digital Globe",
     "img": "digitalglobe.png",
     "description": "",
     "url": ""
   },
   {
+    "name": "Earth Genome",
     "img": "earthgenome.png",
     "description": "",
     "url": ""
   },
   {
+    "name": "ESPA",
     "img": "espa.png",
     "description": "",
     "url": ""
   },
   {
+    "name": "ESRI",
     "img": "esri.png",
     "description": "",
     "url": ""
   },
   {
+    "name": "Global Partnership",
     "img": "globalpartnership.png",
     "description": "",
     "url": ""
   },
   {
+    "name": "Google",
     "img": "google.png",
     "description": "",
     "url": ""
   },
   {
+    "name": "NERC",
     "img": "nerc.png",
     "description": "",
     "url": ""
   },
   {
+    "name": "Netherlands",
     "img": "netherlands.png",
     "description": "",
     "url": ""
   },
   {
+    "name": "Research into Results",
     "img": "researchintoresults.png",
     "description": "",
     "url": ""
   },
   {
+    "name": "Sida",
     "img": "sida.png",
     "description": "",
     "url": ""
   },
   {
+    "name": "Tilia",
     "img": "tilia.png",
     "description": "",
     "url": ""
   },
   {
+    "name": "UMD",
     "img": "umd.png",
     "description": "",
     "url": ""
   },
   {
+    "name": "UNDP",
     "img": "undp.png",
     "description": "",
     "url": ""
   },
   {
+    "name": "",
     "img": "unep.png",
     "description": "",
     "url": ""
   },
   {
+    "name": "Uniedim",
     "img": "uniedim.png",
     "description": "",
     "url": ""
   },
   {
+    "name": "Vizzuality",
     "img": "vizzuality.png",
     "description": "",
     "url": "http://www.vizzuality.com/"
   },
   {
+    "name": "WRI",
     "img": "wri.png",
     "description": "",
     "url": ""
