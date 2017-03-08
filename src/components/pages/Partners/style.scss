@@ -1,10 +1,8 @@
 @import "../../../styles/config";
 
 .c-page.partners {
-  .l-section {
-    &.-bg {
-      background-image: url('http://resourcewatch.org/assets/bg-header.jpg');
-      background-position: top center;
-    }
+  .c-banner {
+    background-image: url('http://resourcewatch.org/assets/bg-header.jpg');
+    background-position: top center;
   }
 }

@@ -3,10 +3,11 @@ import { Link } from 'react-router';
 
 function Banner(props) {
   const styles = props.styles || {};
+  const className = props.className ? props.className : '';
 
   return (
     <section
-      className={`c-banner -light ${props.className}`}
+      className={`c-banner -light ${className}`}
       style={styles}
     >
       <div className="l-container">
