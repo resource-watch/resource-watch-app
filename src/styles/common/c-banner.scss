@@ -5,6 +5,11 @@
   flex-direction: column;
   text-align: center;
 
+  &.intro {
+    padding-top: 190px;
+    padding-bottom: 160px;
+  }
+
   &.-left { align-items: flex-start; }
   &.-rigth { align-items: flex-end; }
 }

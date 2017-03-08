@@ -1,0 +1,32 @@
+@import "../../../styles/config";
+
+
+.c-page.partnerDetail {
+  .l-section {
+    &.-bg {
+      &.intro {
+        .title {
+          margin-bottom: 40px;
+          letter-spacing: .5px;
+        }
+
+        .logo-container {
+          display: inline-block;
+          margin-bottom: 80px;
+          // background-color: $color-white;
+          padding: 15px 20px;
+        }
+
+        .description {
+          padding: 0 150px;
+          text-align: left;
+        }
+      }
+
+      &.learn {
+        background-image: url('http://resourcewatch.org/assets/bg-header.jpg');
+        background-position: top center;
+      }
+    }
+  }
+}

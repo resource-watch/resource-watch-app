@@ -6,6 +6,9 @@
   text-transform: uppercase;
   letter-spacing: 1px;
   font-weight: bold;
+  cursor: pointer;
+
+  &:focus { outline: none; }
 
   &.-filled {
     color: $color-white;
