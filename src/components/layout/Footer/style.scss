@@ -61,4 +61,18 @@ $footer-secondary-height: rem(30);
     border-top: 1px solid $border-color-1;
     padding: rem(32) 0 rem(50);
   }
+
+  .footer-terms {
+    background-color: $color-tertiary;
+
+    .column {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: $color-text-2;
+      padding: 5px 0;
+
+      p { margin: 0; }
+    }
+  }
 }

@@ -45,13 +45,22 @@ function Footer() {
       <div className="footer-intro">
         <h5 className="title"><Link to="/partners">Partners</Link></h5>
         <div className="partners row">
-          <Carousel items={items} />
+          <div className="column small-12">
+            <Carousel items={items} />
+          </div>
         </div>
       </div>
 
       <div className="footer-main">
-        <div className="menu">
-          <CompoundMenu items={menuData} />
+        <CompoundMenu items={menuData} />
+      </div>
+
+      <div className="footer-terms">
+        <div className="terms row">
+          <div className="column small-12">
+            <p>Terms of Service — Privacy</p>
+            <p>© 2015 - World Resources Watch</p>
+          </div>
         </div>
       </div>
     </footer>
