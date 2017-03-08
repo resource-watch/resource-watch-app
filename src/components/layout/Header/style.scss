@@ -28,6 +28,11 @@ $header-gradient-color-2: rgba(#c90e39, 0.7);
     height: $header-main-height;
     max-width: $max-width;
     margin: 0 auto;
+
+    &.-fullWidth {
+      max-width: none;
+      padding: 0 $fullscreen-margin;
+    }
   }
 
   // SECONDARY
