@@ -1,38 +1,42 @@
 import React from 'react';
 import { Link } from 'react-router';
+import Button from 'components/ui/Button';
+import Dropdown from 'components/ui/Dropdown';
 
 import Logo from 'components/layout/Logo';
 import Menu from 'components/ui/Menu';
 import './style.scss';
 
-const navigationLinks = [
-  { name: 'Insights', path: '/insights' },
-  { name: 'Explore', path: '/explore' },
+const data = [
+  { name: 'Explore Datasets', path: '/explore' },
   { name: 'Dashboards', path: '/dashboards' },
   { name: 'Planet Pulse', path: '/planet-pulse' },
 ];
 
-class Header extends React.Component {
+const navigationLinks = [
+  { name: <Dropdown title="Data" items={data} active={false} /> },
+  { name: 'Insights', path: '/insights' },
+  { name: 'About', path: '#' },
+  { name: <Button properties={{ className: '-inverse -primary'}}>Get Involved</Button> }
+];
 
-  render() {
-    return (
-      <header className="c-header">
-        <div className="header-secondary">
-          {/* Language selector */}
+function Header() {
+  return (
+    <header className="c-header">
+      <div className="header-secondary">
+        {/* Language selector */}
+      </div>
+
+      <div className="header-main">
+        <div className="brand">
+          <Link to="/"><Logo /></Link>
         </div>
-
-        <div className="header-main">
-          <div className="brand">
-            <Link to="/"><Logo /></Link>
-          </div>
-          <div className="menu">
-            <Menu items={navigationLinks} />
-          </div>
+        <div className="menu">
+          <Menu items={navigationLinks} />
         </div>
-      </header>
-    );
-  }
-
+      </div>
+    </header>
+  );
 }
 
 export default Header;

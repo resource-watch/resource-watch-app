@@ -1,0 +1,69 @@
+@import "../../../styles/config";
+
+.c-button {
+  appearance: none;
+  display: inline-block;
+  margin: 0;
+  padding: rem(8);
+  border: 1px solid transparent;
+  border-radius: 4px;
+  background: none;
+  outline: none;
+  text-transform: uppercase;
+  font-size: rem(12);
+  font-weight: $font-weight-bold;
+  letter-spacing: rem(0.8);
+  cursor: pointer;
+
+  // Types
+  &.-primary {
+    color: $color-text-2;
+    background: $color-grey;
+    border-color: $border-color-1;
+
+    // States
+    &:hover {
+      color: $color-white;
+      background: $color-primary;
+    }
+
+    &.-active {
+      background: $color-green;
+      color: $color-white;
+
+      &:hover {
+        background: darken($color-green, 10%);
+      }
+    }
+
+    &.-disabled {
+      background: $color-white;
+      border-color: $border-color-1;
+      color: $color-text-2;
+      cursor: default;
+    }
+  }
+
+  &.-inverse {
+    background-color: $color-white;
+    border: 0;
+    height: 35px;
+    padding: 0 20px;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, .3);
+
+    &.-primary {
+      color: $color-primary;
+
+      &:hover {
+        opacity: .9;
+        color: $color-primary;
+        background: $color-white;
+      }
+    }
+  }
+
+  // Helpers
+  &.-fullwidth {
+    width: 100%;
+  }
+}

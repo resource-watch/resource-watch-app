@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
 import React from 'react';
 import './style.scss';
 
@@ -29,9 +30,7 @@ class Switch extends React.Component {
   }
 
   render() {
-    const { active } = this.state;
     const activeClass = (this.state.active) ? '-active' : null;
-
     return (
       <div className="c-switch">
         <span
@@ -44,6 +43,11 @@ class Switch extends React.Component {
     );
   }
 }
+
+Switch.defaultProps = {
+  active: false,
+  onChange: () => ({ })
+};
 
 Switch.propTypes = {
   active: React.PropTypes.bool,

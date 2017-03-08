@@ -5,10 +5,11 @@ import LayerGlobeManager from 'utils/layers/LayerGlobeManager';
 
 // Components
 import Globe from 'components/vis/Globe';
-import LayerNav from 'components/layout/LayerNav';
-import Legend from 'components/layout/Legend';
-import LayerDescription from 'components/layout/LayerDescription';
-
+import LayerNav from 'components/pulse/LayerNav';
+import Legend from 'components/pulse/Legend';
+import LayerDescription from 'components/pulse/LayerDescription';
+import Spinner from 'components/ui/Spinner';
+import ZoomControl from 'components/ui/ZoomControl';
 
 // Styles
 import './style.scss';
@@ -19,6 +20,10 @@ class Pulse extends React.Component {
     super(props);
     this.state = {};
     this.layerGlobeManager = new LayerGlobeManager();
+
+    // Bindings
+    this.onZoomIn = this.onZoomIn.bind(this);
+    this.onZoomOut = this.onZoomOut.bind(this);
   }
 
   componentWillMount() {
@@ -31,15 +36,24 @@ class Pulse extends React.Component {
     const newId = (nextProps.layerActive) ? nextProps.layerActive.id : null;
     if (lastId !== newId) {
       if (nextProps.layerActive) {
+        this.setState({
+          loading: true
+        });
         this.layerGlobeManager.addLayer(nextProps.layerActive, {
           onLayerAddedSuccess: function success(texture) {
             console.info(texture);
-            this.setState({ texture });
+            this.setState({
+              texture,
+              loading: false
+            });
           }.bind(this),
           onLayerAddedError: function error(err) {
             console.error(err);
-            this.setState({ texture: null });
-          }.bind(this),
+            this.setState({
+              texture: null,
+              loading: false
+            });
+          }.bind(this)
         });
       } else {
         this.layerGlobeManager.abortRequest();
@@ -48,9 +62,17 @@ class Pulse extends React.Component {
     }
   }
 
+  onZoomIn() {
+    this.globe.camera.translateZ(-5);
+  }
+
+  onZoomOut() {
+    this.globe.camera.translateZ(5);
+  }
+
   render() {
     return (
-      <div className="c-page">
+      <div className="c-page -dark">
         <LayerNav
           layerActive={this.props.layerActive}
           layersGroup={this.props.layersGroup}
@@ -61,7 +83,11 @@ class Pulse extends React.Component {
         <LayerDescription
           layerActive={this.props.layerActive}
         />
+        <Spinner
+          isLoading={this.state.loading}
+        />
         <Globe
+          ref={globe => this.globe = globe}
           width={window.innerWidth}
           height={window.innerHeight - 130} // TODO: 130 is the header height
           pointLightColor={0xcccccc}
@@ -69,6 +95,11 @@ class Pulse extends React.Component {
           enableZoom
           lightPosition={'right'}
           texture={this.state.texture}
+        />
+        <ZoomControl
+          ref={zoomControl => this.zoomControl = zoomControl}
+          onZoomIn={this.onZoomIn}
+          onZoomOut={this.onZoomOut}
         />
       </div>
     );
@@ -78,7 +109,7 @@ class Pulse extends React.Component {
 Pulse.propTypes = {
   layersGroup: React.PropTypes.array,
   layerActive: React.PropTypes.object,
-  getLayers: React.PropTypes.func,
+  getLayers: React.PropTypes.func
 };
 
 

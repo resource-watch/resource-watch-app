@@ -13,27 +13,12 @@ export default class LayerGlobeManager {
     Public methods
   */
   addLayer(layer, opts = {}) {
-    const method = {
-      cartodb: this.addCartoLayer
-    }[layer.provider];
+    const method = { cartodb: this.addCartoLayer }[layer.provider];
 
     // Check for active request to prevent adding more than one layer at a time
     this.abortRequest();
 
     return method && method.call(this, layer, opts);
-  }
-
-  getBody(account, body) {
-    return Object.assign({}, body, {
-      layers: body.layers.map((l) => {
-        return Object.assign({}, l, {
-          options: Object.assign({}, l.options, {
-            user_name: account,
-            cartocss_version: l.options.cartocssVersion,
-          }),
-        });
-      }),
-    });
   }
 
   /**
@@ -55,15 +40,14 @@ export default class LayerGlobeManager {
     // Set the layer && opts
     this.layer = {
       ...layer,
-      options: opts,
+      options: opts
     };
 
     // Create new request...
-    const body = this.getBody(this.layer.layerConfig.account, this.layer.layerConfig.body);
     const xmlhttp = new XMLHttpRequest();
     xmlhttp.open('POST', `https://${this.layer.layerConfig.account}.carto.com/api/v1/map`);
     xmlhttp.setRequestHeader('Content-Type', 'application/json');
-    xmlhttp.send(JSON.stringify(body));
+    xmlhttp.send(JSON.stringify(this.layer.layerConfig.body));
 
     // cartocss_version: l.options.cartocssVersion
     // Object.assign({}, l.options, {
@@ -85,25 +69,25 @@ export default class LayerGlobeManager {
           // Parse the staticImageConfig.urlTemplate with the current options
           const texture = substitution(staticImageConfig.urlTemplate, [{
             key: 'account',
-            value: layerConfig.account,
+            value: layerConfig.account
           }, {
             key: 'token_groupid',
-            value: data.layergroupid,
+            value: data.layergroupid
           }, {
             key: 'bbox',
-            value: staticImageConfig.bbox.join(','),
+            value: staticImageConfig.bbox.join(',')
           }, {
             key: 'format',
-            value: staticImageConfig.format,
+            value: staticImageConfig.format
           }, {
             key: 'width',
-            value: staticImageConfig.width,
+            value: staticImageConfig.width
           }, {
             key: 'height',
-            value: staticImageConfig.height,
+            value: staticImageConfig.height
           }, {
             key: 'srs',
-            value: staticImageConfig.srs,
+            value: staticImageConfig.srs
           }]);
           this.layer.options.onLayerAddedSuccess(texture);
         } else {

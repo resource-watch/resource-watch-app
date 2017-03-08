@@ -1,8 +1,8 @@
 import { connect } from 'react-redux';
 import Pulse from 'components/pages/Pulse';
 import { getLayers } from 'redactions/pulse';
-import getLayersGroupPulse from 'selectors/layersGroupPulse';
-import getActiveLayersPulse from 'selectors/layersActivePulse';
+import getLayersGroupPulse from 'selectors/pulse/layersGroupPulse';
+import getActiveLayersPulse from 'selectors/pulse/layersActivePulse';
 
 const mapStateToProps = state => ({
   pulse: state.pulse,
