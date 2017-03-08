@@ -7,10 +7,10 @@ import './style.scss';
 const defaultSettings = {
   dots: false,
   infinite: true,
-  slidesToShow: 3,
-  slidesToScroll: 1,
+  slidesToShow: 7,
+  slidesToScroll: 7,
   autoplay: true,
-  autoplaySpeed: 2500,
+  autoplaySpeed: 3500,
   arrows: false
 };
 
@@ -18,7 +18,7 @@ function Carousel(props) {
   const settings = props.setting || defaultSettings;
 
   return (
-    <div>
+    <div className="c-carousel">
       <Slider {...settings}>
         {props.items.map(item => item)}
       </Slider>

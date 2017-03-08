@@ -1,4 +1,16 @@
 @import "../../../styles/config";
 
 .c-carousel {
+  width: 100%;
+
+  .slick-track {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    height: 50px;
+
+    .slick-slide {
+      height: auto;
+    }
+  }
 }
