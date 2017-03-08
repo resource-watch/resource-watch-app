@@ -31,7 +31,9 @@ class DatasetListHeader extends React.Component {
    * - triggerSetDatasetMode (e)
   */
   triggerSetDatasetMode(e) {
-    this.props.setDatasetsMode(e.currentTarget.dataset.mode);
+    if (this.state.mode !== e.currentTarget.dataset.mode) {
+      this.props.setDatasetsMode(e.currentTarget.dataset.mode);
+    }
   }
 
   render() {
