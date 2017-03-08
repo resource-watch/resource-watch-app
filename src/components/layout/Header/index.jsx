@@ -21,7 +21,7 @@ const navigationLinks = [
 ];
 
 function Header(props) {
-  const mainClass = props.fullWidth ? '-fullWidth' : '';
+  const mainClass = props.fullScreen ? '-fullScreen' : '';
 
   return (
     <header className="c-header">
@@ -42,7 +42,7 @@ function Header(props) {
 }
 
 Header.propTypes = {
-  fullWidth: React.PropTypes.bool
+  fullScreen: React.PropTypes.bool
 };
 
 export default Header;
