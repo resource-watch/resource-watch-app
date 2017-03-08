@@ -17,7 +17,7 @@ class DatasetList extends React.Component {
       'list-item': true,
       'small-12': true,
       'medium-4': mode === 'grid',
-      '-list': mode === 'list'
+      [`-${mode}`]: true
     });
 
     return (
