@@ -2,7 +2,6 @@
 
 .c-dataset-list-item {
   background: $color-tertiary;
-  border: 1px solid $border-color-1;
   display: flex;
   flex-direction: column;
   flex: 1 0 auto;
@@ -30,21 +29,27 @@
 
   &.-list {
 
+    border-top: 1px solid $border-color-1;
+
     .info {
       flex-direction: row;
 
       .detail {
+        padding-left: 0px;
         max-width: calc(100% - 150px);
       }
     }
 
     .actions {
       margin-top: 10px;
+      margin-right: 0px;
       min-width: 145px;
     }
   }
 
   &.-grid {
+    border: 1px solid $border-color-1;
+
     .info {
       flex-direction: column;
     }
