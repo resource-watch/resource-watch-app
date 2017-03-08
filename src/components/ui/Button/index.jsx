@@ -50,4 +50,8 @@ Button.propTypes = {
   onMouseOut: React.PropTypes.func
 };
 
+Button.defaultProps = {
+  properties: {},
+};
+
 export default Button;

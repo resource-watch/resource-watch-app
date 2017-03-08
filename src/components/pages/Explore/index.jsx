@@ -1,34 +1,57 @@
 import React from 'react';
 
-// Helpers
-
 // Components
 import Title from 'components/ui/Title';
-import Sidebar from 'components/layout/Sidebar';
+import Sidebar from 'containers/explore/Sidebar';
 import DatasetListHeader from 'containers/explore/DatasetListHeader';
 import DatasetList from 'components/explore/DatasetList';
 import Paginator from 'components/ui/Paginator';
+import Map from 'containers/explore/Map';
+import Legend from 'components/ui/Legend';
+import LayerManager from 'utils/layers/LayerManager';
+import Breadcrumbs from 'components/ui/Breadcrumbs';
 
 // Styles
 import './style.scss';
+
+const mapConfig = {
+  zoom: 3,
+  latLng: {
+    lat: 0,
+    lng: 0
+  }
+};
+
+const breadcrumbs = [
+  {name: 'Home', url: '/'}
+];
 
 class Explore extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {};
+
+    this.state = {
+      layersActive: props.layersActive
+    }
   }
 
   componentWillMount() {
     this.props.getDatasets();
   }
 
+  componentWillReceiveProps(nextProps) {
+    this.setState({ layersActive: nextProps.layersActive });
+  }
+
+
   render() {
     const { explore, paginatedDatasets } = this.props;
 
     return (
-      <div className="c-page">
+      <div className="c-page -dark">
         <Sidebar>
+          <Breadcrumbs items={breadcrumbs}/>
           <Title className="-primary -huge">
             Explore
           </Title>
@@ -50,10 +73,20 @@ class Explore extends React.Component {
             onChange={page => this.props.setDatasetsPage(page)}
           />
         </Sidebar>
+        <Map
+          LayerManager={LayerManager}
+          mapConfig={mapConfig}
+          layersActive={this.state.layersActive}
+          toggledDataset={this.props.toggledDataset}
+        />
 
-        <div className="c-map">
-
-        </div>
+      {this.state.layersActive && this.state.layersActive.length &&
+        <Legend
+          layersActive={this.state.layersActive}
+          className={{ color: '-dark' }}
+          setDatasetsActive={this.props.setDatasetsActive}
+        />
+      }
       </div>
     );
   }
@@ -63,6 +96,8 @@ Explore.propTypes = {
   // STORE
   explore: React.PropTypes.object,
   paginatedDatasets: React.PropTypes.array,
+  layersActive: React.PropTypes.array,
+  toggledDataset: React.PropTypes.string,
 
   // ACTIONS
   getDatasets: React.PropTypes.func,

@@ -6,6 +6,11 @@
   bottom: 100px;
   left: 0;
   width: 100%;
+  border-bottom: 1px solid $color-grey;
+
+  &:last-child {
+    border-bottom: 0;
+  }
 }
 
 // LIST
@@ -18,25 +23,22 @@
 // ITEM
 .c-legend-item {
   list-style: none;
-  padding: 18px 14px;
-  border-bottom: 1px solid $border-color-2;
-
-  &:last-child {
-    border-bottom: none;
-  }
+  padding: 14px 0;
 
   .legend-item-header {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    // margin-bottom: 12px;
   }
 
   h3 {
     font-weight: 500;
-    font-size: $font-size-big;
+    font-size: $font-size-default;
     color: $color-white;
     margin: 0;
+    margin-bottom: 3px;
+
+    &.-dark { color: $color-text-1; }
 
     .category {
       font-weight: 400;

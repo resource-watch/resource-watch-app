@@ -1,6 +1,7 @@
 /* global config */
 import 'whatwg-fetch';
 import find from 'lodash/find';
+import { replace } from 'react-router-redux';
 
 /**
  * CONSTANTS
@@ -10,9 +11,12 @@ const GET_DATASETS_ERROR = 'explore/GET_DATASETS_ERROR';
 const GET_DATASETS_LOADING = 'explore/GET_DATASETS_LOADING';
 
 const SET_DATASETS_ACTIVE = 'explore/SET_DATASETS_ACTIVE';
+const TOGGLE_DATASET_ACTIVE = 'explore/TOGGLE_DATASET_ACTIVE';
 const SET_DATASETS_PAGE = 'explore/SET_DATASETS_PAGE';
 const SET_DATASETS_FILTERS = 'explore/SET_DATASETS_FILTERS';
 const SET_DATASETS_MODE = 'explore/SET_DATASETS_MODE';
+
+const SET_SIDEBAR = 'explore/SET_SIDEBAR';
 
 /**
  * REDUCER
@@ -24,10 +28,15 @@ const initialState = {
     error: false,
     active: [],
     page: 1,
-    limit: 6,
+    limit: 9,
     mode: 'grid' // 'grid' or 'list'
   },
-  filters: {} // ?
+  filters: {},
+  grid: 'default',
+  sidebar: {
+    open: true,
+    width: 0
+  }
 };
 
 export default function (state = initialState, action) {
@@ -58,17 +67,8 @@ export default function (state = initialState, action) {
     }
 
     case SET_DATASETS_ACTIVE: {
-      const active = state.datasets.active.slice(0);
-      const index = active.indexOf(action.payload);
-      // Toggle the active dataset
-      if (index !== -1) {
-        active.splice(index, 1);
-      } else {
-        active.push(action.payload);
-      }
-
       const datasets = Object.assign({}, state.datasets, {
-        active
+        active: action.payload
       });
 
       return Object.assign({}, state, { datasets });
@@ -92,6 +92,12 @@ export default function (state = initialState, action) {
       return Object.assign({}, state, { filters: action.payload });
     }
 
+
+    case SET_SIDEBAR: {
+      return Object.assign({}, state, {
+        sidebar: action.payload
+      });
+    }
 
     default:
       return state;
@@ -153,10 +159,55 @@ export function setDatasetsPage(page) {
   };
 }
 
-export function toggleDatasetActive(id) {
+export function setDatasetsActive(active) {
   return {
     type: SET_DATASETS_ACTIVE,
-    payload: id
+    payload: active
+  };
+}
+
+
+export function toggleDatasetActive(id) {
+  return (dispatch, state) => {
+    const { explore } = state();
+    const active = explore.datasets.active.slice();
+    const index = active.indexOf(id);
+
+    // Toggle the active dataset
+    if (index !== -1) {
+      active.splice(index, 1);
+    } else {
+      active.push(id);
+    }
+
+    dispatch({
+      type: SET_DATASETS_ACTIVE,
+      payload: active
+    });
+  };
+}
+
+// Let's use {replace} instead of {push}, that's how we will allow users to
+// go away from the current page
+export function setUrlParams() {
+  return (dispatch, state) => {
+    const { explore } = state();
+    const { active, page } = explore.datasets;
+    const locationDescriptor = {
+      pathname: '/explore',
+      query: {
+        active: active.length ? active.join(',') : undefined,
+        page
+      }
+    };
+    dispatch(replace(locationDescriptor));
+  };
+}
+
+export function setSidebar(options) {
+  return {
+    type: SET_SIDEBAR,
+    payload: options
   };
 }
 

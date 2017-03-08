@@ -9,6 +9,7 @@ import LayerNav from 'components/pulse/LayerNav';
 import Legend from 'components/pulse/Legend';
 import LayerDescription from 'components/pulse/LayerDescription';
 import Spinner from 'components/ui/Spinner';
+import ZoomControl from 'components/ui/ZoomControl';
 
 // Styles
 import './style.scss';
@@ -19,6 +20,10 @@ class Pulse extends React.Component {
     super(props);
     this.state = {};
     this.layerGlobeManager = new LayerGlobeManager();
+
+    // Bindings
+    this.onZoomIn = this.onZoomIn.bind(this);
+    this.onZoomOut = this.onZoomOut.bind(this);
   }
 
   componentWillMount() {
@@ -57,9 +62,17 @@ class Pulse extends React.Component {
     }
   }
 
+  onZoomIn() {
+    this.globe.camera.translateZ(-5);
+  }
+
+  onZoomOut() {
+    this.globe.camera.translateZ(5);
+  }
+
   render() {
     return (
-      <div className="c-page">
+      <div className="c-page -dark">
         <LayerNav
           layerActive={this.props.layerActive}
           layersGroup={this.props.layersGroup}
@@ -74,6 +87,7 @@ class Pulse extends React.Component {
           isLoading={this.state.loading}
         />
         <Globe
+          ref={globe => this.globe = globe}
           width={window.innerWidth}
           height={window.innerHeight - 130} // TODO: 130 is the header height
           pointLightColor={0xcccccc}
@@ -81,6 +95,11 @@ class Pulse extends React.Component {
           enableZoom
           lightPosition={'right'}
           texture={this.state.texture}
+        />
+        <ZoomControl
+          ref={zoomControl => this.zoomControl = zoomControl}
+          onZoomIn={this.onZoomIn}
+          onZoomOut={this.onZoomOut}
         />
       </div>
     );

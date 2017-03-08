@@ -1,12 +1,14 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { IndexRoute, Router, Route } from 'react-router';
+import { onEnterExploreUrlParams, onChangeExploreUrlParams } from 'redactions/routes';
 
 // Components
 import App from './App';
 import Home from './containers/pages/Home';
 import Explore from './containers/pages/Explore';
 import Pulse from './containers/pages/Pulse';
+import Partners from './containers/pages/Partners';
 
 function Routes(props) {
   return (
@@ -15,11 +17,15 @@ function Routes(props) {
         <IndexRoute component={Home} />
 
         <Route path="explore">
-          <IndexRoute component={Explore} />
+          <IndexRoute component={Explore} onEnter={onEnterExploreUrlParams} onChange={onChangeExploreUrlParams} />
         </Route>
 
         <Route path="planet-pulse">
           <IndexRoute component={Pulse} />
+        </Route>
+
+        <Route path="partners">
+          <IndexRoute component={Partners} />
         </Route>
       </Route>
     </Router>
