@@ -1,13 +1,18 @@
 import React from 'react';
 import { Link } from 'react-router';
+import classNames from 'classnames';
 
 function Banner(props) {
   const styles = props.styles || {};
-  const className = props.className ? props.className : '';
+  const className = classNames({
+    'c-banner': true,
+    '-light': true,
+    [props.className]: props.className
+  });
 
   return (
     <section
-      className={`c-banner -light ${className}`}
+      className={className}
       style={styles}
     >
       <div className="l-container">

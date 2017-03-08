@@ -16,7 +16,7 @@ const getPartnerData = (_path) => {
 // Get partner path and get its name from it
 const _getPartnerName = (_path) => {
   const pathArray = _path.split('/');
-  const partnerName = pathArray[pathArray.length - 1].replace('%20', ' ');
+  const partnerName = decodeURIComponent(pathArray[pathArray.length - 1]);
 
   return partnerName;
 };
