@@ -27,4 +27,26 @@
       margin: 0 5px 5px;
     }
   }
+
+  &.-list {
+
+    .info {
+      flex-direction: row;
+
+      .detail {
+        max-width: calc(100% - 150px);
+      }
+    }
+
+    .actions {
+      margin-top: 10px;
+      min-width: 140px;
+    }
+  }
+
+  &.-grid {
+    .info {
+      flex-direction: column;
+    }
+  }
 }

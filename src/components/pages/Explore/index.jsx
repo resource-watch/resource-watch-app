@@ -62,6 +62,7 @@ class Explore extends React.Component {
           <DatasetList
             active={explore.datasets.active}
             list={paginatedDatasets}
+            mode={explore.datasets.mode}
           />
 
           <Paginator

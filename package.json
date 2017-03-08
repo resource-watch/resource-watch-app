@@ -27,6 +27,7 @@
     "basic-auth": "^1.1.0",
     "body-parser": "^1.16.0",
     "bourbon": "^4.2.7",
+    "classnames": "^2.2.5",
     "css-loader": "^0.26.1",
     "dotenv": "^4.0.0",
     "esri-leaflet": "^2.0.7",

@@ -20,7 +20,8 @@ class DatasetWidget extends React.Component {
       widget: props.widget,
       layer: props.layer,
       hasWidget: !!props.widget,
-      hasLayer: !!props.layer
+      hasLayer: !!props.layer,
+      mode: props.mode
     };
 
     // BINDINGS
@@ -34,7 +35,8 @@ class DatasetWidget extends React.Component {
       widget: nextProps.widget,
       layer: nextProps.layer,
       hasWidget: !!nextProps.widget,
-      hasLayer: !!nextProps.layer
+      hasLayer: !!nextProps.layer,
+      mode: nextProps.mode
     });
   }
 
@@ -101,17 +103,18 @@ class DatasetWidget extends React.Component {
   }
 
   render() {
-    const { hasWidget, hasLayer } = this.state;
+    const { hasWidget, hasLayer, mode } = this.state;
+    const gridMode = (mode === 'grid');
     const element = this.getWidgetOrLayer();
 
     return (
-      <div className="c-dataset-list-item">
+      <div className={`c-dataset-list-item -${mode}`}>
         {/* If it has widget we want to renderize the default widget one */}
-        {hasWidget &&
+        {hasWidget && gridMode &&
           <DatasetWidgetChart widget={element} />
         }
         {/* If it doesn't have widget but has layer we want to renderize the default layer one */}
-        {!hasWidget && hasLayer &&
+        {!hasWidget && hasLayer && gridMode &&
           <DatasetLayerChart layer={element} />
         }
 
@@ -149,6 +152,7 @@ DatasetWidget.propTypes = {
   dataset: React.PropTypes.string,
   widget: React.PropTypes.object,
   layer: React.PropTypes.object,
+  mode: React.PropTypes.string,
   // ACTIONS
   toggleDatasetActive: React.PropTypes.func
 };
