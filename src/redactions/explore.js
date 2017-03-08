@@ -11,10 +11,9 @@ const GET_DATASETS_ERROR = 'explore/GET_DATASETS_ERROR';
 const GET_DATASETS_LOADING = 'explore/GET_DATASETS_LOADING';
 
 const SET_DATASETS_ACTIVE = 'explore/SET_DATASETS_ACTIVE';
-const TOGGLE_DATASET_ACTIVE = 'explore/TOGGLE_DATASET_ACTIVE';
 const SET_DATASETS_PAGE = 'explore/SET_DATASETS_PAGE';
 const SET_DATASETS_FILTERS = 'explore/SET_DATASETS_FILTERS';
-const SET_DATASETS_GRID = 'explore/SET_DATASETS_GRID';
+const SET_DATASETS_MODE = 'explore/SET_DATASETS_MODE';
 
 const SET_SIDEBAR = 'explore/SET_SIDEBAR';
 
@@ -28,10 +27,10 @@ const initialState = {
     error: false,
     active: [],
     page: 1,
-    limit: 9
+    limit: 9,
+    mode: 'grid' // 'grid' or 'list'
   },
   filters: {},
-  grid: 'default',
   sidebar: {
     open: true,
     width: 0
@@ -80,13 +79,17 @@ export default function (state = initialState, action) {
       return Object.assign({}, state, { datasets });
     }
 
+    case SET_DATASETS_MODE: {
+      const datasets = Object.assign({}, state.datasets, {
+        mode: action.payload
+      });
+      return Object.assign({}, state, { datasets });
+    }
+
     case SET_DATASETS_FILTERS: {
       return Object.assign({}, state, { filters: action.payload });
     }
 
-    case SET_DATASETS_GRID: {
-      return Object.assign({}, state, { grid: action.payload });
-    }
 
     case SET_SIDEBAR: {
       return Object.assign({}, state, {
@@ -203,5 +206,12 @@ export function setSidebar(options) {
   return {
     type: SET_SIDEBAR,
     payload: options
+  };
+}
+
+export function setDatasetsMode(mode) {
+  return {
+    type: SET_DATASETS_MODE,
+    payload: mode
   };
 }

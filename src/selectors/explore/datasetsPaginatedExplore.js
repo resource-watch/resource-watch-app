@@ -1,4 +1,3 @@
-import find from 'lodash/find';
 import { createSelector } from 'reselect';
 
 // Get the datasets

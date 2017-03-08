@@ -1,5 +1,6 @@
 import React from 'react';
 import find from 'lodash/find';
+import classNames from 'classnames';
 
 // Components
 import DatasetWidget from 'containers/explore/DatasetWidget';
@@ -9,17 +10,27 @@ import './style.scss';
 
 class DatasetList extends React.Component {
   render() {
-    const { active, list } = this.props;
+    const { active, list, mode } = this.props;
+
+    const newClassName = classNames({
+      column: true,
+      'list-item': true,
+      'small-12': true,
+      'medium-4': mode === 'grid',
+      [`-${mode}`]: true
+    });
+
     return (
       <div className="c-dataset-list">
         <div className="list row">
           {list.map(dataset =>
-            <div className="list-item column small-12 medium-4" key={dataset.id}>
+            <div className={newClassName} key={dataset.id}>
               <DatasetWidget
                 active={active.includes(dataset.id)}
                 dataset={dataset.id}
                 widget={find(dataset.attributes.widget, { attributes: { default: true } })}
                 layer={find(dataset.attributes.layer, { attributes: { default: true } })}
+                mode={mode}
               />
             </div>
           )}
@@ -31,7 +42,8 @@ class DatasetList extends React.Component {
 
 DatasetList.propTypes = {
   list: React.PropTypes.array,
-  active: React.PropTypes.array
+  active: React.PropTypes.array,
+  mode: React.PropTypes.string
 };
 
 export default DatasetList;
