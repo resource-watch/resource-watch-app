@@ -32,7 +32,6 @@ const initialState = {
     mode: 'grid' // 'grid' or 'list'
   },
   filters: {},
-  grid: 'default',
   sidebar: {
     open: true,
     width: 0
