@@ -7,7 +7,7 @@ import './style.scss';
 
 function PartnerDetail(props) {
   return (
-    <div className="c-page partnerDetail">
+    <div className="c-page partner-detail">
       <Banner className="intro">
          <div className="row">
           <div className="column small-12">
@@ -30,7 +30,7 @@ function PartnerDetail(props) {
         </div>
       </Banner>
 
-      <Banner className="learn">
+      <Banner className="learn-more">
         <div className="row">
           <div className="column small-12">
             <h3 className="c-text -header-big -thin">Important work,<br/> beautifully crafted</h3>

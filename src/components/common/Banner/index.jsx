@@ -6,12 +6,12 @@ function Banner(props) {
 
   return (
     <section
-      className={`c-banner l-section -bg -bg-dark -light -viel ${props.className}`}
+      className={`c-banner -light ${props.className}`}
       style={styles}
     >
       <div className="l-container">
         <div className="row">
-          <div className="c-banner column small-12">
+          <div className="column small-12">
             {props.children}
           </div>
         </div>
