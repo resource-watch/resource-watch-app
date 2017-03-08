@@ -5,12 +5,10 @@ import Banner from 'components/common/Banner';
 
 import './style.scss';
 
-const introBg = require('images/backgrounds/bitmap.png');
-
 function PartnerDetail(props) {
   return (
     <div className="c-page partnerDetail">
-      <Banner className="intro" styles={{ backgroundImage: `url(${introBg})` }}>
+      <Banner className="intro">
          <div className="row">
           <div className="column small-12">
             <h4 className="title c-text -default -bold -uppercase">RESOURCE WATCH PARTNER</h4>
@@ -35,7 +33,7 @@ function PartnerDetail(props) {
       <Banner className="learn">
         <div className="row">
           <div className="column small-12">
-            <h3 className="c-text -header-normal -normal">Important work,<br/> beautifully crafted</h3>
+            <h3 className="c-text -header-big -thin">Important work,<br/> beautifully crafted</h3>
             <button className="c-btn -primary -filled">
               LEARN ABOUT OUR WORK
             </button>

@@ -1,10 +1,12 @@
 @import "../../../styles/config";
 
-
 .c-page.partnerDetail {
   .l-section {
     &.-bg {
       &.intro {
+        background-image: url('/images/backgrounds/bitmap.png');
+        background-position: top center;
+
         .title {
           margin-bottom: 40px;
           letter-spacing: .5px;
@@ -26,6 +28,10 @@
       &.learn {
         background-image: url('http://resourcewatch.org/assets/bg-header.jpg');
         background-position: top center;
+
+        .c-btn {
+          padding: rem(15) rem(30);
+        }
       }
     }
   }
