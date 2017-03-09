@@ -23,7 +23,7 @@ const getActiveLayers = (_datasets, _activeLayers) => {
         layer = {
           name: dataset.attributes.name,
           subtitle: dataset.attributes.subtitle,
-          ...dataset.attributes.layer[0].attributes,
+          ...dataset.attributes.layer.find(l => l.attributes.default === true).attributes,
           order: i + 1
         };
 
