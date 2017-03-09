@@ -1,8 +1,10 @@
 import React from 'react';
+import Jiminy from 'jiminy';
 
 // Components
 import Title from 'components/ui/Title';
 import Breadcrumbs from 'components/ui/Breadcrumbs';
+
 
 // Styles
 import './style.scss';
@@ -27,34 +29,36 @@ class ExploreDetail extends React.Component {
     this.props.getDataset(this.props.params.id);
   }
 
-  componentWillReceiveProps(nextProps){
-
+  componentWillUnmount() {
+    this.props.resetDataset();
   }
 
   render() {
-    const attributes = this.props.exploreDetail.dataset.detail.attributes;
+    const dataset = this.props.exploreDetail.dataset;
+    let datasetTitle = '';
 
-    let titleText = '';
+    if (dataset.detail.attributes) {
 
-    if (attributes) {
-      if (attributes.widget[0]) {
-        const widget = attributes.widget[0].attributes;
-        console.info('widget', widget);
-        titleText = widget.name;
+      datasetTitle = dataset.detail.attributes.name;
+
+      if (dataset.detail.attributes.widget.length > 0) {
+        const widget = dataset.detail.attributes.widget[0].attributes;
       }
 
-      if (attributes.layer[0]) {
-        const layer = attributes.layer[0].attributes;
-        console.info('layer', layer);
-        titleText = layer.name;
+      if (dataset.detail.attributes.layer.length > 0) {
+        const layer = dataset.detail.attributes.layer[0].attributes;
       }
     }
 
     return (
       <div className="c-page c-page-explore-detail">
-        <div className="header">
-          <Breadcrumbs items={breadcrumbs} />
-          <Title className="-primary -huge" >{titleText}</Title>
+        <div className="row">
+          <div className="column small-1 medium-2" />
+          <div className="column small-10 medium-8">
+            <Breadcrumbs items={breadcrumbs} />
+            <Title className="-primary -huge title" >{datasetTitle}</Title>
+          </div>
+          <div className="column small-1 medium-2" />
         </div>
       </div>
     );
@@ -69,7 +73,8 @@ ExploreDetail.propTypes = {
   exploreDetail: React.PropTypes.object,
 
   // ACTIONS
-  getDataset: React.PropTypes.func
+  getDataset: React.PropTypes.func,
+  resetDataset: React.PropTypes.func
 };
 
 export default ExploreDetail;

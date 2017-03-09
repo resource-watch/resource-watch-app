@@ -9,6 +9,7 @@
 const GET_DATASET_SUCCESS = 'explore/GET_DATASET_SUCCESS';
 const GET_DATASET_ERROR = 'explore/GET_DATASET_ERROR';
 const GET_DATASET_LOADING = 'explore/GET_DATASET_LOADING';
+const RESET_DATASET = 'explore/RESET_DATASET';
 
 /**
  * REDUCER
@@ -48,6 +49,10 @@ export default function (state = initialState, action) {
       return Object.assign({}, state, { dataset });
     }
 
+    case RESET_DATASET: {
+      return initialState;
+    }
+
     default:
       return state;
   }
@@ -56,6 +61,7 @@ export default function (state = initialState, action) {
 /**
  * ACTIONS
  * - getDataset
+ * - resetDataset
 */
 export function getDataset(datasetId) {
   return (dispatch) => {
@@ -83,6 +89,12 @@ export function getDataset(datasetId) {
           payload: err.message
         });
       });
+  };
+}
+
+export function resetDataset() {
+  return {
+    type: RESET_DATASET
   };
 }
 
