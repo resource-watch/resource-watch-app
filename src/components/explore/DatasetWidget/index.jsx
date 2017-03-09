@@ -5,6 +5,7 @@ import Title from 'components/ui/Title';
 import Button from 'components/ui/Button';
 import DatasetWidgetChart from 'components/explore/DatasetWidgetChart';
 import DatasetLayerChart from 'components/explore/DatasetLayerChart';
+import { Link } from 'react-router';
 
 // Styles
 import './style.scss';
@@ -122,7 +123,9 @@ class DatasetWidget extends React.Component {
           <div className="detail">
             {/* Title */}
             <Title className="-default -secondary">
-              {element.name}
+              <Link to={`/explore/${this.state.dataset}`}>
+                {element.name}
+              </Link>
             </Title>
 
             {/* Description */}
