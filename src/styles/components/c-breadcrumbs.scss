@@ -34,6 +34,7 @@
     a {
       color: $color-dark-grey;
       text-decoration: none;
+      cursor: pointer;
 
       &:hover { color: $color-secondary; }
     }
