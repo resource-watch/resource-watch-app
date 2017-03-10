@@ -88,11 +88,14 @@ class ExploreDetail extends React.Component {
     let datasetTitle = '';
     let hasWidget = false;
     let hasLayer = false;
+    let hasDataset = false;
 
     if (dataset.detail.attributes) {
-      datasetTitle = dataset.detail.attributes.name;
+      hasDataset = true;
       hasWidget = dataset.detail.attributes.widget.length > 0;
       hasLayer = dataset.detail.attributes.layer.length > 0;
+
+      datasetTitle = dataset.detail.attributes.name;
 
       if (hasLayer) {
         const layer = dataset.detail.attributes.layer[0].attributes;
@@ -124,6 +127,8 @@ class ExploreDetail extends React.Component {
       return null;
     };
 
+    console.info('dataset', dataset);
+
     return (
       <div className="c-page c-page-explore-detail">
         <div className="row">
@@ -136,16 +141,14 @@ class ExploreDetail extends React.Component {
         </div>
         { drawWidgetChart() }
         <div className="row">
-          <div className="column small-2" />
           <div className="column small-2">
 
           </div>
-          <div className="column small-4">
-            { hasWidget &&
-              <p>{dataset.detail.attributes.widget[0].attributes.description}</p>
-            }
+          <div className="column small-7">
+            <p>{ hasDataset &&
+                dataset.detail.attributes.description}</p>
           </div>
-          <div className="column small-2 actions">
+          <div className="column small-3 actions">
             {this.getOpenMapButton(hasLayer)}
             <Button
               properties={{
@@ -157,7 +160,6 @@ class ExploreDetail extends React.Component {
               Download
             </Button>
           </div>
-          <div className="column small-2" />
         </div>
       </div>
     );
