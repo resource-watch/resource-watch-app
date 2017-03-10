@@ -1,11 +1,12 @@
 import React from 'react';
 import Jiminy from 'jiminy';
-import VegaChart from 'components/widgets/VegaChart';
-import Spinner from 'components/ui/Spinner';
 
 // Components
 import Title from 'components/ui/Title';
 import Breadcrumbs from 'components/ui/Breadcrumbs';
+import Button from 'components/ui/Button';
+import VegaChart from 'components/widgets/VegaChart';
+import Spinner from 'components/ui/Spinner';
 
 
 // Styles
@@ -44,6 +45,44 @@ class ExploreDetail extends React.Component {
     this.setState({ widgetChartLoading: loading });
   }
 
+  triggerOpenLayer() {
+    console.info('triggerOpenLayer');
+  }
+
+  triggerDownload() {
+    console.info('triggerDownload');
+  }
+
+  getOpenMapButton(hasLayer) {
+
+    const buttonClass = (hasLayer) ? '-active' : '';
+
+    if (hasLayer) {
+      return (
+        <Button
+          properties={{
+            className: `-primary -fullwidth ${buttonClass}`
+          }}
+          onClick={this.triggerOpenLayer}
+        >
+          Open in data map
+        </Button>
+      );
+    }
+    return (
+      <Button
+        properties={{
+          disabled: true,
+          className: '-primary -fullwidth -disabled'
+        }}
+        onClick={this.triggerToggleLayer}
+      >
+        Not displayable
+      </Button>
+
+    );
+  }
+
   render() {
     const dataset = this.props.exploreDetail.dataset;
     let datasetTitle = '';
@@ -54,10 +93,6 @@ class ExploreDetail extends React.Component {
       datasetTitle = dataset.detail.attributes.name;
       hasWidget = dataset.detail.attributes.widget.length > 0;
       hasLayer = dataset.detail.attributes.layer.length > 0;
-
-      // if (hasWidget) {
-      //   console.info('widget');
-      // }
 
       if (hasLayer) {
         const layer = dataset.detail.attributes.layer[0].attributes;
@@ -101,11 +136,28 @@ class ExploreDetail extends React.Component {
         </div>
         { drawWidgetChart() }
         <div className="row">
+          <div className="column small-2" />
+          <div className="column small-2">
+
+          </div>
           <div className="column small-4">
             { hasWidget &&
               <p>{dataset.detail.attributes.widget[0].attributes.description}</p>
             }
           </div>
+          <div className="column small-2 actions">
+            {this.getOpenMapButton(hasLayer)}
+            <Button
+              properties={{
+                disabled: true,
+                className: '-primary -fullwidth -disabled'
+              }}
+              onClick={this.triggerDownload}
+              >
+              Download
+            </Button>
+          </div>
+          <div className="column small-2" />
         </div>
       </div>
     );
