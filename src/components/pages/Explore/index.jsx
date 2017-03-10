@@ -8,8 +8,8 @@ import DatasetList from 'components/explore/DatasetList';
 import Paginator from 'components/ui/Paginator';
 import Map from 'containers/explore/Map';
 import Legend from 'components/ui/Legend';
+import CustomSelect from 'components/ui/CustomSelect';
 import LayerManager from 'utils/layers/LayerManager';
-import Breadcrumbs from 'components/ui/Breadcrumbs';
 
 // Styles
 import './style.scss';
@@ -27,13 +27,15 @@ const breadcrumbs = [
 ];
 
 class Explore extends React.Component {
-
   constructor(props) {
     super(props);
 
     this.state = {
       layersActive: props.layersActive
     }
+
+    // Bindings
+    this.handleRedirect = this.handleRedirect.bind(this);
   }
 
   componentWillMount() {
@@ -44,50 +46,73 @@ class Explore extends React.Component {
     this.setState({ layersActive: nextProps.layersActive });
   }
 
+  handleRedirect(item) {
+    item && item.value && this.props.redirectTo(`explore/${item.value}`);
+  }
 
   render() {
     const { explore, paginatedDatasets } = this.props;
+    const datasetsSearchList = explore.datasets.list.map(d => {
+      return {
+        value: d.id,
+        label: d.attributes.name
+      }
+    });
 
     return (
-      <div className="c-page -dark">
-        <Sidebar>
-          <Breadcrumbs items={breadcrumbs}/>
-          <Title className="-primary -huge">
-            Explore
-          </Title>
-          <DatasetListHeader
-            list={explore.datasets.list}
-            mode={explore.datasets.mode}
-          />
-          <DatasetList
-            active={explore.datasets.active}
-            list={paginatedDatasets}
-            mode={explore.datasets.mode}
+      <div className="p-explore">
+        <div className="c-page -dark">
+          <Sidebar>
+            <div className="intro row">
+              <div className="column small-12">
+                <Title className="-primary -huge">
+                  Explore
+                </Title>
+              </div>
+            </div>
+            <div className="row collapse">
+              <div className="column small-12 medium-6">
+                <CustomSelect options={datasetsSearchList} onValueChange={this.handleRedirect} search={true}/>
+              </div>
+              <div className="column small-12 medium-6">
+                <CustomSelect options={datasetsSearchList} onValueChange={this.handleRedirect}/>
+              </div>
+            </div>
+
+            <DatasetListHeader
+              list={explore.datasets.list}
+              mode={explore.datasets.mode}
+            />
+            <DatasetList
+              active={explore.datasets.active}
+              list={paginatedDatasets}
+              mode={explore.datasets.mode}
+            />
+
+            <Paginator
+              options={{
+                page: explore.datasets.page,
+                limit: explore.datasets.limit,
+                size: explore.datasets.list.length
+              }}
+              onChange={page => this.props.setDatasetsPage(page)}
+            />
+          </Sidebar>
+          <Map
+            LayerManager={LayerManager}
+            mapConfig={mapConfig}
+            layersActive={this.state.layersActive}
+            toggledDataset={this.props.toggledDataset}
           />
 
-          <Paginator
-            options={{
-              page: explore.datasets.page,
-              limit: explore.datasets.limit,
-              size: explore.datasets.list.length
-            }}
-            onChange={page => this.props.setDatasetsPage(page)}
+        {this.state.layersActive && this.state.layersActive.length &&
+          <Legend
+            layersActive={this.state.layersActive}
+            className={{ color: '-dark' }}
+            setDatasetsActive={this.props.setDatasetsActive}
           />
-        </Sidebar>
-        <Map
-          LayerManager={LayerManager}
-          mapConfig={mapConfig}
-          layersActive={this.state.layersActive}
-          toggledDataset={this.props.toggledDataset}
-        />
-
-      {this.state.layersActive && this.state.layersActive.length &&
-        <Legend
-          layersActive={this.state.layersActive}
-          className={{ color: '-dark' }}
-          setDatasetsActive={this.props.setDatasetsActive}
-        />
-      }
+        }
+        </div>
       </div>
     );
   }

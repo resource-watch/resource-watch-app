@@ -1,6 +1,7 @@
 import { connect } from 'react-redux';
 import Explore from 'components/pages/Explore';
 import { getDatasets, setDatasetsPage, setUrlParams, setDatasetsActive } from 'redactions/explore';
+import { redirectTo } from 'redactions/common';
 import getpaginatedDatasets from 'selectors/explore/datasetsPaginatedExplore';
 import getActiveLayers from 'selectors/explore/layersActive';
 
@@ -14,6 +15,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   getDatasets: () => { dispatch(getDatasets()); },
   setDatasetsActive: (active) => { dispatch(setDatasetsActive(active)); },
+  redirectTo: (url) => { dispatch(redirectTo(url)); },
   setDatasetsPage: (page) => {
     dispatch(setDatasetsPage(page));
     dispatch(setUrlParams());

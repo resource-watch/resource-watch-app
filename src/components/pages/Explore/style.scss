@@ -1,2 +1,16 @@
 @import "../../../styles/config";
 
+.p-explore {
+  .intro {
+    padding: 0 6px;
+
+    .column {
+      padding: 0;
+    }
+
+    .c-title {
+      // Fit due to typo left space
+      margin-left: -4px;
+    }
+  }
+}
