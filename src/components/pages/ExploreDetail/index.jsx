@@ -132,12 +132,10 @@ class ExploreDetail extends React.Component {
     return (
       <div className="c-page c-page-explore-detail">
         <div className="row">
-          <div className="column small-1 medium-2" />
-          <div className="column small-10 medium-8">
+          <div className="column small-12">
             <Breadcrumbs items={breadcrumbs} />
             <Title className="-primary -huge title" >{datasetTitle}</Title>
           </div>
-          <div className="column small-1 medium-2" />
         </div>
         { drawWidgetChart() }
         <div className="row">
