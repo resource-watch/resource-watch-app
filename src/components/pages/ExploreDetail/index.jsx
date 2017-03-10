@@ -112,7 +112,7 @@ class ExploreDetail extends React.Component {
                   toggleLoading={this.triggerToggleWidgetChartLoading}
                 />
                 <Button>
-                  <Icon name="icon-view_list" className="-medium" />
+                  <Icon name="icon-cog" className="-small" />
                   CONFIGURE
                 </Button>
               </div>
