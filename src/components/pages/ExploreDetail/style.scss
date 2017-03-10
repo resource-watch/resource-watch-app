@@ -43,11 +43,21 @@
 
     .actions {
       button {
-        min-width: 224px;
+        min-width: 145px;
         min-height: 45px;
 
         &:last-of-type {
           margin-top: 15px;
+        }
+      }
+    }
+
+    .social {
+      svg {
+        cursor: pointer;
+
+        &:not(:first-child) {
+          margin-left: 10px;
         }
       }
     }

@@ -144,12 +144,14 @@ class ExploreDetail extends React.Component {
         </div>
         { drawWidgetChart() }
         <div className="row description-row">
-          <div className="column small-2">
-
+          <div className="column small-2 social" >
+            <Icon name="icon-twitter" className="-small" />
+            <Icon name="icon-facebook" className="-small" />            
           </div>
           <div className="column small-7">
             <p>{ hasDataset &&
-                dataset.detail.attributes.description}</p>
+                dataset.detail.attributes.description}
+            </p>
           </div>
           <div className="column small-3 actions">
             {this.getOpenMapButton(hasLayer)}
