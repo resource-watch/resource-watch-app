@@ -1,5 +1,4 @@
 import React from 'react';
-import Jiminy from 'jiminy';
 
 // Components
 import Title from 'components/ui/Title';
@@ -7,7 +6,8 @@ import Breadcrumbs from 'components/ui/Breadcrumbs';
 import Button from 'components/ui/Button';
 import VegaChart from 'components/widgets/VegaChart';
 import Spinner from 'components/ui/Spinner';
-
+import Icon from 'components/ui/Icon';
+//import WidgetConfigurator from 'components/explore/WidgetConfigurator';
 
 // Styles
 import './style.scss';
@@ -85,7 +85,6 @@ class ExploreDetail extends React.Component {
 
   render() {
     const dataset = this.props.exploreDetail.dataset;
-    let datasetTitle = '';
     let hasWidget = false;
     let hasLayer = false;
     let hasDataset = false;
@@ -94,19 +93,12 @@ class ExploreDetail extends React.Component {
       hasDataset = true;
       hasWidget = dataset.detail.attributes.widget.length > 0;
       hasLayer = dataset.detail.attributes.layer.length > 0;
-
-      datasetTitle = dataset.detail.attributes.name;
-
-      if (hasLayer) {
-        const layer = dataset.detail.attributes.layer[0].attributes;
-      }
     }
 
     const drawWidgetChart = () => {
       if (hasWidget) {
         const widget = dataset.detail.attributes.widget[0].attributes;
         const widgetConfig = widget.widgetConfig;
-        console.info('widget', widget);
         return (
           <div className="row">
             <div className="column small-12 ">
@@ -119,6 +111,10 @@ class ExploreDetail extends React.Component {
                   data={widgetConfig}
                   toggleLoading={this.triggerToggleWidgetChartLoading}
                 />
+                <Button>
+                  <Icon name="icon-view_list" className="-medium" />
+                  CONFIGURE
+                </Button>
               </div>
             </div>
           </div>
@@ -127,18 +123,17 @@ class ExploreDetail extends React.Component {
       return null;
     };
 
-    console.info('dataset', dataset);
-
     return (
       <div className="c-page c-page-explore-detail">
         <div className="row">
           <div className="column small-12">
             <Breadcrumbs items={breadcrumbs} />
-            <Title className="-primary -huge title" >{datasetTitle}</Title>
+            <Title className="-primary -huge title" >{ hasDataset &&
+                dataset.detail.attributes.name}</Title>
           </div>
         </div>
         { drawWidgetChart() }
-        <div className="row">
+        <div className="row description-row">
           <div className="column small-2">
 
           </div>
