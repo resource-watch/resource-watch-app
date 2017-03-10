@@ -15,8 +15,16 @@ class Dropdown extends React.Component {
     this.handleScreenClick = this.handleScreenClick.bind(this);
   }
 
-  componentWillReceiveProp(newProps) {
-    debugger;
+  handleClick() {
+    this.setState({ active: !this.state.active });
+    window.addEventListener('click', this.handleScreenClick);
+  }
+
+  handleScreenClick(e) {
+    if (this.el.contains && !this.el.contains(e.target)) {
+      this.setState({ active: false });
+      window.removeEventListener('click', this.handleScreenClick);
+    }
   }
 
   render() {
@@ -30,29 +38,36 @@ class Dropdown extends React.Component {
       );
     });
 
-    const className = `c-dropdown${this.state.active ? ' -active' : ''}`
+    const className = `c-dropdown${this.state.active ? ' -active' : ''}`;
+    const hasItems = this.props.items.length > 0;
 
     return (
       <div ref={(node) => { this.el = node; }} className={className} onClick={this.handleClick}>
         {this.props.title}
-        <ul className="dropdown">
-          {items}
-        </ul>
+        { hasItems &&
+          <ul className="dropdown">
+            {items}
+          </ul>
+        }
+        { !hasItems &&
+          <div className="dropdown">
+            {this.props.children}
+          </div>
+        }
+
       </div>
     );
   }
 
-  handleClick(e) {
-    this.setState({ active: !this.state.active });
-    window.addEventListener('click', this.handleScreenClick);
-  }
-
-  handleScreenClick(e) {
-    if (this.el.contains && !this.el.contains(e.target)) {
-      this.setState({ active: false });
-      window.removeEventListener('click', this.handleScreenClick);
-    }
-  }
 }
+
+Dropdown.propTypes = {
+
+  children: React.PropTypes.any,
+  items: React.PropTypes.array,
+  active: React.PropTypes.bool,
+  title: React.PropTypes.string
+
+};
 
 export default Dropdown;

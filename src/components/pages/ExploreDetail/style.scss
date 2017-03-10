@@ -27,6 +27,14 @@
       color: $color-white;
     }
 
+    .dropdown {
+      position: absolute;
+      top: 15px!important;
+      min-width: 100px;
+      min-height: 100px;
+      background: $color-white;
+    }
+
   }
 
   .description-row {

@@ -7,7 +7,7 @@ import Button from 'components/ui/Button';
 import VegaChart from 'components/widgets/VegaChart';
 import Spinner from 'components/ui/Spinner';
 import Icon from 'components/ui/Icon';
-//import WidgetConfigurator from 'components/explore/WidgetConfigurator';
+import Dropdown from 'components/ui/Dropdown';
 
 // Styles
 import './style.scss';
@@ -99,21 +99,31 @@ class ExploreDetail extends React.Component {
       if (hasWidget) {
         const widget = dataset.detail.attributes.widget[0].attributes;
         const widgetConfig = widget.widgetConfig;
+
+        const tempDiv = (
+          <div>
+            <Spinner
+              isLoading={this.state.widgetChartLoading}
+              className="-light"
+            />
+            <VegaChart
+              data={widgetConfig}
+              toggleLoading={this.triggerToggleWidgetChartLoading}
+            />
+          </div>
+        );
+
         return (
           <div className="row">
             <div className="column small-12 ">
               <div className="widget-chart">
-                <Spinner
-                  isLoading={this.state.widgetChartLoading}
-                  className="-light"
-                />
-                <VegaChart
-                  data={widgetConfig}
-                  toggleLoading={this.triggerToggleWidgetChartLoading}
-                />
                 <Button>
                   <Icon name="icon-cog" className="-small" />
                   CONFIGURE
+                  <Dropdown
+                    className="configure-dropdown"
+                    items={[]}
+                  />
                 </Button>
               </div>
             </div>
