@@ -8,6 +8,7 @@ import VegaChart from 'components/widgets/VegaChart';
 import Spinner from 'components/ui/Spinner';
 import Icon from 'components/ui/Icon';
 import Dropdown from 'components/ui/Dropdown';
+import DatasetList from 'components/explore/DatasetList';
 
 // Styles
 import './style.scss';
@@ -146,7 +147,7 @@ class ExploreDetail extends React.Component {
         <div className="row description-row">
           <div className="column small-2 social" >
             <Icon name="icon-twitter" className="-small" />
-            <Icon name="icon-facebook" className="-small" />            
+            <Icon name="icon-facebook" className="-small" />
           </div>
           <div className="column small-7">
             <p>{ hasDataset &&
@@ -165,6 +166,11 @@ class ExploreDetail extends React.Component {
               Download
             </Button>
           </div>
+        </div>
+        <div className="row similar-datasets-row">
+          <Title className="-secondary title">
+            Similar datasets
+          </Title>
         </div>
       </div>
     );
