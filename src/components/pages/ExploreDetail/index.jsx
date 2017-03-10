@@ -1,5 +1,7 @@
 import React from 'react';
 import Jiminy from 'jiminy';
+import VegaChart from 'components/widgets/VegaChart';
+import Spinner from 'components/ui/Spinner';
 
 // Components
 import Title from 'components/ui/Title';
@@ -19,12 +21,17 @@ class ExploreDetail extends React.Component {
     super(props);
 
     this.state = {
-      dataset: {}
+      dataset: {},
+      widgetChartLoading: true
     };
+
+    // BINDINGS
+    this.triggerToggleWidgetChartLoading = this.triggerToggleWidgetChartLoading.bind(this);
   }
 
   componentWillMount() {
-    // temporal fix to clear the fields
+
+    this.setState({ widgetChartLoading: true });
 
     this.props.getDataset(this.props.params.id);
   }
@@ -33,22 +40,54 @@ class ExploreDetail extends React.Component {
     this.props.resetDataset();
   }
 
+  triggerToggleWidgetChartLoading(loading) {
+    this.setState({ widgetChartLoading: loading });
+  }
+
   render() {
     const dataset = this.props.exploreDetail.dataset;
     let datasetTitle = '';
+    let hasWidget = false;
+    let hasLayer = false;
 
     if (dataset.detail.attributes) {
-
       datasetTitle = dataset.detail.attributes.name;
+      hasWidget = dataset.detail.attributes.widget.length > 0;
+      hasLayer = dataset.detail.attributes.layer.length > 0;
 
-      if (dataset.detail.attributes.widget.length > 0) {
-        const widget = dataset.detail.attributes.widget[0].attributes;
-      }
+      // if (hasWidget) {
+      //   console.info('widget');
+      // }
 
-      if (dataset.detail.attributes.layer.length > 0) {
+      if (hasLayer) {
         const layer = dataset.detail.attributes.layer[0].attributes;
       }
     }
+
+    const drawWidgetChart = () => {
+      if (hasWidget) {
+        const widget = dataset.detail.attributes.widget[0].attributes;
+        const widgetConfig = widget.widgetConfig;
+        console.info('widget', widget);
+        return (
+          <div className="row">
+            <div className="column small-12 ">
+              <div className="widget-chart">
+                <Spinner
+                  isLoading={this.state.widgetChartLoading}
+                  className="-light"
+                />
+                <VegaChart
+                  data={widgetConfig}
+                  toggleLoading={this.triggerToggleWidgetChartLoading}
+                />
+              </div>
+            </div>
+          </div>
+        );
+      }
+      return null;
+    };
 
     return (
       <div className="c-page c-page-explore-detail">
@@ -59,6 +98,14 @@ class ExploreDetail extends React.Component {
             <Title className="-primary -huge title" >{datasetTitle}</Title>
           </div>
           <div className="column small-1 medium-2" />
+        </div>
+        { drawWidgetChart() }
+        <div className="row">
+          <div className="column small-4">
+            { hasWidget &&
+              <p>{dataset.detail.attributes.widget[0].attributes.description}</p>
+            }
+          </div>
         </div>
       </div>
     );
