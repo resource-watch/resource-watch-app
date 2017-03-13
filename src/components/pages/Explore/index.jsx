@@ -26,6 +26,20 @@ const breadcrumbs = [
   {name: 'Home', url: '/'}
 ];
 
+const sliderSearch = [
+  {label: 'a', value: 'a', items: [
+    {label: 'aa', value: 'aa'},
+    {label: 'ab', value: 'ab'},
+    {label: 'ac', value: 'ac'}
+  ]},
+  {label: 'b', value: 'b', items: [
+    {label: 'ba', value: 'ba'},
+    {label: 'bb', value: 'bb'},
+    {label: 'bc', value: 'bc'}
+  ]},
+  {label: 'c', value: 'c'}
+];
+
 class Explore extends React.Component {
   constructor(props) {
     super(props);
@@ -75,7 +89,7 @@ class Explore extends React.Component {
                 <CustomSelect options={datasetsSearchList} onValueChange={this.handleRedirect} search={true}/>
               </div>
               <div className="column small-12 medium-6">
-                <CustomSelect options={datasetsSearchList} onValueChange={this.handleRedirect}/>
+                <CustomSelect options={sliderSearch} />
               </div>
             </div>
 

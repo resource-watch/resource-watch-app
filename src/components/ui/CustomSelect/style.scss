@@ -141,6 +141,8 @@
     overflow-y: auto;
 
     li {
+      display: flex;
+      justify-content: space-between;
       color: $color-text-headers;
       font-size: $font-size-big;
       font-weight: 500;
@@ -149,12 +151,21 @@
       cursor: pointer;
       line-height: 1.1;
 
+      &:title {
+        border-bottom: 1px solid $border-color-1;
+      }
+
       &:hover {
         background-color: rgba($charcoal-grey, .05);
       }
 
       &.-selected {
         background-color: rgba($charcoal-grey, .05);
+      }
+
+      & .label {
+        flex-grow: 1;
+        display: inline-block;
       }
     }
   }

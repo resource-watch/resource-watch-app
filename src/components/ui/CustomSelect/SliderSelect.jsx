@@ -7,7 +7,9 @@ export default class CustomSelect extends React.Component {
     this.state = {
       selectedItem: props.options ? props.options.find(item => item.value === props.value) : null,
       closed: true,
-      filteredOptions: props.options || [],
+      fullList: props.options || [],
+      filteredOptions: this.filterItemsList(props.options) || [],
+      selectedLevels: [],
       selectedIndex: 0
     };
 
@@ -22,16 +24,22 @@ export default class CustomSelect extends React.Component {
     this.resetSelectedIndex = this.resetSelectedIndex.bind(this);
   }
 
+  filterItemsList(items) {
+    return items.map(it => { return { 
+      label: it.label, value: it.label, hasItems: !!it.items
+    };});
+  }
+
   componentWillReceiveProps({ options, value }) {
-    if (!isEqual(this.props.options, options)) {
-      this.setState({
-        filteredOptions: options,
-        selectedItem: options.find(item => item.value === value)
-      });
-    }
-    if (this.props.value !== value) {
-      this.setState({ selectedItem: this.props.options.find(item => item.value === value) });
-    }
+    // if (!isEqual(this.props.options, options)) {
+    //   this.setState({
+    //     filteredOptions: options,
+    //     selectedItem: options.find(item => item.value === value)
+    //   });
+    // }
+    // if (this.props.value !== value) {
+    //   this.setState({ selectedItem: this.props.options.find(item => item.value === value) });
+    // }
   }
 
   componentWillUnmount() {
@@ -135,6 +143,42 @@ export default class CustomSelect extends React.Component {
     }
   }
 
+  searchItems(selectedLevels) {
+    let list = this.state.fullList;
+
+    if (selectedLevels.length) {
+      for (let i = 0; i < selectedLevels.length; i++) {
+        list = list.find(it => it.value === selectedLevels[i].value).items;
+      }
+    } 
+
+    return list;
+  }
+
+  onSliderNext(item) {
+    const newSelectedLevels = this.state.selectedLevels.slice();
+    newSelectedLevels.push({ value: item.value, label: item.label });
+    const items = this.searchItems(newSelectedLevels);
+
+    this.setState({ 
+      selectedLevels: newSelectedLevels,
+      filteredOptions: this.filterItemsList(items),
+      closed: false
+    });
+  }
+
+  onSliderPrev(item) {
+    const newSelectedLevels = this.state.selectedLevels.slice();
+    newSelectedLevels.pop();
+    const items = this.searchItems(newSelectedLevels);
+
+    this.setState({ 
+      selectedLevels: newSelectedLevels,
+      filteredOptions: this.filterItemsList(items),
+      closed: false
+    });
+  }
+
   render() {
     // Class names
     const cNames = ['c-custom-select -search'];
@@ -151,7 +195,6 @@ export default class CustomSelect extends React.Component {
             ref={(node) => { this.input = node; }}
             className="custom-select-search"
             type="search"
-            onBlur={this.close}
             onFocus={this.onEnterSearch}
             onKeyDown={this.onType}
           />
@@ -161,9 +204,33 @@ export default class CustomSelect extends React.Component {
         }
         {this.state.closed ||
           <ul className="custom-select-options">
+            {this.state.selectedLevels.length > 0 &&
+              <li className="title">
+                <svg className="c-icon -small icon-arrow-left" onMouseDown={() => {this.onSliderPrev()}}>
+                  <use xlinkHref="#icon-arrow-left"></use>
+                </svg>
+                <span>{this.state.selectedLevels[this.state.selectedLevels.length - 1].label}</span>
+              </li>
+            }
             {this.state.filteredOptions.map((item, index) => {
               const cName = (index === this.state.selectedIndex) ? '-selected' : '';
-              return <li className={cName} key={index} onMouseEnter={() => { this.setSelectedIndex(index); }} onMouseDown={() => this.selectItem(item)}>{item.label}</li>;
+
+              return (
+                <li className={cName} key={index}>
+                  <span 
+                    className="label"
+                    onMouseEnter={() => { this.setSelectedIndex(index); }} 
+                    onMouseDown={() => this.selectItem(item)}>
+                    {item.label}
+                  </span>
+
+                  {item.hasItems &&
+                    <svg className="c-icon -small icon-arrow-right" onMouseDown={() => {this.onSliderNext(item)}}>
+                      <use xlinkHref="#icon-arrow-right"></use>
+                    </svg>
+                  }
+                </li>
+              );
             })}
           </ul>
         }
