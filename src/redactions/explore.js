@@ -223,7 +223,7 @@ export function filterDatasets(value) {
   return (dispatch, state) => {
     const allDatasets = state().explore.datasets.list;
     const filteredList = value && value !== '' ?
-      filterDatasetsBy(allDatasets, 'tags', value) :
+      filterDatasetsBy(allDatasets, 'issues', value) :
       allDatasets;
 
     dispatch({
