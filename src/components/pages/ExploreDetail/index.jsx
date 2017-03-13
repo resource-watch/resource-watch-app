@@ -1,4 +1,5 @@
 import React from 'react';
+import classNames from 'classnames';
 
 // Components
 import Title from 'components/ui/Title';
@@ -9,6 +10,7 @@ import Spinner from 'components/ui/Spinner';
 import Icon from 'components/ui/Icon';
 import Dropdown from 'components/ui/Dropdown';
 import DatasetList from 'components/explore/DatasetList';
+
 
 // Styles
 import './style.scss';
@@ -24,11 +26,14 @@ class ExploreDetail extends React.Component {
 
     this.state = {
       dataset: {},
-      widgetChartLoading: true
+      widgetChartLoading: true,
+      configureDropdownActive: false
     };
 
     // BINDINGS
     this.triggerToggleWidgetChartLoading = this.triggerToggleWidgetChartLoading.bind(this);
+    this.triggerConfigureChart = this.triggerConfigureChart.bind(this);
+    this.handleConfigureDropdownChange = this.handleConfigureDropdownChange.bind(this);
   }
 
   componentWillMount() {
@@ -52,6 +57,17 @@ class ExploreDetail extends React.Component {
 
   triggerDownload() {
     console.info('triggerDownload');
+  }
+  triggerConfigureChart(e) {
+    // We need to call e.stopPropagation() since otherwise the click would origin
+    // the execution of a callback in the Dropdown component that would result in
+    // an unexpected behavior.
+    e.stopPropagation();
+    this.setState({ configureDropdownActive: !this.state.configureDropdownActive });
+  }
+
+  handleConfigureDropdownChange(visibility) {
+    this.setState({ configureDropdownActive: visibility });
   }
 
   getOpenMapButton(hasLayer) {
@@ -96,43 +112,34 @@ class ExploreDetail extends React.Component {
       hasLayer = dataset.detail.attributes.layer.length > 0;
     }
 
-    const drawWidgetChart = () => {
-      if (hasWidget) {
-        const widget = dataset.detail.attributes.widget[0].attributes;
-        const widgetConfig = widget.widgetConfig;
+    // const drawWidgetChart = () => {
+    //   if (hasWidget) {
+    //     const widget = dataset.detail.attributes.widget[0].attributes;
+    //     const widgetConfig = widget.widgetConfig;
+    //
+    //     const tempDiv = (
+    //       <div>
+    //         <Spinner
+    //           isLoading={this.state.widgetChartLoading}
+    //           className="-light"
+    //         />
+    //         <VegaChart
+    //           data={widgetConfig}
+    //           toggleLoading={this.triggerToggleWidgetChartLoading}
+    //         />
+    //       </div>
+    //     );
+    //
+    //     return (
+    //
+    //     );
+    //   }
+    //   return null;
+    // };
 
-        const tempDiv = (
-          <div>
-            <Spinner
-              isLoading={this.state.widgetChartLoading}
-              className="-light"
-            />
-            <VegaChart
-              data={widgetConfig}
-              toggleLoading={this.triggerToggleWidgetChartLoading}
-            />
-          </div>
-        );
-
-        return (
-          <div className="row">
-            <div className="column small-12 ">
-              <div className="widget-chart">
-                <Button>
-                  <Icon name="icon-cog" className="-small" />
-                  CONFIGURE
-                  <Dropdown
-                    className="configure-dropdown"
-                    items={[]}
-                  />
-                </Button>
-              </div>
-            </div>
-          </div>
-        );
-      }
-      return null;
-    };
+    const newClassConfigureButton = classNames({
+      '-active': this.state.configureDropdownActive
+    });
 
     return (
       <div className="c-page c-page-explore-detail">
@@ -143,7 +150,24 @@ class ExploreDetail extends React.Component {
                 dataset.detail.attributes.name}</Title>
           </div>
         </div>
-        { drawWidgetChart() }
+        <div className="row">
+          <div className="column small-12 ">
+            <div className="widget-chart">
+              <Button
+                onClick={this.triggerConfigureChart}
+                properties={ {className: newClassConfigureButton}}
+              >
+                <Icon name="icon-cog" className="-small" />
+                CONFIGURE
+                <Dropdown
+                  className="configure-dropdown"
+                  active={this.state.configureDropdownActive}
+                  onChangeVisibility={this.handleConfigureDropdownChange}
+                />
+              </Button>
+            </div>
+          </div>
+        </div>
         <div className="row description-row">
           <div className="column small-2 social" >
             <Icon name="icon-twitter" className="-small" />
@@ -162,7 +186,7 @@ class ExploreDetail extends React.Component {
                 className: '-primary -fullwidth -disabled'
               }}
               onClick={this.triggerDownload}
-              >
+            >
               Download
             </Button>
           </div>
