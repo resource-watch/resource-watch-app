@@ -38,6 +38,7 @@ class Explore extends React.Component {
 
     // Bindings
     this.handleRedirect = this.handleRedirect.bind(this);
+    this.handleFilterDatasets = this.handleFilterDatasets.bind(this);
   }
 
   componentWillMount() {
@@ -52,9 +53,13 @@ class Explore extends React.Component {
     item && item.value && this.props.redirectTo(`explore/${item.value}`);
   }
 
+  handleFilterDatasets(item) {
+    this.props.filterDatasets(item.value);
+  }
+
   render() {
     const { explore, paginatedDatasets } = this.props;
-    const datasetsSearchList = explore.datasets.list.map(d => {
+    const datasetsSearchList = explore.datasets.filtered.map(d => {
       return {
         value: d.id,
         label: d.attributes.name
@@ -77,12 +82,12 @@ class Explore extends React.Component {
                 <CustomSelect options={datasetsSearchList} onValueChange={this.handleRedirect} search={true}/>
               </div>
               <div className="column small-12 medium-6">
-                <CustomSelect options={issuesList} />
+                <CustomSelect options={issuesList} onValueChange={this.handleFilterDatasets}/>
               </div>
             </div>
 
             <DatasetListHeader
-              list={explore.datasets.list}
+              list={explore.datasets.filtered}
               mode={explore.datasets.mode}
             />
             <DatasetList
@@ -95,7 +100,7 @@ class Explore extends React.Component {
               options={{
                 page: explore.datasets.page,
                 limit: explore.datasets.limit,
-                size: explore.datasets.list.length
+                size: explore.datasets.filtered.length
               }}
               onChange={page => this.props.setDatasetsPage(page)}
             />

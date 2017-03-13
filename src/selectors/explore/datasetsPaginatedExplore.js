@@ -1,7 +1,7 @@
 import { createSelector } from 'reselect';
 
 // Get the datasets
-const datasetList = state => state.explore.datasets.list;
+const datasetList = state => state.explore.datasets.filtered;
 const datasetPage = state => state.explore.datasets.page;
 const datasetLimit = state => state.explore.datasets.limit;
 

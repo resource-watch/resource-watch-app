@@ -2,6 +2,7 @@
 import 'whatwg-fetch';
 import find from 'lodash/find';
 import { replace } from 'react-router-redux';
+import { filterDatasetsBy } from 'utils/utils';
 
 /**
  * CONSTANTS
@@ -13,6 +14,7 @@ const GET_DATASETS_LOADING = 'explore/GET_DATASETS_LOADING';
 const SET_DATASETS_ACTIVE = 'explore/SET_DATASETS_ACTIVE';
 const SET_DATASETS_PAGE = 'explore/SET_DATASETS_PAGE';
 const SET_DATASETS_FILTERS = 'explore/SET_DATASETS_FILTERS';
+const FILTER_DATASETS = 'explore/FILTER_DATASETS';
 const SET_DATASETS_MODE = 'explore/SET_DATASETS_MODE';
 
 const SET_SIDEBAR = 'explore/SET_SIDEBAR';
@@ -23,6 +25,7 @@ const SET_SIDEBAR = 'explore/SET_SIDEBAR';
 const initialState = {
   datasets: {
     list: [],
+    filtered: [],
     loading: false,
     error: false,
     active: [],
@@ -42,6 +45,7 @@ export default function (state = initialState, action) {
     case GET_DATASETS_SUCCESS: {
       const datasets = Object.assign({}, state.datasets, {
         list: action.payload,
+        filtered: action.payload,
         loading: false,
         error: false
       });
@@ -90,6 +94,12 @@ export default function (state = initialState, action) {
       return Object.assign({}, state, { filters: action.payload });
     }
 
+    case FILTER_DATASETS: {
+      const datasets = Object.assign({}, state.datasets, {
+        filtered: action.payload
+      });
+      return Object.assign({}, state, { datasets });
+    }
 
     case SET_SIDEBAR: {
       return Object.assign({}, state, {
@@ -206,6 +216,20 @@ export function setSidebar(options) {
   return {
     type: SET_SIDEBAR,
     payload: options
+  };
+}
+
+export function filterDatasets(value) {
+  return (dispatch, state) => {
+    const allDatasets = state().explore.datasets.list;
+    const filteredList = value && value !== '' ?
+      filterDatasetsBy(allDatasets, 'tags', value) :
+      allDatasets;
+
+    dispatch({
+      type: FILTER_DATASETS,
+      payload: filteredList
+    });
   };
 }
 
