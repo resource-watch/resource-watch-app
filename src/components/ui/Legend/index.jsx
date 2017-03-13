@@ -9,7 +9,7 @@ const SortableItem = SortableElement(({value}) => value);
 
 const DragHandle = SortableHandle(() => (
   <span className="handler">
-    <Icon name="icon-view_list" className="-small" />
+    <Icon name="icon-drag-dots" className="-small" />
   </span>
 ));
 
