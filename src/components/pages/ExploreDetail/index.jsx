@@ -8,10 +8,6 @@ import Button from 'components/ui/Button';
 import Icon from 'components/ui/Icon';
 import Dropdown from 'components/ui/Dropdown';
 
-
-// Styles
-import './style.scss';
-
 const breadcrumbs = [
   { name: 'Home', url: '/' }
 ];

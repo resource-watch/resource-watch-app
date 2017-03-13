@@ -11,9 +11,6 @@ import Legend from 'components/ui/Legend';
 import LayerManager from 'utils/layers/LayerManager';
 import Breadcrumbs from 'components/ui/Breadcrumbs';
 
-// Styles
-import './style.scss';
-
 const mapConfig = {
   zoom: 3,
   latLng: {

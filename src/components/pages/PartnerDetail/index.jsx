@@ -3,8 +3,6 @@ import partners from 'components/common/Partners/partners.json';
 import PartnerBlock from 'components/common/Partners/PartnerBlock';
 import Banner from 'components/common/Banner';
 
-import './style.scss';
-
 function PartnerDetail(props) {
   return (
     <div className="c-page partner-detail">

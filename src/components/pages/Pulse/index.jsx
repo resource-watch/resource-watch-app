@@ -11,9 +11,6 @@ import LayerDescription from 'components/pulse/LayerDescription';
 import Spinner from 'components/ui/Spinner';
 import ZoomControl from 'components/ui/ZoomControl';
 
-// Styles
-import './style.scss';
-
 class Pulse extends React.Component {
 
   constructor(props) {

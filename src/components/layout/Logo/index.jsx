@@ -1,8 +1,6 @@
 import React from 'react';
 import Icon from 'components/ui/Icon';
 
-import './style.scss';
-
 function Logo() {
   return (
     <Icon

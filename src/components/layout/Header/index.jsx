@@ -7,8 +7,6 @@ import Dropdown from 'components/ui/Dropdown';
 import Logo from 'components/layout/Logo';
 import Menu from 'components/ui/Menu';
 
-import './style.scss';
-
 class Header extends React.Component {
 
   constructor(props) {

@@ -4,8 +4,6 @@ import CompoundMenu from 'components/ui/CompoundMenu';
 import partners from 'components/common/Partners/partners.json';
 import Carousel from 'components/ui/Carousel';
 
-import './style.scss';
-
 const data = [
   { name: 'Data', path: '#' },
   { name: 'Explore Datasets', path: '/explore' },

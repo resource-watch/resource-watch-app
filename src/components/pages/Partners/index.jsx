@@ -2,7 +2,6 @@ import React from 'react';
 import partners from 'components/common/Partners/partners.json';
 import PartnerBlock from 'components/common/Partners/PartnerBlock';
 import Banner from 'components/common/Banner';
-import './style.scss';
 
 function Partners(props) {
   return (
