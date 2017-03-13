@@ -22,16 +22,17 @@ export default class CustomSelect extends React.Component {
     this.onEnterSearch = this.onEnterSearch.bind(this);
     this.onScreenClick = this.onScreenClick.bind(this);
     this.resetSelectedIndex = this.resetSelectedIndex.bind(this);
-  }
-
-  filterItemsList(items) {
-    return items.map(it => ({ 
-      label: it.label, value: it.value, hasItems: !!it.items
-    }));
+    this.clearSearch = this.clearSearch.bind(this);
   }
 
   componentWillUnmount() {
     window.removeEventListener('click', this.onScreenClick);
+  }
+  
+  filterItemsList(items) {
+    return items.map(it => ({ 
+      label: it.label, value: it.value, hasItems: !!it.items
+    }));
   }
 
   // Event handler for event keyup on search input
@@ -105,6 +106,7 @@ export default class CustomSelect extends React.Component {
 
   onScreenClick(evt) {
     if (this.el.contains && !this.el.contains(evt.target)) {
+      this.resetSelect();
       this.close();
       window.removeEventListener('click', this.onScreenClick);
     }
@@ -170,6 +172,18 @@ export default class CustomSelect extends React.Component {
     });
   }
 
+  resetSelect() {
+    this.setState({ 
+      selectedLevels: [],
+      filteredOptions: this.filterItemsList(this.state.fullList),
+    });
+  }
+
+  clearSearch() {
+    this.setState({ selectedItem: null, closed: true });
+    this.props.onValueChange && this.props.onValueChange();
+  }
+
   render() {
     // Class names
     const cNames = ['c-custom-select -search'];
@@ -181,7 +195,14 @@ export default class CustomSelect extends React.Component {
     return (
       <div ref={(node) => { this.el = node; }} className={cNames.join(' ')}>
         <span className="custom-select-text" onClick={this.toggle}>
-          <span>{this.state.selectedItem ? this.state.selectedItem.label : this.props.placeholder}</span>
+          <div>
+            <span>{this.state.selectedItem ? this.state.selectedItem.label : this.props.placeholder}</span>
+            {this.state.selectedItem &&
+              <svg className="c-icon -small icon-cross" onMouseDown={this.clearSearch}>
+                <use xlinkHref="#icon-cross"></use>
+              </svg>
+            }
+          </div>
           <input
             ref={(node) => { this.input = node; }}
             className="custom-select-search"

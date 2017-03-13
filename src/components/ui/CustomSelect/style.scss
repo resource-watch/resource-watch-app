@@ -115,9 +115,10 @@
     min-height: 33px;
     height: 100%;
 
-    > span {
+    > div {
       user-select: none;
-      display: block;
+      display: flex;
+      justify-content: space-between;
       padding: 15px 20px;
       overflow: hidden;
       height: 100%;

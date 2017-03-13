@@ -54,7 +54,7 @@ class Explore extends React.Component {
   }
 
   handleFilterDatasets(item) {
-    this.props.filterDatasets(item.value);
+    this.props.filterDatasets(item && item.value || null);
   }
 
   render() {
