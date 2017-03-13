@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router';
 import Banner from 'components/common/Banner';
 import Rating from 'components/common/Rating';
+import Button from 'components/ui/Button';
 import Breadcrumbs from 'components/ui/Breadcrumbs';
 
 const breadcrumbs = [
@@ -10,6 +11,9 @@ const breadcrumbs = [
 ];
 
 function AppDetail(props) {
+  const buttonClasses = 'c-btn -filled -primary';
+  const properties = { className: buttonClasses };
+
   return (
     <div className="p-app-detail">
       <div className="c-page">
@@ -32,8 +36,8 @@ function AppDetail(props) {
             </div>
             <div className="column small-12 medium-4 medium-offset-1">
               <div className="actions">
-                <button className="c-btn -filled -primary">Available for iOS</button>
-                <button className="c-btn -filled -primary">Available for Android</button>
+                <Button properties={properties}>Available for iOS</Button>
+                <Button properties={properties}>Available for Android</Button>
               </div>
             </div>
           </div>
