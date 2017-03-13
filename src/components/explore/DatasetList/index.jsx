@@ -5,9 +5,6 @@ import classNames from 'classnames';
 // Components
 import DatasetWidget from 'containers/explore/DatasetWidget';
 
-// Styles
-import './style.scss';
-
 class DatasetList extends React.Component {
   render() {
     const { active, list, mode } = this.props;

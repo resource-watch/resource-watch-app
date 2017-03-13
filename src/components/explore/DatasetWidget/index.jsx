@@ -7,9 +7,6 @@ import DatasetWidgetChart from 'components/explore/DatasetWidgetChart';
 import DatasetLayerChart from 'components/explore/DatasetLayerChart';
 import { Link } from 'react-router';
 
-// Styles
-import './style.scss';
-
 class DatasetWidget extends React.Component {
 
   constructor(props) {

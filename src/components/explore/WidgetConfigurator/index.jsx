@@ -5,9 +5,6 @@ import Jiminy from 'jiminy';
 import Title from 'components/ui/Title';
 import Dropdown from 'components/ui/Dropdown';
 
-// Styles
-import './style.scss';
-
 class WidgetConfigurator extends React.Component {
 
   constructor(props) {

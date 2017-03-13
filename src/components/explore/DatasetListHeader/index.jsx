@@ -2,9 +2,6 @@ import React from 'react';
 import Button from 'components/ui/Button';
 import Icon from 'components/ui/Icon';
 
-// Styles
-import './style.scss';
-
 class DatasetListHeader extends React.Component {
 
   constructor(props) {

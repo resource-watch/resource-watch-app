@@ -2,9 +2,6 @@ import React from 'react';
 import LayerChart from 'components/widgets/LayerChart';
 import Spinner from 'components/ui/Spinner';
 
-// Styles
-import './style.scss';
-
 class DatasetLayerChart extends React.Component {
 
   constructor(props) {

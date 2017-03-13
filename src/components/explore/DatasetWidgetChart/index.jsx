@@ -2,9 +2,6 @@ import React from 'react';
 import VegaChart from 'components/widgets/VegaChart';
 import Spinner from 'components/ui/Spinner';
 
-// Styles
-import './style.scss';
-
 class DatasetWidgetChart extends React.Component {
 
   constructor(props) {

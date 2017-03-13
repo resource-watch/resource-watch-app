@@ -1,8 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router';
 
-import './style.scss';
-
 function PartnerBlock(props) {
   return (
     <article className="c-partners-block column small-12 medium-6">
