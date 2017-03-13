@@ -11,19 +11,36 @@
   margin-top: 10px;
 
 
-  &.-active {    
+  &.-active {
     display: flex;
   }
 
-  &:after {
-    content: '';
-    position: absolute;
-    right: 20px;
-    margin-top: -14px;
-    border-top: 7px solid $color-white;
-    border-bottom: 7px solid transparent;
-    border-right: 7px solid transparent;
-    border-left: 7px solid transparent;
-    transform: rotate(180deg);
+  &.-arrow{
+    &-right {
+      &:after {
+        content: '';
+        position: absolute;
+        right: 20px;
+        margin-top: -14px;
+        border-top: 7px solid $color-white;
+        border-bottom: 7px solid transparent;
+        border-right: 7px solid transparent;
+        border-left: 7px solid transparent;
+        transform: rotate(180deg);
+      }
+    }
+    &-left {
+      &:after {
+        content: '';
+        position: absolute;
+        left: 20px;
+        margin-top: -14px;
+        border-top: 7px solid $color-white;
+        border-bottom: 7px solid transparent;
+        border-right: 7px solid transparent;
+        border-left: 7px solid transparent;
+        transform: rotate(180deg);
+      }
+    }
   }
 }

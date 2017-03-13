@@ -46,9 +46,10 @@ class Header extends React.Component {
         Data
         </a>
         <Dropdown
-          className="data-dropdown"
+          className="data-dropdown -arrow-right"
           active={this.state.dataDropdownActive}
           onChangeVisibility={this.handleChangeVisibilityDataDropdown}
+          arrowPosition="left"
         >
           <ul onClick={this.closeDataDropdown}>
             <li><Link to="/explore">Explore Datasets</Link></li>

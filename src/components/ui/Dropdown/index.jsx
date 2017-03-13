@@ -36,7 +36,9 @@ class Dropdown extends React.Component {
     const className = classNames({
       'c-dropdown': true,
       dropdown: true,
-      '-active': this.state.active
+      '-active': this.state.active,
+      '-arrow-right': this.props.arrowPosition === 'right',
+      '-arrow-left': this.props.arrowPosition === 'left'
     });
 
     return (
@@ -54,13 +56,15 @@ class Dropdown extends React.Component {
 Dropdown.defaultProps = {
   onChangeVisibility: null,
   children: null,
-  active: false
+  active: false,
+  arrowPosition: 'right'
 };
 
 Dropdown.propTypes = {
 
   children: React.PropTypes.any,
   active: React.PropTypes.bool,
+  arrowPosition: React.PropTypes.string,
 
   onChangeVisibility: React.PropTypes.func.isRequired
 
