@@ -1,5 +1,6 @@
 import React from 'react';
-import { Link } from 'react-router';
+import classNames from 'classnames';
+
 import './style.scss';
 
 class Dropdown extends React.Component {
@@ -11,48 +12,62 @@ class Dropdown extends React.Component {
     };
 
     // Bindings
-    this.handleClick = this.handleClick.bind(this);
     this.handleScreenClick = this.handleScreenClick.bind(this);
   }
 
-  componentWillReceiveProp(newProps) {
-    debugger;
-  }
-
-  render() {
-    const items = this.props.items.map((item, i) => {
-      return (
-        <li key={`item-${i}`}>
-          { item.path ?
-            <Link to={item.path}>{item.name}</Link> :
-            item.name }
-        </li>
-      );
+  componentWillReceiveProps(nextProps) {
+    this.setState({ active: nextProps.active }, () => {
+      if (this.state.active) {
+        window.addEventListener('click', this.handleScreenClick);
+      }
     });
-
-    const className = `c-dropdown${this.state.active ? ' -active' : ''}`
-
-    return (
-      <div ref={(node) => { this.el = node; }} className={className} onClick={this.handleClick}>
-        {this.props.title}
-        <ul className="dropdown">
-          {items}
-        </ul>
-      </div>
-    );
-  }
-
-  handleClick(e) {
-    this.setState({ active: !this.state.active });
-    window.addEventListener('click', this.handleScreenClick);
   }
 
   handleScreenClick(e) {
     if (this.el.contains && !this.el.contains(e.target)) {
-      this.setState({ active: false });
       window.removeEventListener('click', this.handleScreenClick);
+      this.setState({ active: false }, () => {
+        this.props.onChangeVisibility(false);
+      });
     }
   }
+
+  render() {
+    const className = classNames({
+      'c-dropdown': true,
+      dropdown: true,
+      '-active': this.state.active,
+      '-arrow-right': this.props.arrowPosition === 'right',
+      '-arrow-left': this.props.arrowPosition === 'left'
+    });
+
+    return (
+      <div
+        ref={(node) => { this.el = node; }}
+        className={className}
+      >
+        {this.props.children}
+      </div>
+    );
+  }
+
 }
+
+Dropdown.defaultProps = {
+  onChangeVisibility: null,
+  children: null,
+  active: false,
+  arrowPosition: 'right'
+};
+
+Dropdown.propTypes = {
+
+  children: React.PropTypes.any,
+  active: React.PropTypes.bool,
+  arrowPosition: React.PropTypes.string,
+
+  onChangeVisibility: React.PropTypes.func.isRequired
+
+};
 
 export default Dropdown;

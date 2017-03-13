@@ -1,6 +1,7 @@
 import React from 'react';
-import {SortableContainer, SortableElement, SortableHandle, arrayMove} from 'react-sortable-hoc';
+import { SortableContainer, SortableElement, SortableHandle, arrayMove} from 'react-sortable-hoc';
 import LegendType from 'components/pulse/LegendType';
+import Icon from 'components/ui/Icon';
 
 import './style.scss';
 
@@ -8,9 +9,7 @@ const SortableItem = SortableElement(({value}) => value);
 
 const DragHandle = SortableHandle(() => (
   <span className="handler">
-    <svg className="c-icon -small icon-drag-dots">
-      <use xlinkHref="#icon-drag-dots"></use>
-    </svg>
+    <Icon name="icon-drag-dots" className="-small" />
   </span>
 ));
 
@@ -97,4 +96,3 @@ Legend.propTypes = {
 };
 
 export default Legend;
-

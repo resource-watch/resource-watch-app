@@ -7,6 +7,7 @@ import { onEnterExploreUrlParams, onChangeExploreUrlParams } from 'redactions/ro
 import App from './App';
 import Home from './containers/pages/Home';
 import Explore from './containers/pages/Explore';
+import ExploreDetail from './containers/pages/ExploreDetail';
 import Pulse from './containers/pages/Pulse';
 import Partners from './containers/pages/Partners';
 import PartnerDetail from './containers/pages/Partners/PartnerDetail';
@@ -20,7 +21,12 @@ function Routes(props) {
         <IndexRoute component={Home} />
 
         <Route path="explore">
-          <IndexRoute component={Explore} onEnter={onEnterExploreUrlParams} onChange={onChangeExploreUrlParams} />
+          <IndexRoute component={Explore} onEnter={onEnterExploreUrlParams}
+            onChange={onChangeExploreUrlParams} />
+
+          <Route path=":id">
+            <IndexRoute component={ExploreDetail} />
+          </Route>
         </Route>
 
         <Route path="planet-pulse">
@@ -42,6 +48,7 @@ function Routes(props) {
             <IndexRoute component={AppDetail} />
           </Route>
         </Route>
+        
       </Route>
     </Router>
   );
