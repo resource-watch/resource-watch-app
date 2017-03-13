@@ -25,21 +25,9 @@ export default class CustomSelect extends React.Component {
   }
 
   filterItemsList(items) {
-    return items.map(it => { return { 
+    return items.map(it => ({ 
       label: it.label, value: it.label, hasItems: !!it.items
-    };});
-  }
-
-  componentWillReceiveProps({ options, value }) {
-    // if (!isEqual(this.props.options, options)) {
-    //   this.setState({
-    //     filteredOptions: options,
-    //     selectedItem: options.find(item => item.value === value)
-    //   });
-    // }
-    // if (this.props.value !== value) {
-    //   this.setState({ selectedItem: this.props.options.find(item => item.value === value) });
-    // }
+    }));
   }
 
   componentWillUnmount() {
@@ -136,7 +124,6 @@ export default class CustomSelect extends React.Component {
 
     this.setState({
       closed: true,
-      filteredOptions: this.props.options
     }, this.resetSelectedIndex);
     if (this.input) {
       this.input.value = '';
@@ -163,7 +150,6 @@ export default class CustomSelect extends React.Component {
     this.setState({ 
       selectedLevels: newSelectedLevels,
       filteredOptions: this.filterItemsList(items),
-      closed: false
     });
   }
 
@@ -175,7 +161,6 @@ export default class CustomSelect extends React.Component {
     this.setState({ 
       selectedLevels: newSelectedLevels,
       filteredOptions: this.filterItemsList(items),
-      closed: false
     });
   }
 
