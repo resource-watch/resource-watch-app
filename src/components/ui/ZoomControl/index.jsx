@@ -42,10 +42,10 @@ class ZoomControl extends React.Component {
         className={`c-zoom-control btn-group ${className || ''}`}
       >
         <button onClick={(onZoomIn) ? this.triggerZoomIn : null}>
-          <Icon className="-small" name="icon-plus" />
+          <Icon className="-tiny" name="icon-plus" />
         </button>
         <button onClick={(onZoomOut) ? this.triggerZoomOut : null} >
-          <Icon className="-small" name="icon-minus" />
+          <Icon className="-tiny" name="icon-minus" />
         </button>
       </div>
     );

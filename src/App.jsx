@@ -3,17 +3,19 @@ import Header from './components/layout/Header';
 import Footer from './components/layout/Footer';
 import './styles/app.scss';
 
-const nonFooter = [
+const fullScreenPages = [
   '/explore',
   '/planet-pulse',
 ];
 
 function App(props) {
+  const fullScreen = fullScreenPages.indexOf(props.location.pathname) !== -1;
+
   return (
     <div>
-      <Header />
+      <Header fullScreen={fullScreen} />
       { props.children }
-      {nonFooter.indexOf(props.location.pathname) === -1 && <Footer />}
+      {!fullScreen && <Footer />}
     </div>
   );
 }
