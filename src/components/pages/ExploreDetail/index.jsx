@@ -5,11 +5,8 @@ import classNames from 'classnames';
 import Title from 'components/ui/Title';
 import Breadcrumbs from 'components/ui/Breadcrumbs';
 import Button from 'components/ui/Button';
-import VegaChart from 'components/widgets/VegaChart';
-import Spinner from 'components/ui/Spinner';
 import Icon from 'components/ui/Icon';
 import Dropdown from 'components/ui/Dropdown';
-import DatasetList from 'components/explore/DatasetList';
 
 
 // Styles
@@ -37,9 +34,7 @@ class ExploreDetail extends React.Component {
   }
 
   componentWillMount() {
-
     this.setState({ widgetChartLoading: true });
-
     this.props.getDataset(this.props.params.id);
   }
 
@@ -47,31 +42,7 @@ class ExploreDetail extends React.Component {
     this.props.resetDataset();
   }
 
-  triggerToggleWidgetChartLoading(loading) {
-    this.setState({ widgetChartLoading: loading });
-  }
-
-  triggerOpenLayer() {
-    console.info('triggerOpenLayer');
-  }
-
-  triggerDownload() {
-    console.info('triggerDownload');
-  }
-  triggerConfigureChart(e) {
-    // We need to call e.stopPropagation() since otherwise the click would origin
-    // the execution of a callback in the Dropdown component that would result in
-    // an unexpected behavior.
-    e.stopPropagation();
-    this.setState({ configureDropdownActive: !this.state.configureDropdownActive });
-  }
-
-  handleConfigureDropdownChange(visibility) {
-    this.setState({ configureDropdownActive: visibility });
-  }
-
   getOpenMapButton(hasLayer) {
-
     const buttonClass = (hasLayer) ? '-active' : '';
 
     if (hasLayer) {
@@ -100,42 +71,40 @@ class ExploreDetail extends React.Component {
     );
   }
 
+  triggerToggleWidgetChartLoading(loading) {
+    this.setState({ widgetChartLoading: loading });
+  }
+
+  triggerOpenLayer() {
+    console.info('triggerOpenLayer');
+  }
+
+  triggerDownload() {
+    console.info('triggerDownload');
+  }
+
+  triggerConfigureChart(e) {
+    // We need to call e.stopPropagation() since otherwise the click would origin
+    // the execution of a callback in the Dropdown component that would result in
+    // an unexpected behavior.
+    e.stopPropagation();
+    this.setState({ configureDropdownActive: !this.state.configureDropdownActive });
+  }
+
+  handleConfigureDropdownChange(visibility) {
+    this.setState({ configureDropdownActive: visibility });
+  }
+
   render() {
     const dataset = this.props.exploreDetail.dataset;
-    let hasWidget = false;
-    let hasLayer = false;
     let hasDataset = false;
+    let hasLayer = false;
 
     if (dataset.detail.attributes) {
       hasDataset = true;
-      hasWidget = dataset.detail.attributes.widget.length > 0;
+      // hasWidget = dataset.detail.attributes.widget.length > 0;
       hasLayer = dataset.detail.attributes.layer.length > 0;
     }
-
-    // const drawWidgetChart = () => {
-    //   if (hasWidget) {
-    //     const widget = dataset.detail.attributes.widget[0].attributes;
-    //     const widgetConfig = widget.widgetConfig;
-    //
-    //     const tempDiv = (
-    //       <div>
-    //         <Spinner
-    //           isLoading={this.state.widgetChartLoading}
-    //           className="-light"
-    //         />
-    //         <VegaChart
-    //           data={widgetConfig}
-    //           toggleLoading={this.triggerToggleWidgetChartLoading}
-    //         />
-    //       </div>
-    //     );
-    //
-    //     return (
-    //
-    //     );
-    //   }
-    //   return null;
-    // };
 
     const newClassConfigureButton = classNames({
       '-active': this.state.configureDropdownActive
@@ -155,7 +124,7 @@ class ExploreDetail extends React.Component {
             <div className="widget-chart">
               <Button
                 onClick={this.triggerConfigureChart}
-                properties={ {className: newClassConfigureButton}}
+                properties={{ className: newClassConfigureButton }}
               >
                 <Icon name="icon-cog" className="-small" />
                 CONFIGURE

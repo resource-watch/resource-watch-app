@@ -33,7 +33,6 @@ class Dropdown extends React.Component {
   }
 
   render() {
-
     const className = classNames({
       'c-dropdown': true,
       dropdown: true,
@@ -51,6 +50,12 @@ class Dropdown extends React.Component {
   }
 
 }
+
+Dropdown.defaultProps = {
+  onChangeVisibility: null,
+  children: null,
+  active: false
+};
 
 Dropdown.propTypes = {
 
