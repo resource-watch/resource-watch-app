@@ -26,7 +26,7 @@ export default class CustomSelect extends React.Component {
 
   filterItemsList(items) {
     return items.map(it => ({ 
-      label: it.label, value: it.label, hasItems: !!it.items
+      label: it.label, value: it.value, hasItems: !!it.items
     }));
   }
 
@@ -70,7 +70,13 @@ export default class CustomSelect extends React.Component {
       // Typing text
       default: {
         const value = evt.currentTarget.value;
-        const filteredOptions = this.props.options.filter(item => item.label.toLowerCase().match(value.toLowerCase()));
+        const listTofilter = this.searchItems(this.state.selectedLevels);
+        const foundItems = listTofilter.filter(item => item.label.toLowerCase().match(value.toLowerCase()));
+        const filteredOptions = foundItems.map(it => ({
+          value: it.value,
+          label: it.label,
+          hasItems: it.items && !!it.items.length
+        }));
         this.setState({ filteredOptions });
         break;
       }
