@@ -33,6 +33,32 @@ $header-gradient-color-2: rgba(#c90e39, 0.7);
       max-width: none;
       padding: 0 $fullscreen-margin;
     }
+
+    > .menu > nav > ul > li > a{
+
+      &:last-of-type {
+        display: inline;
+        padding: 10px;
+      }
+    }
+
+    > .menu > nav > ul > li > div > a{
+      cursor: pointer;
+      color: $color-white;
+    }
+
+    .dropdown {
+
+      ul {
+        padding: 10px 20px 10px 20px;
+        list-style: none;
+
+        li {
+          cursor: pointer !important;
+          padding-top: 10px;
+        }
+      }
+    }
   }
 
   // SECONDARY
