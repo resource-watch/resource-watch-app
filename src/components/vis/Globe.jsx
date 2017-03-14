@@ -2,9 +2,10 @@ import React from 'react';
 import { debounce } from 'lodash';
 import * as THREE from 'three';
 import orbitControls from 'three-orbit-controls';
-import earthImage from '../../../public/images/components/vis/earth-min.jpg';
-import earthBumpImage from '../../../public/images/components/vis/earth-bump.jpg';
-import cloudsImage from '../../../public/images/components/vis/clouds-min.png';
+
+const earthImage = '/images/components/vis/earth-min.jpg';
+const earthBumpImage = '/images/components/vis/earth-bump.jpg';
+const cloudsImage = '/images/components/vis/clouds-min.png';
 
 const OrbitControls = orbitControls(THREE);
 const imageLoader = new THREE.TextureLoader();
