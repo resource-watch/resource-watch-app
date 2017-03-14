@@ -10,6 +10,9 @@ const GET_DATASET_SUCCESS = 'explore/GET_DATASET_SUCCESS';
 const GET_DATASET_ERROR = 'explore/GET_DATASET_ERROR';
 const GET_DATASET_LOADING = 'explore/GET_DATASET_LOADING';
 const RESET_DATASET = 'explore/RESET_DATASET';
+const GET_SIMILAR_DATASETS_SUCCESS = 'explore/GET_SIMILAR_DATASETS_SUCCESS';
+const GET_SIMILAR_DATASETS_ERROR = 'explore/GET_SIMILAR_DATASETS_ERROR';
+const GET_SIMILAR_DATASETS_LOADING = 'explore/GET_SIMILAR_DATASETS_LOADING';
 
 /**
  * REDUCER
@@ -51,6 +54,31 @@ export default function (state = initialState, action) {
 
     case RESET_DATASET: {
       return initialState;
+    }
+
+    case GET_SIMILAR_DATASETS_SUCCESS: {
+      const similarDatasets = Object.assign({}, state.similarDatasets, {
+        detail: action.payload,
+        loading: false,
+        error: false
+      });
+      return Object.assign({}, state, { similarDatasets });
+    }
+
+    case GET_SIMILAR_DATASETS_ERROR: {
+      const similarDatasets = Object.assign({}, state.similarDatasets, {
+        loading: false,
+        error: true
+      });
+      return Object.assign({}, state, { similarDatasets });
+    }
+
+    case GET_SIMILAR_DATASETS_LOADING: {
+      const similarDatasets = Object.assign({}, state.similarDatasets, {
+        loading: true,
+        error: false
+      });
+      return Object.assign({}, state, { similarDatasets });
     }
 
     default:

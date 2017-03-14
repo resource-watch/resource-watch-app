@@ -95,11 +95,22 @@ class ExploreDetail extends React.Component {
     const dataset = this.props.exploreDetail.dataset;
     let hasDataset = false;
     let hasLayer = false;
+    let hasTags = false;
+
+    console.info('dataset', dataset);
 
     if (dataset.detail.attributes) {
       hasDataset = true;
       // hasWidget = dataset.detail.attributes.widget.length > 0;
       hasLayer = dataset.detail.attributes.layer.length > 0;
+      hasTags = dataset.detail.attributes.tags.length > 0;
+    }
+
+    console.info('hasTags', hasTags);
+
+    if (hasTags) {
+      const tags = dataset.detail.attributes.tags;
+      console.info('tags', tags);
     }
 
     const newClassConfigureButton = classNames({
@@ -157,9 +168,11 @@ class ExploreDetail extends React.Component {
           </div>
         </div>
         <div className="row similar-datasets-row">
-          <Title className="-secondary title">
-            Similar datasets
-          </Title>
+          <div className="column small-7">
+            <Title className="-secondary title">
+              Similar datasets
+            </Title>
+          </div>
         </div>
       </div>
     );
