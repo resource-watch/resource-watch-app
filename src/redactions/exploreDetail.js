@@ -89,6 +89,7 @@ export default function (state = initialState, action) {
 /**
  * ACTIONS
  * - getDataset
+ * - getSimilarDatasets
  * - resetDataset
 */
 export function getDataset(datasetId) {
@@ -114,6 +115,35 @@ export function getDataset(datasetId) {
         // Fetch from server ko -> Dispatch error
         dispatch({
           type: GET_DATASET_ERROR,
+          payload: err.message
+        });
+      });
+  };
+}
+
+export function getSimilarDatasets(tags){
+  return (dispatch) => {
+    console.info(tags);
+    // Waiting for fetch from server -> Dispatch loading
+    dispatch({ type: GET_SIMILAR_DATASETS_LOADING });
+    // TODO: remove the date now
+    fetch(new Request(`${config.API_URL}/dataset/?app=rw&tags=${tags}&page[size]=${Date.now() / 100000}`))
+      .then((response) => {
+        if (response.ok) return response.json();
+        throw new Error(response.statusText);
+      })
+      .then((response) => {
+        const datasets = response.data;
+
+        dispatch({
+          type: GET_SIMILAR_DATASETS_SUCCESS,
+          payload: datasets
+        });
+      })
+      .catch((err) => {
+        // Fetch from server ko -> Dispatch error
+        dispatch({
+          type: GET_SIMILAR_DATASETS_ERROR,
           payload: err.message
         });
       });
