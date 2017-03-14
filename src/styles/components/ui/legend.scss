@@ -24,13 +24,6 @@
     overflow: auto;
   }
 
-  .handler {
-    position:absolute;
-    cursor: move;
-    margin-top: -25px;
-
-    svg { fill: $color-dark-grey; }
-  }
 }
 
 .c-legend-unit {
@@ -57,6 +50,14 @@
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
+  }
+
+  .handler {
+    position:absolute;
+    cursor: move;
+    margin-top: -25px;
+
+    svg { fill: $color-dark-grey; }
   }
 
   h3 {
