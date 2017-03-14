@@ -1,7 +1,7 @@
 
 import find from 'lodash/find';
 import { createSelector } from 'reselect';
-import partners from 'components/common/Partners/partners.json';
+import partners from 'json/partners.json';
 
 // Get partner path
 const partnerPath = state => state.routing.locationBeforeTransitions.pathname;

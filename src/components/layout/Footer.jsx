@@ -1,8 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router';
 import CompoundMenu from 'components/ui/CompoundMenu';
-import partners from 'public/json/partners.json';
 import Carousel from 'components/ui/Carousel';
+import partners from 'json/partners.json';
 
 const data = [
   { name: 'Data', path: '#' },
@@ -32,7 +32,7 @@ const getInvolved = [
 const items = partners.map((p, i) => (
   <div key={i} className="item">
     <Link to={`/partners/${p.name}`}>
-      <img className="-img" src={require(`images/partners/${p.img}`)}/>
+      <img className="-img" src={require(`../../../public/images/partners/${p.img}`)}/>
     </Link>
   </div>
 ));

@@ -1,5 +1,5 @@
 import React from 'react';
-import partners from 'components/common/Partners/partners.json';
+import partners from 'json/partners.json';
 import PartnerBlock from 'components/common/Partners/PartnerBlock';
 import Banner from 'components/common/Banner';
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import partners from 'components/common/Partners/partners.json';
+import partners from 'json/partners.json';
 import PartnerBlock from 'components/common/Partners/PartnerBlock';
 import Banner from 'components/common/Banner';
 
@@ -11,7 +11,7 @@ function PartnerDetail(props) {
           <div className="column small-12">
             <h4 className="title c-text -default -bold -uppercase">RESOURCE WATCH PARTNER</h4>
             <div className="logo-container">
-              <img src={require(`images/partners/${props.partner.img}`)} className="logo" />
+              <img src={require(`../../../public/images/partners/${props.partner.img}`)} className="logo" />
             </div>
             <div className="description">
               <div className="row">

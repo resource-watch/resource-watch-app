@@ -10,7 +10,7 @@ import Explore from './containers/pages/Explore';
 import ExploreDetail from './containers/pages/ExploreDetail';
 import Pulse from './containers/pages/Pulse';
 import Partners from './containers/pages/Partners';
-import PartnerDetail from './containers/pages/Partners/PartnerDetail';
+import PartnerDetail from './containers/pages/PartnerDetail';
 
 function Routes(props) {
   return (
