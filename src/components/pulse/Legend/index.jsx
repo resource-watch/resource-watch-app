@@ -1,8 +1,6 @@
 import React from 'react';
 import LegendType from 'components/pulse/LegendType';
 
-import './style.scss';
-
 class Legend extends React.Component {
 
   render() {

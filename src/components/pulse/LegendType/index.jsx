@@ -1,5 +1,4 @@
 import React from 'react';
-import './style.scss';
 
 class LegendType extends React.Component {
 

@@ -1,7 +1,5 @@
 import React from 'react';
 import Icon from 'components/ui/Icon';
-import './style.scss';
-
 
 class ZoomControl extends React.Component {
 

@@ -1,5 +1,4 @@
 import React from 'react';
-import './style.scss';
 
 function Spinner({ isLoading, className, style }) {
   const loading = (isLoading) ? '-loading' : '';

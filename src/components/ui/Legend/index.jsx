@@ -3,8 +3,6 @@ import { SortableContainer, SortableElement, SortableHandle, arrayMove} from 're
 import LegendType from 'components/pulse/LegendType';
 import Icon from 'components/ui/Icon';
 
-import './style.scss';
-
 const SortableItem = SortableElement(({value}) => value);
 
 const DragHandle = SortableHandle(() => (

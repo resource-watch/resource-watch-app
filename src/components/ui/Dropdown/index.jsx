@@ -1,8 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
 
-import './style.scss';
-
 class Dropdown extends React.Component {
   constructor(props) {
     super(props);

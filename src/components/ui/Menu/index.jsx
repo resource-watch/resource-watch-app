@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link } from 'react-router';
-import './style.scss';
 
 const Menu = ({ items, orientation, align }) => {
   const listItems = items.map((item, i) => {

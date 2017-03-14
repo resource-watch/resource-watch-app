@@ -1,8 +1,6 @@
 import React from 'react';
 import Pagination from 'rc-pagination';
 
-import './style.scss';
-
 class Paginator extends React.Component {
 
   constructor(props) {

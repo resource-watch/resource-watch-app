@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link } from 'react-router';
-import './style.scss';
 
 const CompoundMenu = ({ items, orientation, align }) => {
   const menuItems = items.map((submenu, i) => (
