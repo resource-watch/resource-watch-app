@@ -1,3 +1,5 @@
+@import '../../config';
+
 .c-globe {
   background-color: white;
   background-image:
@@ -6,7 +8,7 @@
       rgba(0, 0, 0, 0.5) 0%,
       rgba(0, 0, 0, 0) 53%
     ),
-    url("/public/images/vis/galaxy.jpg");
+    url("/public/images/components/vis/galaxy.jpg");
   background-repeat: no-repeat;
   background-position: left top;
   background-size: cover;
