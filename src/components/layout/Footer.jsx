@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router';
 import CompoundMenu from 'components/ui/CompoundMenu';
-import partners from 'components/common/Partners/partners.json';
+import partners from 'public/json/partners.json';
 import Carousel from 'components/ui/Carousel';
 
 const data = [
