@@ -3,7 +3,6 @@ import L from 'leaflet/dist/leaflet';
 import 'leaflet/dist/leaflet.css';
 import isEqual from 'lodash/isEqual';
 import Spinner from 'components/ui/Spinner';
-import './style.scss';
 
 const MAP_CONFIG = {
   zoom: 2,

@@ -3,8 +3,6 @@ import vega from 'vega';
 import debounce from 'lodash/debounce';
 import isEqual from 'lodash/isEqual';
 
-import './style.scss';
-
 class VegaChart extends React.Component {
 
   constructor(props) {

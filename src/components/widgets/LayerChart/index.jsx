@@ -2,8 +2,6 @@ import React from 'react';
 import debounce from 'lodash/debounce';
 import isEqual from 'lodash/isEqual';
 
-import './style.scss';
-
 class LayerChart extends React.Component {
 
   constructor(props) {
