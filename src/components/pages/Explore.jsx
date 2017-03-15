@@ -59,7 +59,7 @@ class Explore extends React.Component {
           />
           <Spinner
             isLoading={explore.datasets.loading}
-            className="-relative"
+            className="-light"
           />
           <DatasetList
             active={explore.datasets.active}

@@ -160,7 +160,7 @@ class ExploreDetail extends React.Component {
             </div>
             <Spinner
               isLoading={exploreDetail.dataset.loading}
-              className="-relative"
+              className="-fixed -light"
             />
           </div>
         </div>
@@ -196,7 +196,9 @@ class ExploreDetail extends React.Component {
           <div className="column small-12">
             <DatasetList
               active={[]}
-              list={exploreDetail.similarDatasets.list}
+              list={exploreDetail.similarDatasets.list.filter(value =>
+                value.id !== this.props.params.id
+              )}
               mode="grid"
             />
             <Spinner
