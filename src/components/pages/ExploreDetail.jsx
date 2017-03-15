@@ -229,6 +229,7 @@ class ExploreDetail extends React.Component {
       </div>
     );
 
+
     if (!this.state.mapSectionOpened) {
       return (
         <div className="c-page c-page-explore-detail">
@@ -244,17 +245,12 @@ class ExploreDetail extends React.Component {
           <Map
             LayerManager={LayerManager}
             mapConfig={mapConfig}
-            layersActive={this.state.layersActive}
-            toggledDataset={this.props.toggledDataset}
+            layersActive={[dataset.detail.attributes.layer[0].attributes]}
           />
-
-          {this.state.layersActive && this.state.layersActive.length &&
           <Legend
-            layersActive={this.state.layersActive}
+            layersActive={[dataset.detail.attributes.layer[0].attributes]}
             className={{ color: '-dark' }}
-            setDatasetsActive={this.props.setDatasetsActive}
           />
-          }
         </div>
       );
     }
@@ -267,6 +263,7 @@ ExploreDetail.propTypes = {
 
   // STORE
   exploreDetail: React.PropTypes.object,
+  layersActive: React.PropTypes.array,
 
   // ACTIONS
   getDataset: React.PropTypes.func,
