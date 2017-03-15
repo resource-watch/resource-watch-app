@@ -2,6 +2,8 @@ import React from 'react';
 import Banner from 'components/common/Banner';
 
 function Intro(props) {
+  const isIntroString = typeof props.intro === 'string';
+  
   return (
     <div className="c-intro">
       <div className="intro-bg">
@@ -14,7 +16,15 @@ function Intro(props) {
           </div>
           <div className="column small-12 medium-8 medium-offset-2">
             <h1 className="c-text -header-big -thin -dark">{props.title}</h1>
-            <p className="c-text -huge -italic">{props.description}</p>
+            <p className="c-text -huge -italic">
+              {!isIntroString ?
+                props.intro.map((line, i) => (
+                  <span key={i}>
+                    {line}{(i !== props.intro.length - 1) && <br/>}
+                  </span>)) :
+                props.intro
+              }
+            </p>
           </div>
         </div>
       </section>
@@ -24,7 +34,7 @@ function Intro(props) {
 
 Intro.propTypes = {
   title: React.PropTypes.string.isRequired,
-  intro: React.PropTypes.string.isRequired
+  intro: React.PropTypes.any
 };
 
 Intro.defaultProps = {

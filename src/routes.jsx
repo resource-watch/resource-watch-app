@@ -10,6 +10,7 @@ import Explore from './containers/pages/Explore';
 import ExploreDetail from './containers/pages/ExploreDetail';
 import Pulse from './containers/pages/Pulse';
 import About from './components/pages/About';
+import GetInvolved from './components/pages/GetInvolved';
 import Partners from './containers/pages/Partners';
 import PartnerDetail from './containers/pages/PartnerDetail';
 
@@ -42,6 +43,18 @@ function Routes(props) {
               <IndexRoute component={PartnerDetail} />
             </Route>
           </Route>
+        </Route>
+
+        <Route path="get-involved">
+          <IndexRoute component={GetInvolved} />
+
+          {/*<Route path="apps">
+            <IndexRoute component={Apps} />
+
+            <Route path=":app">
+              <IndexRoute component={App} />
+            </Route>
+          </Route>*/}
         </Route>
 
       </Route>

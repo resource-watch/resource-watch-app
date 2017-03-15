@@ -2,7 +2,6 @@ import React from 'react';
 import { Link } from 'react-router';
 import Banner from 'components/common/Banner';
 import Intro from 'components/common/Intro';
-import './style.scss';
 
 function About() {
   const title = 'About Resource Watch';
@@ -14,7 +13,7 @@ function About() {
         <Intro title={title} intro={intro} />
         <section className="l-section">
           <div className="l-container">
-            <div className="row">
+            <div className="row collapse">
               <div className="column small-12 medium-8 medium-offset-2">
                 <p className="c-text -extra-big -dark">Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Integer posuere erat a ante venenatis dapibus posuere velit aliquet. Aenean lacinia bibendum nulla sed consectetur. Sed posuere consectetur est at lobortis. Donec id elit non mi porta gravida at eget metus.</p>
                 <p className="c-text -extra-big -dark">Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.</p>
@@ -24,7 +23,7 @@ function About() {
           </div>
         </section>
 
-        <div className="row">
+        <div className="row collapse">
           <div className="column small-12">
             <Banner className="partners">
               <h3 className="c-text -header-normal -normal">We have a massive opportunity<br/>to build a sustainable society</h3>
