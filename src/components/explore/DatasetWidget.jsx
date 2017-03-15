@@ -97,11 +97,11 @@ class DatasetWidget extends React.Component {
   */
   triggerToggleLayer() {
     const { dataset } = this.state;
-    this.props.toggleDatasetActive(dataset);
+    this.props.toggleDatasetActive(dataset.id);
   }
 
   render() {
-    const { hasWidget, hasLayer, mode } = this.state;
+    const { hasWidget, hasLayer, mode, dataset } = this.state;
     const gridMode = (mode === 'grid');
     const element = this.getWidgetOrLayer();
 
@@ -120,19 +120,19 @@ class DatasetWidget extends React.Component {
           <div className="detail">
             {/* Title */}
             <Title className="-default -secondary">
-              <Link to={`/explore/${this.state.dataset}`}>
-                {element.name}
+              <Link to={`/explore/${dataset.id}`}>
+                {dataset.attributes.name}
               </Link>
             </Title>
 
             {/* Description */}
-            {element.description &&
-              <p>{this.getDescription(element.description)}</p>
+            {dataset.attributes.description &&
+              <p>{this.getDescription(dataset.attributes.description)}</p>
             }
 
             {/* Source */}
-            {element.source &&
-              <p>Source: {element.source}</p>
+            {dataset.attributes.source &&
+              <p>Source: {dataset.attributes.source}</p>
             }
           </div>
           <div className="actions">
@@ -149,7 +149,7 @@ class DatasetWidget extends React.Component {
 DatasetWidget.propTypes = {
   // STATE
   active: React.PropTypes.bool,
-  dataset: React.PropTypes.string,
+  dataset: React.PropTypes.object,
   widget: React.PropTypes.object,
   layer: React.PropTypes.object,
   mode: React.PropTypes.string,

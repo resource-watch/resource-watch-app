@@ -7,6 +7,8 @@ import Breadcrumbs from 'components/ui/Breadcrumbs';
 import Button from 'components/ui/Button';
 import Icon from 'components/ui/Icon';
 import Dropdown from 'components/ui/Dropdown';
+import DatasetList from 'components/explore/DatasetList';
+import Spinner from 'components/ui/Spinner';
 
 const breadcrumbs = [
   { name: 'Home', url: '/' }
@@ -18,9 +20,9 @@ class ExploreDetail extends React.Component {
     super(props);
 
     this.state = {
-      dataset: {},
       widgetChartLoading: true,
-      configureDropdownActive: false
+      configureDropdownActive: false,
+      similarDatasetsLoaded: false
     };
 
     // BINDINGS
@@ -32,6 +34,29 @@ class ExploreDetail extends React.Component {
   componentWillMount() {
     this.setState({ widgetChartLoading: true });
     this.props.getDataset(this.props.params.id);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (this.props.params.id !== nextProps.params.id) {
+      this.props.resetDataset();
+      this.setState({ similarDatasetsLoaded: false }, () => {
+        this.props.getDataset(this.props.params.id);
+      });
+    }
+
+    const dataset = nextProps.exploreDetail.dataset.detail.attributes;
+
+    if (dataset) {
+      const hasTags = dataset.tags.length > 0;
+      if (hasTags) {
+        const tags = dataset.tags;
+        if (!this.state.similarDatasetsLoaded) {
+          this.setState({ similarDatasetsLoaded: true }, () => {
+            this.props.getSimilarDatasets(tags);
+          });
+        }
+      }
+    }
   }
 
   componentWillUnmount() {
@@ -92,7 +117,9 @@ class ExploreDetail extends React.Component {
   }
 
   render() {
-    const dataset = this.props.exploreDetail.dataset;
+    const { exploreDetail } = this.props;
+
+    const dataset = exploreDetail.dataset;
     let hasDataset = false;
     let hasLayer = false;
 
@@ -131,6 +158,10 @@ class ExploreDetail extends React.Component {
                 />
               </Button>
             </div>
+            <Spinner
+              isLoading={exploreDetail.dataset.loading}
+              className="-fixed -light"
+            />
           </div>
         </div>
         <div className="row description-row">
@@ -157,9 +188,24 @@ class ExploreDetail extends React.Component {
           </div>
         </div>
         <div className="row similar-datasets-row">
-          <Title className="-secondary title">
-            Similar datasets
-          </Title>
+          <div className="column small-12">
+            <Title className="-secondary title">
+              Similar datasets
+            </Title>
+          </div>
+          <div className="column small-12">
+            <DatasetList
+              active={[]}
+              list={exploreDetail.similarDatasets.list.filter(value =>
+                value.id !== this.props.params.id
+              )}
+              mode="grid"
+            />
+            <Spinner
+              isLoading={exploreDetail.similarDatasets.loading}
+              className="-relative"
+            />
+          </div>
         </div>
       </div>
     );
@@ -175,7 +221,8 @@ ExploreDetail.propTypes = {
 
   // ACTIONS
   getDataset: React.PropTypes.func,
-  resetDataset: React.PropTypes.func
+  resetDataset: React.PropTypes.func,
+  getSimilarDatasets: React.PropTypes.func
 };
 
 export default ExploreDetail;
