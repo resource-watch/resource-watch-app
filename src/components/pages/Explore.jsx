@@ -10,6 +10,9 @@ import Map from 'containers/explore/Map';
 import Legend from 'components/ui/Legend';
 import CustomSelect from 'components/ui/CustomSelect';
 import LayerManager from 'utils/layers/LayerManager';
+import Breadcrumbs from 'components/ui/Breadcrumbs';
+import Spinner from 'components/ui/Spinner';
+
 import issuesList from '!json!json/issues.json';
 
 const mapConfig = {
@@ -21,7 +24,7 @@ const mapConfig = {
 };
 
 const breadcrumbs = [
-  {name: 'Home', url: '/'}
+  { name: 'Home', url: '/' }
 ];
 
 
@@ -87,6 +90,10 @@ class Explore extends React.Component {
               list={explore.datasets.filtered}
               mode={explore.datasets.mode}
             />
+            <Spinner
+              isLoading={explore.datasets.loading}
+              className="-light"
+            />
             <DatasetList
               active={explore.datasets.active}
               list={paginatedDatasets}
@@ -109,13 +116,13 @@ class Explore extends React.Component {
             toggledDataset={this.props.toggledDataset}
           />
 
-        {this.state.layersActive && this.state.layersActive.length &&
-          <Legend
-            layersActive={this.state.layersActive}
-            className={{ color: '-dark' }}
-            setDatasetsActive={this.props.setDatasetsActive}
-          />
-        }
+          {this.state.layersActive && this.state.layersActive.length &&
+            <Legend
+              layersActive={this.state.layersActive}
+              className={{ color: '-dark' }}
+              setDatasetsActive={this.props.setDatasetsActive}
+            />
+          }
         </div>
       </div>
     );
@@ -131,7 +138,8 @@ Explore.propTypes = {
 
   // ACTIONS
   getDatasets: React.PropTypes.func,
-  setDatasetsPage: React.PropTypes.func
+  setDatasetsPage: React.PropTypes.func,
+  setDatasetsActive: React.PropTypes.func
 };
 
 

@@ -24,7 +24,7 @@ class DatasetList extends React.Component {
             <div className={newClassName} key={dataset.id}>
               <DatasetWidget
                 active={active.includes(dataset.id)}
-                dataset={dataset.id}
+                dataset={dataset}
                 widget={find(dataset.attributes.widget, { attributes: { default: true } })}
                 layer={find(dataset.attributes.layer, { attributes: { default: true } })}
                 mode={mode}
