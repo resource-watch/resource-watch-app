@@ -22,6 +22,11 @@ const initialState = {
     detail: {},
     loading: false,
     error: false
+  },
+  similarDatasets: {
+    loading: false,
+    error: false,
+    list: []
   }
 };
 
@@ -58,7 +63,7 @@ export default function (state = initialState, action) {
 
     case GET_SIMILAR_DATASETS_SUCCESS: {
       const similarDatasets = Object.assign({}, state.similarDatasets, {
-        detail: action.payload,
+        list: action.payload,
         loading: false,
         error: false
       });
@@ -123,7 +128,6 @@ export function getDataset(datasetId) {
 
 export function getSimilarDatasets(tags){
   return (dispatch) => {
-    console.info(tags);
     // Waiting for fetch from server -> Dispatch loading
     dispatch({ type: GET_SIMILAR_DATASETS_LOADING });
     // TODO: remove the date now

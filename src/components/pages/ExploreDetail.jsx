@@ -7,6 +7,8 @@ import Breadcrumbs from 'components/ui/Breadcrumbs';
 import Button from 'components/ui/Button';
 import Icon from 'components/ui/Icon';
 import Dropdown from 'components/ui/Dropdown';
+import DatasetList from 'components/explore/DatasetList';
+import Paginator from 'components/ui/Paginator';
 
 const breadcrumbs = [
   { name: 'Home', url: '/' }
@@ -18,9 +20,9 @@ class ExploreDetail extends React.Component {
     super(props);
 
     this.state = {
-      dataset: {},
       widgetChartLoading: true,
-      configureDropdownActive: false
+      configureDropdownActive: false,
+      similarDatasetsLoaded: false
     };
 
     // BINDINGS
@@ -32,6 +34,23 @@ class ExploreDetail extends React.Component {
   componentWillMount() {
     this.setState({ widgetChartLoading: true });
     this.props.getDataset(this.props.params.id);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const dataset = nextProps.exploreDetail.dataset.detail.attributes;
+    console.info('exploreDetail', nextProps.exploreDetail);
+
+    if (dataset) {
+      const hasTags = dataset.tags.length > 0;
+      if (hasTags) {
+        const tags = dataset.tags;
+        if (!this.state.similarDatasetsLoaded) {
+          this.setState({ similarDatasetsLoaded: true }, () => {
+            this.props.getSimilarDatasets(tags);
+          });
+        }
+      }
+    }
   }
 
   componentWillUnmount() {
@@ -92,30 +111,23 @@ class ExploreDetail extends React.Component {
   }
 
   render() {
-    const dataset = this.props.exploreDetail.dataset;
+    const { exploreDetail } = this.props;
+
+    const dataset = exploreDetail.dataset;
     let hasDataset = false;
     let hasLayer = false;
-    let hasTags = false;
-
-    console.info('dataset', dataset);
 
     if (dataset.detail.attributes) {
       hasDataset = true;
       // hasWidget = dataset.detail.attributes.widget.length > 0;
       hasLayer = dataset.detail.attributes.layer.length > 0;
-      hasTags = dataset.detail.attributes.tags.length > 0;
-    }
-
-    console.info('hasTags', hasTags);
-
-    if (hasTags) {
-      const tags = dataset.detail.attributes.tags;
-      console.info('tags', tags);
     }
 
     const newClassConfigureButton = classNames({
       '-active': this.state.configureDropdownActive
     });
+
+    console.info('exploreDetail.similarDatasets.list', exploreDetail.similarDatasets.list);
 
     return (
       <div className="c-page c-page-explore-detail">
@@ -173,6 +185,14 @@ class ExploreDetail extends React.Component {
               Similar datasets
             </Title>
           </div>
+          <div className="column small-7">
+            <DatasetList
+              active={[]}
+              list={exploreDetail.similarDatasets.list}
+              mode="grid"
+            />
+
+          </div>
         </div>
       </div>
     );
@@ -188,7 +208,8 @@ ExploreDetail.propTypes = {
 
   // ACTIONS
   getDataset: React.PropTypes.func,
-  resetDataset: React.PropTypes.func
+  resetDataset: React.PropTypes.func,
+  getSimilarDatasets: React.PropTypes.func
 };
 
 export default ExploreDetail;
