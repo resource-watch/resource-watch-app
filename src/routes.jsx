@@ -9,10 +9,10 @@ import Home from './containers/pages/Home';
 import Explore from './containers/pages/Explore';
 import ExploreDetail from './containers/pages/ExploreDetail';
 import Pulse from './containers/pages/Pulse';
-import Partners from './containers/pages/Partners';
-import PartnerDetail from './containers/pages/Partners/PartnerDetail';
 import Apps from './containers/pages/Apps';
-import AppDetail from './containers/pages/Apps/AppDetail';
+import AppDetail from './containers/pages/AppDetail';
+import Partners from './containers/pages/Partners';
+import PartnerDetail from './containers/pages/PartnerDetail';
 
 function Routes(props) {
   return (
