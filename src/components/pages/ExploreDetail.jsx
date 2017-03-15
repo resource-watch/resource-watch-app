@@ -79,13 +79,17 @@ class ExploreDetail extends React.Component {
   getOpenMapButton(hasLayer) {
     const { mapSectionOpened } = this.state;
     const buttonText = (mapSectionOpened) ? 'Active' : 'Open in data map';
-    const buttonClass = (hasLayer) ? '-active' : '';
+    const buttonClass = classNames({
+      '-active': hasLayer,
+      '-primary': true,
+      '-fullwidth': true
+    });
 
     if (hasLayer) {
       return (
         <Button
           properties={{
-            className: `-primary -fullwidth ${buttonClass}`
+            className: buttonClass
           }}
           onClick={this.triggerOpenLayer}
         >
@@ -229,6 +233,7 @@ class ExploreDetail extends React.Component {
       </div>
     );
 
+
     if (!this.state.mapSectionOpened) {
       return (
         <div className="c-page c-page-explore-detail">
@@ -236,6 +241,14 @@ class ExploreDetail extends React.Component {
         </div>
       );
     } else {
+      const activeLayer = [];
+      const defaultLayer = dataset.detail.attributes.layer.find(
+        value => value.attributes.default === true);
+
+      if (defaultLayer) {
+        activeLayer.push(defaultLayer.attributes);
+      }
+
       return (
         <div className="c-page c-page-explore-detail">
           <Sidebar>
@@ -244,17 +257,12 @@ class ExploreDetail extends React.Component {
           <Map
             LayerManager={LayerManager}
             mapConfig={mapConfig}
-            layersActive={this.state.layersActive}
-            toggledDataset={this.props.toggledDataset}
+            layersActive={activeLayer}
           />
-
-          {this.state.layersActive && this.state.layersActive.length &&
           <Legend
-            layersActive={this.state.layersActive}
+            layersActive={activeLayer}
             className={{ color: '-dark' }}
-            setDatasetsActive={this.props.setDatasetsActive}
           />
-          }
         </div>
       );
     }
