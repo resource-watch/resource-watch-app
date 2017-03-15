@@ -9,10 +9,22 @@ import Icon from 'components/ui/Icon';
 import Dropdown from 'components/ui/Dropdown';
 import DatasetList from 'components/explore/DatasetList';
 import Spinner from 'components/ui/Spinner';
+import Sidebar from 'containers/explore/Sidebar';
+import Map from 'containers/explore/Map';
+import Legend from 'components/ui/Legend';
+import LayerManager from 'utils/layers/LayerManager';
 
 const breadcrumbs = [
   { name: 'Home', url: '/' }
 ];
+
+const mapConfig = {
+  zoom: 3,
+  latLng: {
+    lat: 0,
+    lng: 0
+  }
+};
 
 class ExploreDetail extends React.Component {
 
@@ -22,12 +34,13 @@ class ExploreDetail extends React.Component {
     this.state = {
       widgetChartLoading: true,
       configureDropdownActive: false,
-      similarDatasetsLoaded: false
+      similarDatasetsLoaded: false,
+      mapSectionOpened: false
     };
 
     // BINDINGS
-    this.triggerToggleWidgetChartLoading = this.triggerToggleWidgetChartLoading.bind(this);
     this.triggerConfigureChart = this.triggerConfigureChart.bind(this);
+    this.triggerOpenLayer = this.triggerOpenLayer.bind(this);
     this.handleConfigureDropdownChange = this.handleConfigureDropdownChange.bind(this);
   }
 
@@ -64,6 +77,8 @@ class ExploreDetail extends React.Component {
   }
 
   getOpenMapButton(hasLayer) {
+    const { mapSectionOpened } = this.state;
+    const buttonText = (mapSectionOpened) ? 'Active' : 'Open in data map';
     const buttonClass = (hasLayer) ? '-active' : '';
 
     if (hasLayer) {
@@ -74,7 +89,7 @@ class ExploreDetail extends React.Component {
           }}
           onClick={this.triggerOpenLayer}
         >
-          Open in data map
+          {buttonText}
         </Button>
       );
     }
@@ -84,7 +99,6 @@ class ExploreDetail extends React.Component {
           disabled: true,
           className: '-primary -fullwidth -disabled'
         }}
-        onClick={this.triggerToggleLayer}
       >
         Not displayable
       </Button>
@@ -92,12 +106,9 @@ class ExploreDetail extends React.Component {
     );
   }
 
-  triggerToggleWidgetChartLoading(loading) {
-    this.setState({ widgetChartLoading: loading });
-  }
-
   triggerOpenLayer() {
     console.info('triggerOpenLayer');
+    this.setState({ mapSectionOpened: !this.state.mapSectionOpened });
   }
 
   triggerDownload() {
@@ -141,7 +152,7 @@ class ExploreDetail extends React.Component {
                 ).length > 0
     });
 
-    return (
+    const pageStructure = (
       <div className="c-page c-page-explore-detail">
         <div className="row">
           <div className="column small-12">
@@ -217,6 +228,36 @@ class ExploreDetail extends React.Component {
         </div>
       </div>
     );
+
+    if (!this.state.mapSectionOpened) {
+      return (
+        <div className="c-page c-page-explore-detail">
+          {pageStructure}
+        </div>
+      );
+    } else {
+      return (
+        <div className="c-page c-page-explore-detail">
+          <Sidebar>
+            {pageStructure}
+          </Sidebar>
+          <Map
+            LayerManager={LayerManager}
+            mapConfig={mapConfig}
+            layersActive={this.state.layersActive}
+            toggledDataset={this.props.toggledDataset}
+          />
+
+          {this.state.layersActive && this.state.layersActive.length &&
+          <Legend
+            layersActive={this.state.layersActive}
+            className={{ color: '-dark' }}
+            setDatasetsActive={this.props.setDatasetsActive}
+          />
+          }
+        </div>
+      );
+    }
   }
 }
 
