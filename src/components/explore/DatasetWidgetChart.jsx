@@ -30,7 +30,7 @@ class DatasetWidgetChart extends React.Component {
     const widgetConfig = this.state.widget.widgetConfig;
 
     return (
-      <div className="c-dataset-widget">
+      <div className="c-dataset-chart">
         <Spinner
           isLoading={this.state.loading}
           className="-light"

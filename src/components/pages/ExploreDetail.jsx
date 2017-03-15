@@ -195,7 +195,7 @@ class ExploreDetail extends React.Component {
           </div>
           <div className="column small-12">
             <DatasetList
-              active={[]}
+              active={exploreDetail.similarDatasets.list.map(value => value.id)}
               list={exploreDetail.similarDatasets.list.filter(value =>
                 value.id !== this.props.params.id
               )}

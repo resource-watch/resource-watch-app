@@ -123,16 +123,17 @@ export function getDatasets() {
         // Filtering datasets that have widget or layer
         // and only belong to RW app
         const datasets = response.data.filter((dataset) => {
-          const isRwApp = (dataset.attributes.application.length === 1);
-          const hasWidgetDefault = dataset.attributes.widget.length &&
-                                   !!find(dataset.attributes.widget, {
-                                     attributes: { default: true }
-                                   });
-          const hasLayerDefault = dataset.attributes.layer.length &&
-                                  !!find(dataset.attributes.layer, {
-                                    attributes: { default: true }
-                                  });
-          return isRwApp && (hasWidgetDefault || hasLayerDefault);
+          const isRwApp = (dataset.attributes.application.length === 1) && dataset.attributes.application.includes('rw');
+          // const hasWidgetDefault = dataset.attributes.widget.length &&
+          //                          !!find(dataset.attributes.widget, {
+          //                            attributes: { default: true }
+          //                          });
+          // const hasLayerDefault = dataset.attributes.layer.length &&
+          //                         !!find(dataset.attributes.layer, {
+          //                           attributes: { default: true }
+          //                         });
+          // return isRwApp && (hasWidgetDefault || hasLayerDefault);
+          return isRwApp;
         });
 
         dispatch({
