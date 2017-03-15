@@ -10,6 +10,9 @@ const GET_DATASET_SUCCESS = 'explore/GET_DATASET_SUCCESS';
 const GET_DATASET_ERROR = 'explore/GET_DATASET_ERROR';
 const GET_DATASET_LOADING = 'explore/GET_DATASET_LOADING';
 const RESET_DATASET = 'explore/RESET_DATASET';
+const GET_SIMILAR_DATASETS_SUCCESS = 'explore/GET_SIMILAR_DATASETS_SUCCESS';
+const GET_SIMILAR_DATASETS_ERROR = 'explore/GET_SIMILAR_DATASETS_ERROR';
+const GET_SIMILAR_DATASETS_LOADING = 'explore/GET_SIMILAR_DATASETS_LOADING';
 
 /**
  * REDUCER
@@ -19,6 +22,11 @@ const initialState = {
     detail: {},
     loading: false,
     error: false
+  },
+  similarDatasets: {
+    loading: false,
+    error: false,
+    list: []
   }
 };
 
@@ -53,6 +61,31 @@ export default function (state = initialState, action) {
       return initialState;
     }
 
+    case GET_SIMILAR_DATASETS_SUCCESS: {
+      const similarDatasets = Object.assign({}, state.similarDatasets, {
+        list: action.payload,
+        loading: false,
+        error: false
+      });
+      return Object.assign({}, state, { similarDatasets });
+    }
+
+    case GET_SIMILAR_DATASETS_ERROR: {
+      const similarDatasets = Object.assign({}, state.similarDatasets, {
+        loading: false,
+        error: true
+      });
+      return Object.assign({}, state, { similarDatasets });
+    }
+
+    case GET_SIMILAR_DATASETS_LOADING: {
+      const similarDatasets = Object.assign({}, state.similarDatasets, {
+        loading: true,
+        error: false
+      });
+      return Object.assign({}, state, { similarDatasets });
+    }
+
     default:
       return state;
   }
@@ -61,6 +94,7 @@ export default function (state = initialState, action) {
 /**
  * ACTIONS
  * - getDataset
+ * - getSimilarDatasets
  * - resetDataset
 */
 export function getDataset(datasetId) {
@@ -86,6 +120,34 @@ export function getDataset(datasetId) {
         // Fetch from server ko -> Dispatch error
         dispatch({
           type: GET_DATASET_ERROR,
+          payload: err.message
+        });
+      });
+  };
+}
+
+export function getSimilarDatasets(tags){
+  return (dispatch) => {
+    // Waiting for fetch from server -> Dispatch loading
+    dispatch({ type: GET_SIMILAR_DATASETS_LOADING });
+    // TODO: remove the date now
+    fetch(new Request(`${config.API_URL}/dataset/?app=rw&includes=widget,layer&tags=${tags}&page[size]=4&page[number]=1&cache=${Date.now() / 100000}`))
+      .then((response) => {
+        if (response.ok) return response.json();
+        throw new Error(response.statusText);
+      })
+      .then((response) => {
+        const datasets = response.data;
+
+        dispatch({
+          type: GET_SIMILAR_DATASETS_SUCCESS,
+          payload: datasets
+        });
+      })
+      .catch((err) => {
+        // Fetch from server ko -> Dispatch error
+        dispatch({
+          type: GET_SIMILAR_DATASETS_ERROR,
           payload: err.message
         });
       });

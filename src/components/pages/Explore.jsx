@@ -10,6 +10,7 @@ import Map from 'containers/explore/Map';
 import Legend from 'components/ui/Legend';
 import LayerManager from 'utils/layers/LayerManager';
 import Breadcrumbs from 'components/ui/Breadcrumbs';
+import Spinner from 'components/ui/Spinner';
 
 const mapConfig = {
   zoom: 3,
@@ -20,7 +21,7 @@ const mapConfig = {
 };
 
 const breadcrumbs = [
-  {name: 'Home', url: '/'}
+  { name: 'Home', url: '/' }
 ];
 
 class Explore extends React.Component {
@@ -30,7 +31,7 @@ class Explore extends React.Component {
 
     this.state = {
       layersActive: props.layersActive
-    }
+    };
   }
 
   componentWillMount() {
@@ -48,13 +49,17 @@ class Explore extends React.Component {
     return (
       <div className="c-page -dark">
         <Sidebar>
-          <Breadcrumbs items={breadcrumbs}/>
+          <Breadcrumbs items={breadcrumbs} />
           <Title className="-primary -huge">
             Explore
           </Title>
           <DatasetListHeader
             list={explore.datasets.list}
             mode={explore.datasets.mode}
+          />
+          <Spinner
+            isLoading={explore.datasets.loading}
+            className="-light"
           />
           <DatasetList
             active={explore.datasets.active}
@@ -78,7 +83,7 @@ class Explore extends React.Component {
           toggledDataset={this.props.toggledDataset}
         />
 
-      {this.state.layersActive && this.state.layersActive.length &&
+        {this.state.layersActive && this.state.layersActive.length &&
         <Legend
           layersActive={this.state.layersActive}
           className={{ color: '-dark' }}
@@ -99,7 +104,8 @@ Explore.propTypes = {
 
   // ACTIONS
   getDatasets: React.PropTypes.func,
-  setDatasetsPage: React.PropTypes.func
+  setDatasetsPage: React.PropTypes.func,
+  setDatasetsActive: React.PropTypes.func
 };
 
 
