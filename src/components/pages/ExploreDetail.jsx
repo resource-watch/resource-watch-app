@@ -275,6 +275,7 @@ ExploreDetail.propTypes = {
 
   // STORE
   exploreDetail: React.PropTypes.object,
+  layersActive: React.PropTypes.array,
 
   // ACTIONS
   getDataset: React.PropTypes.func,
