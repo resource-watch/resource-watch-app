@@ -7,8 +7,15 @@
   letter-spacing: 1px;
   font-weight: bold;
   cursor: pointer;
+  background-color: $color-white;
 
   &:focus { outline: none; }
+
+  &.-primary { 
+    color: $color-primary; 
+
+    & * { color: $color-primary; }
+  }
 
   &.-filled {
     color: $color-white;
