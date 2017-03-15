@@ -18,8 +18,31 @@
   }
 
   &.-filled {
-    color: $color-white;
+    color: $color-primary;
+    background-color: $color-white;
 
-    &.-primary { background-color: $color-primary; }
+    & * { color: $color-primary; }
+
+    &.-primary { 
+      background-color: $color-primary; 
+      color: $color-white;
+
+      & * { color: $color-white; }
+    }
+  }
+
+  &.-transparent {
+    background-color: transparent;
+    color: $color-white;
+    border: 1px solid $color-white;
+
+    & * { color: $color-white; }
+
+    &.-primary { 
+      color: $color-primary;
+      border: 1px solid $color-primary;
+
+      & * { color: $color-primary; }
+    }
   }
 }

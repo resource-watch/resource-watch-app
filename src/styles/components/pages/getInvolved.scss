@@ -15,8 +15,19 @@
 
     .c-btn {
       color: $color-primary;
-      
+
       & * { color: $color-primary; }
+    }
+  }
+
+  .cards {
+    .column {
+      height: 400px;
+      padding-bottom: 20px;
+
+      &:nth-child(odd) {
+        padding-right: 20px;
+      }
     }
   }
 }
