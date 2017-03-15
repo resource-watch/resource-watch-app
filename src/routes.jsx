@@ -8,6 +8,7 @@ import App from './App';
 import Home from './containers/pages/Home';
 import Explore from './containers/pages/Explore';
 import Pulse from './containers/pages/Pulse';
+import About from './components/pages/About';
 import Partners from './containers/pages/Partners';
 import PartnerDetail from './containers/pages/Partners/PartnerDetail';
 
@@ -25,11 +26,15 @@ function Routes(props) {
           <IndexRoute component={Pulse} />
         </Route>
 
-        <Route path="partners">
-          <IndexRoute component={Partners} />
+        <Route path="about">
+          <IndexRoute component={About} />
 
-          <Route path=":partner">
-            <IndexRoute component={PartnerDetail} />
+          <Route path="partners">
+            <IndexRoute component={Partners} />
+
+            <Route path=":partner">
+              <IndexRoute component={PartnerDetail} />
+            </Route>
           </Route>
         </Route>
       </Route>

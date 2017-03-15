@@ -1,14 +1,12 @@
 @import "../../../styles/config";
 
-$footer-main-height: rem(100);
-$footer-secondary-height: rem(30);
-
 .c-footer {
+  margin-top: 120px;
+
   .footer-intro {
     position: relative;
     border-top: 1px solid $border-color-1;
     padding: 35px 0;
-    margin-top: 40px;
     height: 120px;
 
     .title {
