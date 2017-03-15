@@ -76,16 +76,16 @@ class ExploreDetail extends React.Component {
     this.props.resetDataset();
   }
 
-  getOpenMapButton(hasLayer) {
+  getOpenMapButton(hasDefaultLayer) {
     const { mapSectionOpened } = this.state;
     const buttonText = (mapSectionOpened) ? 'Active' : 'Open in data map';
     const buttonClass = classNames({
-      '-active': hasLayer,
+      '-active': hasDefaultLayer,
       '-primary': true,
       '-fullwidth': true
     });
 
-    if (hasLayer) {
+    if (hasDefaultLayer) {
       return (
         <Button
           properties={{
@@ -137,11 +137,16 @@ class ExploreDetail extends React.Component {
     const dataset = exploreDetail.dataset;
     let hasDataset = false;
     let hasLayer = false;
+    let hasDefaultLayer = false;
+    let defaultLayer = null;
 
     if (dataset.detail.attributes) {
       hasDataset = true;
       // hasWidget = dataset.detail.attributes.widget.length > 0;
       hasLayer = dataset.detail.attributes.layer.length > 0;
+      defaultLayer = dataset.detail.attributes.layer.find(
+        value => value.attributes.default === true);
+      hasDefaultLayer = defaultLayer;
     }
 
     const newClassConfigureButton = classNames({
@@ -198,7 +203,7 @@ class ExploreDetail extends React.Component {
             </p>
           </div>
           <div className="column small-3 actions">
-            {this.getOpenMapButton(hasLayer)}
+            {this.getOpenMapButton(hasDefaultLayer)}
             <Button
               properties={{
                 disabled: true,
@@ -242,10 +247,8 @@ class ExploreDetail extends React.Component {
       );
     } else {
       const activeLayer = [];
-      const defaultLayer = dataset.detail.attributes.layer.find(
-        value => value.attributes.default === true);
 
-      if (defaultLayer) {
+      if (hasDefaultLayer) {
         activeLayer.push(defaultLayer.attributes);
       }
 
