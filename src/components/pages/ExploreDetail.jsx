@@ -37,6 +37,13 @@ class ExploreDetail extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    if (this.props.params.id !== nextProps.params.id) {
+      this.props.resetDataset();
+      this.setState({ similarDatasetsLoaded: false }, () => {
+        this.props.getDataset(this.props.params.id);
+      });
+    }
+
     const dataset = nextProps.exploreDetail.dataset.detail.attributes;
     console.info('exploreDetail', nextProps.exploreDetail);
 
@@ -44,6 +51,7 @@ class ExploreDetail extends React.Component {
       const hasTags = dataset.tags.length > 0;
       if (hasTags) {
         const tags = dataset.tags;
+        console.info('tags', tags);
         if (!this.state.similarDatasetsLoaded) {
           this.setState({ similarDatasetsLoaded: true }, () => {
             this.props.getSimilarDatasets(tags);
@@ -180,12 +188,12 @@ class ExploreDetail extends React.Component {
           </div>
         </div>
         <div className="row similar-datasets-row">
-          <div className="column small-7">
+          <div className="column small-12">
             <Title className="-secondary title">
               Similar datasets
             </Title>
           </div>
-          <div className="column small-7">
+          <div className="column small-12">
             <DatasetList
               active={[]}
               list={exploreDetail.similarDatasets.list}
