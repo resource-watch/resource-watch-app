@@ -8,7 +8,7 @@ import Button from 'components/ui/Button';
 import Icon from 'components/ui/Icon';
 import Dropdown from 'components/ui/Dropdown';
 import DatasetList from 'components/explore/DatasetList';
-import Paginator from 'components/ui/Paginator';
+import Spinner from 'components/ui/Spinner';
 
 const breadcrumbs = [
   { name: 'Home', url: '/' }
@@ -45,13 +45,11 @@ class ExploreDetail extends React.Component {
     }
 
     const dataset = nextProps.exploreDetail.dataset.detail.attributes;
-    console.info('exploreDetail', nextProps.exploreDetail);
 
     if (dataset) {
       const hasTags = dataset.tags.length > 0;
       if (hasTags) {
         const tags = dataset.tags;
-        console.info('tags', tags);
         if (!this.state.similarDatasetsLoaded) {
           this.setState({ similarDatasetsLoaded: true }, () => {
             this.props.getSimilarDatasets(tags);
@@ -135,8 +133,6 @@ class ExploreDetail extends React.Component {
       '-active': this.state.configureDropdownActive
     });
 
-    console.info('exploreDetail.similarDatasets.list', exploreDetail.similarDatasets.list);
-
     return (
       <div className="c-page c-page-explore-detail">
         <div className="row">
@@ -162,6 +158,10 @@ class ExploreDetail extends React.Component {
                 />
               </Button>
             </div>
+            <Spinner
+              isLoading={exploreDetail.dataset.loading}
+              className="-relative"
+            />
           </div>
         </div>
         <div className="row description-row">
@@ -199,7 +199,10 @@ class ExploreDetail extends React.Component {
               list={exploreDetail.similarDatasets.list}
               mode="grid"
             />
-
+            <Spinner
+              isLoading={exploreDetail.similarDatasets.loading}
+              className="-relative"
+            />
           </div>
         </div>
       </div>
