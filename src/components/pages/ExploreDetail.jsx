@@ -133,6 +133,14 @@ class ExploreDetail extends React.Component {
       '-active': this.state.configureDropdownActive
     });
 
+    const similarDatasetsSectionClass = classNames({
+      row: true,
+      'similar-datasets-row': true,
+      '-active': exploreDetail.similarDatasets.list.filter(value =>
+                  value.id !== this.props.params.id
+                ).length > 0
+    });
+
     return (
       <div className="c-page c-page-explore-detail">
         <div className="row">
@@ -187,7 +195,7 @@ class ExploreDetail extends React.Component {
             </Button>
           </div>
         </div>
-        <div className="row similar-datasets-row">
+        <div className={similarDatasetsSectionClass} >
           <div className="column small-12">
             <Title className="-secondary title">
               Similar datasets
