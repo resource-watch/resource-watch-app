@@ -79,13 +79,17 @@ class ExploreDetail extends React.Component {
   getOpenMapButton(hasLayer) {
     const { mapSectionOpened } = this.state;
     const buttonText = (mapSectionOpened) ? 'Active' : 'Open in data map';
-    const buttonClass = (hasLayer) ? '-active' : '';
+    const buttonClass = classNames({
+      '-active': hasLayer,
+      '-primary': true,
+      '-fullwidth': true
+    });
 
     if (hasLayer) {
       return (
         <Button
           properties={{
-            className: `-primary -fullwidth ${buttonClass}`
+            className: buttonClass
           }}
           onClick={this.triggerOpenLayer}
         >
