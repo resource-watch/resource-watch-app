@@ -59,7 +59,7 @@ class ExploreDetail extends React.Component {
 
     const dataset = nextProps.exploreDetail.dataset.detail.attributes;
 
-    if (dataset) {
+    if (dataset && dataset.tags) {
       const hasTags = dataset.tags.length > 0;
       if (hasTags) {
         const tags = dataset.tags;
@@ -76,8 +76,11 @@ class ExploreDetail extends React.Component {
     this.props.resetDataset();
   }
 
-  getOpenMapButton(hasDefaultLayer) {
+  getOpenMapButton() {
     const { mapSectionOpened } = this.state;
+    const { dataset } = this.props.exploreDetail;
+    const hasDefaultLayer = !!dataset.detail.attributes.layer.find(
+      value => value.attributes.default === true);
     const buttonText = (mapSectionOpened) ? 'Active' : 'Open in data map';
     const buttonClass = classNames({
       '-active': hasDefaultLayer,
@@ -111,11 +114,21 @@ class ExploreDetail extends React.Component {
   }
 
   triggerOpenLayer() {
-    console.info('triggerOpenLayer');
-    this.setState({ mapSectionOpened: !this.state.mapSectionOpened });
+    const { dataset } = this.props.exploreDetail;
+
+    this.setState(
+      {
+        mapSectionOpened: !this.state.mapSectionOpened
+      }
+    );
+
+    const defaultLayerId = dataset.detail.attributes.layer.find(
+      value => value.attributes.default === true).attributes.id;
+
+    this.props.toggleLayerShown(defaultLayerId);
   }
 
-  triggerDownload() {
+  triggerDownload(){
     console.info('triggerDownload');
   }
 
@@ -133,21 +146,8 @@ class ExploreDetail extends React.Component {
 
   render() {
     const { exploreDetail } = this.props;
-
-    const dataset = exploreDetail.dataset;
-    let hasDataset = false;
-    let hasLayer = false;
-    let hasDefaultLayer = false;
-    let defaultLayer = null;
-
-    if (dataset.detail.attributes) {
-      hasDataset = true;
-      // hasWidget = dataset.detail.attributes.widget.length > 0;
-      hasLayer = dataset.detail.attributes.layer.length > 0;
-      defaultLayer = dataset.detail.attributes.layer.find(
-        value => value.attributes.default === true);
-      hasDefaultLayer = defaultLayer;
-    }
+    const { dataset } = exploreDetail;
+    const { layersShown } = this.props;
 
     const newClassConfigureButton = classNames({
       '-active': this.state.configureDropdownActive
@@ -166,7 +166,7 @@ class ExploreDetail extends React.Component {
         <div className="row">
           <div className="column small-12">
             <Breadcrumbs items={breadcrumbs} />
-            <Title className="-primary -huge title" >{ hasDataset &&
+            <Title className="-primary -huge title" >{ dataset.detail.attributes &&
                 dataset.detail.attributes.name}</Title>
           </div>
         </div>
@@ -198,12 +198,12 @@ class ExploreDetail extends React.Component {
             <Icon name="icon-facebook" className="-small" />
           </div>
           <div className="column small-7">
-            <p>{ hasDataset &&
+            <p>{ dataset.detail.attributes &&
                 dataset.detail.attributes.description}
             </p>
           </div>
           <div className="column small-3 actions">
-            {this.getOpenMapButton(hasDefaultLayer)}
+            {this.getOpenMapButton()}
             <Button
               properties={{
                 disabled: true,
@@ -238,7 +238,6 @@ class ExploreDetail extends React.Component {
       </div>
     );
 
-
     if (!this.state.mapSectionOpened) {
       return (
         <div className="c-page c-page-explore-detail">
@@ -246,12 +245,6 @@ class ExploreDetail extends React.Component {
         </div>
       );
     } else {
-      const activeLayer = [];
-
-      if (hasDefaultLayer) {
-        activeLayer.push(defaultLayer.attributes);
-      }
-
       return (
         <div className="c-page c-page-explore-detail">
           <Sidebar>
@@ -260,10 +253,10 @@ class ExploreDetail extends React.Component {
           <Map
             LayerManager={LayerManager}
             mapConfig={mapConfig}
-            layersActive={activeLayer}
+            layersActive={layersShown}
           />
           <Legend
-            layersActive={activeLayer}
+            layersActive={layersShown}
             className={{ color: '-dark' }}
           />
         </div>
@@ -275,15 +268,16 @@ class ExploreDetail extends React.Component {
 ExploreDetail.propTypes = {
 
   params: React.PropTypes.object,
+  layersShown: React.PropTypes.array,
 
   // STORE
   exploreDetail: React.PropTypes.object,
-  layersActive: React.PropTypes.array,
 
   // ACTIONS
   getDataset: React.PropTypes.func,
   resetDataset: React.PropTypes.func,
-  getSimilarDatasets: React.PropTypes.func
+  getSimilarDatasets: React.PropTypes.func,
+  toggleLayerShown: React.PropTypes.func
 };
 
 export default ExploreDetail;

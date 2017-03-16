@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import Explore from 'components/pages/Explore';
 import { getDatasets, setDatasetsPage, setUrlParams, setDatasetsActive } from 'redactions/explore';
 import getpaginatedDatasets from 'selectors/explore/datasetsPaginatedExplore';
-import getActiveLayers from 'selectors/explore/layersActive';
+import getActiveLayers from 'selectors/explore/layersActiveExplore';
 
 const mapStateToProps = state => ({
   explore: state.explore,

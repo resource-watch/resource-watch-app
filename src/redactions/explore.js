@@ -167,8 +167,8 @@ export function setDatasetsActive(active) {
 
 
 export function toggleDatasetActive(id) {
-  return (dispatch, state) => {
-    const { explore } = state();
+  return (dispatch, getState) => {
+    const { explore } = getState();
     const active = explore.datasets.active.slice();
     const index = active.indexOf(id);
 
