@@ -9,6 +9,7 @@ import Home from './containers/pages/Home';
 import Explore from './containers/pages/Explore';
 import ExploreDetail from './containers/pages/ExploreDetail';
 import Pulse from './containers/pages/Pulse';
+import About from './components/pages/About';
 import Apps from './containers/pages/Apps';
 import AppDetail from './containers/pages/AppDetail';
 import Partners from './containers/pages/Partners';
@@ -33,11 +34,15 @@ function Routes(props) {
           <IndexRoute component={Pulse} />
         </Route>
 
-        <Route path="partners">
-          <IndexRoute component={Partners} />
+        <Route path="about">
+          <IndexRoute component={About} />
 
-          <Route path=":partner">
-            <IndexRoute component={PartnerDetail} />
+          <Route path="partners">
+            <IndexRoute component={Partners} />
+
+            <Route path=":partner">
+              <IndexRoute component={PartnerDetail} />
+            </Route>
           </Route>
         </Route>
 

@@ -13,7 +13,7 @@ const data = [
 
 const about = [
   { name: 'About', path: '/about' },
-  { name: 'Partners', path: '/partners' }
+  { name: 'Partners', path: '/about/partners' }
 ];
 
 const insights = [
