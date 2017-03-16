@@ -26,22 +26,9 @@ const breadcrumbs = [
 
 class Explore extends React.Component {
 
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      layersActive: props.layersActive
-    };
-  }
-
   componentWillMount() {
     this.props.getDatasets();
   }
-
-  componentWillReceiveProps(nextProps) {
-    this.setState({ layersActive: nextProps.layersActive });
-  }
-
 
   render() {
     const { explore, paginatedDatasets } = this.props;
@@ -79,17 +66,17 @@ class Explore extends React.Component {
         <Map
           LayerManager={LayerManager}
           mapConfig={mapConfig}
-          layersActive={this.state.layersActive}
+          layersActive={this.props.layersActive}
           toggledDataset={this.props.toggledDataset}
         />
 
-        {this.state.layersActive && this.state.layersActive.length &&
-        <Legend
-          layersActive={this.state.layersActive}
-          className={{ color: '-dark' }}
-          setDatasetsActive={this.props.setDatasetsActive}
-        />
-      }
+        {this.props.layersActive && this.props.layersActive.length &&
+          <Legend
+            layersActive={this.props.layersActive}
+            className={{ color: '-dark' }}
+            setDatasetsActive={this.props.setDatasetsActive}
+          />
+        }
       </div>
     );
   }

@@ -61,10 +61,20 @@
 
   .similar-datasets-row {
 
+    display: none;
+
     margin-top: 85px;
 
     .title {
       font-size: 26px !important;
+    }
+
+    .c-dataset-list {
+      margin-top: 16px;
+    }
+
+    &.-active {
+      display: inline;
     }
   }
 
