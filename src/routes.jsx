@@ -10,9 +10,9 @@ import Explore from './containers/pages/Explore';
 import ExploreDetail from './containers/pages/ExploreDetail';
 import Pulse from './containers/pages/Pulse';
 import GetInvolved from './components/pages/GetInvolved';
+import About from './components/pages/About';
 import Apps from './containers/pages/Apps';
 import AppDetail from './containers/pages/AppDetail';
-import About from './components/pages/About';
 import Partners from './containers/pages/Partners';
 import PartnerDetail from './containers/pages/PartnerDetail';
 
