@@ -5,7 +5,9 @@ import Title from 'components/ui/Title';
 import Button from 'components/ui/Button';
 import DatasetWidgetChart from 'components/explore/DatasetWidgetChart';
 import DatasetLayerChart from 'components/explore/DatasetLayerChart';
+import DatasetPlaceholderChart from 'components/explore/DatasetPlaceholderChart';
 import { Link } from 'react-router';
+
 
 class DatasetWidget extends React.Component {
 
@@ -114,6 +116,10 @@ class DatasetWidget extends React.Component {
         {/* If it doesn't have widget but has layer we want to renderize the default layer one */}
         {!hasWidget && hasLayer && gridMode &&
           <DatasetLayerChart layer={element} />
+        }
+
+        {!hasWidget && !hasLayer && gridMode &&
+          <DatasetPlaceholderChart />
         }
 
         <div className="info">

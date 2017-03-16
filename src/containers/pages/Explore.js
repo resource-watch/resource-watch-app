@@ -3,7 +3,7 @@ import Explore from 'components/pages/Explore';
 import { getDatasets, setDatasetsPage, setUrlParams, setDatasetsActive, filterDatasets } from 'redactions/explore';
 import { redirectTo } from 'redactions/common';
 import getpaginatedDatasets from 'selectors/explore/datasetsPaginatedExplore';
-import getActiveLayers from 'selectors/explore/layersActive';
+import getActiveLayers from 'selectors/explore/layersActiveExplore';
 
 const mapStateToProps = state => ({
   explore: state.explore,

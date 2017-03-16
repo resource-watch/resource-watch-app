@@ -28,13 +28,10 @@ const breadcrumbs = [
 ];
 
 
+
 class Explore extends React.Component {
   constructor(props) {
     super(props);
-
-    this.state = {
-      layersActive: props.layersActive
-    }
 
     // Bindings
     this.handleRedirect = this.handleRedirect.bind(this);
@@ -43,10 +40,6 @@ class Explore extends React.Component {
 
   componentWillMount() {
     this.props.getDatasets();
-  }
-
-  componentWillReceiveProps(nextProps) {
-    this.setState({ layersActive: nextProps.layersActive });
   }
 
   handleRedirect(item) {
@@ -116,14 +109,29 @@ class Explore extends React.Component {
             toggledDataset={this.props.toggledDataset}
           />
 
-          {this.state.layersActive && this.state.layersActive.length &&
-            <Legend
-              layersActive={this.state.layersActive}
-              className={{ color: '-dark' }}
-              setDatasetsActive={this.props.setDatasetsActive}
-            />
-          }
-        </div>
+          <Paginator
+            options={{
+              page: explore.datasets.page,
+              limit: explore.datasets.limit,
+              size: explore.datasets.list.length
+            }}
+            onChange={page => this.props.setDatasetsPage(page)}
+          />
+        </Sidebar>
+        <Map
+          LayerManager={LayerManager}
+          mapConfig={mapConfig}
+          layersActive={this.props.layersActive}
+          toggledDataset={this.props.toggledDataset}
+        />
+
+        {this.props.layersActive && this.props.layersActive.length &&
+          <Legend
+            layersActive={this.props.layersActive}
+            className={{ color: '-dark' }}
+            setDatasetsActive={this.props.setDatasetsActive}
+          />
+        }
       </div>
     );
   }
