@@ -1,9 +1,9 @@
 import { createSelector } from 'reselect';
 
 // Get the datasets
-const datasetList = state => state.explore.datasets.filtered;
-const datasetPage = state => state.explore.datasets.page;
-const datasetLimit = state => state.explore.datasets.limit;
+const datasetList = explore => explore.datasets.list;
+const datasetPage = explore => explore.datasets.page;
+const datasetLimit = explore => explore.datasets.limit;
 
 // Create a function to compare the current active datatasets and the current pulseIds
 const getpaginatedDatasets = (_list, _page, _limit) => {

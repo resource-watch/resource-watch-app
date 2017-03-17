@@ -54,12 +54,13 @@ class Explore extends React.Component {
   }
 
   handleFilterDatasets(item) {
-    this.props.filterDatasets(item && item.value || null);
+    const filter = item && [{ key: 'issues', value: item.value}]  || [];
+    this.props.setDatasetsFilters(filter);
   }
 
   render() {
     const { explore, paginatedDatasets } = this.props;
-    const datasetsSearchList = explore.datasets.filtered.map(d => {
+    const datasetsSearchList = explore.datasets.list.map(d => {
       return {
         value: d.id,
         label: d.attributes.name
@@ -87,7 +88,7 @@ class Explore extends React.Component {
             </div>
 
             <DatasetListHeader
-              list={explore.datasets.filtered}
+              list={explore.datasets.list}
               mode={explore.datasets.mode}
             />
             <Spinner
@@ -104,7 +105,7 @@ class Explore extends React.Component {
               options={{
                 page: explore.datasets.page,
                 limit: explore.datasets.limit,
-                size: explore.datasets.filtered.length
+                size: explore.datasets.list.length
               }}
               onChange={page => this.props.setDatasetsPage(page)}
             />
