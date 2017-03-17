@@ -146,7 +146,9 @@ export default class CustomSelect extends React.Component {
     return (
       <div ref={(node) => { this.el = node; }} className={cNames.join(' ')}>
         <span className="custom-select-text" onClick={this.toggle}>
-          <span>{this.state.selectedItem ? this.state.selectedItem.label : this.props.placeholder}</span>
+          <div>
+            <span>{this.state.selectedItem ? this.state.selectedItem.label : this.props.placeholder}</span>
+          </div>
           <input
             ref={(node) => { this.input = node; }}
             className="custom-select-search"

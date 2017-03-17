@@ -3,8 +3,8 @@ import Explore from 'components/pages/Explore';
 import { getDatasets, setDatasetsPage, setUrlParams, setDatasetsActive, setDatasetsFilters } from 'redactions/explore';
 import { redirectTo } from 'redactions/common';
 import getpaginatedDatasets from 'selectors/explore/datasetsPaginatedExplore';
-import getActiveLayers from 'selectors/explore/layersActive';
 import getFilteredDatasets from 'selectors/explore/filterDatasets';
+import getActiveLayers from 'selectors/explore/layersActiveExplore';
 
 const mapStateToProps = state => {
   const datasets = state.explore.filters.length ? 
