@@ -1,11 +1,12 @@
 @import "c-breadcrumbs";
+@import "c-intro";
 @import "common/partners/partner_block";
 @import "common/banner";
-@import "explore/dataset_layer_chart";
+@import "explore/dataset_chart";
+@import "common/card_static";
 @import "explore/dataset_list_header";
 @import "explore/dataset_list";
 @import "explore/dataset_widget";
-@import "explore/dataset_widget_chart";
 @import "explore/widget_configurator";
 @import "layout/footer";
 @import "layout/header";
@@ -14,6 +15,8 @@
 @import "pages/explore_detail";
 @import "pages/explore";
 @import "pages/home";
+@import "pages/about";
+@import "pages/getInvolved";
 @import "pages/partner_detail";
 @import "pages/partners";
 @import "pages/pulse";

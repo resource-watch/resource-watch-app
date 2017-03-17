@@ -10,6 +10,7 @@ const GET_DATASET_SUCCESS = 'explore/GET_DATASET_SUCCESS';
 const GET_DATASET_ERROR = 'explore/GET_DATASET_ERROR';
 const GET_DATASET_LOADING = 'explore/GET_DATASET_LOADING';
 const RESET_DATASET = 'explore/RESET_DATASET';
+const TOGGLE_LAYER_SHOWN = 'explore/TOGGLE_LAYER_SHOWN';
 const GET_SIMILAR_DATASETS_SUCCESS = 'explore/GET_SIMILAR_DATASETS_SUCCESS';
 const GET_SIMILAR_DATASETS_ERROR = 'explore/GET_SIMILAR_DATASETS_ERROR';
 const GET_SIMILAR_DATASETS_LOADING = 'explore/GET_SIMILAR_DATASETS_LOADING';
@@ -19,9 +20,15 @@ const GET_SIMILAR_DATASETS_LOADING = 'explore/GET_SIMILAR_DATASETS_LOADING';
 */
 const initialState = {
   dataset: {
-    detail: {},
+    detail: {
+      attributes: {
+        layer: []
+      }
+    },
     loading: false,
-    error: false
+    error: false,
+    layersShownIds: [],
+    layersShown: []
   },
   similarDatasets: {
     loading: false,
@@ -61,6 +68,14 @@ export default function (state = initialState, action) {
       return initialState;
     }
 
+    case TOGGLE_LAYER_SHOWN: {
+      const dataset = Object.assign({}, state.dataset, {
+        layersShownIds: action.payload
+      });
+
+      return Object.assign({}, state, { dataset });
+    }
+
     case GET_SIMILAR_DATASETS_SUCCESS: {
       const similarDatasets = Object.assign({}, state.similarDatasets, {
         list: action.payload,
@@ -96,6 +111,7 @@ export default function (state = initialState, action) {
  * - getDataset
  * - getSimilarDatasets
  * - resetDataset
+ * - toggleLayerShown
 */
 export function getDataset(datasetId) {
   return (dispatch) => {
@@ -131,7 +147,7 @@ export function getSimilarDatasets(tags){
     // Waiting for fetch from server -> Dispatch loading
     dispatch({ type: GET_SIMILAR_DATASETS_LOADING });
     // TODO: remove the date now
-    fetch(new Request(`${config.API_URL}/dataset/?app=rw&includes=widget,layer&tags=${tags}&page[size]=4&page[number]=1&cache=${Date.now() / 100000}`))
+    fetch(new Request(`${config.API_URL}/dataset?app=rw&includes=widget,layer&tags=${tags}&page[size]=4&page[number]=1&cache=${Date.now() / 100000}`))
       .then((response) => {
         if (response.ok) return response.json();
         throw new Error(response.statusText);
@@ -157,6 +173,26 @@ export function getSimilarDatasets(tags){
 export function resetDataset() {
   return {
     type: RESET_DATASET
+  };
+}
+
+export function toggleLayerShown(id) {
+  return (dispatch, getState) => {
+    const { exploreDetail } = getState();
+    const layersShownIds = exploreDetail.dataset.layersShownIds.slice();
+    const index = layersShownIds.indexOf(id);
+
+    // Toggle the layer shown
+    if (index !== -1) {
+      layersShownIds.splice(index, 1);
+    } else {
+      layersShownIds.push(id);
+    }
+
+    dispatch({
+      type: TOGGLE_LAYER_SHOWN,
+      payload: layersShownIds
+    });
   };
 }
 

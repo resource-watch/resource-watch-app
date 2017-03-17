@@ -9,10 +9,22 @@ import Icon from 'components/ui/Icon';
 import Dropdown from 'components/ui/Dropdown';
 import DatasetList from 'components/explore/DatasetList';
 import Spinner from 'components/ui/Spinner';
+import Sidebar from 'containers/explore/Sidebar';
+import Map from 'containers/explore/Map';
+import Legend from 'components/ui/Legend';
+import LayerManager from 'utils/layers/LayerManager';
 
 const breadcrumbs = [
   { name: 'Home', url: '/' }
 ];
+
+const mapConfig = {
+  zoom: 3,
+  latLng: {
+    lat: 0,
+    lng: 0
+  }
+};
 
 class ExploreDetail extends React.Component {
 
@@ -22,12 +34,13 @@ class ExploreDetail extends React.Component {
     this.state = {
       widgetChartLoading: true,
       configureDropdownActive: false,
-      similarDatasetsLoaded: false
+      similarDatasetsLoaded: false,
+      mapSectionOpened: false
     };
 
     // BINDINGS
-    this.triggerToggleWidgetChartLoading = this.triggerToggleWidgetChartLoading.bind(this);
     this.triggerConfigureChart = this.triggerConfigureChart.bind(this);
+    this.triggerOpenLayer = this.triggerOpenLayer.bind(this);
     this.handleConfigureDropdownChange = this.handleConfigureDropdownChange.bind(this);
   }
 
@@ -46,7 +59,7 @@ class ExploreDetail extends React.Component {
 
     const dataset = nextProps.exploreDetail.dataset.detail.attributes;
 
-    if (dataset) {
+    if (dataset && dataset.tags) {
       const hasTags = dataset.tags.length > 0;
       if (hasTags) {
         const tags = dataset.tags;
@@ -63,18 +76,27 @@ class ExploreDetail extends React.Component {
     this.props.resetDataset();
   }
 
-  getOpenMapButton(hasLayer) {
-    const buttonClass = (hasLayer) ? '-active' : '';
+  getOpenMapButton() {
+    const { mapSectionOpened } = this.state;
+    const { dataset } = this.props.exploreDetail;
+    const hasDefaultLayer = !!dataset.detail.attributes.layer.find(
+      value => value.attributes.default === true);
+    const buttonText = (mapSectionOpened) ? 'Active' : 'Open in data map';
+    const buttonClass = classNames({
+      '-active': hasDefaultLayer,
+      '-primary': true,
+      '-fullwidth': true
+    });
 
-    if (hasLayer) {
+    if (hasDefaultLayer) {
       return (
         <Button
           properties={{
-            className: `-primary -fullwidth ${buttonClass}`
+            className: buttonClass
           }}
           onClick={this.triggerOpenLayer}
         >
-          Open in data map
+          {buttonText}
         </Button>
       );
     }
@@ -84,7 +106,6 @@ class ExploreDetail extends React.Component {
           disabled: true,
           className: '-primary -fullwidth -disabled'
         }}
-        onClick={this.triggerToggleLayer}
       >
         Not displayable
       </Button>
@@ -92,15 +113,22 @@ class ExploreDetail extends React.Component {
     );
   }
 
-  triggerToggleWidgetChartLoading(loading) {
-    this.setState({ widgetChartLoading: loading });
-  }
-
   triggerOpenLayer() {
-    console.info('triggerOpenLayer');
+    const { dataset } = this.props.exploreDetail;
+
+    this.setState(
+      {
+        mapSectionOpened: !this.state.mapSectionOpened
+      }
+    );
+
+    const defaultLayerId = dataset.detail.attributes.layer.find(
+      value => value.attributes.default === true).attributes.id;
+
+    this.props.toggleLayerShown(defaultLayerId);
   }
 
-  triggerDownload() {
+  triggerDownload(){
     console.info('triggerDownload');
   }
 
@@ -118,27 +146,27 @@ class ExploreDetail extends React.Component {
 
   render() {
     const { exploreDetail } = this.props;
-
-    const dataset = exploreDetail.dataset;
-    let hasDataset = false;
-    let hasLayer = false;
-
-    if (dataset.detail.attributes) {
-      hasDataset = true;
-      // hasWidget = dataset.detail.attributes.widget.length > 0;
-      hasLayer = dataset.detail.attributes.layer.length > 0;
-    }
+    const { dataset } = exploreDetail;
+    const { layersShown } = this.props;
 
     const newClassConfigureButton = classNames({
       '-active': this.state.configureDropdownActive
     });
 
-    return (
+    const similarDatasetsSectionClass = classNames({
+      row: true,
+      'similar-datasets-row': true,
+      '-active': exploreDetail.similarDatasets.list.filter(value =>
+                  value.id !== this.props.params.id
+                ).length > 0
+    });
+
+    const pageStructure = (
       <div className="c-page c-page-explore-detail">
         <div className="row">
           <div className="column small-12">
             <Breadcrumbs items={breadcrumbs} />
-            <Title className="-primary -huge title" >{ hasDataset &&
+            <Title className="-primary -huge title" >{ dataset.detail.attributes &&
                 dataset.detail.attributes.name}</Title>
           </div>
         </div>
@@ -170,12 +198,12 @@ class ExploreDetail extends React.Component {
             <Icon name="icon-facebook" className="-small" />
           </div>
           <div className="column small-7">
-            <p>{ hasDataset &&
+            <p>{ dataset.detail.attributes &&
                 dataset.detail.attributes.description}
             </p>
           </div>
           <div className="column small-3 actions">
-            {this.getOpenMapButton(hasLayer)}
+            {this.getOpenMapButton()}
             <Button
               properties={{
                 disabled: true,
@@ -187,7 +215,7 @@ class ExploreDetail extends React.Component {
             </Button>
           </div>
         </div>
-        <div className="row similar-datasets-row">
+        <div className={similarDatasetsSectionClass} >
           <div className="column small-12">
             <Title className="-secondary title">
               Similar datasets
@@ -195,7 +223,7 @@ class ExploreDetail extends React.Component {
           </div>
           <div className="column small-12">
             <DatasetList
-              active={[]}
+              active={exploreDetail.similarDatasets.list.map(value => value.id)}
               list={exploreDetail.similarDatasets.list.filter(value =>
                 value.id !== this.props.params.id
               )}
@@ -209,12 +237,38 @@ class ExploreDetail extends React.Component {
         </div>
       </div>
     );
+
+    if (!this.state.mapSectionOpened) {
+      return (
+        <div className="c-page c-page-explore-detail">
+          {pageStructure}
+        </div>
+      );
+    } else {
+      return (
+        <div className="c-page c-page-explore-detail">
+          <Sidebar>
+            {pageStructure}
+          </Sidebar>
+          <Map
+            LayerManager={LayerManager}
+            mapConfig={mapConfig}
+            layersActive={layersShown}
+          />
+          <Legend
+            layersActive={layersShown}
+            className={{ color: '-dark' }}
+          />
+        </div>
+      );
+    }
   }
 }
 
 ExploreDetail.propTypes = {
 
   params: React.PropTypes.object,
+  layersShown: React.PropTypes.array,
 
   // STORE
   exploreDetail: React.PropTypes.object,
@@ -222,7 +276,8 @@ ExploreDetail.propTypes = {
   // ACTIONS
   getDataset: React.PropTypes.func,
   resetDataset: React.PropTypes.func,
-  getSimilarDatasets: React.PropTypes.func
+  getSimilarDatasets: React.PropTypes.func,
+  toggleLayerShown: React.PropTypes.func
 };
 
 export default ExploreDetail;
