@@ -147,7 +147,7 @@ export function getSimilarDatasets(tags){
     // Waiting for fetch from server -> Dispatch loading
     dispatch({ type: GET_SIMILAR_DATASETS_LOADING });
     // TODO: remove the date now
-    fetch(new Request(`${config.API_URL}/dataset?app=rw&includes=widget,layer&tags=${tags}&page[size]=4&page[number]=1&cache=${Date.now() / 100000}`))
+    fetch(new Request(`${config.API_URL}/dataset?app=rw&status=saved&includes=widget,layer&tags=${tags}&page[size]=4&page[number]=1&cache=${Date.now() / 100000}`))
       .then((response) => {
         if (response.ok) return response.json();
         throw new Error(response.statusText);
