@@ -13,6 +13,9 @@ import Sidebar from 'containers/explore/Sidebar';
 import Map from 'containers/explore/Map';
 import Legend from 'components/ui/Legend';
 import LayerManager from 'utils/layers/LayerManager';
+import DatasetService from 'services/DatasetService';
+import getQueryByFilters from 'utils/getQueryByFilters';
+import Jiminy from 'jiminy';
 
 const breadcrumbs = [
   { name: 'Home', url: '/' }
@@ -26,6 +29,34 @@ const mapConfig = {
   }
 };
 
+const chartConfig = [
+  {
+    name: 'bar',
+    acceptedStatTypes: [
+      ['nominal'],
+      ['ordinal'],
+      ['quantitative', 'nominal'],
+      ['quantitative', 'temporal'],
+      ['quantitative', 'ordinal']
+    ]
+  },
+  {
+    name: 'line',
+    acceptedStatTypes: [
+      ['quantitative', 'temporal'],
+      ['quantitative', 'ordinal']
+    ]
+  },
+  {
+    name: 'pie',
+    acceptedStatTypes: [
+      ['nominal'],
+      ['ordinal']
+    ]
+  }
+];
+
+
 class ExploreDetail extends React.Component {
 
   constructor(props) {
@@ -35,13 +66,20 @@ class ExploreDetail extends React.Component {
       widgetChartLoading: true,
       configureDropdownActive: false,
       similarDatasetsLoaded: false,
+      datasetRawDataLoaded: false,
       mapSectionOpened: false
     };
+
+    // DatasetService
+    this.datasetService = new DatasetService(this.props.params.id, {
+      apiURL: 'https://api.resourcewatch.org/v1'
+    });
 
     // BINDINGS
     this.triggerConfigureChart = this.triggerConfigureChart.bind(this);
     this.triggerOpenLayer = this.triggerOpenLayer.bind(this);
     this.handleConfigureDropdownChange = this.handleConfigureDropdownChange.bind(this);
+
   }
 
   componentWillMount() {
@@ -52,28 +90,56 @@ class ExploreDetail extends React.Component {
   componentWillReceiveProps(nextProps) {
     if (this.props.params.id !== nextProps.params.id) {
       this.props.resetDataset();
-      this.setState({ similarDatasetsLoaded: false }, () => {
+      this.setState({
+        similarDatasetsLoaded: false,
+        datasetRawDataLoaded: false
+      }, () => {
         this.props.getDataset(this.props.params.id);
       });
     }
 
     const dataset = nextProps.exploreDetail.dataset.detail.attributes;
 
-    if (dataset && dataset.tags) {
-      const hasTags = dataset.tags.length > 0;
-      if (hasTags) {
-        const tags = dataset.tags;
-        if (!this.state.similarDatasetsLoaded) {
-          this.setState({ similarDatasetsLoaded: true }, () => {
-            this.props.getSimilarDatasets(tags);
-          });
+    if (dataset) {
+      if (dataset.tags) {
+        const hasTags = dataset.tags.length > 0;
+        if (hasTags) {
+          const tags = dataset.tags;
+          if (!this.state.similarDatasetsLoaded) {
+            this.setState({ similarDatasetsLoaded: true }, () => {
+              this.props.getSimilarDatasets(tags);
+            });
+          }
         }
+      }
+      if (dataset.tableName && !this.state.datasetRawDataLoaded) {
+        this.setState({ datasetRawDataLoaded: true }, () => {
+          this.getDatasetRawData(dataset);
+        });
       }
     }
   }
 
   componentWillUnmount() {
     this.props.resetDataset();
+  }
+
+  getDatasetRawData(dataset) {
+    console.info('getDatasetRawData', dataset);
+    const query = getQueryByFilters(dataset.tableName);
+    console.info('query', query);
+    this.datasetService.fetchFilteredData(query)
+    .then((response) => {
+      // console.info('response', response);
+      this.jiminy = new Jiminy(response, chartConfig);
+      console.info('jiminy created! ');
+      const recommendation = this.jiminy.recommendation();
+      console.info('jiminy recommendation: ', recommendation);
+    },
+    (error) => {
+      console.info('error', error);
+    }
+    );
   }
 
   getOpenMapButton() {

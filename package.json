@@ -25,6 +25,7 @@
     "babel-preset-react": "^6.16.0",
     "babel-preset-stage-3": "^6.22.0",
     "basic-auth": "^1.1.0",
+    "bluebird": "^3.4.7",
     "body-parser": "^1.16.0",
     "bourbon": "^4.2.7",
     "classnames": "^2.2.5",
