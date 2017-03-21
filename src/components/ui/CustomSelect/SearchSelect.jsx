@@ -165,7 +165,11 @@ export default class CustomSelect extends React.Component {
           <ul className="custom-select-options">
             {this.state.filteredOptions.map((item, index) => {
               const cName = (index === this.state.selectedIndex) ? '-selected' : '';
-              return <li className={cName} key={index} onMouseEnter={() => { this.setSelectedIndex(index); }} onMouseDown={() => this.selectItem(item)}>{item.label}</li>;
+              return (
+                <li className={cName} key={index} onMouseEnter={() => { this.setSelectedIndex(index); }} onMouseDown={() => this.selectItem(item)}>
+                  <span className="label">{item.label}</span>
+                </li>
+              );
             })}
           </ul>
         }

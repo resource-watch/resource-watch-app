@@ -197,8 +197,13 @@ export default class CustomSelect extends React.Component {
         <span className="custom-select-text" onClick={this.toggle}>
           <div>
             <span>{this.state.selectedItem ? this.state.selectedItem.label : this.props.placeholder}</span>
+            {!this.state.selectedItem &&
+              <svg className="c-icon -tiny icon-arrow-down" onMouseDown={this.clearSearch}>
+                <use xlinkHref="#icon-arrow-down"></use>
+              </svg>
+            }
             {this.state.selectedItem &&
-              <svg className="c-icon -small icon-cross" onMouseDown={this.clearSearch}>
+              <svg className="c-icon -tiny icon-cross" onMouseDown={this.clearSearch}>
                 <use xlinkHref="#icon-cross"></use>
               </svg>
             }
@@ -217,11 +222,13 @@ export default class CustomSelect extends React.Component {
         {this.state.closed ||
           <ul className="custom-select-options">
             {this.state.selectedLevels.length > 0 &&
-              <li className="title">
-                <svg className="c-icon -small icon-arrow-left" onMouseDown={() => {this.onSliderPrev()}}>
-                  <use xlinkHref="#icon-arrow-left"></use>
-                </svg>
-                <span>{this.state.selectedLevels[this.state.selectedLevels.length - 1].label}</span>
+              <li className="title" onMouseDown={() => {this.onSliderPrev()}}>
+                <div>
+                  <svg className="c-icon -tiny icon-arrow-left">
+                    <use xlinkHref="#icon-arrow-left"></use>
+                  </svg>
+                  <span>{this.state.selectedLevels[this.state.selectedLevels.length - 1].label}</span>
+                </div>
               </li>
             }
             {this.state.filteredOptions.map((item, index) => {
@@ -237,9 +244,11 @@ export default class CustomSelect extends React.Component {
                   </span>
 
                   {item.hasItems &&
-                    <svg className="c-icon -small icon-arrow-right" onMouseDown={() => {this.onSliderNext(item)}}>
-                      <use xlinkHref="#icon-arrow-right"></use>
-                    </svg>
+                    <div className="next">
+                      <svg className="c-icon -tiny icon-arrow-right" onMouseDown={() => {this.onSliderNext(item)}}>
+                        <use xlinkHref="#icon-arrow-right"></use>
+                      </svg>
+                    </div>
                   }
                 </li>
               );
