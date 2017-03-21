@@ -1,14 +1,13 @@
 import { connect } from 'react-redux';
 import Partners from 'components/pages/Partners';
+import { getPartners } from 'redactions/partners';
 
-// const mapStateToProps = state => ({
-//   pulse: state.pulse
-// });
-//
-// const mapDispatchToProps = dispatch => ({
-//   getLayers: () => {
-//     dispatch(getLayers());
-//   },
-// });
+const mapStateToProps = state => ({
+  list: state.partners.list
+});
 
-export default connect(null, null)(Partners);
+const mapDispatchToProps = dispatch => ({
+  getPartners: () => { dispatch(getPartners()); },
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Partners);

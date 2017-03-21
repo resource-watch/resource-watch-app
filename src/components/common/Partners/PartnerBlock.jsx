@@ -5,12 +5,12 @@ function PartnerBlock(props) {
   return (
     <article className="c-partners-block column small-12 medium-6">
       <div className="logo-container">
-        <Link to={`/partners/${props.partner.name}`}>
-          <img src={require(`../../../../public/images/partners/${props.partner.img}`)} className="logo" />
+        <Link to={`/partners/${props.attributes.name}`}>
+          <img src={require(`../../../../public/images/partners/${props.attributes.logo.medium}`)} className="logo" />
         </Link>
       </div>
-      <p className="description c-text -extra-big">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate.</p>
-      <a href={props.partner.url} className="c-text -extra-big">Read more</a>
+      <p className="description c-text -extra-big">{props.attributes.summary}</p>
+      <a href={props.attributes.website} className="c-text -extra-big">Read more</a>
     </article>
   );
 }

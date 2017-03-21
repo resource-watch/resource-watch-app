@@ -73,6 +73,7 @@ const config = {
       config: {
         NODE_ENV: JSON.stringify(process.env.NODE_ENV),
         API_URL: JSON.stringify(process.env.API_URL),
+        CMS_API_URL: JSON.stringify(process.env.CMS_API_URL),
         BASEMAP_TILE_URL: JSON.stringify(process.env.BASEMAP_TILE_URL),
       }
     })
