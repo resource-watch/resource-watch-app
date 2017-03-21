@@ -30,7 +30,7 @@ const initialState = {
     limit: 9,
     mode: 'grid' // 'grid' or 'list'
   },
-  filters: {},
+  filters: [],
   sidebar: {
     open: true,
     width: 0
@@ -89,7 +89,6 @@ export default function (state = initialState, action) {
     case SET_DATASETS_FILTERS: {
       return Object.assign({}, state, { filters: action.payload });
     }
-
 
     case SET_SIDEBAR: {
       return Object.assign({}, state, {
@@ -207,6 +206,13 @@ export function setSidebar(options) {
   return {
     type: SET_SIDEBAR,
     payload: options
+  };
+}
+
+export function setDatasetsFilters(filters) {
+  return {
+    type: SET_DATASETS_FILTERS,
+    payload: filters
   };
 }
 

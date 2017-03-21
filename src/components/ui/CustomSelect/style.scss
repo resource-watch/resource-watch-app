@@ -1,0 +1,191 @@
+@import '../../../styles/config';
+
+// Override React selectize styles
+.c-select {
+  position: relative;
+
+  .title {
+    color: palette(white);
+    font-size: $font-size-extra-big;
+    font-weight: 300;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+  }
+
+  .select-header {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+  }
+
+  .icon-container {
+    display: inline-flex;
+  }
+
+  .title-icon {
+    width: 20px;
+    height: 20px;
+    margin-left: $space-1 * 2;
+    fill: palette(blue, light);
+    border: 1px solid palette(blue, light);
+    margin-right: $space-1 * 2;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color .1s linear;
+
+    &:hover {
+      fill: palette(blue, primary);
+      background-color: palette(blue, light);
+    }
+  }
+}
+
+.c-custom-select {
+  position: relative;
+  border-bottom: 1px solid palette(blue, light);
+  cursor: pointer;
+  width: 100%;
+  border: 1px solid $border-color-1;
+  border-radius: 3px;
+  height: 50px;
+
+  &.-fixed {
+    max-width: 200px;
+  }
+
+  &.-disabled {
+    pointer-events: none;
+    opacity: .4;
+  }
+
+  &:after {
+    content: "";
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-bottom: 5px solid palette(blue, light);
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    margin: auto;
+    pointer-events: none;
+  }
+
+  &.-closed {
+    .custom-select-search {
+      display: none;
+    }
+
+    &:after {
+      transform: rotate(180deg);
+    }
+  }
+
+  &:not(.-closed).-search {
+    .custom-select-text span {
+      opacity: 0;
+    }
+  }
+
+  .no-results {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    padding: 8px 12px;
+    line-height: 1.1;
+    font-style: italic;
+    color: palette(blue);
+    background-color: $color-white;
+    font-size: $font-size-big;
+    box-shadow: 0 -2px 4px 0 rgba(33, 62, 118, 0.09), 0 2px 4px 0 rgba(33, 62, 118, 0.09);
+  }
+
+  .custom-select-text {
+    font-size: $font-size-big;
+    font-weight: 500;
+    line-height: 2;
+    color: palette(white);
+    display: block;
+    width: 100%;
+    position: relative;
+    min-height: 33px;
+    height: 100%;
+
+    > div {
+      user-select: none;
+      display: flex;
+      justify-content: space-between;
+      padding: 15px 20px;
+      overflow: hidden;
+      height: 100%;
+      white-space: nowrap;
+      line-height: 17px;
+    }
+  }
+
+  .custom-select-options {
+    list-style-type: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    min-width: 100%;
+    background-color: $color-white;
+    z-index: 999;
+    box-shadow: 0 -2px 3px 0 rgba(33, 62, 118, 0.09), 0 2px 3px 0 rgba(33, 62, 118, 0.09);
+    max-height: 400px;
+    margin: 0;
+    padding: 0 0;
+    overflow-y: auto;
+
+    li {
+      display: flex;
+      justify-content: space-between;
+      color: $color-text-headers;
+      font-size: $font-size-big;
+      font-weight: 500;
+      line-height: 2;
+      padding: 8px 12px;
+      cursor: pointer;
+      line-height: 1.1;
+
+      &:title {
+        border-bottom: 1px solid $border-color-1;
+      }
+
+      &:hover {
+        background-color: rgba($charcoal-grey, .05);
+      }
+
+      &.-selected {
+        background-color: rgba($charcoal-grey, .05);
+      }
+
+      & .label {
+        flex-grow: 1;
+        display: inline-block;
+      }
+    }
+  }
+
+  .custom-select-search {
+    background-color: transparent;
+    cursor: pointer;
+    color: $color-white;
+    outline: none;
+    border: none;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    // padding-bottom: 2px;
+    z-index: 10;
+    padding: 10px 20px;
+
+  }
+
+}
