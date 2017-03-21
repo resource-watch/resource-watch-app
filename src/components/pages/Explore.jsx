@@ -82,16 +82,16 @@ class Explore extends React.Component {
               <div className="search-container">
                 <div className="row collapse">
                   <div className="column small-12 medium-6">
-                    <CustomSelect 
-                      options={datasetsSearchList} 
-                      onValueChange={this.handleRedirect} 
+                    <CustomSelect
+                      options={datasetsSearchList}
+                      onValueChange={this.handleRedirect}
                       search={true}
                       placeholder="Search dataset"
                     />
                   </div>
                   <div className="column small-12 medium-6">
-                    <CustomSelect 
-                      options={issuesList} 
+                    <CustomSelect
+                      options={issuesList}
                       onValueChange={this.handleFilterDatasets}
                       placeholder="Select issue"
                     />
@@ -123,6 +123,7 @@ class Explore extends React.Component {
               onChange={page => this.props.setDatasetsPage(page)}
             />
           </Sidebar>
+
           <Map
             LayerManager={LayerManager}
             mapConfig={mapConfig}
