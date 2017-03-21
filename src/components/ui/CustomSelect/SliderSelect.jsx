@@ -197,8 +197,8 @@ export default class CustomSelect extends React.Component {
         <span className="custom-select-text" onClick={this.toggle}>
           <div>
             <span>{this.state.selectedItem ? this.state.selectedItem.label : this.props.placeholder}</span>
-            {!this.state.selectedItem &&
-              <svg className="c-icon -tiny icon-arrow-down" onMouseDown={this.clearSearch}>
+            {!this.state.selectedItem && this.state.closed &&
+              <svg className="c-icon -tiny icon-arrow-down" onMouseDown={this.toggle}>
                 <use xlinkHref="#icon-arrow-down"></use>
               </svg>
             }
