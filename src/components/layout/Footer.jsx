@@ -23,10 +23,11 @@ const insights = [
 ];
 
 const getInvolved = [
-  { name: 'Get involved', path: '#' },
+  { name: 'Get involved', path: '/get-involved' },
   { name: 'Submit an insight', path: '#' },
   { name: 'Contribute data', path: '#' },
-  { name: 'Join the community', path: '#' }
+  { name: 'Join the community', path: '#' },
+  { name: 'Apps', path: '/get-involved/apps' }
 ];
 
 const items = partners.map((p, i) => (
