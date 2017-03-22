@@ -45,9 +45,7 @@ class Partners extends React.Component {
         <section className="l-section">
           <div className="l-container">
             <div className="row">
-              {this.props.list.map((p, i) => (
-                <PartnerBlock key={i} partner={p} />
-              ))}
+              {this.props.list.map((p, i) => <PartnerBlock key={i} item={p} />)}
             </div>
           </div>
         </section>

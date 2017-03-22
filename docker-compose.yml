@@ -9,5 +9,6 @@ services:
       NODE_ENV: production
       PORT: 3000
       API_URL: https://api.resourcewatch.org
+      CMS_API_URL: http://staging.resourcewatch.org:90/api
     restart: always
     container_name: resourcewatch-app

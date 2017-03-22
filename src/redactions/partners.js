@@ -21,28 +21,25 @@ const initialState = {
 export default function (state = initialState, action) {
   switch (action.type) {
     case GET_PARTNERS_SUCCESS: {
-      const partners = Object.assign({}, state.partners, {
+      return Object.assign({}, state, {
         list: action.payload,
         loading: false,
         error: false
       });
-      return Object.assign({}, state, { partners });
     }
 
     case GET_PARTNERS_ERROR: {
-      const partners = Object.assign({}, state.partners, {
+      return Object.assign({}, state, {
         loading: false,
         error: true
       });
-      return Object.assign({}, state, { partners });
     }
 
     case GET_PARTNERS_LOADING: {
-      const partners = Object.assign({}, state.partners, {
+      return Object.assign({}, state, {
         loading: true,
         error: false
       });
-      return Object.assign({}, state, { partners });
     }
     default:
       return state;
@@ -58,29 +55,14 @@ export function getPartners() {
     // Waiting for fetch from server -> Dispatch loading
     dispatch({ type: GET_PARTNERS_LOADING });
     // TODO: remove the date now
-    fetch(new Request(`${config.CMS_API_URL}/partners`))
+    fetch(new Request(`${config.CMS_API_URL}/api/partners`))
       .then((response) => {
         if (response.ok) return response.json();
         throw new Error(response.statusText);
       })
       .then((response) => {
-        // TODO: We should check which app do we want here
-        // Filtering partners that have widget or layer
-        // and only belong to RW app
+        // TODO: filter by those who are published
         const partners = response.data;
-        // .filter((dataset) => {
-        //   const isRwApp = (dataset.attributes.application.length === 1) && dataset.attributes.application.includes('rw');
-        //   // const hasWidgetDefault = dataset.attributes.widget.length &&
-        //   //                          !!find(dataset.attributes.widget, {
-        //   //                            attributes: { default: true }
-        //   //                          });
-        //   // const hasLayerDefault = dataset.attributes.layer.length &&
-        //   //                         !!find(dataset.attributes.layer, {
-        //   //                           attributes: { default: true }
-        //   //                         });
-        //   // return isRwApp && (hasWidgetDefault || hasLayerDefault);
-        //   return isRwApp;
-        // });
 
         dispatch({
           type: GET_PARTNERS_SUCCESS,
