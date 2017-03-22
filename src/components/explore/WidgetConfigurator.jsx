@@ -55,7 +55,7 @@ class WidgetConfigurator extends React.Component {
     this.state = {
       chartTypeOptions: [],
       chartDataOptions: null,
-      columnsAvailable: []
+      selectedChart: {}
     };
 
     this.jiminy = new Jiminy(this.props.dataset, chartConfig);
@@ -69,14 +69,21 @@ class WidgetConfigurator extends React.Component {
     }
   }
 
-  onChartDataOptionChanged(value) {
+  onChartDataOptionChanged(value, field, chartType) {
     console.info('onChartDataOptionChanged');
+    console.info('value', value);
+    console.info('field', field);
+    console.info('chartType', chartType);
+
+    //this.setState({ selectedChart: { ...object } });
+
   }
 
   onChartTypeChanged(value) {
+    this.setState({ selectedChart: { name: value } });
     const chartFieldsSelected = chartFields.find(elem => elem.name === value);
     console.info('this.jiminy.columns(chartFieldsSelected.name)', this.jiminy.columns(chartFieldsSelected.name));
-    
+
     if (chartFieldsSelected) {
       console.info('chartFieldsSelected', chartFieldsSelected);
       const result = (
@@ -86,7 +93,7 @@ class WidgetConfigurator extends React.Component {
 
               return (
                 <Field
-                  onChange={val => this.onChartDataOptionChanged(val)}
+                  onChange={val => this.onChartDataOptionChanged(val, el, value)}
                   options={this.jiminy.columns(chartFieldsSelected.name).map(
                     column => ({ label: column, value: column})
                   )}

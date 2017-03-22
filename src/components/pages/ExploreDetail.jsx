@@ -35,7 +35,6 @@ class ExploreDetail extends React.Component {
     super(props);
 
     this.state = {
-      widgetChartLoading: true,
       configureDropdownActive: false,
       similarDatasetsLoaded: false,
       datasetRawDataLoaded: false,
@@ -55,7 +54,6 @@ class ExploreDetail extends React.Component {
   }
 
   componentWillMount() {
-    this.setState({ widgetChartLoading: true });
     this.props.getDataset(this.props.params.id);
   }
 
@@ -259,7 +257,7 @@ class ExploreDetail extends React.Component {
               </TetherComponent>
             </div>
             <Spinner
-              isLoading={exploreDetail.dataset.loading}
+              isLoading={!this.state.datasetRawDataLoaded}
               className="-fixed -light"
             />
           </div>
