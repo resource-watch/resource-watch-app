@@ -1,0 +1,135 @@
+[
+  {
+    "label": "Background Maps",
+    "value": "background-maps",
+    "items": [
+      { "label": "Political Boundaries", "value": "political-boundaries" },
+      { "label": "Satellite Imagery", "value": "satellite-imagery" },
+      { "label": "Elevation", "value": "levation" },
+      { "label": "Land Cover and Use", "value": "land-cover-and-use" }
+    ]
+  },
+  {
+    "label": "Planet Pulse (near-real-time)",
+    "value": "planet-pulse-(near-real-time)",
+    "items": [
+      { "label": "Forests", "value": "forests" },
+      { "label": "Water", "value": "water" },
+      { "label": "Food", "value": "food" },
+      { "label": "Climate", "value": "climate" },
+      { "label": "Energy", "value": "energy" },
+      { "label": "Commerce", "value": "commerce" },
+      { "label": "Cities", "value": "cities" },
+      { "label": "Disasters", "value": "disasters" },
+      { "label": "Society", "value": "society" },
+      { "label": "Biodiversity", "value": "biodiversity" }
+    ]
+  },
+  {
+    "label": "Forest (C)",
+    "value": "forest-(C)",
+    "items": [
+      { "label": "Forest and Land Cover", "value": "forest-and-land-cover" },
+      { "label": "Forest Change", "value": "forest-change" },
+      { "label": "Infrastructure", "value": "infrastructure" },
+      { "label": "Fires", "value": "fires" }
+    ]
+  },
+  {
+    "label": "Water (N/C)",
+    "value": "water-(N/C)",
+    "items": [
+      { "label": "Water Availability", "value": "water-availability" },
+      { "label": "Water Quality", "value": "water-quality" },
+      { "label": "Water Demand", "value": "water-demand" },
+      { "label": "Water Hazards", "value": "water-hazards" },
+      { "label": "Water Infrastructure", "value": "water-infrastructure" }
+    ]
+  }, 
+  {
+    "label": "Food (N)",
+    "value": "food-(N)",
+    "items": [
+      { "label": "Food Production", "value": "food-production" },
+      { "label": "Food Infrastructure", "value": "food-infrastructure" },
+      { "label": "Food Consumption", "value": "food-consumption" },
+      { "label": "Food Access", "value": "food-access" }
+    ]
+  }, 
+  {
+    "label": "Climate (L)",
+    "value": "climate-(L)",
+    "items": [
+      { "label": "Physical Climate and Weather", "value": "physical-climate-and-weather" },
+      { "label": "Current and Historical Snow and Ice Cover", "value": "current-and-historical-snow-and-ice-cover" },
+      { "label": "Oceans", "value": "oceans" },
+      { "label": "Emissions", "value": "emissions" },
+      { "label": "Atmosphere Composition (GHG)", "value": "atmosphere-composition-(GHG)" },
+      { "label": "Carbon Storage", "value": "carbon-storage" },
+      { "label": "Extreme Events", "value": "extreme-events" },
+      { "label": "Sea Level Rise", "value": "sea-level-rise" },
+      { "label": "Vulnerability and Adaptation", "value": "vulnerability-and-adaptation" }
+    ]
+  },
+  {
+    "label": "Energy (C)",
+    "value": "energy-(C)",
+    "items": [
+      { "label": "Energy Potential, Sources, and Reserves", "value": "energy-potential-sources-and-reserves" },
+      { "label": "Energy Infrastructure & Generation", "value": "energy-infrastructure-eneration" },
+      { "label": "Energy Consumption", "value": "energy-consumption" },
+      { "label": "Energy Emissions", "value": "energy-emissions" },
+      { "label": "Energy Hazards", "value": "energy-hazards" }
+    ]
+  },
+  {
+    "label": "Commerce (N)",
+    "value": "commerce-(N)",
+    "items": [
+      { "label": "Trade Flows and Investment", "value": "trade-flows-and-investment" },
+      { "label": "Trade Regulation", "value": "trade-regulation" },
+      { "label": "Supply Chain Infrastructure", "value": "supply-chain-infrastructure" },
+      { "label": "Climate Hazard to Trade", "value": "climate-hazard-to-trade" },
+      { "label": "Waste", "value": "waste" }
+    ]
+  },
+  {
+    "label": "Cities (C/L)",
+    "value": "cities-(C/L)",
+    "items": [
+      { "label": "Urban Land Use", "value": "urban-land-use" },
+      { "label": "Transportation Infrastructure", "value": "transportation-infrastructure" },
+      { "label": "Public Services", "value": "public-services" },
+      { "label": "Air Quality", "value": "air-quality" },
+      { "label": "Vulnerability", "value": "vulnerability" },
+      { "label": "Affiliations", "value": "affiliations" }
+    ]
+  },
+  {
+    "label": "Society (L)",
+    "value": "society-(L)",
+    "items": [
+      { "label": "Demographics", "value": "demographics" },
+      { "label": "Economic", "value": "economic" },
+      { "label": "Health", "value": "health" },
+      { "label": "Governance", "value": "governance" },
+      { "label": "Conflicts", "value": "conflicts" }
+    ]
+  },
+  {
+    "label": "Disasters (N/L)",
+    "value": "disasters-(N/L)",
+    "items": [
+      { "label": "Disaster Monitoring", "value": "disaster-monitoring" },
+      { "label": "Vulnerability", "value": "vulnerability" }
+    ]
+  },
+  {
+    "label": "Biodiversity (C)",
+    "value": "biodiversity-(C)",
+    "items": [
+      { "label": "Species Distribution", "value": "species-distribution" },
+      { "label": "Human Impact and Conservation", "value": "human-impact-and-conservation" }
+    ]
+  }
+]

@@ -28,3 +28,10 @@ export function concatenation(string, params) {
   });
   return str;
 }
+
+export function filterDatasetsBy(list, key, value) {
+  return list.filter(it => {
+    const issues = it.attributes[key];
+    return issues && issues.indexOf(value) != -1;
+  });
+}

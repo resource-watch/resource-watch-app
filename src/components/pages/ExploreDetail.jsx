@@ -6,7 +6,6 @@ import Title from 'components/ui/Title';
 import Breadcrumbs from 'components/ui/Breadcrumbs';
 import Button from 'components/ui/Button';
 import Icon from 'components/ui/Icon';
-import Dropdown from 'components/ui/Dropdown';
 import DatasetList from 'components/explore/DatasetList';
 import Spinner from 'components/ui/Spinner';
 import Sidebar from 'containers/explore/Sidebar';
@@ -16,6 +15,7 @@ import LayerManager from 'utils/layers/LayerManager';
 import DatasetService from 'services/DatasetService';
 import getQueryByFilters from 'utils/getQueryByFilters';
 import Jiminy from 'jiminy';
+import TetherComponent from 'react-tether';
 
 const breadcrumbs = [
   { name: 'Home', url: '/' }
@@ -79,7 +79,7 @@ class ExploreDetail extends React.Component {
     // BINDINGS
     this.triggerConfigureChart = this.triggerConfigureChart.bind(this);
     this.triggerOpenLayer = this.triggerOpenLayer.bind(this);
-    this.handleConfigureDropdownChange = this.handleConfigureDropdownChange.bind(this);
+    this.onScreenClick = this.onScreenClick.bind(this);
   }
 
   componentWillMount() {
@@ -122,6 +122,16 @@ class ExploreDetail extends React.Component {
 
   componentWillUnmount() {
     this.props.resetDataset();
+    window.removeEventListener('click', this.onScreenClick);
+  }
+
+  onScreenClick(e) {
+    const el = document.querySelector('.c-tooltip');
+    const clickOutside = el && el.contains && !el.contains(e.target);
+
+    if (clickOutside) {
+      this.triggerConfigureChart();
+    }
   }
 
   getDatasetRawData(dataset) {
@@ -201,22 +211,27 @@ class ExploreDetail extends React.Component {
     console.info('triggerDownload');
   }
 
-  triggerConfigureChart(e) {
-    // We need to call e.stopPropagation() since otherwise the click would origin
-    // the execution of a callback in the Dropdown component that would result in
-    // an unexpected behavior.
-    e.stopPropagation();
-    this.setState({ configureDropdownActive: !this.state.configureDropdownActive });
-  }
+  triggerConfigureChart() {
+    const { configureDropdownActive } = this.state;
 
-  handleConfigureDropdownChange(visibility) {
-    this.setState({ configureDropdownActive: visibility });
+    // requestAnimationFrame
+    //   - Goal: Prevent double trigger at first atempt
+    //   - Issue: When you add the listener the click event is not finished yet
+    //            so it will trigger onScreenClick
+    //   - Stop propagation?: if I put e.stopPropagation clicking on another
+    //                        filter btn won't trigger the screenClick,
+    //                        so we will have 2 dropdown filters at the same time
+    requestAnimationFrame(() => window[configureDropdownActive ?
+      'removeEventListener' : 'addEventListener']('click', this.onScreenClick));
+
+    this.setState({ configureDropdownActive: !configureDropdownActive });
   }
 
   render() {
     const { exploreDetail } = this.props;
     const { dataset } = exploreDetail;
     const { layersShown } = this.props;
+    const { configureDropdownActive } = this.state;
 
     const newClassConfigureButton = classNames({
       '-active': this.state.configureDropdownActive
@@ -242,18 +257,32 @@ class ExploreDetail extends React.Component {
         <div className="row">
           <div className="column small-12 ">
             <div className="widget-chart">
-              <Button
-                onClick={this.triggerConfigureChart}
-                properties={{ className: newClassConfigureButton }}
+              <TetherComponent
+                attachment="top right"
+                constraints={[{
+                  to: 'scrollToParent'
+                }]}
+                targetOffset="0px 100%"
+                classes={{
+                  element: 'c-tooltip -arrow-right'
+                }}
               >
-                <Icon name="icon-cog" className="-small" />
-                CONFIGURE
-                <Dropdown
-                  className="configure-dropdown"
-                  active={this.state.configureDropdownActive}
-                  onChangeVisibility={this.handleConfigureDropdownChange}
-                /></Dropdown>
-              </Button>
+                {/* First child: This is what the item will be tethered to */}
+                <Button
+                  onClick={this.triggerConfigureChart}
+                  properties={{ className: newClassConfigureButton }}
+                >
+                  <Icon name="icon-cog" className="-small" />
+                  CONFIGURE
+                </Button>
+                {/* Second child: If present, this item will be tethered to the the first child */}
+                { configureDropdownActive &&
+                  <div>
+                    <h3>Configure Chart</h3>
+                    <p>This is where the Widget configurator will go.</p>
+                  </div>
+                }
+              </TetherComponent>
             </div>
             <Spinner
               isLoading={exploreDetail.dataset.loading}
