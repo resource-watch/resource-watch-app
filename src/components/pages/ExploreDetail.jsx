@@ -67,7 +67,8 @@ class ExploreDetail extends React.Component {
       configureDropdownActive: false,
       similarDatasetsLoaded: false,
       datasetRawDataLoaded: false,
-      mapSectionOpened: false
+      mapSectionOpened: false,
+      chartOptions: []
     };
 
     // DatasetService
@@ -79,7 +80,6 @@ class ExploreDetail extends React.Component {
     this.triggerConfigureChart = this.triggerConfigureChart.bind(this);
     this.triggerOpenLayer = this.triggerOpenLayer.bind(this);
     this.handleConfigureDropdownChange = this.handleConfigureDropdownChange.bind(this);
-
   }
 
   componentWillMount() {
@@ -135,6 +135,9 @@ class ExploreDetail extends React.Component {
       console.info('jiminy created! ');
       const recommendation = this.jiminy.recommendation();
       console.info('jiminy recommendation: ', recommendation);
+      this.setState({
+        chartOptions: recommendation
+      });
     },
     (error) => {
       console.info('error', error);
@@ -249,7 +252,7 @@ class ExploreDetail extends React.Component {
                   className="configure-dropdown"
                   active={this.state.configureDropdownActive}
                   onChangeVisibility={this.handleConfigureDropdownChange}
-                />
+                /></Dropdown>
               </Button>
             </div>
             <Spinner
