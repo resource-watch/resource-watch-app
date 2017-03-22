@@ -15,8 +15,9 @@ function Banner(props) {
       className={className}
       style={styles}
     >
+      {props.viel && <div className="c-viel"></div>}
       <div className="l-container">
-        <div className="row">
+        <div className="row collapse">
           <div className="column small-12">
             {props.children}
           </div>
@@ -29,7 +30,8 @@ function Banner(props) {
 Banner.propTypes = {
   children: React.PropTypes.any,
   className: React.PropTypes.string,
-  styles: React.PropTypes.object
+  styles: React.PropTypes.object,
+  viel: React.PropTypes.bool
 };
 
 export default Banner;

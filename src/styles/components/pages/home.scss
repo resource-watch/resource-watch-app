@@ -1,0 +1,32 @@
+.p-home {
+  .c-banner {
+    &.intro {
+      background-image: url('http://resourcewatch.org/assets/bg-header.jpg');
+      background-position: top center;
+    }
+    &.get-involved {
+      background-image: url('http://resourcewatch.org/assets/bg-header.jpg');
+      background-position: top center;
+      text-align: left;
+
+      .title {
+        margin: 0;
+        margin-bottom: 10px;
+      }
+
+      p {
+        margin: 0;
+        margin-bottom: 32px;
+      }
+
+      .c-btn {
+        text-transform: none;
+        font-weight: normal;
+        padding: 15px 10px;
+        width: 100%;
+      }
+    }
+
+    .l-container { width: 100%; }
+  }
+}
