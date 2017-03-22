@@ -12,10 +12,9 @@ import Sidebar from 'containers/explore/Sidebar';
 import Map from 'containers/explore/Map';
 import Legend from 'components/ui/Legend';
 import LayerManager from 'utils/layers/LayerManager';
-import DatasetService from 'services/DatasetService';
-import getQueryByFilters from 'utils/getQueryByFilters';
 import Jiminy from 'jiminy';
 import TetherComponent from 'react-tether';
+import { Field, Select, getQueryByFilters, DatasetService } from 'rw-components';
 
 const breadcrumbs = [
   { name: 'Home', url: '/' }
@@ -68,7 +67,8 @@ class ExploreDetail extends React.Component {
       similarDatasetsLoaded: false,
       datasetRawDataLoaded: false,
       mapSectionOpened: false,
-      chartOptions: []
+      chartOptions: [],
+      jiminyRecommendationLoaded: false
     };
 
     // DatasetService
@@ -145,8 +145,10 @@ class ExploreDetail extends React.Component {
       console.info('jiminy created! ');
       const recommendation = this.jiminy.recommendation();
       console.info('jiminy recommendation: ', recommendation);
+      // console.info('jiminy columns', this.jiminy.columns(["bar"]));
       this.setState({
-        chartOptions: recommendation
+        chartOptions: recommendation,
+        jiminyRecommendationLoaded: true
       });
     },
     (error) => {
@@ -245,6 +247,10 @@ class ExploreDetail extends React.Component {
                 ).length > 0
     });
 
+    const chartOptions = this.state.chartOptions.length ?
+      this.state.chartOptions.map(value => ({ label: value, value }))
+      : [{ label: 'Loading', value: 'Loading' }];
+
     const pageStructure = (
       <div className="c-page c-page-explore-detail">
         <div className="row">
@@ -279,7 +285,21 @@ class ExploreDetail extends React.Component {
                 { configureDropdownActive &&
                   <div>
                     <h3>Configure Chart</h3>
-                    <p>This is where the Widget configurator will go.</p>
+                    <Spinner
+                      isLoading={!this.state.jiminyRecommendationLoaded}
+                      className="-fixed -light"
+                    />
+                    <Field
+                      onChange={value => console.info(value)}
+                      options={chartOptions}
+                      properties={{
+                        multi: false,
+                        type: 'text',
+                        default: ''
+                      }}
+                    >
+                      {Select}
+                    </Field>
                   </div>
                 }
               </TetherComponent>
