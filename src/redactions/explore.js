@@ -115,12 +115,10 @@ export function getDatasets() {
     // TODO: remove the date now
     fetch(new Request(`${config.API_URL}/dataset?app=rw&includes=widget,layer&page[size]=${Date.now() / 100000}`))
       .then((response) => {
-        debugger;
         if (response.ok) return response.json();
         throw new Error(response.statusText);
       })
       .then((response) => {
-        debugger;
         // TODO: We should check which app do we want here
         // Filtering datasets that have widget or layer
         // and only belong to RW app

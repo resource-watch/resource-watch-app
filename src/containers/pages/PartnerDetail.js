@@ -3,7 +3,7 @@ import PartnerDetail from 'components/pages/PartnerDetail';
 import getPartnerData from 'selectors/partners/partner';
 
 const mapStateToProps = state => ({
-  partner: getPartnerData(state)
+  data: getPartnerData(state)
 });
 
 //

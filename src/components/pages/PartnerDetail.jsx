@@ -11,7 +11,7 @@ function PartnerDetail(props) {
           <div className="column small-12">
             <h4 className="title c-text -default -bold -uppercase">RESOURCE WATCH PARTNER</h4>
             <div className="logo-container">
-              <img src={`/images/partners/${props.partner.img}`} className="logo" />
+              <img src={`/images/partners/${props.data.img}`} className="logo" />
             </div>
             <div className="description">
               <div className="row">
@@ -43,11 +43,11 @@ function PartnerDetail(props) {
 }
 
 PartnerDetail.propTypes = {
-  partner: React.PropTypes.object
+  data: React.PropTypes.object
 };
 
 PartnerDetail.defaultProps = {
-  partner: {}
+  data: {}
 };
 
 export default PartnerDetail;

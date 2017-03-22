@@ -4,47 +4,46 @@ import 'whatwg-fetch';
 /**
  * CONSTANTS
 */
-const GET_PARTNERS_SUCCESS = 'explore/GET_PARTNERS_SUCCESS';
-const GET_PARTNERS_ERROR = 'explore/GET_PARTNERS_ERROR';
-const GET_PARTNERS_LOADING = 'explore/GET_PARTNERS_LOADING';
+const GET_PARTNER_SUCCESS = 'explore/GET_PARTNER_SUCCESS';
+const GET_PARTNER_ERROR = 'explore/GET_PARTNER_ERROR';
+const GET_PARTNER_LOADING = 'explore/GET_PARTNER_LOADING';
 const SET_PARTNER_ID = 'explore/SET_PARTNER_ID';
 
 /**
  * REDUCER
 */
 const initialState = {
-  list: [],
-  loading: false,
-  error: false,
-  partner: null
+  data: null,
+  id: null
 };
 
 export default function (state = initialState, action) {
   switch (action.type) {
-    case GET_PARTNERS_SUCCESS: {
+    case GET_PARTNER_SUCCESS: {
       return Object.assign({}, state, {
-        list: action.payload,
+        data: action.payload,
         loading: false,
         error: false
       });
     }
 
-    case GET_PARTNERS_ERROR: {
+    case GET_PARTNER_ERROR: {
       return Object.assign({}, state, {
         loading: false,
         error: true
       });
     }
 
-    case GET_PARTNERS_LOADING: {
+    case GET_PARTNER_LOADING: {
       return Object.assign({}, state, {
         loading: true,
         error: false
       });
     }
+
     case SET_PARTNER_ID: {
       return Object.assign({}, state, {
-        partner: action.payload
+        id: action.payload
       });
     }
     default:
@@ -54,31 +53,31 @@ export default function (state = initialState, action) {
 
 /**
  * ACTIONS
- * - getPartners
+ * - getPartnerData
 */
-export function getPartners() {
+export function getPartnerData(id) {
   return (dispatch) => {
     // Waiting for fetch from server -> Dispatch loading
-    dispatch({ type: GET_PARTNERS_LOADING });
+    dispatch({ type: GET_PARTNER_LOADING });
     // TODO: remove the date now
-    fetch(new Request(`${config.CMS_API_URL}/api/partners`))
+    fetch(new Request(`${config.CMS_API_URL}/api/partners/${id}`))
       .then((response) => {
         if (response.ok) return response.json();
         throw new Error(response.statusText);
       })
       .then((response) => {
         // TODO: filter by those who are published
-        const partners = response.data;
+        const data = response.data;
 
         dispatch({
-          type: GET_PARTNERS_SUCCESS,
-          payload: partners
+          type: GET_PARTNER_SUCCESS,
+          payload: data
         });
       })
       .catch((err) => {
         // Fetch from server ko -> Dispatch error
         dispatch({
-          type: GET_PARTNERS_ERROR,
+          type: GET_PARTNER_ERROR,
           payload: err.message
         });
       });
