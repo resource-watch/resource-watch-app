@@ -58,6 +58,7 @@
     "redux": "^3.6.0",
     "redux-thunk": "^2.2.0",
     "reselect": "^2.5.4",
+    "rw-components": "git+https://github.com/resource-watch/rw-components.git#master",
     "sass-loader": "^4.1.1",
     "slick-carousel": "^1.6.0",
     "style-loader": "^0.13.1",
