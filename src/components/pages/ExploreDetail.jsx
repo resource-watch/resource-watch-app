@@ -208,8 +208,6 @@ class ExploreDetail extends React.Component {
     const { layersShown } = this.props;
     const { configureDropdownActive, datasetData } = this.state;
 
-    console.info('datasetData', datasetData);
-
     const newClassConfigureButton = classNames({
       '-active': this.state.configureDropdownActive
     });

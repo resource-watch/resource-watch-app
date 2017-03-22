@@ -32,49 +32,108 @@ const chartConfig = [
   }
 ];
 
+const chartFields = [
+  {
+    name: 'bar',
+    fields: ['X axis', 'Y axis']
+  },
+  {
+    name: 'line',
+    fields: ['X axis', 'Y axis']
+  },
+  {
+    name: 'pie',
+    fields: ['datasource']
+  }
+];
+
 class WidgetConfigurator extends React.Component {
 
   constructor(props) {
     super(props);
 
     this.state = {
-      chartOptions: []
+      chartTypeOptions: [],
+      chartDataOptions: null,
+      columnsAvailable: []
     };
 
     this.jiminy = new Jiminy(this.props.dataset, chartConfig);
-    console.info('jiminy created! ');
 
     // BINDINGS
   }
 
   componentWillMount() {
     if (this.props.dataset.length) {
-      this.getChartOptions();
+      this.getChartTypeOptions();
     }
   }
 
-  onChartTypeChanged(value) {
-    console.info('onChartTypeChanged', value);
+  onChartDataOptionChanged(value) {
+    console.info('onChartDataOptionChanged');
   }
 
-  getChartOptions() {
+  onChartTypeChanged(value) {
+    const chartFieldsSelected = chartFields.find(elem => elem.name === value);
+    console.info('this.jiminy.columns(chartFieldsSelected.name)', this.jiminy.columns(chartFieldsSelected.name));
+    
+    if (chartFieldsSelected) {
+      console.info('chartFieldsSelected', chartFieldsSelected);
+      const result = (
+        <div>
+          {
+            chartFieldsSelected.fields.map((el) => {
+
+              return (
+                <Field
+                  onChange={val => this.onChartDataOptionChanged(val)}
+                  options={this.jiminy.columns(chartFieldsSelected.name).map(
+                    column => ({ label: column, value: column})
+                  )}
+                  properties={{
+                    multi: false,
+                    type: 'text',
+                    label: el
+                  }}
+                >
+                  {Select}
+                </Field>);
+            })
+          }
+        </div>);
+
+      this.setState({ chartDataOptions: result });
+    }
+  }
+
+  getChartTypeOptions() {
     this.setState({
-      chartOptions: this.jiminy.recommendation()
+      chartTypeOptions: this.jiminy.recommendation()
     });
+  }
+
+  renderFields() {
+    const selectedChartType = this.chartTypeField;
+    console.info('selectedChartType', selectedChartType);
+    return (
+      <div>
+        <p>Hola!</p>
+      </div>
+    );
   }
 
   render() {
     console.info('render props ', this.props);
-    const { chartOptions } = this.state;
-    const chartOptionsValue = chartOptions.length ?
-      this.state.chartOptions.map(value => ({ label: value, value }))
+    const { chartTypeOptions } = this.state;
+    const chartTypeOptionsValue = chartTypeOptions.length ?
+      chartTypeOptions.map(value => ({ label: value, value }))
       : [{ label: 'Loading', value: 'Loading' }];
 
     return (
       <div className="c-widget-configurator">
         <Field
           onChange={value => this.onChartTypeChanged(value)}
-          options={chartOptionsValue}
+          options={chartTypeOptionsValue}
           properties={{
             multi: false,
             type: 'text',
@@ -84,6 +143,7 @@ class WidgetConfigurator extends React.Component {
         >
           {Select}
         </Field>
+        {this.state.chartDataOptions}
       </div>
     );
   }
