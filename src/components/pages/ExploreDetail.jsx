@@ -1,5 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
+import Jiminy from 'jiminy';
+import TetherComponent from 'react-tether';
 
 // Components
 import Title from 'components/ui/Title';
@@ -12,9 +14,8 @@ import Sidebar from 'containers/explore/Sidebar';
 import Map from 'containers/explore/Map';
 import Legend from 'components/ui/Legend';
 import LayerManager from 'utils/layers/LayerManager';
-import Jiminy from 'jiminy';
-import TetherComponent from 'react-tether';
-import { Field, Select, getQueryByFilters, DatasetService } from 'rw-components';
+import WidgetConfigurator from 'components/explore/WidgetConfigurator';
+import { DatasetService, getQueryByFilters } from 'rw-components';
 
 const breadcrumbs = [
   { name: 'Home', url: '/' }
@@ -28,34 +29,6 @@ const mapConfig = {
   }
 };
 
-const chartConfig = [
-  {
-    name: 'bar',
-    acceptedStatTypes: [
-      ['nominal'],
-      ['ordinal'],
-      ['quantitative', 'nominal'],
-      ['quantitative', 'temporal'],
-      ['quantitative', 'ordinal']
-    ]
-  },
-  {
-    name: 'line',
-    acceptedStatTypes: [
-      ['quantitative', 'temporal'],
-      ['quantitative', 'ordinal']
-    ]
-  },
-  {
-    name: 'pie',
-    acceptedStatTypes: [
-      ['nominal'],
-      ['ordinal']
-    ]
-  }
-];
-
-
 class ExploreDetail extends React.Component {
 
   constructor(props) {
@@ -66,9 +39,8 @@ class ExploreDetail extends React.Component {
       configureDropdownActive: false,
       similarDatasetsLoaded: false,
       datasetRawDataLoaded: false,
-      mapSectionOpened: false,
-      chartOptions: [],
-      jiminyRecommendationLoaded: false
+      datasetData: null,
+      mapSectionOpened: false
     };
 
     // DatasetService
@@ -136,20 +108,21 @@ class ExploreDetail extends React.Component {
 
   getDatasetRawData(dataset) {
     console.info('getDatasetRawData', dataset);
-    const query = getQueryByFilters(dataset.tableName);
+    const query = getQueryByFilters(dataset.tableName) + ' LIMIT 10'; // temporal fix
     console.info('query', query);
     this.datasetService.fetchFilteredData(query)
     .then((response) => {
       // console.info('response', response);
-      this.jiminy = new Jiminy(response, chartConfig);
-      console.info('jiminy created! ');
-      const recommendation = this.jiminy.recommendation();
-      console.info('jiminy recommendation: ', recommendation);
-      // console.info('jiminy columns', this.jiminy.columns(["bar"]));
-      this.setState({
-        chartOptions: recommendation,
-        jiminyRecommendationLoaded: true
-      });
+      this.setState({ datasetData: response});
+      // this.jiminy = new Jiminy(response, chartConfig);
+      // console.info('jiminy created! ');
+      // const recommendation = this.jiminy.recommendation();
+      // console.info('jiminy recommendation: ', recommendation);
+      // // console.info('jiminy columns', this.jiminy.columns(["bar"]));
+      // this.setState({
+      //   chartOptions: recommendation,
+      //   jiminyRecommendationLoaded: true
+      // });
     },
     (error) => {
       console.info('error', error);
@@ -233,7 +206,9 @@ class ExploreDetail extends React.Component {
     const { exploreDetail } = this.props;
     const { dataset } = exploreDetail;
     const { layersShown } = this.props;
-    const { configureDropdownActive } = this.state;
+    const { configureDropdownActive, datasetData } = this.state;
+
+    console.info('datasetData', datasetData);
 
     const newClassConfigureButton = classNames({
       '-active': this.state.configureDropdownActive
@@ -246,10 +221,6 @@ class ExploreDetail extends React.Component {
                   value.id !== this.props.params.id
                 ).length > 0
     });
-
-    const chartOptions = this.state.chartOptions.length ?
-      this.state.chartOptions.map(value => ({ label: value, value }))
-      : [{ label: 'Loading', value: 'Loading' }];
 
     const pageStructure = (
       <div className="c-page c-page-explore-detail">
@@ -283,24 +254,9 @@ class ExploreDetail extends React.Component {
                 </Button>
                 {/* Second child: If present, this item will be tethered to the the first child */}
                 { configureDropdownActive &&
-                  <div>
-                    <h3>Configure Chart</h3>
-                    <Spinner
-                      isLoading={!this.state.jiminyRecommendationLoaded}
-                      className="-fixed -light"
-                    />
-                    <Field
-                      onChange={value => console.info(value)}
-                      options={chartOptions}
-                      properties={{
-                        multi: false,
-                        type: 'text',
-                        default: ''
-                      }}
-                    >
-                      {Select}
-                    </Field>
-                  </div>
+                  <WidgetConfigurator
+                    dataset={this.state.datasetData}
+                  />
                 }
               </TetherComponent>
             </div>
