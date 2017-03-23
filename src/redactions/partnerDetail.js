@@ -7,14 +7,12 @@ import 'whatwg-fetch';
 const GET_PARTNER_SUCCESS = 'explore/GET_PARTNER_SUCCESS';
 const GET_PARTNER_ERROR = 'explore/GET_PARTNER_ERROR';
 const GET_PARTNER_LOADING = 'explore/GET_PARTNER_LOADING';
-const SET_PARTNER_ID = 'explore/SET_PARTNER_ID';
 
 /**
  * REDUCER
 */
 const initialState = {
-  data: null,
-  id: null
+  data: {}
 };
 
 export default function (state = initialState, action) {
@@ -41,11 +39,6 @@ export default function (state = initialState, action) {
       });
     }
 
-    case SET_PARTNER_ID: {
-      return Object.assign({}, state, {
-        id: action.payload
-      });
-    }
     default:
       return state;
   }
@@ -66,12 +59,9 @@ export function getPartnerData(id) {
         throw new Error(response.statusText);
       })
       .then((response) => {
-        // TODO: filter by those who are published
-        const data = response.data;
-
         dispatch({
           type: GET_PARTNER_SUCCESS,
-          payload: data
+          payload: response.data.attributes
         });
       })
       .catch((err) => {
@@ -81,15 +71,5 @@ export function getPartnerData(id) {
           payload: err.message
         });
       });
-  };
-}
-
-export function setPartnerId(id) {
-  return (dispatch) => {
-    dispatch({
-      type: SET_PARTNER_ID,
-      payload: id
-    });
-    dispatch(replace(locationDescriptor));
   };
 }
