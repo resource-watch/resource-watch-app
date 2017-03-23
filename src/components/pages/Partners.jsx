@@ -2,12 +2,21 @@ import React from 'react';
 import partners from 'json/partners.json';
 import PartnerBlock from 'components/common/Partners/PartnerBlock';
 import Banner from 'components/common/Banner';
+import Breadcrumbs from 'components/ui/Breadcrumbs';
+
+const breadcrumbs = [
+  {
+    name: 'About',
+    url: '/about'
+  }
+];
 
 function Partners(props) {
   return (
     <div className="c-page partners">
-      <section className="l-section -header">
+      <section className="l-section -header -breadcrumbs">
         <div className="l-container">
+          <Breadcrumbs items={breadcrumbs} />
           <header>
             <h1 className="c-text -header-big -thin">Partners</h1>
           </header>
@@ -43,12 +52,16 @@ function Partners(props) {
         </div>
       </section>
 
-      <Banner>
-        <h3 className="c-text -header-normal -normal">See yourself as part<br/> of this team?</h3>
-        <button className="c-btn -primary -filled">
-          Get in touch
-        </button>
-      </Banner>
+      <div className="row collapse">
+        <div className="column small-12">
+          <Banner>
+            <h3 className="c-text -header-normal -normal">See yourself as part<br/> of this team?</h3>
+            <button className="c-btn -primary -filled">
+              Get in touch
+            </button>
+          </Banner>
+        </div>
+      </div>
     </div>
   );
 }
