@@ -38,7 +38,7 @@ const config = {
         loader: 'style-loader!css-loader!sass-loader!postcss-loader'
       }, {
         test: /\.json$/,
-        loader: 'json'
+        loader: 'json-loader'
       }, {
         test: /\.(eot|ttf|woff2|woff)$/,
         loader: 'url-loader?prefix=fonts/&context=/src/fonts'
@@ -56,8 +56,12 @@ const config = {
     extensions: ['', '.js', '.jsx']
   },
 
+  resolveLoader: {
+    root: path.join(rootPath, 'node_modules')
+  },
+
   sassLoader: {
-    includePaths: [path.resolve("node_modules/foundation-sites/scss/")]
+    includePaths: [path.resolve('node_modules/foundation-sites/scss/')]
   },
 
   plugins: [
@@ -74,7 +78,7 @@ const config = {
         NODE_ENV: JSON.stringify(process.env.NODE_ENV),
         API_URL: JSON.stringify(process.env.API_URL),
         CMS_API_URL: JSON.stringify(process.env.CMS_API_URL),
-        BASEMAP_TILE_URL: JSON.stringify(process.env.BASEMAP_TILE_URL),
+        BASEMAP_TILE_URL: JSON.stringify(process.env.BASEMAP_TILE_URL)
       }
     })
   ]
@@ -94,6 +98,10 @@ if (process.env.NODE_ENV === 'production') {
   }));
 } else {
   config.devtool = 'eval-source-map';
+  config.resolve.alias = {
+    // This solves the issue oj using npm link
+    react: path.resolve('./node_modules/react')
+  };
 }
 
 module.exports = config;

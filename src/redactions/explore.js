@@ -30,7 +30,7 @@ const initialState = {
     limit: 9,
     mode: 'grid' // 'grid' or 'list'
   },
-  filters: {},
+  filters: [],
   sidebar: {
     open: true,
     width: 0
@@ -90,7 +90,6 @@ export default function (state = initialState, action) {
       return Object.assign({}, state, { filters: action.payload });
     }
 
-
     case SET_SIDEBAR: {
       return Object.assign({}, state, {
         sidebar: action.payload
@@ -113,7 +112,7 @@ export function getDatasets() {
     // Waiting for fetch from server -> Dispatch loading
     dispatch({ type: GET_DATASETS_LOADING });
     // TODO: remove the date now
-    fetch(new Request(`${config.API_URL}/dataset?app=rw&includes=widget,layer&page[size]=${Date.now() / 100000}`))
+    fetch(new Request(`${config.API_URL}/dataset?application=rw&status=saved&includes=widget,layer&page[size]=${Date.now() / 100000}`))
       .then((response) => {
         if (response.ok) return response.json();
         throw new Error(response.statusText);
@@ -207,6 +206,13 @@ export function setSidebar(options) {
   return {
     type: SET_SIDEBAR,
     payload: options
+  };
+}
+
+export function setDatasetsFilters(filters) {
+  return {
+    type: SET_DATASETS_FILTERS,
+    payload: filters
   };
 }
 

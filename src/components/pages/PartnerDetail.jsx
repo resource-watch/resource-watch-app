@@ -11,6 +11,10 @@ class PartnerDetail extends React.Component {
     this.props.getPartnerData(this.props.id);
   }
 
+  componentWillReceiveProps(newProps) {
+    this.props.getPartnerData(this.props.id);
+  }
+
   splitInTwoParts(str) {
     const strArray = str.split(' ');
     const midIndex = Math.floor(strArray.length / 2);

@@ -37,7 +37,7 @@ class Footer extends React.Component {
   setPartnersList() {
     return this.props.list.map((p, i) => (
       <div key={i} className="item">
-        <Link to={`/about/partners/${p.attributes.name}`}>
+        <Link to={`/about/partners/${p.id}`}>
           <img className="-img" src={`${config.CMS_API_URL}${p.attributes.logo.thumb}`}/>
         </Link>
       </div>
