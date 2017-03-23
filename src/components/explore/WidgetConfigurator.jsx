@@ -35,7 +35,36 @@ const chartConfig = [
 const chartFields = [
   {
     name: 'bar',
-    fields: ['X axis', 'Y axis']
+    fields: [
+      {
+        name: 'xAxis',
+        label: 'X axis',
+        onChange(val) {
+          this.setState(
+            { selected: Object.assign(this.state.selected,
+              {
+                xAxis: val,
+                lastAxisSelected: 'xAxis'
+              })
+            },
+            this.getRecommendationForOtherAxis);
+        }
+      },
+      {
+        name: 'yAxis',
+        label: 'Y axis',
+        onChange(val) {
+          this.setState(
+            { selected: Object.assign(this.state.selected,
+              {
+                yAxis: val,
+                lastAxisSelected: 'yAxis'
+              })
+            },
+            this.getRecommendationForOtherAxis);
+        }
+      }
+    ]
   },
   {
     name: 'line',
@@ -43,7 +72,18 @@ const chartFields = [
   },
   {
     name: 'pie',
-    fields: ['datasource']
+    fields: [
+      {
+        name: 'datasource',
+        label: 'Data source',
+        columns: [],
+        onChange(val) {
+          this.setState(
+            { selected: Object.assign(this.state.selected, { xAxis: val }) },
+            this.triggerSelectionChange);
+        }
+      }
+    ]
   }
 ];
 
@@ -55,10 +95,13 @@ class WidgetConfigurator extends React.Component {
     this.state = {
       chartTypeOptions: [], // Chart types available
       allColumns: [],
+      xAxisOptions: [],
+      yAxisOptions: [],
       selected: {
         chartType: '',
         xAxis: '',
-        yAxis: ''
+        yAxis: '',
+        lastAxisSelected: ''
       }
     };
 
@@ -81,7 +124,9 @@ class WidgetConfigurator extends React.Component {
       selected: {
         chartType: value
       },
-      allColumns: allColumnsArray
+      allColumns: allColumnsArray,
+      xAxisOptions: allColumnsArray,
+      yAxisOptions: allColumnsArray
     });
   }
 
@@ -91,13 +136,45 @@ class WidgetConfigurator extends React.Component {
     });
   }
 
+  triggerSelectionChange() {
+    console.info('triggerSelectionChange', this.state);
+    const { selected } = this.state;
+    const columns = [];
+
+    if (selected.xAxis) columns.push({ key: 'x', value: selected.xAxis });
+    if (selected.yAxis) columns.push({ key: 'y', value: selected.yAxis });
+
+    this.props.onSelectionChange(columns);
+  }
+
+  getRecommendationForOtherAxis() {
+    const { selected } = this.state;
+    if (selected.lastAxisSelected === 'xAxis') {
+      this.setState({
+        yAxisOptions: this.jiminy.columns(selected.chartType, selected.xAxis)
+      });
+    } else if (selected.lastAxisSelected === 'yAxis') {
+      this.setState({
+        xAxisOptions: this.jiminy.columns(selected.chartType, selected.yAxis)
+      });
+    }
+
+    if (selected.chartType === 'pie' && selected.xAxis !== '') {
+      this.triggerSelectionChange();
+    } else if (selected.chartType === 'bar' && selected.xAxis !== ''
+        && selected.yAxis !== '') {
+      this.triggerSelectionChange();
+    }
+  }
+
+  getFieldOptions(el) {
+    return this.state[`${el.name}Options`].map(option => ({ label: option, value: option }));
+  }
+
   render() {
-    const { chartTypeOptions, allColumns } = this.state;
+    const { chartTypeOptions } = this.state;
     const selected = this.state.selected;
-    const { chartType, xAxis, yAxis } = selected;
-    console.info('chartType', chartType);
-    console.info('xAxis', xAxis);
-    console.info('yAxis', yAxis);
+    const { chartType } = selected;
 
     const chartTypeOptionsValue = chartTypeOptions.length ?
       chartTypeOptions.map(value => ({ label: value, value }))
@@ -122,39 +199,13 @@ class WidgetConfigurator extends React.Component {
             {
               chartFields.find(elem => elem.name === chartType).fields.map(el =>
                 <Field
-                  onChange={(val) => {
-                    switch (el) {
-                      case 'X axis':
-                        this.setState({ selected: Object.assign(selected, { xAxis: val }) });
-                      case 'Y axis':
-                        this.setState({ selected: Object.assign(selected, { yAxis: val }) });
-                    }
-                  }}
-                  options={(() => {
-                    switch (chartType) {
-                      case 'bar':
-                        let cols;
-                        if (el === 'X axis') {
-                          cols = yAxis ? this.jiminy.columns(chartType, yAxis)
-                            : allColumns;
-                        } else {
-                          cols = xAxis ? this.jiminy.columns(chartType, xAxis)
-                            : allColumns;
-                        }
-                        //debugger;
-                        return cols.map(col => ({ label: col, value: col }));
-                      case 'pie':
-                        return this.jiminy.columns(chartType)
-                          .map(col => ({ label: col, value: col }));
-                      default :
-                        return this.jiminy.columns(chartType)
-                          .map(col => ({ label: col, value: col }));
-                    }
-                  })()}
+                  onChange={val => el.onChange.call(this, val)}
+                  options={this.getFieldOptions(el)}
                   properties={{
                     multi: false,
                     type: 'text',
-                    label: el
+                    label: el.label,
+                    value: selected[el.name]
                   }}
                 >
                   {Select}
@@ -169,9 +220,9 @@ class WidgetConfigurator extends React.Component {
 }
 
 WidgetConfigurator.propTypes = {
-  // STATE
-  dataset: React.PropTypes.array
-  // ACTIONS
+  dataset: React.PropTypes.array.isRequired,
+  // functions
+  onSelectionChange: React.PropTypes.func.isRequired
 };
 
 export default WidgetConfigurator;

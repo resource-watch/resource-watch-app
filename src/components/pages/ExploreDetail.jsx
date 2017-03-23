@@ -1,7 +1,5 @@
 import React from 'react';
 import classNames from 'classnames';
-import Jiminy from 'jiminy';
-import TetherComponent from 'react-tether';
 
 // Components
 import Title from 'components/ui/Title';
@@ -14,7 +12,7 @@ import Sidebar from 'containers/explore/Sidebar';
 import Map from 'containers/explore/Map';
 import Legend from 'components/ui/Legend';
 import LayerManager from 'utils/layers/LayerManager';
-import WidgetConfigurator from 'components/explore/WidgetConfigurator';
+import ConfigurableWidget from 'components/explore/ConfigurableWidget';
 import { DatasetService, getQueryByFilters } from 'rw-components';
 
 const breadcrumbs = [
@@ -35,7 +33,6 @@ class ExploreDetail extends React.Component {
     super(props);
 
     this.state = {
-      configureDropdownActive: false,
       similarDatasetsLoaded: false,
       datasetRawDataLoaded: false,
       datasetData: null,
@@ -48,9 +45,7 @@ class ExploreDetail extends React.Component {
     });
 
     // BINDINGS
-    this.triggerConfigureChart = this.triggerConfigureChart.bind(this);
     this.triggerOpenLayer = this.triggerOpenLayer.bind(this);
-    this.onScreenClick = this.onScreenClick.bind(this);
   }
 
   componentWillMount() {
@@ -83,25 +78,13 @@ class ExploreDetail extends React.Component {
         }
       }
       if (dataset.tableName && !this.state.datasetRawDataLoaded) {
-        this.setState({ datasetRawDataLoaded: true }, () => {
-          this.getDatasetRawData(dataset);
-        });
+        this.getDatasetRawData(dataset);
       }
     }
   }
 
   componentWillUnmount() {
     this.props.resetDataset();
-    window.removeEventListener('click', this.onScreenClick);
-  }
-
-  onScreenClick(e) {
-    const el = document.querySelector('.c-tooltip');
-    const clickOutside = el && el.contains && !el.contains(e.target);
-
-    if (clickOutside) {
-      this.triggerConfigureChart();
-    }
   }
 
   getDatasetRawData(dataset) {
@@ -109,7 +92,10 @@ class ExploreDetail extends React.Component {
     console.info('query', query);
     this.datasetService.fetchFilteredData(query)
     .then((response) => {
-      this.setState({ datasetData: response });
+      this.setState({
+        datasetRawDataLoaded: true,
+        datasetData: response
+      });
     },
     (error) => {
       console.info('error', error);
@@ -173,31 +159,11 @@ class ExploreDetail extends React.Component {
     console.info('triggerDownload');
   }
 
-  triggerConfigureChart() {
-    const { configureDropdownActive } = this.state;
-
-    // requestAnimationFrame
-    //   - Goal: Prevent double trigger at first atempt
-    //   - Issue: When you add the listener the click event is not finished yet
-    //            so it will trigger onScreenClick
-    //   - Stop propagation?: if I put e.stopPropagation clicking on another
-    //                        filter btn won't trigger the screenClick,
-    //                        so we will have 2 dropdown filters at the same time
-    requestAnimationFrame(() => window[configureDropdownActive ?
-      'removeEventListener' : 'addEventListener']('click', this.onScreenClick));
-
-    this.setState({ configureDropdownActive: !configureDropdownActive });
-  }
-
   render() {
     const { exploreDetail } = this.props;
     const { dataset } = exploreDetail;
     const { layersShown } = this.props;
-    const { configureDropdownActive, datasetData } = this.state;
-
-    const newClassConfigureButton = classNames({
-      '-active': this.state.configureDropdownActive
-    });
+    const { datasetData } = this.state;
 
     const similarDatasetsSectionClass = classNames({
       row: true,
@@ -218,33 +184,10 @@ class ExploreDetail extends React.Component {
         </div>
         <div className="row">
           <div className="column small-12 ">
-            <div className="widget-chart">
-              <TetherComponent
-                attachment="top right"
-                constraints={[{
-                  to: 'scrollToParent'
-                }]}
-                targetOffset="0px 100%"
-                classes={{
-                  element: 'c-tooltip -arrow-right'
-                }}
-              >
-                {/* First child: This is what the item will be tethered to */}
-                <Button
-                  onClick={this.triggerConfigureChart}
-                  properties={{ className: newClassConfigureButton }}
-                >
-                  <Icon name="icon-cog" className="-small" />
-                  CONFIGURE
-                </Button>
-                {/* Second child: If present, this item will be tethered to the the first child */}
-                { configureDropdownActive &&
-                  <WidgetConfigurator
-                    dataset={datasetData}
-                  />
-                }
-              </TetherComponent>
-            </div>
+            <ConfigurableWidget
+              tableName={dataset.tableName}
+              dataset={datasetData}
+            />
             <Spinner
               isLoading={!this.state.datasetRawDataLoaded}
               className="-fixed -light"
