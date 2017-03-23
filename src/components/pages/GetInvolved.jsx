@@ -64,6 +64,31 @@ function GetInvolved() {
   const title = 'Get Involved';
   const intro = ['Lorem ipsum sit amet casius sem', 'lacinia quam venenatis vestibulum'];
 
+  const introLines = intro => {
+    return intro.map((line, i) => (
+      <span key={i}>
+        {line}{(i !== intro.length - 1) && <br/>}
+      </span>));
+  };
+
+  const cardsStatic = cards.map((c, i) => 
+    <div key={i} className="column small-12 medium-6">
+      <CardStatic className='-light' background={c.background}>
+        <div>
+          <h2 className="title c-text -header-normal -thin">{c.title}</h2>
+          <p className="c-text -big">{introLines(c.intro)}</p>
+        </div>
+        <div className="buttons">
+            {c.buttons.map((b, i) => (
+              <button key={i} className={`c-btn ${b.className}`}>
+                <Link to={b.path}>{b.text}</Link>
+              </button>
+            ))}
+        </div>
+      </CardStatic>
+    </div>
+  );
+
   return (
     <div className="p-get-involved">
       <div className="c-page about">
@@ -71,17 +96,7 @@ function GetInvolved() {
         <section className="l-section -header">
           <div className="l-container">
             <div className="cards row collapse">
-              {cards.map((c, i) => (
-                <div key={i} className="column small-12 medium-6">
-                  <CardStatic 
-                    title={c.title}
-                    intro={c.intro}
-                    buttons={c.buttons}
-                    className='-light'
-                    background={c.background}
-                  />
-                </div>
-              ))}
+              {cardsStatic}
             </div>
           </div>
         </section>
