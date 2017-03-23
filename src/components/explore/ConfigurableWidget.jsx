@@ -5,7 +5,10 @@ import TetherComponent from 'react-tether';
 import WidgetConfigurator from 'components/explore/WidgetConfigurator';
 import Button from 'components/ui/Button';
 import Icon from 'components/ui/Icon';
+import bar from 'utils/widgets/bar';
 import { getQueryByFilters, VegaChart } from 'rw-components';
+
+const chartTypes = { bar };
 
 class ConfigurableWidget extends React.Component {
 
@@ -36,21 +39,25 @@ class ConfigurableWidget extends React.Component {
     }
   }
 
-  handleSelectionChange(columns) {
+  handleSelectionChange(columns, chartType) {
     const sql = getQueryByFilters(this.props.dataset.attributes.tableName, [], columns);
 
     this.setState({
-      parsedConfig:
-      {
-        data: [{
-          url: `https://api.resourcewatch.org/v1/query/${this.props.dataset.id}?sql=${sql}`,
-          name: 'table',
-          format: {
-            type: 'json',
-            property: 'data'
-          }
-        }]
-      }
+      parsedConfig: Object.assign(
+        {},
+        {
+          data:
+          [{
+            url: `https://api.resourcewatch.org/v1/query/${this.props.dataset.id}?sql=${sql}`,
+            name: 'table',
+            format: {
+              type: 'json',
+              property: 'data'
+            }
+          }]
+        },
+        chartTypes[chartType]
+        )
     });
   }
 

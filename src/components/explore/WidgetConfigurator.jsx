@@ -144,7 +144,7 @@ class WidgetConfigurator extends React.Component {
     if (selected.xAxis) columns.push({ key: 'x', value: selected.xAxis });
     if (selected.yAxis) columns.push({ key: 'y', value: selected.yAxis });
 
-    this.props.onSelectionChange(columns);
+    this.props.onSelectionChange(columns, selected.chartType);
   }
 
   getRecommendationForOtherAxis() {
