@@ -1,6 +1,15 @@
 import React from 'react';
 import PartnerBlock from 'components/common/Partners/PartnerBlock';
 import Banner from 'components/common/Banner';
+import Breadcrumbs from 'components/ui/Breadcrumbs';
+
+const breadcrumbs = [
+  {
+    name: 'About',
+    url: '/about'
+  }
+];
+
 
 class Partners extends React.Component {
   constructor(props) {
@@ -57,7 +66,6 @@ class Partners extends React.Component {
         </Banner>
       </div>
     );
-
   }
 }
 
