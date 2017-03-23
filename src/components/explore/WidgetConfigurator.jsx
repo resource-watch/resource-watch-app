@@ -74,7 +74,7 @@ const chartFields = [
     name: 'pie',
     fields: [
       {
-        name: 'datasource',
+        name: 'xAxis',
         label: 'Data source',
         columns: [],
         onChange(val) {
@@ -159,10 +159,12 @@ class WidgetConfigurator extends React.Component {
       });
     }
 
-    if (selected.chartType === 'pie' && selected.xAxis !== '') {
+    if (selected.chartType === 'pie' && !!selected.xAxis &&
+        selected.xAxis.length > 0) {
       this.triggerSelectionChange();
-    } else if (selected.chartType === 'bar' && selected.xAxis !== ''
-        && selected.yAxis !== '') {
+    } else if (selected.chartType === 'bar' && !!selected.xAxis
+        && selected.xAxis.length > 0 && !!selected.yAxis &&
+        selected.yAxis.length > 0) {
       this.triggerSelectionChange();
     }
   }
