@@ -77,6 +77,7 @@ class ExploreDetail extends React.Component {
           }
         }
       }
+      
       if (dataset.tableName && !this.state.datasetRawDataLoaded) {
         this.getDatasetRawData(dataset);
       }
@@ -91,16 +92,15 @@ class ExploreDetail extends React.Component {
     const query = getQueryByFilters(dataset.tableName) + ' LIMIT 10'; // temporal fix
     console.info('query', query);
     this.datasetService.fetchFilteredData(query)
-    .then((response) => {
-      this.setState({
-        datasetRawDataLoaded: true,
-        datasetData: response
+      .then((response) => {
+        this.setState({
+          datasetRawDataLoaded: true,
+          datasetData: response
+        });
+      })
+      .catch((error) => {
+        console.info('error', error);
       });
-    },
-    (error) => {
-      console.info('error', error);
-    }
-    );
   }
 
   getOpenMapButton() {
@@ -165,6 +165,8 @@ class ExploreDetail extends React.Component {
     const { layersShown } = this.props;
     const { datasetData } = this.state;
 
+    console.info('dataset', dataset);
+
     const similarDatasetsSectionClass = classNames({
       row: true,
       'similar-datasets-row': true,
@@ -184,10 +186,12 @@ class ExploreDetail extends React.Component {
         </div>
         <div className="row">
           <div className="column small-12 ">
-            <ConfigurableWidget
-              tableName={dataset.tableName}
-              dataset={datasetData}
-            />
+            {this.state.datasetRawDataLoaded &&
+              <ConfigurableWidget
+                dataset={dataset.detail}
+                datasetData={datasetData}
+              />
+            }
             <Spinner
               isLoading={!this.state.datasetRawDataLoaded}
               className="-fixed -light"

@@ -5,7 +5,7 @@ import TetherComponent from 'react-tether';
 import WidgetConfigurator from 'components/explore/WidgetConfigurator';
 import Button from 'components/ui/Button';
 import Icon from 'components/ui/Icon';
-import { getQueryByFilters } from 'rw-components';
+import { getQueryByFilters, VegaChart } from 'rw-components';
 
 class ConfigurableWidget extends React.Component {
 
@@ -13,7 +13,8 @@ class ConfigurableWidget extends React.Component {
     super(props);
 
     this.state = {
-      configureDropdownActive: false
+      configureDropdownActive: false,
+      parsedConfig: null
     };
 
     // BINDINGS
@@ -36,8 +37,21 @@ class ConfigurableWidget extends React.Component {
   }
 
   handleSelectionChange(columns) {
-    console.info('handleSelectionChange, columns: ', columns);
-    const sql = getQueryByFilters()
+    const sql = getQueryByFilters(this.props.dataset.attributes.tableName, [], columns);
+
+    this.setState({
+      parsedConfig:
+      {
+        data: [{
+          url: `https://api.resourcewatch.org/v1/query/${this.props.dataset.id}?sql=${sql}`,
+          name: 'table',
+          format: {
+            type: 'json',
+            property: 'data'
+          }
+        }]
+      }
+    });
   }
 
   triggerConfigureChart() {
@@ -86,11 +100,16 @@ class ConfigurableWidget extends React.Component {
           {/* Second child: If present, this item will be tethered to the the first child */}
           { configureDropdownActive &&
             <WidgetConfigurator
-              dataset={this.props.dataset}
+              dataset={this.props.datasetData}
               onSelectionChange={this.handleSelectionChange}
             />
           }
         </TetherComponent>
+        {this.state.parsedConfig &&
+          <VegaChart
+            data={this.state.parsedConfig}
+          />
+        }
       </div>
     );
   }
@@ -98,8 +117,8 @@ class ConfigurableWidget extends React.Component {
 }
 
 ConfigurableWidget.propTypes = {
-  dataset: React.PropTypes.array.isRequired,
-  tableName: React.PropTypes.string.isRequired
+  datasetData: React.PropTypes.array.isRequired,
+  dataset: React.PropTypes.object.isRequired
 };
 
 export default ConfigurableWidget;
