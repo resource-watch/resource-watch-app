@@ -53,9 +53,13 @@ class WidgetConfigurator extends React.Component {
     super(props);
 
     this.state = {
-      chartTypeOptions: [],
-      chartDataOptions: null,
-      selectedChart: {}
+      chartTypeOptions: [], // Chart types available
+      allColumns: [],
+      selected: {
+        chartType: '',
+        xAxis: '',
+        yAxis: ''
+      }
     };
 
     this.jiminy = new Jiminy(this.props.dataset, chartConfig);
@@ -69,48 +73,16 @@ class WidgetConfigurator extends React.Component {
     }
   }
 
-  onChartDataOptionChanged(value, field, chartType) {
-    console.info('onChartDataOptionChanged');
-    console.info('value', value);
-    console.info('field', field);
-    console.info('chartType', chartType);
-
-    //this.setState({ selectedChart: { ...object } });
-
-  }
-
   onChartTypeChanged(value) {
-    this.setState({ selectedChart: { name: value } });
+    // Retrieve fields description from JSON object
     const chartFieldsSelected = chartFields.find(elem => elem.name === value);
-    console.info('this.jiminy.columns(chartFieldsSelected.name)', this.jiminy.columns(chartFieldsSelected.name));
-
-    if (chartFieldsSelected) {
-      console.info('chartFieldsSelected', chartFieldsSelected);
-      const result = (
-        <div>
-          {
-            chartFieldsSelected.fields.map((el) => {
-
-              return (
-                <Field
-                  onChange={val => this.onChartDataOptionChanged(val, el, value)}
-                  options={this.jiminy.columns(chartFieldsSelected.name).map(
-                    column => ({ label: column, value: column})
-                  )}
-                  properties={{
-                    multi: false,
-                    type: 'text',
-                    label: el
-                  }}
-                >
-                  {Select}
-                </Field>);
-            })
-          }
-        </div>);
-
-      this.setState({ chartDataOptions: result });
-    }
+    const allColumnsArray = this.jiminy.columns(chartFieldsSelected.name);
+    this.setState({
+      selected: {
+        chartType: value
+      },
+      allColumns: allColumnsArray
+    });
   }
 
   getChartTypeOptions() {
@@ -119,19 +91,14 @@ class WidgetConfigurator extends React.Component {
     });
   }
 
-  renderFields() {
-    const selectedChartType = this.chartTypeField;
-    console.info('selectedChartType', selectedChartType);
-    return (
-      <div>
-        <p>Hola!</p>
-      </div>
-    );
-  }
-
   render() {
-    console.info('render props ', this.props);
-    const { chartTypeOptions } = this.state;
+    const { chartTypeOptions, allColumns } = this.state;
+    const selected = this.state.selected;
+    const { chartType, xAxis, yAxis } = selected;
+    console.info('chartType', chartType);
+    console.info('xAxis', xAxis);
+    console.info('yAxis', yAxis);
+
     const chartTypeOptionsValue = chartTypeOptions.length ?
       chartTypeOptions.map(value => ({ label: value, value }))
       : [{ label: 'Loading', value: 'Loading' }];
@@ -150,7 +117,52 @@ class WidgetConfigurator extends React.Component {
         >
           {Select}
         </Field>
-        {this.state.chartDataOptions}
+        {(chartType !== '') &&
+          <div>
+            {
+              chartFields.find(elem => elem.name === chartType).fields.map(el =>
+                <Field
+                  onChange={(val) => {
+                    switch (el) {
+                      case 'X axis':
+                        this.setState({ selected: Object.assign(selected, { xAxis: val }) });
+                      case 'Y axis':
+                        this.setState({ selected: Object.assign(selected, { yAxis: val }) });
+                    }
+                  }}
+                  options={(() => {
+                    switch (chartType) {
+                      case 'bar':
+                        let cols;
+                        if (el === 'X axis') {
+                          cols = yAxis ? this.jiminy.columns(chartType, yAxis)
+                            : allColumns;
+                        } else {
+                          cols = xAxis ? this.jiminy.columns(chartType, xAxis)
+                            : allColumns;
+                        }
+                        //debugger;
+                        return cols.map(col => ({ label: col, value: col }));
+                      case 'pie':
+                        return this.jiminy.columns(chartType)
+                          .map(col => ({ label: col, value: col }));
+                      default :
+                        return this.jiminy.columns(chartType)
+                          .map(col => ({ label: col, value: col }));
+                    }
+                  })()}
+                  properties={{
+                    multi: false,
+                    type: 'text',
+                    label: el
+                  }}
+                >
+                  {Select}
+                </Field>
+              )
+            }
+          </div>
+        }
       </div>
     );
   }

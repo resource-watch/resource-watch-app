@@ -105,22 +105,11 @@ class ExploreDetail extends React.Component {
   }
 
   getDatasetRawData(dataset) {
-    console.info('getDatasetRawData', dataset);
     const query = getQueryByFilters(dataset.tableName) + ' LIMIT 10'; // temporal fix
     console.info('query', query);
     this.datasetService.fetchFilteredData(query)
     .then((response) => {
-      // console.info('response', response);
-      this.setState({ datasetData: response});
-      // this.jiminy = new Jiminy(response, chartConfig);
-      // console.info('jiminy created! ');
-      // const recommendation = this.jiminy.recommendation();
-      // console.info('jiminy recommendation: ', recommendation);
-      // // console.info('jiminy columns', this.jiminy.columns(["bar"]));
-      // this.setState({
-      //   chartOptions: recommendation,
-      //   jiminyRecommendationLoaded: true
-      // });
+      this.setState({ datasetData: response });
     },
     (error) => {
       console.info('error', error);
@@ -180,7 +169,7 @@ class ExploreDetail extends React.Component {
     this.props.toggleLayerShown(defaultLayerId);
   }
 
-  triggerDownload(){
+  triggerDownload() {
     console.info('triggerDownload');
   }
 
@@ -251,7 +240,7 @@ class ExploreDetail extends React.Component {
                 {/* Second child: If present, this item will be tethered to the the first child */}
                 { configureDropdownActive &&
                   <WidgetConfigurator
-                    dataset={this.state.datasetData}
+                    dataset={datasetData}
                   />
                 }
               </TetherComponent>
