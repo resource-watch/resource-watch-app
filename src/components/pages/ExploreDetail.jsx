@@ -67,10 +67,10 @@ class ExploreDetail extends React.Component {
     const dataset = nextProps.exploreDetail.dataset.detail.attributes;
 
     if (dataset) {
-      if (dataset.tags) {
-        const hasTags = dataset.tags.length > 0;
+      if (dataset.vocabulary) {
+        const hasTags = dataset.vocabulary[0].attributes.tags.length > 0;
         if (hasTags) {
-          const tags = dataset.tags;
+          const tags = dataset.vocabulary[0].attributes.tags;
           if (!this.state.similarDatasetsLoaded) {
             this.setState({ similarDatasetsLoaded: true }, () => {
               this.props.getSimilarDatasets(tags);

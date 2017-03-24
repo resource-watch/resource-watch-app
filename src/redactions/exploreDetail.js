@@ -119,7 +119,7 @@ export function getDataset(datasetId) {
     // Waiting for fetch from server -> Dispatch loading
     dispatch({ type: GET_DATASET_LOADING });
     // TODO: remove the date now
-    fetch(new Request(`${config.API_URL}/dataset/${datasetId}?application=rw&includes=widget,layer&page[size]=${Date.now() / 100000}`))
+    fetch(new Request(`${config.API_URL}/dataset/${datasetId}?application=rw&includes=widget,layer,vocabulary&page[size]=${Date.now() / 100000}`))
       .then((response) => {
         if (response.ok) return response.json();
         throw new Error(response.statusText);
@@ -147,7 +147,7 @@ export function getSimilarDatasets(tags){
     // Waiting for fetch from server -> Dispatch loading
     dispatch({ type: GET_SIMILAR_DATASETS_LOADING });
     // TODO: remove the date now
-    fetch(new Request(`${config.API_URL}/dataset?application=rw&status=saved&includes=widget,layer&tags=${tags}&page[size]=4&page[number]=1&cache=${Date.now() / 100000}`))
+    fetch(new Request(`${config.API_URL}/dataset?application=rw&status=saved&includes=widget,layer,vocabulary&vocabulary[legacy]=${tags}&page[size]=4&page[number]=1&cache=${Date.now() / 100000}`))
       .then((response) => {
         if (response.ok) return response.json();
         throw new Error(response.statusText);
