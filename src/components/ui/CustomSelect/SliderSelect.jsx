@@ -1,5 +1,6 @@
 import React from 'react';
 import isEqual from 'lodash/isEqual';
+import Icon from 'components/ui/Icon';
 
 export default class CustomSelect extends React.Component {
   constructor(props) {
@@ -23,6 +24,7 @@ export default class CustomSelect extends React.Component {
     this.onScreenClick = this.onScreenClick.bind(this);
     this.resetSelectedIndex = this.resetSelectedIndex.bind(this);
     this.clearSearch = this.clearSearch.bind(this);
+    this.onSliderPrev = this.onSliderPrev.bind(this);
   }
 
   componentWillUnmount() {
@@ -112,7 +114,8 @@ export default class CustomSelect extends React.Component {
     }
   }
 
-  toggle() {
+  toggle(e) {
+    e.stopPropagation();
     return this.state.closed ? this.open() : this.close();
   }
 
@@ -150,7 +153,8 @@ export default class CustomSelect extends React.Component {
     return list;
   }
 
-  onSliderNext(item) {
+  onSliderNext(e, item) {
+    e.stopPropagation();
     const newSelectedLevels = this.state.selectedLevels.slice();
     newSelectedLevels.push({ value: item.value, label: item.label });
     const items = this.searchItems(newSelectedLevels);
@@ -161,7 +165,8 @@ export default class CustomSelect extends React.Component {
     });
   }
 
-  onSliderPrev(item) {
+  onSliderPrev(e) {
+    e.stopPropagation();
     const newSelectedLevels = this.state.selectedLevels.slice();
     newSelectedLevels.pop();
     const items = this.searchItems(newSelectedLevels);
@@ -179,7 +184,8 @@ export default class CustomSelect extends React.Component {
     });
   }
 
-  clearSearch() {
+  clearSearch(e) {
+    e.stopPropagation();
     this.setState({ selectedItem: null, closed: true });
     this.props.onValueChange && this.props.onValueChange();
   }
@@ -198,14 +204,14 @@ export default class CustomSelect extends React.Component {
           <div>
             <span>{this.state.selectedItem ? this.state.selectedItem.label : this.props.placeholder}</span>
             {!this.state.selectedItem && this.state.closed &&
-              <svg className="c-icon -tiny icon-arrow-down" onMouseDown={this.toggle}>
-                <use xlinkHref="#icon-arrow-down"></use>
-              </svg>
+              <button className="icon-btn" onClick={this.toggle}>
+                <Icon name="icon-arrow-down" className="-tiny icon-arrow-down" />
+              </button>
             }
             {this.state.selectedItem &&
-              <svg className="c-icon -tiny icon-cross" onMouseDown={this.clearSearch}>
-                <use xlinkHref="#icon-cross"></use>
-              </svg>
+              <button className="icon-btn" onClick={this.clearSearch}>
+                <Icon name="icon-cross" className="-tiny icon-cross" />
+              </button>
             }
           </div>
           <input
@@ -222,11 +228,9 @@ export default class CustomSelect extends React.Component {
         {this.state.closed ||
           <ul className="custom-select-options">
             {this.state.selectedLevels.length > 0 &&
-              <li className="title" onMouseDown={() => {this.onSliderPrev()}}>
+              <li className="title" onClick={this.onSliderPrev}>
                 <div>
-                  <svg className="c-icon -tiny icon-arrow-left">
-                    <use xlinkHref="#icon-arrow-left"></use>
-                  </svg>
+                  <Icon name="icon-arrow-left" className="-tiny icon-arrow-left" />
                   <span>{this.state.selectedLevels[this.state.selectedLevels.length - 1].label}</span>
                 </div>
               </li>
@@ -244,10 +248,8 @@ export default class CustomSelect extends React.Component {
                   </span>
 
                   {item.hasItems &&
-                    <div className="next">
-                      <svg className="c-icon -tiny icon-arrow-right" onMouseDown={() => {this.onSliderNext(item)}}>
-                        <use xlinkHref="#icon-arrow-right"></use>
-                      </svg>
+                    <div className="next" onClick={(e) => {this.onSliderNext(e, item)}}>
+                      <Icon name="icon-arrow-right" className="-tiny icon-arrow-right" />
                     </div>
                   }
                 </li>

@@ -48,6 +48,16 @@
     }
   }
 
+  .icon-btn {
+    border: 0;
+    background: none;
+    cursor: pointer;
+
+    &:focus {
+      outline: none;
+    }
+  }
+
   .no-results {
     position: absolute;
     top: 100%;
