@@ -16,7 +16,8 @@ import ConfigurableWidget from 'components/explore/ConfigurableWidget';
 import { DatasetService, getQueryByFilters } from 'rw-components';
 
 const breadcrumbs = [
-  { name: 'Home', url: '/' }
+  { name: 'Home', url: '/' },
+  { name: 'Explore', url: '/explore' }
 ];
 
 const mapConfig = {
