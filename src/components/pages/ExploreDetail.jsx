@@ -91,11 +91,13 @@ class ExploreDetail extends React.Component {
         if (!this.state.datasetRawDataLoaded) {
           this.getDatasetRawData(dataset);
         }
-      } else if (this.state.datasetLoaded) {
-        this.setState({
-          datasetRawDataLoaded: true,
-          datasetDataError: true
-        });
+      } else {
+        if (this.state.datasetLoaded || dataset.application) {
+          this.setState({
+            datasetRawDataLoaded: true,
+            datasetDataError: true
+          });
+        }
       }
     }
   }
@@ -231,9 +233,11 @@ class ExploreDetail extends React.Component {
             <Icon name="icon-facebook" className="-small" />
           </div>
           <div className="column small-7">
-            <p>{ dataset.detail.attributes &&
-                dataset.detail.attributes.description}
-            </p>
+            {/* Description */}
+            {dataset.detail.attributes.metadata && (dataset.detail.attributes.metadata.length > 0)
+              && dataset.detail.attributes.metadata[0].attributes.description &&
+              <p>{dataset.detail.attributes.metadata[0].attributes.description}</p>
+            }
           </div>
           <div className="column small-3 actions">
             {this.getOpenMapButton()}
