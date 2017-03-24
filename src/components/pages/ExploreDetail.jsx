@@ -91,11 +91,13 @@ class ExploreDetail extends React.Component {
         if (!this.state.datasetRawDataLoaded) {
           this.getDatasetRawData(dataset);
         }
-      } else if (this.state.datasetLoaded) {
-        this.setState({
-          datasetRawDataLoaded: true,
-          datasetDataError: true
-        });
+      } else {
+        if (this.state.datasetLoaded || dataset.application) {
+          this.setState({
+            datasetRawDataLoaded: true,
+            datasetDataError: true
+          });
+        }
       }
     }
   }
