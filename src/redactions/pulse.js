@@ -51,26 +51,39 @@ export default function (state = initialState, action) {
 */
 export function getLayers() {
   function getLayerFromDataset(dataset) {
-    return compact(dataset.attributes.layer.map((layer) => {
-      if (!layer.attributes.default && layer.attributes.staticImageConfig) {
-        const layerSpec = find(layerSpecPulse, { id: layer.attributes.id });
-        return Object.assign({}, layerSpec, layer.attributes);
+    const hasVocabulary = dataset.attributes.vocabulary && dataset.attributes.vocabulary.length;
+
+    if (hasVocabulary) {
+      const vocabulary = dataset.attributes.vocabulary.find(v => v.attributes.name === 'legacy');
+      if (vocabulary) {
+
+        const hasRealtime = vocabulary.attributes.tags.includes('real_time');
+        debugger;
+        if (hasRealtime) {
+          return compact(dataset.attributes.layer.map((layer) => {
+            if (!layer.attributes.default && layer.attributes.staticImageConfig) {
+              const layerSpec = find(layerSpecPulse, { id: layer.attributes.id });
+              return Object.assign({}, layerSpec, layer.attributes);
+            }
+            return null;
+          }));
+        }
       }
-      return null;
-    }));
+    }
+    return null;
   }
   return (dispatch) => {
     // Waiting for fetch from server -> Dispatch loading
     dispatch({ type: GET_LAYERS_LOADING });
     // TODO: remove the date now
-    fetch(new Request(`${config.API_URL}/dataset?application=rw&status=saved&tags=real_time&includes=layer&page[size]=${Date.now() / 100000}`))
+    fetch(new Request(`${config.API_URL}/dataset?application=rw&status=saved&includes=vocabulary,layer&page[size]=${Date.now() / 100000}`))
     .then((response) => {
       if (response.ok) return response.json();
       throw new Error(response.statusText);
     })
     .then((response) => {
       const datasets = response.data;
-      const layers = flatten(datasets.map(getLayerFromDataset));
+      const layers = compact(flatten(datasets.map(getLayerFromDataset)));
       dispatch({
         type: GET_LAYERS_SUCCESS,
         payload: layers
