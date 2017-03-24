@@ -92,6 +92,11 @@ class ConfigurableWidget extends React.Component {
 
     return (
       <div className="c-configurable-widget">
+        {this.state.parsedConfig &&
+          <VegaChart
+            data={this.state.parsedConfig}
+          />
+        }
         <TetherComponent
           attachment="top right"
           constraints={[{
@@ -118,11 +123,6 @@ class ConfigurableWidget extends React.Component {
             />
           }
         </TetherComponent>
-        {this.state.parsedConfig &&
-          <VegaChart
-            data={this.state.parsedConfig}
-          />
-        }
       </div>
     );
   }
