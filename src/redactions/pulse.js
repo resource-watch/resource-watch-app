@@ -1,6 +1,8 @@
 /* global config */
 import 'whatwg-fetch';
-import { find, compact, flatten } from 'lodash';
+import find from 'lodash/find';
+import compact from 'lodash/compact';
+import flatten from 'lodash/flatten';
 
 // We should merge the layerSpecPulse with the response of the layers
 import layerSpecPulse from 'utils/layers/layerSpecPulse.json';
