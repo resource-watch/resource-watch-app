@@ -6,9 +6,11 @@ import WidgetConfigurator from 'components/explore/WidgetConfigurator';
 import Button from 'components/ui/Button';
 import Icon from 'components/ui/Icon';
 import bar from 'utils/widgets/bar';
+import pie from 'utils/widgets/pie';
+import line from 'utils/widgets/line';
 import { getQueryByFilters, VegaChart } from 'rw-components';
 
-const chartTypes = { bar };
+const chartTypes = { bar, pie, line };
 
 class ConfigurableWidget extends React.Component {
 
@@ -45,6 +47,7 @@ class ConfigurableWidget extends React.Component {
     this.setState({
       parsedConfig: Object.assign(
         {},
+        chartTypes[chartType],
         {
           data:
           [{
@@ -55,8 +58,7 @@ class ConfigurableWidget extends React.Component {
               property: 'data'
             }
           }]
-        },
-        chartTypes[chartType]
+        }
         )
     });
   }
@@ -80,12 +82,17 @@ class ConfigurableWidget extends React.Component {
   render() {
     const { configureDropdownActive } = this.state;
 
+    if(this.state.parsedConfig){
+      console.info(JSON.stringify(this.state.parsedConfig));
+    }
+
+
     const newClassConfigureButton = classNames({
       '-active': this.state.configureDropdownActive
     });
 
     return (
-      <div className="widget-chart">
+      <div className="c-configurable-widget">
         <TetherComponent
           attachment="top right"
           constraints={[{
