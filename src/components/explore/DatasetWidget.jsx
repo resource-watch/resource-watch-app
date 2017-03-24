@@ -132,13 +132,15 @@ class DatasetWidget extends React.Component {
             </Title>
 
             {/* Description */}
-            {dataset.attributes.description &&
-              <p>{this.getDescription(dataset.attributes.description)}</p>
+            {dataset.attributes.metadata && (dataset.attributes.metadata.length > 0)
+              && dataset.attributes.metadata[0].attributes.description &&
+              <p>{this.getDescription(dataset.attributes.metadata[0].attributes.description)}</p>
             }
 
             {/* Source */}
-            {dataset.attributes.source &&
-              <p>Source: {dataset.attributes.source}</p>
+            {dataset.attributes.metadata && (dataset.attributes.metadata.length > 0)
+              && dataset.attributes.metadata[0].attributes.source &&
+              <p>Source: {dataset.attributes.metadata[0].attributes.source}</p>
             }
           </div>
           <div className="actions">
