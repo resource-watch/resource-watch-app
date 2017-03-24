@@ -5,12 +5,18 @@
 }
 
 .l-section {
+  position: relative;
   padding-top: 70px;
   padding-bottom: 70px;
+  width: 100%;
 
   header h1 {
     margin: 0;
     margin-bottom: 30px;
+  }
+
+  &.-breadcrumbs {
+    padding-top: 28px;
   }
 
   &.-bg {

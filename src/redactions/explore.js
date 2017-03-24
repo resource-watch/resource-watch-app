@@ -11,10 +11,9 @@ const GET_DATASETS_ERROR = 'explore/GET_DATASETS_ERROR';
 const GET_DATASETS_LOADING = 'explore/GET_DATASETS_LOADING';
 
 const SET_DATASETS_ACTIVE = 'explore/SET_DATASETS_ACTIVE';
-const TOGGLE_DATASET_ACTIVE = 'explore/TOGGLE_DATASET_ACTIVE';
 const SET_DATASETS_PAGE = 'explore/SET_DATASETS_PAGE';
 const SET_DATASETS_FILTERS = 'explore/SET_DATASETS_FILTERS';
-const SET_DATASETS_GRID = 'explore/SET_DATASETS_GRID';
+const SET_DATASETS_MODE = 'explore/SET_DATASETS_MODE';
 
 const SET_SIDEBAR = 'explore/SET_SIDEBAR';
 
@@ -28,10 +27,10 @@ const initialState = {
     error: false,
     active: [],
     page: 1,
-    limit: 9
+    limit: 9,
+    mode: 'grid' // 'grid' or 'list'
   },
-  filters: {},
-  grid: 'default',
+  filters: [],
   sidebar: {
     open: true,
     width: 0
@@ -80,12 +79,15 @@ export default function (state = initialState, action) {
       return Object.assign({}, state, { datasets });
     }
 
-    case SET_DATASETS_FILTERS: {
-      return Object.assign({}, state, { filters: action.payload });
+    case SET_DATASETS_MODE: {
+      const datasets = Object.assign({}, state.datasets, {
+        mode: action.payload
+      });
+      return Object.assign({}, state, { datasets });
     }
 
-    case SET_DATASETS_GRID: {
-      return Object.assign({}, state, { grid: action.payload });
+    case SET_DATASETS_FILTERS: {
+      return Object.assign({}, state, { filters: action.payload });
     }
 
     case SET_SIDEBAR: {
@@ -110,7 +112,7 @@ export function getDatasets() {
     // Waiting for fetch from server -> Dispatch loading
     dispatch({ type: GET_DATASETS_LOADING });
     // TODO: remove the date now
-    fetch(new Request(`${config.API_URL}/dataset?app=rw&includes=widget,layer&page[size]=${Date.now() / 100000}`))
+    fetch(new Request(`${config.API_URL}/dataset?application=rw&status=saved&includes=widget,layer&page[size]=${Date.now() / 100000}`))
       .then((response) => {
         if (response.ok) return response.json();
         throw new Error(response.statusText);
@@ -120,16 +122,17 @@ export function getDatasets() {
         // Filtering datasets that have widget or layer
         // and only belong to RW app
         const datasets = response.data.filter((dataset) => {
-          const isRwApp = (dataset.attributes.application.length === 1);
-          const hasWidgetDefault = dataset.attributes.widget.length &&
-                                   !!find(dataset.attributes.widget, {
-                                     attributes: { default: true }
-                                   });
-          const hasLayerDefault = dataset.attributes.layer.length &&
-                                  !!find(dataset.attributes.layer, {
-                                    attributes: { default: true }
-                                  });
-          return isRwApp && (hasWidgetDefault || hasLayerDefault);
+          const isRwApp = (dataset.attributes.application.length === 1) && dataset.attributes.application.includes('rw');
+          // const hasWidgetDefault = dataset.attributes.widget.length &&
+          //                          !!find(dataset.attributes.widget, {
+          //                            attributes: { default: true }
+          //                          });
+          // const hasLayerDefault = dataset.attributes.layer.length &&
+          //                         !!find(dataset.attributes.layer, {
+          //                           attributes: { default: true }
+          //                         });
+          // return isRwApp && (hasWidgetDefault || hasLayerDefault);
+          return isRwApp;
         });
 
         dispatch({
@@ -163,8 +166,8 @@ export function setDatasetsActive(active) {
 
 
 export function toggleDatasetActive(id) {
-  return (dispatch, state) => {
-    const { explore } = state();
+  return (dispatch, getState) => {
+    const { explore } = getState();
     const active = explore.datasets.active.slice();
     const index = active.indexOf(id);
 
@@ -203,5 +206,19 @@ export function setSidebar(options) {
   return {
     type: SET_SIDEBAR,
     payload: options
+  };
+}
+
+export function setDatasetsFilters(filters) {
+  return {
+    type: SET_DATASETS_FILTERS,
+    payload: filters
+  };
+}
+
+export function setDatasetsMode(mode) {
+  return {
+    type: SET_DATASETS_MODE,
+    payload: mode
   };
 }

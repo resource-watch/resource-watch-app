@@ -1,0 +1,22 @@
+@import "../../../styles/config";
+
+.p-explore {
+  .intro {
+    .c-title {
+      margin-bottom: 30px;
+    }
+
+    .search-container {
+      .column {
+        padding-right: 6px;
+
+        &:last-child { padding-right: 0; } 
+      }
+    }
+
+    .c-title {
+      // Fit due to typo left space
+      margin-left: -4px;
+    }
+  }
+}

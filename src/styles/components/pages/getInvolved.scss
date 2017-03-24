@@ -1,0 +1,32 @@
+
+.p-get-involved {
+  // Page banners backgrounds
+  .c-banner {
+    &.intro {
+      background-image: url('/images/backgrounds/california-01.png');
+      background-position: top center;
+    }
+
+    &.partners {
+      background-image: url('/images/backgrounds/partners-02@2x.png');
+      background-position: top center;
+    }
+
+    .c-btn {
+      color: $color-primary;
+
+      & * { color: $color-primary; }
+    }
+  }
+
+  .cards {
+    .column {
+      height: 400px;
+      padding-bottom: 20px;
+
+      &:nth-child(odd) {
+        padding-right: 20px;
+      }
+    }
+  }
+}

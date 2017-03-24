@@ -7,6 +7,7 @@
   &.-big { font-size: $font-size-big; }
   &.-extra-big { font-size: $font-size-extra-big; }
   &.-huge { font-size: $font-size-huge; }
+  &.-huger { font-size: $font-size-huger; }
   &.-header-normal { font-size: $font-size-header-normal; }
   &.-header-big { font-size: $font-size-header-big; }
 
@@ -24,4 +25,7 @@
   &.-uppercase { text-transform: uppercase; }
   &.-lowercase { text-transform: lowercase; }
   &.-capitalize { text-transform: capitalize; }
+
+  // STYLE
+  &.-italic { font-style: italic; }
 }

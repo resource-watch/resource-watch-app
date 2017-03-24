@@ -1,12 +1,21 @@
 import React from 'react';
 import Header from './components/layout/Header';
+import Footer from './components/layout/Footer';
 import './styles/app.scss';
 
+const fullScreenPages = [
+  '/explore',
+  '/planet-pulse',
+];
+
 function App(props) {
+  const fullScreen = fullScreenPages.indexOf(props.location.pathname) !== -1;
+
   return (
     <div>
-      <Header />
+      <Header fullScreen={fullScreen} />
       { props.children }
+      {!fullScreen && <Footer />}
     </div>
   );
 }
