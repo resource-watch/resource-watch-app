@@ -86,7 +86,6 @@ class ConfigurableWidget extends React.Component {
       console.info(JSON.stringify(this.state.parsedConfig));
     }
 
-
     const newClassConfigureButton = classNames({
       '-active': this.state.configureDropdownActive
     });
