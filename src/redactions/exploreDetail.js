@@ -119,7 +119,7 @@ export function getDataset(datasetId) {
     // Waiting for fetch from server -> Dispatch loading
     dispatch({ type: GET_DATASET_LOADING });
     // TODO: remove the date now
-    fetch(new Request(`${config.API_URL}/dataset/${datasetId}?application=rw&includes=widget,layer,vocabulary&page[size]=${Date.now() / 100000}`))
+    fetch(new Request(`${config.API_URL}/dataset/${datasetId}?application=rw&includes=widget,layer,vocabulary,metadata&page[size]=${Date.now() / 100000}`))
       .then((response) => {
         if (response.ok) return response.json();
         throw new Error(response.statusText);
