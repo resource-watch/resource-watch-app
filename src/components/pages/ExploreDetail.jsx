@@ -36,7 +36,8 @@ class ExploreDetail extends React.Component {
       similarDatasetsLoaded: false,
       datasetRawDataLoaded: false,
       datasetData: null,
-      mapSectionOpened: false
+      mapSectionOpened: false,
+      datasetDataError: false
     };
 
     // DatasetService
@@ -77,9 +78,16 @@ class ExploreDetail extends React.Component {
           }
         }
       }
-      
-      if (dataset.tableName && !this.state.datasetRawDataLoaded) {
-        this.getDatasetRawData(dataset);
+
+      if (dataset.tableName) {
+        if (!this.state.datasetRawDataLoaded) {
+          this.getDatasetRawData(dataset);
+        }
+      } else {
+        this.setState({
+          datasetRawDataLoaded: true,
+          datasetDataError: true
+        });
       }
     }
   }
@@ -184,17 +192,20 @@ class ExploreDetail extends React.Component {
                 dataset.detail.attributes.name}</Title>
           </div>
         </div>
-        <div className="row">
+        <div className="row widget-row">
           <div className="column small-12 ">
-            {this.state.datasetRawDataLoaded &&
+            {this.state.datasetRawDataLoaded && !this.state.datasetDataError &&
               <ConfigurableWidget
                 dataset={dataset.detail}
                 datasetData={datasetData}
               />
             }
+            {this.state.datasetDataError &&
+              <h3>No widget can be shown for this dataset</h3>
+            }
             <Spinner
               isLoading={!this.state.datasetRawDataLoaded}
-              className="-fixed -light"
+              className="-light"
             />
           </div>
         </div>

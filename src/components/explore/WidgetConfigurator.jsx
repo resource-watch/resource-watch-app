@@ -68,7 +68,36 @@ const chartFields = [
   },
   {
     name: 'line',
-    fields: ['X axis', 'Y axis']
+    fields: [
+      {
+        name: 'xAxis',
+        label: 'X axis',
+        onChange(val) {
+          this.setState(
+            { selected: Object.assign(this.state.selected,
+              {
+                xAxis: val,
+                lastAxisSelected: 'xAxis'
+              })
+            },
+            this.getRecommendationForOtherAxis);
+        }
+      },
+      {
+        name: 'yAxis',
+        label: 'Y axis',
+        onChange(val) {
+          this.setState(
+            { selected: Object.assign(this.state.selected,
+              {
+                yAxis: val,
+                lastAxisSelected: 'yAxis'
+              })
+            },
+            this.getRecommendationForOtherAxis);
+        }
+      }
+    ]
   },
   {
     name: 'pie',
