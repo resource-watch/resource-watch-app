@@ -13,7 +13,7 @@ function PartnerBlock(props) {
         </Link>
       </div>
       <p className="description c-text -extra-big">{partner.summary}</p>
-      <a href={partner.website !== '' ? partner.website : "#"} className="c-text -extra-big" target="_blank">Read more</a>
+      <Link to={`/about/partners/${props.item.id}`} className="c-text -extra-big">Read more</Link>
     </article>
   );
 }
