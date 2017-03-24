@@ -12,7 +12,8 @@ class Header extends React.Component {
     super(props);
 
     this.state = {
-      dataDropdownActive: false
+      dataDropdownActive: false,
+      aboutDropdownActive: false
     };
 
     // BINDINGS
@@ -28,19 +29,23 @@ class Header extends React.Component {
     window.removeEventListener('click', this.onScreenClick);
   }
 
-
-
-  onScreenClick(e) {
+  onScreenClick(e, specificDropdown) {
     const el = document.querySelector('.c-tooltip');
     const clickOutside = el && el.contains && !el.contains(e.target);
 
     if (clickOutside) {
-      this.toggleDataDropdown();
+      if (specificDropdown) this.toggleDataDropdown(e, specificDropdown);
+      else {
+        this.toggleDataDropdown(e, 'dataDropdownActive');
+        this.toggleDataDropdown(e, 'aboutDropdownActive');
+      }
     }
   }
 
-  toggleDataDropdown() {
-    const { dataDropdownActive } = this.state;
+  toggleDataDropdown(e, specificDropdown) {
+    e.stopPropagation();
+    const dropdown = this.state[specificDropdown];
+    const newObject = {};
 
     // requestAnimationFrame
     //   - Goal: Prevent double trigger at first atempt
@@ -49,10 +54,14 @@ class Header extends React.Component {
     //   - Stop propagation?: if I put e.stopPropagation clicking on another
     //                        filter btn won't trigger the screenClick,
     //                        so we will have 2 dropdown filters at the same time
-    requestAnimationFrame(() => window[dataDropdownActive ?
-      'removeEventListener' : 'addEventListener']('click', this.onScreenClick));
+    requestAnimationFrame(() => {
+      window[dropdown ?
+        'removeEventListener' : 
+        'addEventListener']('click', (e) => this.onScreenClick(e, specificDropdown));
+    });
 
-    this.setState({ dataDropdownActive: !dataDropdownActive });
+    newObject[specificDropdown] = !dropdown;
+    this.setState(newObject);
   }
 
   render() {
@@ -69,7 +78,7 @@ class Header extends React.Component {
       >
         {/* First child: This is what the item will be tethered to */}
         <a
-          onClick={this.toggleDataDropdown}
+          onClick={(e) => this.toggleDataDropdown(e, 'dataDropdownActive')}
         >
         Data
         </a>
@@ -81,7 +90,7 @@ class Header extends React.Component {
             <li>
               <Link
                 to="/explore"
-                onClick={this.toggleDataDropdown}
+                onClick={(e) => this.toggleDataDropdown(e, 'dataDropdownActive')}
               >
                 Explore Datasets
               </Link>
@@ -89,7 +98,7 @@ class Header extends React.Component {
             <li>
               <Link
                 to="/dashboards"
-                onClick={this.toggleDataDropdown}
+                onClick={(e) => this.toggleDataDropdown(e, 'dataDropdownActive')}
               >
                 Dashboards
               </Link>
@@ -97,7 +106,7 @@ class Header extends React.Component {
             <li>
               <Link
                 to="/planet-pulse"
-                onClick={this.toggleDataDropdown}
+                onClick={(e) => this.toggleDataDropdown(e, 'dataDropdownActive')}
               >
                 Planet Pulse
               </Link>
@@ -107,10 +116,53 @@ class Header extends React.Component {
       </TetherComponent>
       );
 
+    const aboutDropDown = (
+      <TetherComponent
+        attachment="top right"
+        constraints={[{
+          to: 'window'
+        }]}
+        targetOffset="0px 100%"
+        classes={{
+          element: 'c-tooltip -arrow-right'
+        }}
+      >
+        {/* First child: This is what the item will be tethered to */}
+        <a
+          onClick={(e) => this.toggleDataDropdown(e, 'aboutDropdownActive')}
+        >
+        About
+        </a>
+        {/* Second child: If present, this item will be tethered to the the first child */}
+        { this.state.aboutDropdownActive &&
+          <ul
+            className="data-dropdown"
+          >
+            <li>
+              <Link
+                to="/about"
+                onClick={(e) => this.toggleDataDropdown(e, 'aboutDropdownActive')}
+              >
+                About
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="/about/partners"
+                onClick={(e) => this.toggleDataDropdown(e, 'aboutDropdownActive')}
+              >
+                Partners
+              </Link>
+            </li>
+          </ul>
+        }
+      </TetherComponent>
+      );
+
     const navigationLinks = [
       { name: dataDropDown },
-      { name: 'Insights', path: '/insights' },
-      { name: 'About', path: '#' },
+      { name: <a href="/insights">Insights</a> },
+      { name: aboutDropDown },
       { name: <a className="c-button -inverse -primary">Get Involved</a> }
     ];
 
