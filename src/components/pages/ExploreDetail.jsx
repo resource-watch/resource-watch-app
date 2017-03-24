@@ -35,6 +35,7 @@ class ExploreDetail extends React.Component {
     this.state = {
       similarDatasetsLoaded: false,
       datasetRawDataLoaded: false,
+      datasetLoaded: false,
       datasetData: null,
       mapSectionOpened: false,
       datasetDataError: false
@@ -58,7 +59,9 @@ class ExploreDetail extends React.Component {
       this.props.resetDataset();
       this.setState({
         similarDatasetsLoaded: false,
-        datasetRawDataLoaded: false
+        datasetRawDataLoaded: false,
+        datasetDataError: false,
+        datasetLoaded: false,
       }, () => {
         this.props.getDataset(this.props.params.id);
       });
@@ -67,10 +70,14 @@ class ExploreDetail extends React.Component {
     const dataset = nextProps.exploreDetail.dataset.detail.attributes;
 
     if (dataset) {
-      if (dataset.vocabulary) {
-        const hasTags = dataset.vocabulary[0].attributes.tags.length > 0;
-        if (hasTags) {
-          const tags = dataset.vocabulary[0].attributes.tags;
+      if (!this.props.exploreDetail.dataset.detail.attributes) {
+        this.setState({ datasetLoaded: true });
+      }
+
+      if (dataset.vocabulary && dataset.vocabulary.length) {
+        const vocabulary = dataset.vocabulary.find(v => v.attributes.name === 'legacy');
+        if (vocabulary) {
+          const tags = vocabulary.attributes.tags;
           if (!this.state.similarDatasetsLoaded) {
             this.setState({ similarDatasetsLoaded: true }, () => {
               this.props.getSimilarDatasets(tags);
@@ -79,11 +86,13 @@ class ExploreDetail extends React.Component {
         }
       }
 
+      console.info('dataset.tableName', dataset.tableName);
+
       if (dataset.tableName) {
         if (!this.state.datasetRawDataLoaded) {
           this.getDatasetRawData(dataset);
         }
-      } else {
+      } else if (this.state.datasetLoaded) {
         this.setState({
           datasetRawDataLoaded: true,
           datasetDataError: true
@@ -101,13 +110,25 @@ class ExploreDetail extends React.Component {
     console.info('query', query);
     this.datasetService.fetchFilteredData(query)
       .then((response) => {
-        this.setState({
-          datasetRawDataLoaded: true,
-          datasetData: response
-        });
+        console.info('response', response);
+        if (response) {
+          this.setState({
+            datasetRawDataLoaded: true,
+            datasetData: response
+          });
+        } else {
+          this.setState({
+            datasetDataError: true,
+            datasetRawDataLoaded: true
+          });
+        }
       })
       .catch((error) => {
         console.info('error', error);
+        this.setState({
+          datasetDataError: true,
+          datasetRawDataLoaded: true
+        });
       });
   }
 
