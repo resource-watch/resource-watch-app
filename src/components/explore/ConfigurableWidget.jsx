@@ -8,6 +8,7 @@ import Icon from 'components/ui/Icon';
 import bar from 'utils/widgets/bar';
 import pie from 'utils/widgets/pie';
 import line from 'utils/widgets/line';
+import Spinner from 'components/ui/Spinner';
 import { getQueryByFilters, VegaChart } from 'rw-components';
 
 const chartTypes = { bar, pie, line };
@@ -19,6 +20,7 @@ class ConfigurableWidget extends React.Component {
 
     this.state = {
       configureDropdownActive: false,
+      vegaChartLoading: false,
       parsedConfig: null
     };
 
@@ -26,6 +28,7 @@ class ConfigurableWidget extends React.Component {
     this.triggerConfigureChart = this.triggerConfigureChart.bind(this);
     this.onScreenClick = this.onScreenClick.bind(this);
     this.handleSelectionChange = this.handleSelectionChange.bind(this);
+    this.handleWidgetChartToggleLoading = this.handleWidgetChartToggleLoading.bind(this);
   }
 
   componentWillUnmount() {
@@ -79,13 +82,16 @@ class ConfigurableWidget extends React.Component {
     this.setState({ configureDropdownActive: !configureDropdownActive });
   }
 
+  handleWidgetChartToggleLoading(loaded) {
+    this.setState({ vegaChartLoading: loaded });
+  }
+
   render() {
     const { configureDropdownActive } = this.state;
 
-    if(this.state.parsedConfig){
-      console.info(JSON.stringify(this.state.parsedConfig));
-    }
-
+    // if (this.state.parsedConfig){
+    //   console.info(JSON.stringify(this.state.parsedConfig));
+    // }
 
     const newClassConfigureButton = classNames({
       '-active': this.state.configureDropdownActive
@@ -93,6 +99,15 @@ class ConfigurableWidget extends React.Component {
 
     return (
       <div className="c-configurable-widget">
+        {this.state.parsedConfig &&
+          <VegaChart
+            data={this.state.parsedConfig}
+            toggleLoading={this.handleWidgetChartToggleLoading}
+          />
+        }
+        <Spinner
+          isLoading={this.state.vegaChartLoading}
+        />
         <TetherComponent
           attachment="top right"
           constraints={[{
@@ -119,11 +134,6 @@ class ConfigurableWidget extends React.Component {
             />
           }
         </TetherComponent>
-        {this.state.parsedConfig &&
-          <VegaChart
-            data={this.state.parsedConfig}
-          />
-        }
       </div>
     );
   }

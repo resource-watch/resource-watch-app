@@ -87,8 +87,6 @@ class ExploreDetail extends React.Component {
         }
       }
 
-      console.info('dataset.tableName', dataset.tableName);
-
       if (dataset.tableName) {
         if (!this.state.datasetRawDataLoaded) {
           this.getDatasetRawData(dataset);
@@ -108,10 +106,8 @@ class ExploreDetail extends React.Component {
 
   getDatasetRawData(dataset) {
     const query = getQueryByFilters(dataset.tableName) + ' LIMIT 10'; // temporal fix
-    console.info('query', query);
     this.datasetService.fetchFilteredData(query)
       .then((response) => {
-        console.info('response', response);
         if (response) {
           this.setState({
             datasetRawDataLoaded: true,
@@ -194,8 +190,6 @@ class ExploreDetail extends React.Component {
     const { dataset } = exploreDetail;
     const { layersShown } = this.props;
     const { datasetData } = this.state;
-
-    console.info('dataset', dataset);
 
     const similarDatasetsSectionClass = classNames({
       row: true,

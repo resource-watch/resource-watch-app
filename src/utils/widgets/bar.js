@@ -38,7 +38,7 @@ const bar = {
           "y2": {"scale": "y", "value": 0}
         },
         "update": {
-          "fill": {"value": "steelblue"}
+          "fill": {"value": "white"}
         },
         "hover": {
           "fill": {"value": "red"}
