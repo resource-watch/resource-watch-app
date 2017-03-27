@@ -11,11 +11,19 @@ import LayerDescription from 'components/pulse/LayerDescription';
 import Spinner from 'components/ui/Spinner';
 import ZoomControl from 'components/ui/ZoomControl';
 
+import earthImage from '../../../public/images/components/vis/earth-min.jpg';
+import earthBumpImage from '../../../public/images/components/vis/earth-bump.jpg';
+import cloudsImage from '../../../public/images/components/vis/clouds-min.png';
+
 class Pulse extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      texture: null,
+      loading: false,
+      layerPoints: []
+    };
     this.layerGlobeManager = new LayerGlobeManager();
 
     // Bindings
@@ -57,6 +65,10 @@ class Pulse extends React.Component {
         this.setState({ texture: null });
       }
     }
+
+    if (nextProps.pulse.layerPoints) {
+      this.setState({ layerPoints: nextProps.pulse.layerPoints });
+    }
   }
 
   onZoomIn() {
@@ -92,6 +104,14 @@ class Pulse extends React.Component {
           enableZoom
           lightPosition={'right'}
           texture={this.state.texture}
+          layerPoints={this.state.layerPoints}
+          earthImagePath={earthImage}
+          earthBumpImagePath={earthBumpImage}
+          defaultLayerImagePath={cloudsImage}
+          segments={64}
+          rings={64}
+          useHalo
+          useDefaultLayer
         />
         <ZoomControl
           ref={zoomControl => this.zoomControl = zoomControl}
