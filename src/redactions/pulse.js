@@ -56,18 +56,13 @@ export function getLayers() {
     if (hasVocabulary) {
       const vocabulary = dataset.attributes.vocabulary.find(v => v.attributes.name === 'legacy');
       if (vocabulary) {
-
-        const hasRealtime = vocabulary.attributes.tags.includes('real_time');
-        debugger;
-        if (hasRealtime) {
-          return compact(dataset.attributes.layer.map((layer) => {
-            if (!layer.attributes.default && layer.attributes.staticImageConfig) {
-              const layerSpec = find(layerSpecPulse, { id: layer.attributes.id });
-              return Object.assign({}, layerSpec, layer.attributes);
-            }
-            return null;
-          }));
-        }
+        return compact(dataset.attributes.layer.map((layer) => {
+          if (!layer.attributes.default && layer.attributes.staticImageConfig) {
+            const layerSpec = find(layerSpecPulse, { id: layer.id });
+            return Object.assign({}, layerSpec, layer.attributes);
+          }
+          return null;
+        }));
       }
     }
     return null;
@@ -76,7 +71,7 @@ export function getLayers() {
     // Waiting for fetch from server -> Dispatch loading
     dispatch({ type: GET_LAYERS_LOADING });
     // TODO: remove the date now
-    fetch(new Request(`${config.API_URL}/dataset?application=rw&status=saved&includes=vocabulary,layer&page[size]=${Date.now() / 100000}`))
+    fetch(new Request(`${config.API_URL}/dataset?application=rw&status=saved&includes=vocabulary,layer&vocabulary[legacy]=real_time&page[size]=${Date.now() / 100000}`))
     .then((response) => {
       if (response.ok) return response.json();
       throw new Error(response.statusText);
