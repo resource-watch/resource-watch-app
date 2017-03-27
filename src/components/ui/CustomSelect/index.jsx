@@ -1,7 +1,6 @@
 import React from 'react';
 import SliderSelect from './SliderSelect';
 import SearchSelect from './SearchSelect';
-import './style.scss';
 
 function CustomSelect(props) {
   const { search, ...newProps } = props;
