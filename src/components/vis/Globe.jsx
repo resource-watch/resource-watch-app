@@ -14,8 +14,11 @@ class Globe extends React.Component {
     this.state = {
       texture: props.texture,
       height: props.height,
-      width: props.width
+      width: props.width,
+      markers: []
     };
+
+    this.test = this.test.bind(this);
   }
 
   componentDidMount() {
@@ -51,6 +54,35 @@ class Globe extends React.Component {
     }
     if (nextProps.height !== this.props.height) {
       this.setState({ height: nextProps.height });
+    }
+    if (nextProps.layerPoints.length > 0) {
+      if (this.state.markers.length > 0) {
+        this.removeMarkers();
+      }
+      const pointObjects = nextProps.layerPoints.map((value) => {
+        const normalVector = this.convertLatLonToCoordinates(value.lat, value.lon);
+        const cylinderGeometry = new THREE.CylinderGeometry(1, 1, 0.5);
+
+        // Translate the geometry so the base sits at the origin.
+        cylinderGeometry.applyMatrix(new THREE.Matrix4().makeTranslation(0, 0, 0));
+
+        // Rotate the geometry so the top points in the direction of the positive-Z axis.
+        cylinderGeometry.applyMatrix(new THREE.Matrix4().makeRotationX(Math.PI / 2));
+
+        // Create the mesh.
+        const cylinderMaterial = new THREE.MeshBasicMaterial({ color: 0xffff00 });
+        const cylinder = new THREE.Mesh(cylinderGeometry, cylinderMaterial);
+        cylinder.lookAt(normalVector);
+        cylinder.position.copy(normalVector);
+
+        this.scene.add(cylinder);
+
+        return cylinder;
+      });
+      this.setState({ markers: pointObjects });
+      const axisHelper = new THREE.AxisHelper(200);
+      this.scene.add(axisHelper)
+      console.info('done!');
     }
   }
 
@@ -214,6 +246,24 @@ class Globe extends React.Component {
   }
 
   /**
+  *
+  */
+  convertLatLonToCoordinates(lat, lon) {
+    const phi = (90 - lat) * (Math.PI / 180);
+    const theta = (lon + 180) * (Math.PI / 180);
+    const x = -(this.props.radius * Math.sin(phi) * Math.cos(theta));
+    const z = (this.props.radius * Math.sin(phi) * Math.sin(theta));
+    const y = (this.props.radius * Math.cos(phi));
+    return new THREE.Vector3(x, y, z);
+  }
+
+  removeMarkers() {
+    if (this.state.markers) {
+      this.state.markers.forEach(element => this.scene.remove(element));
+    }
+  }
+
+  /**
    * Add stats
    */
   addStats() {
@@ -300,9 +350,17 @@ class Globe extends React.Component {
     // console.info('this.halo.geometry.radius', this.halo.geometry.radius);
   }
 
+  test() {
+  }
+
   render() {
     return (
-      <div ref={(node) => { this.el = node; }} className="c-globe" />
+      <div>
+        <div ref={(node) => { this.el = node; }} className="c-globe"/>
+        <button onClick={this.test} style={{position:'absolute'}}>
+          Test
+        </button>
+      </div>
     );
   }
 
@@ -412,6 +470,8 @@ Globe.propTypes = {
   // Default layer
   defaultLayerImagePath: React.PropTypes.string,
   useDefaultLayer: React.PropTypes.bool,
+  // Layer points
+  layerPoints: React.PropTypes.array,
 
   // Camera
   cameraFov: React.PropTypes.number,

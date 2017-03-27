@@ -128,10 +128,9 @@ export function getLayerPoints(datasetId, tableName) {
       throw new Error(response.statusText);
     })
     .then((response) => {
-      console.info('response', response);
       dispatch({
         type: GET_LAYER_POINTS_SUCCESS,
-        payload: response
+        payload: response.data
       });
     })
     .catch((err) => {
