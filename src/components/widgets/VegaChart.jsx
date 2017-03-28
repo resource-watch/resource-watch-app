@@ -3,6 +3,13 @@ import vega from 'vega';
 import debounce from 'lodash/debounce';
 import isEqual from 'lodash/isEqual';
 
+const VegaTooltipContent = props => (
+  <div>
+    <p>{props.item && props.item.datum.x}</p>
+    <p>{props.item && props.item.datum.y}</p>
+  </div>
+);
+
 class VegaChart extends React.Component {
 
   constructor(props) {
@@ -57,10 +64,25 @@ class VegaChart extends React.Component {
           renderer: 'svg'
         });
 
+        const model = this.vis._model;
         console.log(this.vis);
 
         this.vis.on('mouseover', (event, item) => {
-          console.log(event, item);
+          if (item) {
+            this.props.toggleTooltip(true, {
+              follow: true,
+              children: VegaTooltipContent,
+              childrenProps: {
+                event, item
+              }
+            });
+          } else {
+            this.props.toggleTooltip(false);
+          }
+        });
+
+        this.vis.on('mouseout', () => {
+          this.props.toggleTooltip(false);
         });
 
         this.vis.update();
@@ -89,7 +111,8 @@ class VegaChart extends React.Component {
 VegaChart.propTypes = {
   // Define the chart data
   data: React.PropTypes.object,
-  toggleLoading: React.PropTypes.func
+  toggleLoading: React.PropTypes.func,
+  toggleTooltip: React.PropTypes.func
 };
 
 export default VegaChart;
