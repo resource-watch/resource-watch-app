@@ -31,6 +31,7 @@ class Pulse extends React.Component {
     this.onZoomIn = this.onZoomIn.bind(this);
     this.onZoomOut = this.onZoomOut.bind(this);
     this.handleMarkerSelected = this.handleMarkerSelected.bind(this);
+    this.handleEarthClicked = this.handleEarthClicked.bind(this);
   }
 
   componentWillMount() {
@@ -86,6 +87,31 @@ class Pulse extends React.Component {
     this.setState({ selectedMarker: JSON.stringify(marker) });
   }
 
+  handleEarthClicked(latLon) {
+    console.info('handleEarthClicked', latLon);
+    console.info(this.props);
+    const currentLayer = this.props.pulse.layers.find(
+      val => val.id === this.props.pulse.layerActive);
+    const datasetId = currentLayer.dataset;
+    const tableName = currentLayer.layerConfig.body.layers[0].options.sql.split('FROM')[1];
+    const geoJSON = JSON.stringify({
+      type: 'Point',
+      coordinates: [latLon.longitude, latLon.latitude]
+    });
+    const requestURL = `${config.API_URL}/query/${datasetId}?sql=SELECT * FROM ${tableName} WHERE st_intersects(the_geom,st_buffer(ST_SetSRID(st_geomfromgeojson('${geoJSON}'),4326),1))`;
+    console.info('requestURL', requestURL);
+    fetch(new Request(requestURL))
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          throw new Error(response.statusText);
+        }
+      }).then((response) => {
+        console.info('response.data', response.data);
+      });
+  }
+
   render() {
     return (
       <div className="c-page -dark">
@@ -121,6 +147,7 @@ class Pulse extends React.Component {
           useDefaultLayer
           onMarkerSelected={this.handleMarkerSelected}
           globeClickedAt={this.handleGlobeClickedAt}
+          onEarthClicked={this.handleEarthClicked}
         />
         <ZoomControl
           ref={zoomControl => this.zoomControl = zoomControl}

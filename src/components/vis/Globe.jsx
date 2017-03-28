@@ -275,15 +275,18 @@ class Globe extends React.Component {
     const z = object.point.z;
 
     let lat = 90 - (Math.acos(y / r)) * 180 / Math.PI;
-    let lon = ((270 + (Math.atan2(x, z)) * 180 / Math.PI) % 360) - 360;
+    let lon = ((270 + (Math.atan2(x, z)) * 180 / Math.PI) % 360) - 180;
 
-    console.info(object, r, x, y, z);
-    console.info('lat, lon', lat, lon);
+    if (lon < 0) {
+      lon += 180;
+    } else if (lon > 0) {
+      lon -= 180;
+    }
 
     lat = Math.round(lat * 100000) / 100000;
     lon = Math.round(lon * 100000) / 100000;
 
-    return [lat, lon];
+    return { latitude: lat, longitude: lon };
   }
 
   removeMarkers() {
@@ -412,7 +415,7 @@ class Globe extends React.Component {
     const earthIntersect = this.raycaster.intersectObjects([this.earth]);
     if (earthIntersect.length > 0) {
       const latLon = this.convertCoordinatesToLatLon(earthIntersect[0]);
-      console.info('latLon', latLon);
+      this.props.onEarthClicked(latLon);
     }
   }
 

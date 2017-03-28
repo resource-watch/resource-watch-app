@@ -20,6 +20,7 @@ class LayerNavDropdown extends React.Component {
       <div className="c-layer-nav-dropdown dropdown">
         <ul>
           {this.props.layers.map((layer) => {
+            // temporal
             const tableName = layer.layerConfig.body.layers[0].options.sql.split('FROM')[1];
             return (
               <li
