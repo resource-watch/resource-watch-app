@@ -18,7 +18,14 @@ class Globe extends React.Component {
       markers: []
     };
 
-    this.test = this.test.bind(this);
+    this.raycaster = new THREE.Raycaster(); // create once
+    this.mouse = new THREE.Vector2();
+
+    // Bindings
+    this.onClick = this.onClick.bind(this);
+    // this.onMouseDown = this.onMouseDown.bind(this);
+
+    // document.addEventListener('mousedown', this.onMouseDown);
   }
 
   componentDidMount() {
@@ -74,6 +81,7 @@ class Globe extends React.Component {
         const cylinder = new THREE.Mesh(cylinderGeometry, cylinderMaterial);
         cylinder.lookAt(normalVector);
         cylinder.position.copy(normalVector);
+        cylinder.name = value;
 
         this.scene.add(cylinder);
 
@@ -117,6 +125,7 @@ class Globe extends React.Component {
       this.currentTexture.material.needsUpdate = true;
     }
     this.currentTexture.updateMatrix();
+    this.currentTexture.name = 'texture';
     this.scene.add(this.currentTexture);
   }
 
@@ -174,6 +183,7 @@ class Globe extends React.Component {
     const geometry = new THREE.SphereGeometry(radius, segments, rings);
     const earth = new THREE.Mesh(geometry, material);
     earth.updateMatrix();
+    earth.name = 'earth';
     this.scene.add(earth);
   }
 
@@ -211,6 +221,7 @@ class Globe extends React.Component {
     const haloRadius = this.getHaloRadius();
     const geometry = new THREE.SphereGeometry(haloRadius, segments, segments);
     this.halo = new THREE.Mesh(geometry, material);
+    this.halo.name = 'halo';
 
     this.scene.add(this.halo);
   }
@@ -350,17 +361,39 @@ class Globe extends React.Component {
     // console.info('this.halo.geometry.radius', this.halo.geometry.radius);
   }
 
-  test() {
+  onClick(event) {
+
+    // console.info('event.nativeEvent.offsetX',event.nativeEvent.offsetX);
+    // console.info('event.nativeEvent.offsetY',event.nativeEvent.offsetY);
+    // console.info('event.clientX',event.clientX);
+    // console.info('event.clientY',event.clientY);
+    // console.info('this.el.clientWidth',this.el.clientWidth);
+    // console.info('this.el.clientHeight',this.el.clientHeight);
+
+    this.mouse.x = (event.nativeEvent.offsetX / this.el.clientWidth ) * 2 - 1;
+    this.mouse.y = -(event.nativeEvent.offsetY / this.el.clientHeight ) * 2 + 1;
+
+    // console.info('this.mouse.x', this.mouse.x);
+    // console.info('this.mouse.y', this.mouse.y);
+
+    this.raycaster.setFromCamera(this.mouse, this.camera);
+
+    // this.scene.add(new THREE.ArrowHelper(this.raycaster.ray.direction, this.raycaster.ray.origin, 100, Math.random() * 0xffffff ));
+
+    const intersects = this.raycaster.intersectObjects(this.scene.children);
+
+    if (intersects.length > 0) {
+      console.info('Click on 3D Object!', intersects.map((el) => {return el.object.name}));
+    }
   }
 
   render() {
     return (
-      <div>
-        <div ref={(node) => { this.el = node; }} className="c-globe"/>
-        <button onClick={this.test} style={{position:'absolute'}}>
-          Test
-        </button>
-      </div>
+      <div
+        ref={(node) => { this.el = node; }}
+        className="c-globe"
+        onClick={this.onClick}
+      />
     );
   }
 
