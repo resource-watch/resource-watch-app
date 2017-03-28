@@ -160,31 +160,31 @@ export default class LayerManager {
     const options = opts;
 
     this._layersLoading[layer.id] = true;
-    const xmlhttp = new XMLHttpRequest();
-    xmlhttp.open('POST', `https://${layer.account}.carto.com/api/v1/map`);
-    xmlhttp.setRequestHeader('Content-Type', 'application/json');
-    xmlhttp.send(JSON.stringify(layer.body));
 
-    xmlhttp.onreadystatechange = function onStateChange() {
-      if (xmlhttp.readyState === 4) {
-        if (xmlhttp.status === 200) {
-          const data = JSON.parse(xmlhttp.responseText);
-          // we can switch off the layer while it is loading
-          const tileUrl = `https://${layer.account}.carto.com/api/v1/map/${data.layergroupid}/{z}/{x}/{y}.png`;
+    layer.body.version = '1.4.0';
 
-          this._mapLayers[layer.id] = L.tileLayer(tileUrl).addTo(this._map).setZIndex(layer.order);
+    fetch(`https://${layer.account}.carto.com/api/v1/map`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(layer.body)
+    }).then((response) => {
+      return response.json();
+    }).then((data) => {
+      const tileUrl = `https://${layer.account}.carto.com/api/v1/map/${data.layergroupid}/{z}/{x}/{y}.png`;
 
-          this._mapLayers[layer.id].on('load', () => {
-            delete this._layersLoading[layer.id];
-          });
-          this._mapLayers[layer.id].on('tileerror', () => {
-            this._rejectLayersLoading = true;
-          });
-        } else {
-          this._rejectLayersLoading = true;
-        }
-      }
-    }.bind(this);
+      this._mapLayers[layer.id] = L.tileLayer(tileUrl).addTo(this._map).setZIndex(layer.order);
+
+      this._mapLayers[layer.id].on('load', () => {
+        delete this._layersLoading[layer.id];
+      });
+      this._mapLayers[layer.id].on('tileerror', () => {
+        this._rejectLayersLoading = true;
+      });
+    }).then((err) => {
+      this._rejectLayersLoading = true;
+    });
   }
 
   setZIndex(layersActive) {
