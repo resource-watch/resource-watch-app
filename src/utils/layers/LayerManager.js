@@ -162,9 +162,9 @@ export default class LayerManager {
     this._layersLoading[layer.id] = true;
 
     const layerTpl = {
-      "version": "1.3.0",
-      "stat_tag": "API",
-      "layers": layer.body.layers
+      version: '1.3.0',
+      stat_tag: 'API',
+      layers: layer.body.layers
     };
     const params = `?stat_tag=API&config=${encodeURIComponent(JSON.stringify(layerTpl))}`;
 
