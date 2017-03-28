@@ -1,12 +1,13 @@
 import React from 'react';
+import * as d3 from 'd3';
 import vega from 'vega';
 import debounce from 'lodash/debounce';
 import isEqual from 'lodash/isEqual';
 
 const VegaTooltipContent = props => (
   <div>
-    <p>{props.item && props.item.datum.x}</p>
-    <p>{props.item && props.item.datum.y}</p>
+    <div>{props.item && props.item.x}</div>
+    <div>{props.item && props.item.y}</div>
   </div>
 );
 
@@ -53,39 +54,62 @@ class VegaChart extends React.Component {
       height: this.height - padding.top - padding.bottom
     };
 
-    const data = Object.assign({}, this.props.data, size);
+    const data = Object.assign({}, this.props.data, size, {
+      signals: [{
+        name: 'onMousemove',
+        streams: [{
+          type: 'mousemove',
+          expr: 'eventX()',
+          scale: {
+            name: 'x',
+            invert: true
+          }
+        }]
+      }]
+    });
 
-    if (this.mounted) this.props.toggleLoading(true);
+    if (this.mounted && this.props.toggleLoading) this.props.toggleLoading(true);
+
     vega.parse.spec(data, {}, (err, chart) => {
-      if (this.mounted) this.props.toggleLoading(false);
+      if (this.mounted && this.props.toggleLoading) this.props.toggleLoading(false);
       if (!err && this.mounted) {
-        this.vis = chart({
+        const vis = chart({
           el: this.chart,
           renderer: 'svg'
         });
 
-        const model = this.vis._model;
-        console.log(this.vis);
+        vis.update();
 
-        this.vis.on('mouseover', (event, item) => {
+        vis.onSignal('onMousemove', (event, x) => {
+          const visData = vis.data().table;
+          let item;
+
+          if (typeof x === 'string') {
+            item = visData.find(d => d.x === x);
+          }
+
+          if (typeof x === 'number') {
+            const bisectDate = d3.bisector(d => d.x).left;
+            const i = bisectDate(visData, x, 1);
+            item = visData[i];
+          }
+
           if (item) {
-            this.props.toggleTooltip(true, {
+            return this.props.toggleTooltip(true, {
               follow: true,
               children: VegaTooltipContent,
               childrenProps: {
                 event, item
               }
             });
-          } else {
-            this.props.toggleTooltip(false);
           }
+
+          return this.props.toggleTooltip(false);
         });
 
-        this.vis.on('mouseout', () => {
-          this.props.toggleTooltip(false);
-        });
-
-        this.vis.update();
+        // vis.onSignal('onMouseout', () => {
+        //   this.props.toggleTooltip(false);
+        // });
       }
     });
   }
