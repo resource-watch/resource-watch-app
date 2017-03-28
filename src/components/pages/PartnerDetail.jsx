@@ -8,11 +8,11 @@ class PartnerDetail extends React.Component {
   }
 
   componentWillMount() {
-    this.props.getPartnerData(this.props.id);
+    this.props.getPartnerData(this.props.params.id);
   }
 
   componentWillReceiveProps(newProps) {
-    this.props.getPartnerData(this.props.id);
+    this.props.getPartnerData(this.props.params.id);
   }
 
   splitInTwoParts(str) {

@@ -41,7 +41,7 @@ function Routes(props) {
           <Route path="partners">
             <IndexRoute component={Partners} />
 
-            <Route path=":partner">
+            <Route path=":id">
               <IndexRoute component={PartnerDetail} />
             </Route>
           </Route>
@@ -53,7 +53,7 @@ function Routes(props) {
           <Route path="apps">
             <IndexRoute component={Apps} />
 
-            <Route path=":app">
+            <Route path=":id">
               <IndexRoute component={AppDetail} />
             </Route>
           </Route>
