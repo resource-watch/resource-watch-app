@@ -56,6 +56,13 @@ class VegaChart extends React.Component {
           el: this.chart,
           renderer: 'svg'
         });
+
+        console.log(this.vis);
+
+        this.vis.on('mouseover', (event, item) => {
+          console.log(event, item);
+        });
+
         this.vis.update();
       }
     });
