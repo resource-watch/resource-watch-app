@@ -161,30 +161,32 @@ export default class LayerManager {
 
     this._layersLoading[layer.id] = true;
 
-    layer.body.version = '1.4.0';
+    const layerTpl = {
+      "version": "1.3.0",
+      "stat_tag": "API",
+      "layers": layer.body.layers
+    };
+    const params = `?stat_tag=API&config=${encodeURIComponent(JSON.stringify(layerTpl))}`;
 
-    fetch(`https://${layer.account}.carto.com/api/v1/map`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(layer.body)
-    }).then((response) => {
-      return response.json();
-    }).then((data) => {
-      const tileUrl = `https://${layer.account}.carto.com/api/v1/map/${data.layergroupid}/{z}/{x}/{y}.png`;
+    fetch(`https://${layer.account}.carto.com/api/v1/map${params}`)
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        const tileUrl = `https://${layer.account}.carto.com/api/v1/map/${data.layergroupid}/{z}/{x}/{y}.png`;
 
-      this._mapLayers[layer.id] = L.tileLayer(tileUrl).addTo(this._map).setZIndex(layer.order);
+        this._mapLayers[layer.id] = L.tileLayer(tileUrl).addTo(this._map).setZIndex(layer.order);
 
-      this._mapLayers[layer.id].on('load', () => {
-        delete this._layersLoading[layer.id];
-      });
-      this._mapLayers[layer.id].on('tileerror', () => {
+        this._mapLayers[layer.id].on('load', () => {
+          delete this._layersLoading[layer.id];
+        });
+        this._mapLayers[layer.id].on('tileerror', () => {
+          this._rejectLayersLoading = true;
+        });
+      })
+      .then((err) => {
         this._rejectLayersLoading = true;
       });
-    }).then((err) => {
-      this._rejectLayersLoading = true;
-    });
   }
 
   setZIndex(layersActive) {
