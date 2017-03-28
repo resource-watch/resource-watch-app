@@ -22,13 +22,15 @@ class Pulse extends React.Component {
     this.state = {
       texture: null,
       loading: false,
-      layerPoints: []
+      layerPoints: [],
+      selectedMarker: null
     };
     this.layerGlobeManager = new LayerGlobeManager();
 
     // Bindings
     this.onZoomIn = this.onZoomIn.bind(this);
     this.onZoomOut = this.onZoomOut.bind(this);
+    this.handleMarkerSelected = this.handleMarkerSelected.bind(this);
   }
 
   componentWillMount() {
@@ -79,6 +81,11 @@ class Pulse extends React.Component {
     this.globe.camera.translateZ(5);
   }
 
+  handleMarkerSelected(marker) {
+    console.info('handleMarkerSelected', marker);
+    this.setState({ selectedMarker: JSON.stringify(marker) });
+  }
+
   render() {
     return (
       <div className="c-page -dark">
@@ -95,6 +102,9 @@ class Pulse extends React.Component {
         <Spinner
           isLoading={this.state.loading}
         />
+        <div>
+          <p>{this.state.selectedMarker}</p>
+        </div>
         <Globe
           ref={globe => this.globe = globe}
           width={window.innerWidth}
@@ -112,6 +122,7 @@ class Pulse extends React.Component {
           rings={64}
           useHalo
           useDefaultLayer
+          onMarkerSelected={this.handleMarkerSelected}
         />
         <ZoomControl
           ref={zoomControl => this.zoomControl = zoomControl}

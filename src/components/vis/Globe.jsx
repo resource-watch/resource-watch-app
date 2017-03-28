@@ -68,7 +68,7 @@ class Globe extends React.Component {
       }
       const pointObjects = nextProps.layerPoints.map((value) => {
         const normalVector = this.convertLatLonToCoordinates(value.lat, value.lon);
-        const cylinderGeometry = new THREE.CylinderGeometry(1, 1, 0.5);
+        const cylinderGeometry = new THREE.CylinderGeometry(1, 1, 1);
 
         // Translate the geometry so the base sits at the origin.
         cylinderGeometry.applyMatrix(new THREE.Matrix4().makeTranslation(0, 0, 0));
@@ -88,9 +88,6 @@ class Globe extends React.Component {
         return cylinder;
       });
       this.setState({ markers: pointObjects });
-      const axisHelper = new THREE.AxisHelper(200);
-      this.scene.add(axisHelper)
-      console.info('done!');
     }
   }
 
@@ -378,12 +375,18 @@ class Globe extends React.Component {
 
     this.raycaster.setFromCamera(this.mouse, this.camera);
 
-    // this.scene.add(new THREE.ArrowHelper(this.raycaster.ray.direction, this.raycaster.ray.origin, 100, Math.random() * 0xffffff ));
+    // this.scene.add(new THREE.ArrowHelper(this.raycaster.ray.direction,
+    // this.raycaster.ray.origin, 100, Math.random() * 0xffffff ));
 
     const intersects = this.raycaster.intersectObjects(this.scene.children);
 
     if (intersects.length > 0) {
-      console.info('Click on 3D Object!', intersects.map((el) => {return el.object.name}));
+      intersects.map((el) => {
+        const nameVal = el.object.name;
+        if (nameVal !== 'halo' && nameVal !== 'earth' && nameVal !== 'texture') {
+          this.props.onMarkerSelected(el.object.name);
+        }
+      });
     }
   }
 
@@ -517,7 +520,10 @@ Globe.propTypes = {
   haloExtraRadiusPercentage: React.PropTypes.number,
 
   // Stats
-  showStats: React.PropTypes.bool
+  showStats: React.PropTypes.bool,
+
+  // Functions
+  onMarkerSelected: React.PropTypes.func
 };
 
 export default Globe;
