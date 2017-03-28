@@ -68,9 +68,9 @@ class Pulse extends React.Component {
       }
     }
 
-    if (nextProps.pulse.layerPoints) {
-      this.setState({ layerPoints: nextProps.pulse.layerPoints });
-    }
+    // if (nextProps.pulse.layerPoints) {
+    //   this.setState({ layerPoints: nextProps.pulse.layerPoints });
+    // }
   }
 
   onZoomIn() {
@@ -102,9 +102,6 @@ class Pulse extends React.Component {
         <Spinner
           isLoading={this.state.loading}
         />
-        <div>
-          <p>{this.state.selectedMarker}</p>
-        </div>
         <Globe
           ref={globe => this.globe = globe}
           width={window.innerWidth}
@@ -123,6 +120,7 @@ class Pulse extends React.Component {
           useHalo
           useDefaultLayer
           onMarkerSelected={this.handleMarkerSelected}
+          globeClickedAt={this.handleGlobeClickedAt}
         />
         <ZoomControl
           ref={zoomControl => this.zoomControl = zoomControl}

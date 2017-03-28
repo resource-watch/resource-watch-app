@@ -12,7 +12,7 @@ class LayerNavDropdown extends React.Component {
 
   triggerClick(e) {
     this.props.toggleActiveLayer(e.currentTarget.dataset.id);
-    this.props.getLayerPoints(e.currentTarget.dataset.datasetid, e.currentTarget.dataset.tablename);
+    // this.props.getLayerPoints(e.currentTarget.dataset.datasetid, e.currentTarget.dataset.tablename);
   }
 
   render() {

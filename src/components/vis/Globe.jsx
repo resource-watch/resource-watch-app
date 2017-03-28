@@ -178,10 +178,10 @@ class Globe extends React.Component {
       bumpScale: bumpScale
     });
     const geometry = new THREE.SphereGeometry(radius, segments, rings);
-    const earth = new THREE.Mesh(geometry, material);
-    earth.updateMatrix();
-    earth.name = 'earth';
-    this.scene.add(earth);
+    this.earth = new THREE.Mesh(geometry, material);
+    this.earth.updateMatrix();
+    this.earth.name = 'earth';
+    this.scene.add(this.earth);
   }
 
   addHalo() {
@@ -254,7 +254,7 @@ class Globe extends React.Component {
   }
 
   /**
-  *
+  * convertLatLonToCoordinates
   */
   convertLatLonToCoordinates(lat, lon) {
     const phi = (90 - lat) * (Math.PI / 180);
@@ -263,6 +263,27 @@ class Globe extends React.Component {
     const z = (this.props.radius * Math.sin(phi) * Math.sin(theta));
     const y = (this.props.radius * Math.cos(phi));
     return new THREE.Vector3(x, y, z);
+  }
+
+  /**
+  * convertCoordinatesToLatLon
+  */
+  convertCoordinatesToLatLon(object) {
+    const r = this.props.radius;
+    const x = object.point.x;
+    const y = object.point.y;
+    const z = object.point.z;
+
+    let lat = 90 - (Math.acos(y / r)) * 180 / Math.PI;
+    let lon = ((270 + (Math.atan2(x, z)) * 180 / Math.PI) % 360) - 360;
+
+    console.info(object, r, x, y, z);
+    console.info('lat, lon', lat, lon);
+
+    lat = Math.round(lat * 100000) / 100000;
+    lon = Math.round(lon * 100000) / 100000;
+
+    return [lat, lon];
   }
 
   removeMarkers() {
@@ -359,7 +380,6 @@ class Globe extends React.Component {
   }
 
   onClick(event) {
-
     // console.info('event.nativeEvent.offsetX',event.nativeEvent.offsetX);
     // console.info('event.nativeEvent.offsetY',event.nativeEvent.offsetY);
     // console.info('event.clientX',event.clientX);
@@ -387,6 +407,12 @@ class Globe extends React.Component {
           this.props.onMarkerSelected(el.object.name);
         }
       });
+    }
+
+    const earthIntersect = this.raycaster.intersectObjects([this.earth]);
+    if (earthIntersect.length > 0) {
+      const latLon = this.convertCoordinatesToLatLon(earthIntersect[0]);
+      console.info('latLon', latLon);
     }
   }
 
@@ -523,7 +549,8 @@ Globe.propTypes = {
   showStats: React.PropTypes.bool,
 
   // Functions
-  onMarkerSelected: React.PropTypes.func
+  onMarkerSelected: React.PropTypes.func,
+  onEarthClicked: React.PropTypes.func
 };
 
 export default Globe;
