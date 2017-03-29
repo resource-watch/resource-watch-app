@@ -3,6 +3,11 @@
     &.intro {
       background-image: url('http://resourcewatch.org/assets/bg-header.jpg');
       background-position: top center;
+
+      .title {
+        margin: 0;
+        margin-bottom: 25px;
+      }
     }
     &.get-involved {
       background-image: url('http://resourcewatch.org/assets/bg-header.jpg');
@@ -32,5 +37,57 @@
 
   .c-card-static {
     height: 590px;
+  }
+
+  .l-section {
+
+    .title {
+      margin-bottom: 10px;
+
+      a {
+        &:hover {
+          opacity: .7;
+        }
+      }
+    }
+
+    .intro {
+      margin-bottom: 45px;
+    }
+    
+    &.insights {
+      .dual {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+
+        .c-card-static {
+          height: auto;
+          margin-bottom: 20px;
+          flex-grow: 1;
+
+          &:last-child {
+            margin-bottom: 0;
+          }
+        }
+      }
+
+      .buttons {
+        margin-top: 50px;
+
+        .c-btn {
+          display: inline-block;
+          text-align: center;
+          width: 100%;
+          text-transform: capitalize;
+          font-weight: normal;
+          font-size: 16px;
+        }
+      }
+    }
+
+    &.explore {
+      button { width: 100%; }
+    }
   }
 }
