@@ -94,12 +94,21 @@ class Pulse extends React.Component {
     const currentLayer = this.props.pulse.layers.find(
       val => val.id === this.props.pulse.layerActive);
     const datasetId = currentLayer.dataset;
-    const tableName = currentLayer.layerConfig.body.layers[0].options.sql.split('FROM')[1];
+    const options = currentLayer.layerConfig.body.layers[0].options;
+    const geomColumn = options.geom_column;
+    console.info('options', options, 'geomColumn', geomColumn);
+    const tableName = options.sql.toUpperCase().split('FROM')[1];
+    console.info(currentLayer.layerConfig);
     const geoJSON = JSON.stringify({
       type: 'Point',
       coordinates: [latLon.longitude, latLon.latitude]
     });
-    const requestURL = `${config.API_URL}/query/${datasetId}?sql=SELECT * FROM ${tableName} WHERE st_intersects(the_geom,st_buffer(ST_SetSRID(st_geomfromgeojson('${geoJSON}'),4326),1))`;
+    let requestURL;
+    if (geomColumn) {
+      requestURL = `${config.API_URL}/query/${datasetId}?sql=SELECT ST_Value(st_transform(${geomColumn},4326), st_setsrid(st_geomfromgeojson(${geoJSON}),4326), true) FROM ${tableName} WHERE st_intersects(${geomColumn},st_setsrid(st_geomfromgeojson(${geoJSON}),4326))`;
+    } else {
+      requestURL = `${config.API_URL}/query/${datasetId}?sql=SELECT * FROM ${tableName} WHERE st_intersects(the_geom,st_buffer(ST_SetSRID(st_geomfromgeojson('${geoJSON}'),4326),1))`;
+    }
     console.info('requestURL', requestURL);
     fetch(new Request(requestURL))
       .then((response) => {
