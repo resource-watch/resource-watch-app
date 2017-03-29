@@ -12,10 +12,12 @@ import Sidebar from 'containers/explore/Sidebar';
 import Map from 'containers/explore/Map';
 import Legend from 'components/ui/Legend';
 import LayerManager from 'utils/layers/LayerManager';
-import TetherComponent from 'react-tether';
+import ConfigurableWidget from 'components/explore/ConfigurableWidget';
+import { DatasetService, getQueryByFilters } from 'rw-components';
 
 const breadcrumbs = [
-  { name: 'Home', url: '/' }
+  { name: 'Home', url: '/' },
+  { name: 'Explore', url: '/explore' }
 ];
 
 const mapConfig = {
@@ -32,40 +34,68 @@ class ExploreDetail extends React.Component {
     super(props);
 
     this.state = {
-      widgetChartLoading: true,
-      configureDropdownActive: false,
       similarDatasetsLoaded: false,
-      mapSectionOpened: false
+      datasetRawDataLoaded: false,
+      datasetLoaded: false,
+      datasetData: null,
+      mapSectionOpened: false,
+      datasetDataError: false
     };
 
+    // DatasetService
+    this.datasetService = new DatasetService(this.props.params.id, {
+      apiURL: 'https://api.resourcewatch.org/v1'
+    });
+
     // BINDINGS
-    this.triggerConfigureChart = this.triggerConfigureChart.bind(this);
     this.triggerOpenLayer = this.triggerOpenLayer.bind(this);
-    this.onScreenClick = this.onScreenClick.bind(this);
   }
 
   componentWillMount() {
-    this.setState({ widgetChartLoading: true });
     this.props.getDataset(this.props.params.id);
   }
 
   componentWillReceiveProps(nextProps) {
     if (this.props.params.id !== nextProps.params.id) {
       this.props.resetDataset();
-      this.setState({ similarDatasetsLoaded: false }, () => {
+      this.setState({
+        similarDatasetsLoaded: false,
+        datasetRawDataLoaded: false,
+        datasetDataError: false,
+        datasetLoaded: false,
+      }, () => {
         this.props.getDataset(this.props.params.id);
       });
     }
 
     const dataset = nextProps.exploreDetail.dataset.detail.attributes;
 
-    if (dataset && dataset.tags) {
-      const hasTags = dataset.tags.length > 0;
-      if (hasTags) {
-        const tags = dataset.tags;
-        if (!this.state.similarDatasetsLoaded) {
-          this.setState({ similarDatasetsLoaded: true }, () => {
-            this.props.getSimilarDatasets(tags);
+    if (dataset) {
+      if (!this.props.exploreDetail.dataset.detail.attributes) {
+        this.setState({ datasetLoaded: true });
+      }
+
+      if (dataset.vocabulary && dataset.vocabulary.length) {
+        const vocabulary = dataset.vocabulary.find(v => v.attributes.name === 'legacy');
+        if (vocabulary) {
+          const tags = vocabulary.attributes.tags;
+          if (!this.state.similarDatasetsLoaded) {
+            this.setState({ similarDatasetsLoaded: true }, () => {
+              this.props.getSimilarDatasets(tags);
+            });
+          }
+        }
+      }
+
+      if (dataset.tableName) {
+        if (!this.state.datasetRawDataLoaded) {
+          this.getDatasetRawData(dataset);
+        }
+      } else {
+        if (this.state.datasetLoaded || dataset.application) {
+          this.setState({
+            datasetRawDataLoaded: true,
+            datasetDataError: true
           });
         }
       }
@@ -74,16 +104,31 @@ class ExploreDetail extends React.Component {
 
   componentWillUnmount() {
     this.props.resetDataset();
-    window.removeEventListener('click', this.onScreenClick);
   }
 
-  onScreenClick(e) {
-    const el = document.querySelector('.c-tooltip');
-    const clickOutside = el && el.contains && !el.contains(e.target);
-
-    if (clickOutside) {
-      this.triggerConfigureChart();
-    }
+  getDatasetRawData(dataset) {
+    const query = getQueryByFilters(dataset.tableName) + ' LIMIT 10'; // temporal fix
+    this.datasetService.fetchFilteredData(query)
+      .then((response) => {
+        if (response) {
+          this.setState({
+            datasetRawDataLoaded: true,
+            datasetData: response
+          });
+        } else {
+          this.setState({
+            datasetDataError: true,
+            datasetRawDataLoaded: true
+          });
+        }
+      })
+      .catch((error) => {
+        console.info('error', error);
+        this.setState({
+          datasetDataError: true,
+          datasetRawDataLoaded: true
+        });
+      });
   }
 
   getOpenMapButton() {
@@ -138,35 +183,15 @@ class ExploreDetail extends React.Component {
     this.props.toggleLayerShown(defaultLayerId);
   }
 
-  triggerDownload(){
+  triggerDownload() {
     console.info('triggerDownload');
-  }
-
-  triggerConfigureChart() {
-    const { configureDropdownActive } = this.state;
-
-    // requestAnimationFrame
-    //   - Goal: Prevent double trigger at first atempt
-    //   - Issue: When you add the listener the click event is not finished yet
-    //            so it will trigger onScreenClick
-    //   - Stop propagation?: if I put e.stopPropagation clicking on another
-    //                        filter btn won't trigger the screenClick,
-    //                        so we will have 2 dropdown filters at the same time
-    requestAnimationFrame(() => window[configureDropdownActive ?
-      'removeEventListener' : 'addEventListener']('click', this.onScreenClick));
-
-    this.setState({ configureDropdownActive: !configureDropdownActive });
   }
 
   render() {
     const { exploreDetail } = this.props;
     const { dataset } = exploreDetail;
     const { layersShown } = this.props;
-    const { configureDropdownActive } = this.state;
-
-    const newClassConfigureButton = classNames({
-      '-active': this.state.configureDropdownActive
-    });
+    const { datasetData } = this.state;
 
     const similarDatasetsSectionClass = classNames({
       row: true,
@@ -185,39 +210,20 @@ class ExploreDetail extends React.Component {
                 dataset.detail.attributes.name}</Title>
           </div>
         </div>
-        <div className="row">
+        <div className="row widget-row">
           <div className="column small-12 ">
-            <div className="widget-chart">
-              <TetherComponent
-                attachment="top right"
-                constraints={[{
-                  to: 'scrollToParent'
-                }]}
-                targetOffset="0px 100%"
-                classes={{
-                  element: 'c-tooltip -arrow-right'
-                }}
-              >
-                {/* First child: This is what the item will be tethered to */}
-                <Button
-                  onClick={this.triggerConfigureChart}
-                  properties={{ className: newClassConfigureButton }}
-                >
-                  <Icon name="icon-cog" className="-small" />
-                  CONFIGURE
-                </Button>
-                {/* Second child: If present, this item will be tethered to the the first child */}
-                { configureDropdownActive &&
-                  <div>
-                    <h3>Configure Chart</h3>
-                    <p>This is where the Widget configurator will go.</p>
-                  </div>
-                }
-              </TetherComponent>
-            </div>
+            {this.state.datasetRawDataLoaded && !this.state.datasetDataError &&
+              <ConfigurableWidget
+                dataset={dataset.detail}
+                datasetData={datasetData}
+              />
+            }
+            {this.state.datasetDataError &&
+              <h3>No widget can be shown for this dataset</h3>
+            }
             <Spinner
-              isLoading={exploreDetail.dataset.loading}
-              className="-fixed -light"
+              isLoading={!this.state.datasetRawDataLoaded}
+              className="-light"
             />
           </div>
         </div>
@@ -227,9 +233,11 @@ class ExploreDetail extends React.Component {
             <Icon name="icon-facebook" className="-small" />
           </div>
           <div className="column small-7">
-            <p>{ dataset.detail.attributes &&
-                dataset.detail.attributes.description}
-            </p>
+            {/* Description */}
+            {dataset.detail.attributes.metadata && (dataset.detail.attributes.metadata.length > 0)
+              && dataset.detail.attributes.metadata[0].attributes.description &&
+              <p>{dataset.detail.attributes.metadata[0].attributes.description}</p>
+            }
           </div>
           <div className="column small-3 actions">
             {this.getOpenMapButton()}

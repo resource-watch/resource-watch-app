@@ -1,0 +1,41 @@
+
+// Override React selectize styles
+.c-select {
+  position: relative;
+
+  .title {
+    color: palette(white);
+    font-size: $font-size-extra-big;
+    font-weight: 300;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+  }
+
+  .select-header {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+  }
+
+  .icon-container {
+    display: inline-flex;
+  }
+
+  .title-icon {
+    width: 20px;
+    height: 20px;
+    margin-left: $space-1 * 2;
+    fill: palette(blue, light);
+    border: 1px solid palette(blue, light);
+    margin-right: $space-1 * 2;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color .1s linear;
+
+    &:hover {
+      fill: palette(blue, primary);
+      background-color: palette(blue, light);
+    }
+  }
+}

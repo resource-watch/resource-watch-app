@@ -1,11 +1,12 @@
 import React from 'react';
 import Header from './components/layout/Header';
 import Footer from './containers/layout/Footer';
+import Tooltip from './containers/ui/Tooltip';
 import './styles/app.scss';
 
 const fullScreenPages = [
   '/explore',
-  '/planet-pulse',
+  '/planet-pulse'
 ];
 
 function App(props) {
@@ -16,11 +17,14 @@ function App(props) {
       <Header fullScreen={fullScreen} />
       { props.children }
       {!fullScreen && <Footer />}
+
+      <Tooltip />
     </div>
   );
 }
 
 App.propTypes = {
+  location: React.PropTypes.object,
   children: React.PropTypes.element.isRequired
 };
 

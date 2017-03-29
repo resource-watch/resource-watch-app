@@ -43,24 +43,19 @@ export default class LayerGlobeManager {
       options: opts
     };
 
-    // Create new request...
+    const layerTpl = {
+      version: '1.3.0',
+      stat_tag: 'API',
+      layers: this.layer.layerConfig.body.layers
+    };
+    const params = `?stat_tag=API&config=${encodeURIComponent(JSON.stringify(layerTpl))}`;
     const xmlhttp = new XMLHttpRequest();
-    xmlhttp.open('POST', `https://${this.layer.layerConfig.account}.carto.com/api/v1/map`);
-    xmlhttp.setRequestHeader('Content-Type', 'application/json');
-    xmlhttp.send(JSON.stringify(this.layer.layerConfig.body));
-
-    // cartocss_version: l.options.cartocssVersion
-    // Object.assign({}, l.options, {
-        //   user_name: layer.account,
-        //   cartocss: getConversion(l.options.cartocss, params, sqlParams),
-        //   cartocss_version: l.options.cartocssVersion,
-        //   sql: getConversion(l.options.sql, params, sqlParams)
-        // })
+    xmlhttp.open('GET', `https://${this.layer.layerConfig.account}.carto.com/api/v1/map${params}`);
 
     // ...and add it to the current layer
     this.layer.request = xmlhttp;
 
-    xmlhttp.onreadystatechange = function onStateChange() {
+    xmlhttp.onreadystatechange = () => {
       if (xmlhttp.readyState === 4) {
         if (xmlhttp.status === 200) {
           const data = JSON.parse(xmlhttp.responseText);
@@ -94,6 +89,7 @@ export default class LayerGlobeManager {
           this.layer.options.onLayerAddedError('Error or canceled');
         }
       }
-    }.bind(this);
+    };
+    xmlhttp.send(null);
   }
 }
