@@ -31,6 +31,7 @@ class Pulse extends React.Component {
     // Bindings
     this.onZoomIn = this.onZoomIn.bind(this);
     this.onZoomOut = this.onZoomOut.bind(this);
+    this.onClick = this.onClick.bind(this);
     this.handleMarkerSelected = this.handleMarkerSelected.bind(this);
     this.handleEarthClicked = this.handleEarthClicked.bind(this);
   }
@@ -83,6 +84,10 @@ class Pulse extends React.Component {
     this.globe.camera.translateZ(5);
   }
 
+  onClick() {
+    this.props.toggleTooltip(false);
+  }
+
   handleMarkerSelected(marker) {
     console.info('handleMarkerSelected', marker);
     this.setState({ selectedMarker: JSON.stringify(marker) });
@@ -120,7 +125,10 @@ class Pulse extends React.Component {
       }).then((response) => {
         console.info('response.data', response.data);
         if (response.data.length > 0) {
-          const dataString = JSON.stringify(response.data[0]);
+          const obj = response.data[0];
+          delete obj.the_geom;
+          delete obj.the_geom_webmercator;
+          const dataString = JSON.stringify(obj);
           this.props.toggleTooltip(true, {
             follow: false,
             children: GlobeTooltip,
@@ -133,7 +141,10 @@ class Pulse extends React.Component {
 
   render() {
     return (
-      <div className="c-page -dark">
+      <div
+        className="c-page -dark"
+        onClick={this.onClick}
+      >
         <LayerNav
           layerActive={this.props.layerActive}
           layersGroup={this.props.layersGroup}
@@ -165,7 +176,6 @@ class Pulse extends React.Component {
           useHalo
           useDefaultLayer
           onMarkerSelected={this.handleMarkerSelected}
-          globeClickedAt={this.handleGlobeClickedAt}
           onEarthClicked={this.handleEarthClicked}
         />
         <ZoomControl
