@@ -51,10 +51,15 @@ class LayerChart extends React.Component {
         }]
       }
     };
+
+    const layerTpl = {
+      version: '1.3.0',
+      stat_tag: 'API',
+      layers: basemap.body.layers
+    };
+    const params = `?stat_tag=API&config=${encodeURIComponent(JSON.stringify(layerTpl))}`;
     const xmlhttp = new XMLHttpRequest();
-    xmlhttp.open('POST', `https://${basemap.account}.carto.com/api/v1/map`);
-    xmlhttp.setRequestHeader('Content-Type', 'application/json');
-    xmlhttp.send(JSON.stringify(basemap.body));
+    xmlhttp.open('GET', `https://${basemap.account}.carto.com/api/v1/map${params}`);
     xmlhttp.onreadystatechange = () => {
       if (xmlhttp.readyState === 4) {
         if (xmlhttp.status === 200 && this.mounted) {
@@ -78,6 +83,7 @@ class LayerChart extends React.Component {
         }
       }
     };
+    xmlhttp.send(null);
   }
 
   getImagePreview() {
@@ -85,10 +91,14 @@ class LayerChart extends React.Component {
 
     if (this.mounted) this.props.toggleLoading(true);
 
+    const layerTpl = {
+      version: '1.3.0',
+      stat_tag: 'API',
+      layers: data.body.layers
+    };
+    const params = `?stat_tag=API&config=${encodeURIComponent(JSON.stringify(layerTpl))}`;
     const xmlhttp = new XMLHttpRequest();
-    xmlhttp.open('POST', `https://${data.account}.carto.com/api/v1/map`);
-    xmlhttp.setRequestHeader('Content-Type', 'application/json');
-    xmlhttp.send(JSON.stringify(data.body));
+    xmlhttp.open('GET', `https://${data.account}.carto.com/api/v1/map${params}`);
     xmlhttp.onreadystatechange = () => {
       if (xmlhttp.readyState === 4) {
         if (this.mounted) this.props.toggleLoading(false);
@@ -113,6 +123,7 @@ class LayerChart extends React.Component {
         }
       }
     };
+    xmlhttp.send(null);
   }
 
   render() {

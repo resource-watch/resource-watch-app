@@ -3,7 +3,6 @@ import { Link } from 'react-router';
 
 const Menu = ({ items, orientation, align }) => {
   const listItems = items.map((item, i) => {
-
     return (
       <li key={`menu-item-${i}`}>
         { item.path ?
