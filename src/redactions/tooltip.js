@@ -22,7 +22,6 @@ const initialState = {
 };
 
 export default function (state = initialState, action) {
-  debugger;
   switch (action.type) {
     case TOOLTIP_TOGGLE:
       return Object.assign({}, state, { opened: action.payload });
