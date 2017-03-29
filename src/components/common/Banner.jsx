@@ -16,7 +16,7 @@ function Banner(props) {
       style={styles}
     >
       {props.viel && <div className="c-viel"></div>}
-      <div className="l-container">
+      <div className={props.containerGrid === false ? '' : 'l-container'}>
         <div className="row collapse">
           <div className="column small-12">
             {props.children}
@@ -31,6 +31,7 @@ Banner.propTypes = {
   children: React.PropTypes.any,
   className: React.PropTypes.string,
   styles: React.PropTypes.object,
+  containerGrid: React.PropTypes.bool,
   viel: React.PropTypes.bool
 };
 

@@ -1,3 +1,4 @@
+
 .p-home {
   .c-banner {
     &.intro {
@@ -7,6 +8,25 @@
       .title {
         margin: 0;
         margin-bottom: 25px;
+      }
+
+      .scroll-icon {
+        position: absolute;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        left: 50%;
+        bottom: -8px;;
+        width: 55px;
+        height: 55px;
+        border-radius: 50%;
+        z-index: 1;
+        background-color: $color-white;
+        transform: translate(-50%, 50%);
+
+        .c-icon {
+          fill: $color-primary;
+        }
       }
     }
     &.get-involved {
@@ -40,7 +60,6 @@
   }
 
   .l-section {
-
     .title {
       margin-bottom: 10px;
 
