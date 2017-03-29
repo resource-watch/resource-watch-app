@@ -10,6 +10,7 @@ import Legend from 'components/pulse/Legend';
 import LayerDescription from 'components/pulse/LayerDescription';
 import Spinner from 'components/ui/Spinner';
 import ZoomControl from 'components/ui/ZoomControl';
+import GlobeTooltip from 'components/pulse/GlobeTooltip';
 
 import earthImage from '../../../public/images/components/vis/earth-min.jpg';
 import earthBumpImage from '../../../public/images/components/vis/earth-bump.jpg';
@@ -87,7 +88,7 @@ class Pulse extends React.Component {
     this.setState({ selectedMarker: JSON.stringify(marker) });
   }
 
-  handleEarthClicked(latLon) {
+  handleEarthClicked(latLon, clientX, clientY) {
     console.info('handleEarthClicked', latLon);
     console.info(this.props);
     const currentLayer = this.props.pulse.layers.find(
@@ -109,6 +110,15 @@ class Pulse extends React.Component {
         }
       }).then((response) => {
         console.info('response.data', response.data);
+        if (response.data.length > 0) {
+          const dataString = JSON.stringify(response.data[0]);
+          this.props.toggleTooltip(true, {
+            follow: false,
+            children: GlobeTooltip,
+            childrenProps: { value: dataString },
+            position: { x: clientX, y: clientY }
+          });
+        }
       });
   }
 
@@ -162,7 +172,8 @@ class Pulse extends React.Component {
 Pulse.propTypes = {
   layersGroup: React.PropTypes.array,
   layerActive: React.PropTypes.object,
-  getLayers: React.PropTypes.func
+  getLayers: React.PropTypes.func,
+  toggleTooltip: React.PropTypes.func
 };
 
 

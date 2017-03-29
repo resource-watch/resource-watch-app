@@ -415,7 +415,7 @@ class Globe extends React.Component {
     const earthIntersect = this.raycaster.intersectObjects([this.earth]);
     if (earthIntersect.length > 0) {
       const latLon = this.convertCoordinatesToLatLon(earthIntersect[0]);
-      this.props.onEarthClicked(latLon);
+      this.props.onEarthClicked(latLon, event.clientX, event.clientY);
     }
   }
 
