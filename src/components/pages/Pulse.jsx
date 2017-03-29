@@ -31,7 +31,8 @@ class Pulse extends React.Component {
     // Bindings
     this.onZoomIn = this.onZoomIn.bind(this);
     this.onZoomOut = this.onZoomOut.bind(this);
-    this.onClick = this.onClick.bind(this);
+    this.onMouseDown = this.onMouseDown.bind(this);
+    this.setTooltipValue = this.setTooltipValue.bind(this);
     this.handleMarkerSelected = this.handleMarkerSelected.bind(this);
     this.handleEarthClicked = this.handleEarthClicked.bind(this);
   }
@@ -84,7 +85,7 @@ class Pulse extends React.Component {
     this.globe.camera.translateZ(5);
   }
 
-  onClick() {
+  onMouseDown() {
     this.props.toggleTooltip(false);
   }
 
@@ -98,23 +99,26 @@ class Pulse extends React.Component {
 
     const currentLayer = this.props.pulse.layers.find(
       val => val.id === this.props.pulse.layerActive);
-    const datasetId = currentLayer.dataset;
-    const options = currentLayer.layerConfig.body.layers[0].options;
-    const geomColumn = options.geom_column;
-    console.info('options', options, 'geomColumn', geomColumn);
-    const tableName = options.sql.toUpperCase().split('FROM')[1];
-    console.info(currentLayer.layerConfig);
-    const geoJSON = JSON.stringify({
-      type: 'Point',
-      coordinates: [latLon.longitude, latLon.latitude]
-    });
-    let requestURL;
-    if (geomColumn) {
-      requestURL = `${config.API_URL}/query/${datasetId}?sql=SELECT ST_Value(st_transform(${geomColumn},4326), st_setsrid(st_geomfromgeojson(${geoJSON}),4326), true) FROM ${tableName} WHERE st_intersects(${geomColumn},st_setsrid(st_geomfromgeojson(${geoJSON}),4326))`;
-    } else {
-      requestURL = `${config.API_URL}/query/${datasetId}?sql=SELECT * FROM ${tableName} WHERE st_intersects(the_geom,st_buffer(ST_SetSRID(st_geomfromgeojson('${geoJSON}'),4326),1))`;
+    if (currentLayer) {
+      const datasetId = currentLayer.dataset;
+      const options = currentLayer.layerConfig.body.layers[0].options;
+      const geomColumn = options.geom_column;
+      const tableName = options.sql.toUpperCase().split('FROM')[1];
+      const geoJSON = JSON.stringify({
+        type: 'Point',
+        coordinates: [latLon.longitude, latLon.latitude]
+      });
+      let requestURL;
+      if (geomColumn) {
+        requestURL = `${config.API_URL}/query/${datasetId}?sql=SELECT ST_Value(st_transform(${geomColumn},4326), st_setsrid(st_geomfromgeojson(${geoJSON}),4326), true) FROM ${tableName} WHERE st_intersects(${geomColumn},st_setsrid(st_geomfromgeojson(${geoJSON}),4326))`;
+      } else {
+        requestURL = `${config.API_URL}/query/${datasetId}?sql=SELECT * FROM ${tableName} WHERE st_intersects(the_geom,st_buffer(ST_SetSRID(st_geomfromgeojson('${geoJSON}'),4326),1))`;
+      }
+      this.setTooltipValue(requestURL, clientX, clientY);
     }
-    console.info('requestURL', requestURL);
+  }
+
+  setTooltipValue(requestURL, tooltipX, tooltipY) {
     fetch(new Request(requestURL))
       .then((response) => {
         if (response.ok) {
@@ -123,17 +127,17 @@ class Pulse extends React.Component {
           throw new Error(response.statusText);
         }
       }).then((response) => {
-        console.info('response.data', response.data);
         if (response.data.length > 0) {
           const obj = response.data[0];
           delete obj.the_geom;
           delete obj.the_geom_webmercator;
+          delete obj.cartodb_id;
           const dataString = JSON.stringify(obj);
           this.props.toggleTooltip(true, {
             follow: false,
             children: GlobeTooltip,
             childrenProps: { value: dataString },
-            position: { x: clientX, y: clientY }
+            position: { x: tooltipX, y: tooltipY }
           });
         }
       });
@@ -143,7 +147,7 @@ class Pulse extends React.Component {
     return (
       <div
         className="c-page -dark"
-        onClick={this.onClick}
+        onMouseDown={this.onMouseDown}
       >
         <LayerNav
           layerActive={this.props.layerActive}

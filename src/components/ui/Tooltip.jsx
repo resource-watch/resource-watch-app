@@ -1,5 +1,6 @@
 import React from 'react';
 import { Spinner } from 'rw-components';
+import TetherComponent from 'react-tether';
 
 export default class Tooltip extends React.Component {
 
@@ -39,6 +40,7 @@ export default class Tooltip extends React.Component {
       // TODO: modify topPos and bottomPos for recalculating toooltip position if it is out of viewport
     }
     return {
+      position: 'fixed',
       top: `${topPos}px`,
       left: `${bottomPos}px`
     };
@@ -46,15 +48,21 @@ export default class Tooltip extends React.Component {
 
   render() {
     return (
-      <div
-        ref={(node) => { this.el = node; }}
-        className={`c-tooltip-global ${this.props.tooltip.opened ? '' : '-hidden'}`}
-        style={this.getStyles()}
+      <TetherComponent
+        attachment="top center"
       >
-        <div className="tooltip-content">
-          {this.props.tooltip.loading ? <Spinner isLoading /> : this.getContent()}
+        <div
+          className="c-tooltip-global tooltip-content"
+          style={this.getStyles()}
+        />
+        <div
+          ref={(node) => { this.el = node; }}
+          className={`c-tooltip-global ${this.props.tooltip.opened ? '' : '-hidden'}`}
+        >
+          {this.getContent()}
         </div>
-      </div>
+
+      </TetherComponent>
     );
   }
 }
