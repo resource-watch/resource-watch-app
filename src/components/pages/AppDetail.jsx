@@ -6,8 +6,8 @@ import Button from 'components/ui/Button';
 import Breadcrumbs from 'components/ui/Breadcrumbs';
 
 const breadcrumbs = [
-  { name: 'Home', path: '/' },
-  { name: 'Apps', path: '/apps' }
+  { name: 'Get Involved', url: '/get-involved' },
+  { name: 'Apps', url: '/get-involved/apps' }
 ];
 
 function AppDetail(props) {

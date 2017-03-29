@@ -24,9 +24,9 @@ const insights = [
 
 const getInvolved = [
   { name: 'Get involved', path: '/get-involved' },
-  { name: 'Submit an insight', path: '#' },
-  { name: 'Contribute data', path: '#' },
-  { name: 'Join the community', path: '#' },
+  { name: 'Submit an insight', path: '/get-involved#insight' },
+  { name: 'Contribute data', path: '/get-involved#data' },
+  { name: 'Join the community', path: '/get-involved#join' },
   { name: 'Apps', path: '/get-involved/apps' }
 ];
 

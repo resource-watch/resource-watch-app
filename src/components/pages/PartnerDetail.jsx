@@ -3,6 +3,11 @@ import partners from 'json/partners.json';
 import PartnerBlock from 'components/common/Partners/PartnerBlock';
 import Banner from 'components/common/Banner';
 
+const breadcrumbs = [
+  { name: 'About', url: '/about' },
+  { name: 'Partners', url: '/about/partners' }
+];
+
 function PartnerDetail(props) {
   return (
     <div className="c-page partner-detail">

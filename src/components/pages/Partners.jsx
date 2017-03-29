@@ -5,10 +5,7 @@ import Banner from 'components/common/Banner';
 import Breadcrumbs from 'components/ui/Breadcrumbs';
 
 const breadcrumbs = [
-  {
-    name: 'About',
-    url: '/about'
-  }
+  { name: 'About', url: '/about' }
 ];
 
 function Partners(props) {

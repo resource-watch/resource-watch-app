@@ -6,6 +6,7 @@ import CardStatic from 'components/common/CardStatic';
 
 const cards = [
   {
+    id: 'insights',
     title: 'Submit an insight',
     intro: ['Lorem ipsum sit amet casius sem', 'lacinia quam venenatis vestibulum'],
     buttons: [
@@ -18,6 +19,7 @@ const cards = [
     background: 'url(/images/backgrounds/jellyfish.jpg)'
   },
   {
+    id: 'data',
     title: 'Contribute data',
     intro: ['Lorem ipsum sit amet casius sem', 'lacinia quam venenatis vestibulum'],
     buttons: [
@@ -30,6 +32,7 @@ const cards = [
     background: '#c32d7b url("/images/components/layout/header-bg-texture.png") no-repeat center'
   },
   {
+    id: 'join',
     title: 'Join the community',
     intro: ['Lorem ipsum sit amet casius sem', 'lacinia quam venenatis vestibulum'],
     buttons: [
@@ -42,6 +45,7 @@ const cards = [
     background: '#3bb2d0'
   },
   {
+    id: 'app',
     title: 'Develop your app',
     intro: ['Lorem ipsum sit amet casius sem', 'lacinia quam venenatis vestibulum'],
     buttons: [
@@ -72,7 +76,7 @@ function GetInvolved() {
           <div className="l-container">
             <div className="cards row collapse">
               {cards.map((c, i) => (
-                <div key={i} className="column small-12 medium-6">
+                <div id={c.id} key={i} className="column small-12 medium-6">
                   <CardStatic 
                     title={c.title}
                     intro={c.intro}
