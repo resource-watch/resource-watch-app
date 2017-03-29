@@ -1,7 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { IndexRoute, Router, Route } from 'react-router';
-import { onEnterExploreUrlParams, onChangeExploreUrlParams } from 'redactions/routes';
+import { IndexRoute, Router, Route, applyRouterMiddleware } from 'react-router';
+import useScroll from 'react-router-scroll/lib/useScroll'; // https://github.com/taion/react-router-scroll#minimizing-bundle-size
+import { onEnterExploreUrlParams, onChangeExploreUrlParams, shouldUpdateScroll, trackPageView } from 'redactions/routes';
+
 
 // Components
 import App from './App';
@@ -18,7 +20,11 @@ import PartnerDetail from './containers/pages/PartnerDetail';
 
 function Routes(props) {
   return (
-    <Router history={props.history}>
+    <Router 
+      history={props.history}
+      render={applyRouterMiddleware(useScroll(shouldUpdateScroll))}
+      onUpdate={trackPageView}
+    >
       <Route path="/" component={App}>
         <IndexRoute component={Home} />
 

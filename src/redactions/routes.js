@@ -1,3 +1,4 @@
+import ReactGA from 'react-ga';
 import { dispatch } from 'main';
 import { setDatasetsPage, setDatasetsActive } from 'redactions/explore';
 
@@ -29,4 +30,24 @@ export function onChangeExploreUrlParams(prevState, nextState, replace, done) {
   }
 
   done();
+}
+
+export function shouldUpdateScroll(prevRouterProps, { location }) {
+  const noScrollSections = [];
+
+  const path = (prevRouterProps && prevRouterProps.location.pathname.split('/')[1]) || '';
+  const nextPath = location.pathname.split('/')[1];
+
+  return !(path === nextPath && noScrollSections.indexOf(nextPath) > -1);
+}
+
+export function trackPageView() {
+  let currentUrl = window.location.pathname;
+
+  if (window.location.search) {
+    currentUrl += window.location.search;
+  }
+
+  ReactGA.set({ page: currentUrl });
+  ReactGA.pageview(currentUrl);
 }

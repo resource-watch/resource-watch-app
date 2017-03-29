@@ -28,7 +28,7 @@ class PartnerDetail extends React.Component {
     const { data } = this.props;
     const description = data.summary ? this.splitInTwoParts(data.summary): ['', ''];
     const imgPath = data['white-logo'] ? data['white-logo'].medium : '';
-    const logo = data.website !== '' ? 
+    const logo = data.website !== '' ?
       <a href={data.website} target="_blank">
         <img src={`${config.CMS_API_URL}${imgPath}`} className="logo" title={data.name} />
       </a> :
@@ -72,7 +72,7 @@ class PartnerDetail extends React.Component {
     );
   }
 
-  
+
 }
 
 PartnerDetail.propTypes = {
