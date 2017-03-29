@@ -25,7 +25,7 @@ const reducer = combineReducers({
  * @type {Object}
  */
 const middlewareRouter = routerMiddleware(browserHistory);
-export const store = createStore(
+const store = createStore(
   reducer,
   compose(
     /* The router middleware MUST be before thunk otherwise the URL changes
@@ -39,7 +39,7 @@ export const store = createStore(
 );
 
 // Export dispatch funcion for dispatching actions outside connect
-export function dispatch(action) {
+function dispatch(action) {
   store.dispatch(action);
 }
 
@@ -48,7 +48,9 @@ export function dispatch(action) {
  * @info(https://github.com/reactjs/react-router/tree/master/docs)
  * @type {Object}
  */
-export const history = syncHistoryWithStore(browserHistory, store);
+const history = syncHistoryWithStore(browserHistory, store);
+
+export { store, history, dispatch };
 
 render(
   <Provider store={store}>

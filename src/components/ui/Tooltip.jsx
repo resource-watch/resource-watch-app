@@ -1,5 +1,6 @@
 import React from 'react';
 import { Spinner } from 'rw-components';
+import { setTooltipPosition } from 'redactions/tooltip';
 
 export default class Tooltip extends React.Component {
 
@@ -22,7 +23,7 @@ export default class Tooltip extends React.Component {
   }
 
   onMouseMove({ clientX, clientY }) {
-    this.props.setTooltipPosition({ x: clientX, y: clientY });
+    setTooltipPosition({ x: clientX, y: clientY });
     this.clientX = clientX;
     this.clientY = clientY;
   }

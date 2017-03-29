@@ -1,3 +1,5 @@
+import { dispatch } from 'main';
+
 // CONSTANTS
 const TOOLTIP_TOGGLE = 'TOOLTIP_TOGGLE';
 const TOOLTIP_SET_CHILDREN = 'TOOLTIP_SET_CHILDREN';
@@ -20,6 +22,7 @@ const initialState = {
 };
 
 export default function (state = initialState, action) {
+  debugger;
   switch (action.type) {
     case TOOLTIP_TOGGLE:
       return Object.assign({}, state, { opened: action.payload });
@@ -38,42 +41,40 @@ export default function (state = initialState, action) {
   }
 }
 
-export function setTooltipChildren(children) {
-  return dispatch => dispatch({ type: TOOLTIP_SET_CHILDREN, payload: children });
-}
-
 export function toggleTooltip(opened, opts = {}) {
-  return (dispatch) => {
-    if (opened) {
-      if (opts.children) {
-        dispatch({ type: TOOLTIP_SET_CHILDREN, payload: opts.children });
-        if (opts.childrenProps) {
-          dispatch({ type: TOOLTIP_SET_CHILDREN_PROPS, payload: opts.childrenProps });
-        }
-      }
-      if (!opts.follow && opts.position) {
-        dispatch({ type: TOOLTIP_SET_POSITION, payload: { x: opts.position.x, y: opts.position.y } });
-      }
-      if (opts.follow) {
-        dispatch({ type: TOOLTIP_FOLLOW_TOGGLE, payload: true });
-        // User has to move the mouse to receive the position
-        document.addEventListener('mousemove', function onMouseMove({ clientX, clientY }) {
-          dispatch({ type: TOOLTIP_SET_POSITION, payload: { x: clientX, y: clientY } });
-          document.removeEventListener('mousemove', onMouseMove);
-        });
+  if (opened) {
+    if (opts.children) {
+      dispatch({ type: TOOLTIP_SET_CHILDREN, payload: opts.children });
+      if (opts.childrenProps) {
+        dispatch({ type: TOOLTIP_SET_CHILDREN_PROPS, payload: opts.childrenProps });
       }
     }
-    if (!opened) {
-      dispatch({ type: TOOLTIP_FOLLOW_TOGGLE, payload: false });
+    if (!opts.follow && opts.position) {
+      dispatch({ type: TOOLTIP_SET_POSITION, payload: { x: opts.position.x, y: opts.position.y } });
     }
-    dispatch({ type: TOOLTIP_TOGGLE, payload: opened });
-  };
+    if (opts.follow) {
+      dispatch({ type: TOOLTIP_FOLLOW_TOGGLE, payload: true });
+      // User has to move the mouse to receive the position
+      document.addEventListener('mousemove', function onMouseMove({ clientX, clientY }) {
+        dispatch({ type: TOOLTIP_SET_POSITION, payload: { x: clientX, y: clientY } });
+        document.removeEventListener('mousemove', onMouseMove);
+      });
+    }
+  }
+  if (!opened) {
+    dispatch({ type: TOOLTIP_FOLLOW_TOGGLE, payload: false });
+  }
+  dispatch({ type: TOOLTIP_TOGGLE, payload: opened });
 }
 
 export function tooltipLoading(loading) {
-  return dispatch => dispatch({ type: TOOLTIP_LOADING, payload: loading });
+  dispatch({ type: TOOLTIP_LOADING, payload: loading });
+}
+
+export function setTooltipChildren(children) {
+  dispatch({ type: TOOLTIP_SET_CHILDREN, payload: children });
 }
 
 export function setTooltipPosition({ x, y }) {
-  return dispatch => dispatch({ type: TOOLTIP_SET_POSITION, payload: { x, y } });
+  dispatch({ type: TOOLTIP_SET_POSITION, payload: { x, y } });
 }

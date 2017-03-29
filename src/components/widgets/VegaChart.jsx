@@ -3,6 +3,7 @@ import * as d3 from 'd3';
 import vega from 'vega';
 import debounce from 'lodash/debounce';
 import isEqual from 'lodash/isEqual';
+import { toggleTooltip } from 'redactions/tooltip';
 import VegaChartTooltip from './VegaChartTooltip';
 
 class VegaChart extends React.Component {
@@ -94,7 +95,7 @@ class VegaChart extends React.Component {
           }
 
           if (item) {
-            return this.props.toggleTooltip(true, {
+            return toggleTooltip(true, {
               follow: true,
               children: VegaChartTooltip,
               childrenProps: {
@@ -119,7 +120,7 @@ class VegaChart extends React.Component {
 
   render() {
     return (
-      <div className="c-chart" onMouseOut={() => this.props.toggleTooltip(false)}>
+      <div className="c-chart" onMouseOut={() => toggleTooltip(false)}>
         <div ref={(c) => { this.chart = c; }} className="chart" />
       </div>
     );
@@ -129,8 +130,7 @@ class VegaChart extends React.Component {
 VegaChart.propTypes = {
   // Define the chart data
   data: React.PropTypes.object,
-  toggleLoading: React.PropTypes.func,
-  toggleTooltip: React.PropTypes.func
+  toggleLoading: React.PropTypes.func
 };
 
 export default VegaChart;
