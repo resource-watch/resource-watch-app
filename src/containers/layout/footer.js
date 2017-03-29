@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import Partners from 'components/pages/Partners';
+import Footer from 'components/layout/Footer';
 import { getPartners } from 'redactions/partners';
 
 const mapStateToProps = state => ({
@@ -10,4 +10,4 @@ const mapDispatchToProps = dispatch => ({
   getPartners: () => { dispatch(getPartners()); }
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Partners);
+export default connect(mapStateToProps, mapDispatchToProps)(Footer);

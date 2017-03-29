@@ -2,7 +2,6 @@ import React from 'react';
 import { Link } from 'react-router';
 import CompoundMenu from 'components/ui/CompoundMenu';
 import Carousel from 'components/ui/Carousel';
-import partners from 'json/partners.json';
 
 const data = [
   { name: 'Data', path: '#' },
@@ -30,42 +29,52 @@ const getInvolved = [
   { name: 'Apps', path: '/get-involved/apps' }
 ];
 
-const items = partners.map((p, i) => (
-  <div key={i} className="item">
-    <Link to={`/partners/${p.name}`}>
-      <img className="-img" src={`/images/partners/${p.img}`}/>
-    </Link>
-  </div>
-));
+class Footer extends React.Component {
 
-function Footer() {
-  const menuData = [data, about, insights, getInvolved];
+  componentWillMount() {
+    this.props.getPartners();
+  }
 
-  return (
-    <footer className="c-footer">
-      <div className="footer-intro">
-        <h5 className="title"><Link to="/partners">Partners</Link></h5>
-        <div className="partners row">
-          <div className="column small-12">
-            <Carousel items={items} />
+  setPartnersList() {
+    return this.props.list.map((p, i) => (
+      <div key={i} className="item">
+        <Link to={`/about/partners/${p.id}`}>
+          <img className="-img" src={`${config.CMS_API_URL}${p.attributes.logo.thumb}`}/>
+        </Link>
+      </div>
+    ));
+  }
+
+  render() {
+    const menuData = [data, about, insights, getInvolved];
+    const items = this.setPartnersList();
+
+    return (
+      <footer className="c-footer">
+        <div className="footer-intro">
+          <h1 className="title"><Link to="/about/partners">Partners</Link></h1>
+          <div className="partners row">
+            <div className="column small-12">
+              {items.length ? <Carousel items={items} /> : ''}
+            </div>
           </div>
         </div>
-      </div>
 
-      <div className="footer-main">
-        <CompoundMenu items={menuData} />
-      </div>
+        <div className="footer-main">
+          <CompoundMenu items={menuData} />
+        </div>
 
-      <div className="footer-terms">
-        <div className="terms row">
-          <div className="column small-12">
-            <p>Terms of Service — Privacy</p>
-            <p>© 2015 - World Resources Watch</p>
+        <div className="footer-terms">
+          <div className="terms row">
+            <div className="column small-12">
+              <p>Terms of Service — Privacy</p>
+              <p>© 2015 - World Resources Watch</p>
+            </div>
           </div>
         </div>
-      </div>
-    </footer>
-  );
+      </footer>
+    );
+  }
 }
 
 export default Footer;
