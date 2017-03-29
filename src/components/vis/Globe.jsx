@@ -23,7 +23,7 @@ class Globe extends React.Component {
 
     // Bindings
     this.onClick = this.onClick.bind(this);
-    // this.onMouseDown = this.onMouseDown.bind(this);
+    this.onResize = debounce(this.onResize.bind(this), 250);
 
     // document.addEventListener('mousedown', this.onMouseDown);
   }
@@ -45,11 +45,7 @@ class Globe extends React.Component {
     // Start!
     this.draw();
 
-    window.addEventListener('resize', debounce(() => {
-      const nextWidth = this.el.clientWidth || this.el.innerWidth;
-      const nextHeight = this.el.clientHeight || this.el.innerHeight;
-      this.setState({ width: nextWidth, height: nextHeight });
-    }, 250));
+    window.addEventListener('resize', this.onResize);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -100,6 +96,17 @@ class Globe extends React.Component {
       (prevState.height !== this.state.height)) {
       this.update();
     }
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.onResize);
+  }
+
+  onResize() {
+    console.info('onResize');
+    const nextWidth = this.el.clientWidth || this.el.innerWidth;
+    const nextHeight = this.el.clientHeight || this.el.innerHeight;
+    this.setState({ width: nextWidth, height: nextHeight });
   }
 
   /**

@@ -89,8 +89,8 @@ class Pulse extends React.Component {
   }
 
   handleEarthClicked(latLon, clientX, clientY) {
-    console.info('handleEarthClicked', latLon);
-    console.info(this.props);
+    this.props.toggleTooltip(false);
+
     const currentLayer = this.props.pulse.layers.find(
       val => val.id === this.props.pulse.layerActive);
     const datasetId = currentLayer.dataset;
