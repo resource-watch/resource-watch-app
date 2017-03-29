@@ -3,13 +3,7 @@ import * as d3 from 'd3';
 import vega from 'vega';
 import debounce from 'lodash/debounce';
 import isEqual from 'lodash/isEqual';
-
-const VegaTooltipContent = props => (
-  <div>
-    <div>{props.item && props.item.x}</div>
-    <div>{props.item && props.item.y}</div>
-  </div>
-);
+import VegaChartTooltip from './VegaChartTooltip';
 
 class VegaChart extends React.Component {
 
@@ -54,7 +48,7 @@ class VegaChart extends React.Component {
       height: this.height - padding.top - padding.bottom
     };
 
-    const data = Object.assign({}, this.props.data, size, {
+    const signals = {
       signals: [{
         name: 'onMousemove',
         streams: [{
@@ -66,7 +60,9 @@ class VegaChart extends React.Component {
           }
         }]
       }]
-    });
+    };
+
+    const data = Object.assign({}, this.props.data, size, signals);
 
     if (this.mounted && this.props.toggleLoading) this.props.toggleLoading(true);
 
@@ -75,41 +71,39 @@ class VegaChart extends React.Component {
       if (!err && this.mounted) {
         const vis = chart({
           el: this.chart,
-          renderer: 'svg'
+          renderer: 'canvas'
         });
 
         vis.update();
 
-        vis.onSignal('onMousemove', (event, x) => {
+        // Tooltip
+        vis.onSignal('onMousemove', (event, x0) => {
           const visData = vis.data().table;
           let item;
 
-          if (typeof x === 'string') {
-            item = visData.find(d => d.x === x);
+          if (typeof x0 === 'string') {
+            item = visData.find(d => d.x === x0);
           }
 
-          if (typeof x === 'number') {
+          if (typeof x0 === 'number') {
             const bisectDate = d3.bisector(d => d.x).left;
-            const i = bisectDate(visData, x, 1);
-            item = visData[i];
+            const i = bisectDate(visData, x0, 1);
+            const d0 = visData[i - 1];
+            const d1 = visData[i];
+            item = (d0 && d1 && (x0 - d0.x > d1.x - x0)) ? d1 : d0;
           }
 
           if (item) {
             return this.props.toggleTooltip(true, {
               follow: true,
-              children: VegaTooltipContent,
+              children: VegaChartTooltip,
               childrenProps: {
-                event, item
+                item
               }
             });
           }
-
-          return this.props.toggleTooltip(false);
+          return null;
         });
-
-        // vis.onSignal('onMouseout', () => {
-        //   this.props.toggleTooltip(false);
-        // });
       }
     });
   }
@@ -125,7 +119,7 @@ class VegaChart extends React.Component {
 
   render() {
     return (
-      <div className="c-chart">
+      <div className="c-chart" onMouseOut={() => this.props.toggleTooltip(false)}>
         <div ref={(c) => { this.chart = c; }} className="chart" />
       </div>
     );
