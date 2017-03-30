@@ -1,0 +1,15 @@
+
+.p-join-community {
+  // Page banners backgrounds
+  .c-banner {
+    &.intro {
+      background: #3bb2d0;
+      background-position: top center;
+  }
+
+    &.partners {
+      background-image: url('/images/backgrounds/partners-02@2x.png');
+      background-position: top center;
+    }
+  }
+}

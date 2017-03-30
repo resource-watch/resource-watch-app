@@ -12,6 +12,10 @@ import Explore from './containers/pages/Explore';
 import ExploreDetail from './containers/pages/ExploreDetail';
 import Pulse from './containers/pages/Pulse';
 import GetInvolved from './components/pages/GetInvolved';
+import SubmitInsight from './components/pages/SubmitInsight';
+import ContributeData from './components/pages/ContributeData';
+import JoinCommunity from './components/pages/JoinCommunity';
+import DevelopApp from './components/pages/DevelopApp';
 import About from './components/pages/About';
 import Apps from './containers/pages/Apps';
 import AppDetail from './containers/pages/AppDetail';
@@ -55,6 +59,22 @@ function Routes(props) {
 
         <Route path="get-involved">
           <IndexRoute component={GetInvolved} />
+
+          <Route path="submit-insight">
+            <IndexRoute component={SubmitInsight} />
+          </Route>
+
+          <Route path="contribute-data">
+            <IndexRoute component={ContributeData} />
+          </Route>
+          
+          <Route path="join-community">
+            <IndexRoute component={JoinCommunity} />
+          </Route>
+
+          <Route path="develop-app">
+            <IndexRoute component={DevelopApp} />
+          </Route>
 
           <Route path="apps">
             <IndexRoute component={Apps} />

@@ -1,0 +1,16 @@
+
+.p-develop-app {
+  // Page banners backgrounds
+  .c-banner {
+    &.intro {
+      background: #7b7575;
+      background-position: bottom center;
+      background-size: cover;
+  }
+
+    &.partners {
+      background-image: url('/images/backgrounds/partners-02@2x.png');
+      background-position: top center;
+    }
+  }
+}
