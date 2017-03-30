@@ -18,9 +18,15 @@
     & * { color: $color-white; }
   }
 
+  .tag {
+    margin: 0;
+    margin-bottom: 15px;
+  }
+
+  .card-title,
   .title {
     margin: 0;
-    margin-bottom: 6px;
+    margin-bottom: 15px;
   }
 
   .buttons {
@@ -34,4 +40,31 @@
     }
   }
 
+  .footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+
+    .source {
+      display: flex;
+      align-items: center;
+
+      img {
+        height: 38px;
+        margin-right: 10px;
+        border-radius: 50%;
+      }
+
+      .source-name {
+        a {
+          line-height: 12px;
+          text-decoration: underline;
+
+          &:hover {
+            text-decoration: none;
+          }
+        }
+      }
+    }
+  }
 }
