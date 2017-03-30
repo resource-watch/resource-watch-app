@@ -12,7 +12,7 @@ const cards = [
     buttons: [
       {
         text: 'Submit an insight',
-        path: '/get-involved/#',
+        path: '/get-involved/submit-insight',
         className: '-filled'
       }
     ],
@@ -25,7 +25,7 @@ const cards = [
     buttons: [
       {
         text: 'Contribute data',
-        path: '/get-involved/#',
+        path: '/get-involved/contribute-data',
         className: '-filled'
       }
     ],
@@ -38,7 +38,7 @@ const cards = [
     buttons: [
       {
         text: 'Join the community',
-        path: '/get-involved/#',
+        path: '/get-involved/join-community',
         className: '-filled'
       }
     ],
@@ -51,12 +51,12 @@ const cards = [
     buttons: [
       {
         text: 'Develop your app',
-        path: '/get-involved/#',
+        path: '/get-involved/develop-app',
         className: '-filled'
       },
       {
         text: 'Apps gallery',
-        path: '/get-involved/#',
+        path: '/get-involved/apps',
         className: '-transparent -secondary'
       }
     ],
