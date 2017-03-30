@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import LayerNavDropdown from 'components/pulse/LayerNavDropdown';
-import { toggleActiveLayer } from 'redactions/pulse';
+import { toggleActiveLayer, getLayerPoints } from 'redactions/pulse';
 
 const mapStateToProps = state => ({
   layerActive: state.pulse.layerActive
@@ -9,6 +9,9 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   toggleActiveLayer: (id) => {
     dispatch(toggleActiveLayer(id));
+  },
+  getLayerPoints: (id, tableName) => {
+    dispatch(getLayerPoints(id, tableName));
   }
 });
 

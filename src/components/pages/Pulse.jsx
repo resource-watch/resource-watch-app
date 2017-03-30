@@ -10,17 +10,31 @@ import Legend from 'components/pulse/Legend';
 import LayerDescription from 'components/pulse/LayerDescription';
 import Spinner from 'components/ui/Spinner';
 import ZoomControl from 'components/ui/ZoomControl';
+import GlobeTooltip from 'components/pulse/GlobeTooltip';
+
+import earthImage from '../../../public/images/components/vis/earth-min.jpg';
+import earthBumpImage from '../../../public/images/components/vis/earth-bump.jpg';
+import cloudsImage from '../../../public/images/components/vis/clouds-min.png';
 
 class Pulse extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      texture: null,
+      loading: false,
+      layerPoints: [],
+      selectedMarker: null
+    };
     this.layerGlobeManager = new LayerGlobeManager();
 
     // Bindings
     this.onZoomIn = this.onZoomIn.bind(this);
     this.onZoomOut = this.onZoomOut.bind(this);
+    this.onMouseDown = this.onMouseDown.bind(this);
+    this.setTooltipValue = this.setTooltipValue.bind(this);
+    this.handleMarkerSelected = this.handleMarkerSelected.bind(this);
+    this.handleEarthClicked = this.handleEarthClicked.bind(this);
   }
 
   componentWillMount() {
@@ -57,6 +71,10 @@ class Pulse extends React.Component {
         this.setState({ texture: null });
       }
     }
+
+    // if (nextProps.pulse.layerPoints) {
+    //   this.setState({ layerPoints: nextProps.pulse.layerPoints });
+    // }
   }
 
   onZoomIn() {
@@ -67,9 +85,69 @@ class Pulse extends React.Component {
     this.globe.camera.translateZ(5);
   }
 
+  onMouseDown() {
+    this.props.toggleTooltip(false);
+  }
+
+  handleMarkerSelected(marker) {
+    console.info('handleMarkerSelected', marker);
+    this.setState({ selectedMarker: JSON.stringify(marker) });
+  }
+
+  handleEarthClicked(latLon, clientX, clientY) {
+    this.props.toggleTooltip(false);
+
+    const currentLayer = this.props.pulse.layers.find(
+      val => val.id === this.props.pulse.layerActive);
+    if (currentLayer) {
+      const datasetId = currentLayer.dataset;
+      const options = currentLayer.layerConfig.body.layers[0].options;
+      const geomColumn = options.geom_column;
+      const tableName = options.sql.toUpperCase().split('FROM')[1];
+      const geoJSON = JSON.stringify({
+        type: 'Point',
+        coordinates: [latLon.longitude, latLon.latitude]
+      });
+      let requestURL;
+      if (geomColumn) {
+        requestURL = `${config.API_URL}/query/${datasetId}?sql=SELECT ST_Value(st_transform(${geomColumn},4326), st_setsrid(st_geomfromgeojson(${geoJSON}),4326), true) FROM ${tableName} WHERE st_intersects(${geomColumn},st_setsrid(st_geomfromgeojson(${geoJSON}),4326))`;
+      } else {
+        requestURL = `${config.API_URL}/query/${datasetId}?sql=SELECT * FROM ${tableName} WHERE st_intersects(the_geom,st_buffer(ST_SetSRID(st_geomfromgeojson('${geoJSON}'),4326),1))`;
+      }
+      this.setTooltipValue(requestURL, clientX, clientY);
+    }
+  }
+
+  setTooltipValue(requestURL, tooltipX, tooltipY) {
+    fetch(new Request(requestURL))
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          throw new Error(response.statusText);
+        }
+      }).then((response) => {
+        if (response.data.length > 0) {
+          const obj = response.data[0];
+          delete obj.the_geom;
+          delete obj.the_geom_webmercator;
+          delete obj.cartodb_id;
+          this.props.toggleTooltip(true, {
+            follow: false,
+            children: GlobeTooltip,
+            childrenProps: { value: obj },
+            position: { x: tooltipX, y: tooltipY }
+          });
+        }
+      });
+  }
+
   render() {
     return (
-      <div className="c-page -dark">
+      <div
+        className="c-page -dark"
+        onMouseDown={this.onMouseDown}
+      >
         <LayerNav
           layerActive={this.props.layerActive}
           layersGroup={this.props.layersGroup}
@@ -92,6 +170,16 @@ class Pulse extends React.Component {
           enableZoom
           lightPosition={'right'}
           texture={this.state.texture}
+          layerPoints={this.state.layerPoints}
+          earthImagePath={earthImage}
+          earthBumpImagePath={earthBumpImage}
+          defaultLayerImagePath={cloudsImage}
+          segments={64}
+          rings={64}
+          useHalo
+          useDefaultLayer
+          onMarkerSelected={this.handleMarkerSelected}
+          onEarthClicked={this.handleEarthClicked}
         />
         <ZoomControl
           ref={zoomControl => this.zoomControl = zoomControl}
@@ -106,7 +194,8 @@ class Pulse extends React.Component {
 Pulse.propTypes = {
   layersGroup: React.PropTypes.array,
   layerActive: React.PropTypes.object,
-  getLayers: React.PropTypes.func
+  getLayers: React.PropTypes.func,
+  toggleTooltip: React.PropTypes.func
 };
 
 
