@@ -40,6 +40,11 @@ class Pulse extends React.Component {
   componentWillMount() {
     // This is not sending anything, for the moment
     this.props.getLayers();
+    document.addEventListener('click', this.onMouseDown);
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('click', this.onMouseDown);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -146,7 +151,6 @@ class Pulse extends React.Component {
     return (
       <div
         className="c-page -dark"
-        onMouseDown={this.onMouseDown}
       >
         <LayerNav
           layerActive={this.props.layerActive}
