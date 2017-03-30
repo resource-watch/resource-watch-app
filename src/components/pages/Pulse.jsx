@@ -132,11 +132,10 @@ class Pulse extends React.Component {
           delete obj.the_geom;
           delete obj.the_geom_webmercator;
           delete obj.cartodb_id;
-          const dataString = JSON.stringify(obj);
           this.props.toggleTooltip(true, {
             follow: false,
             children: GlobeTooltip,
-            childrenProps: { value: dataString },
+            childrenProps: { value: obj },
             position: { x: tooltipX, y: tooltipY }
           });
         }

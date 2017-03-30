@@ -40,28 +40,39 @@ export default class Tooltip extends React.Component {
       // TODO: modify topPos and bottomPos for recalculating toooltip position if it is out of viewport
     }
     return {
-      position: 'fixed',
+      position: 'absolute',
       top: `${topPos}px`,
-      left: `${bottomPos}px`
+      left: `${bottomPos}px`,
+      width: '1px',
+      height: '1px',
+      visibility: 'hidden'
     };
   }
 
   render() {
     return (
       <TetherComponent
-        attachment="top center"
+        attachment="bottom center"
+        targetAttachment="top center"
+        constraints={[{
+          to: 'window',
+          pin: true
+        }]}
+        classes={{
+          element: `c-tooltip ${this.props.tooltip.opened ? '' : '-hidden'}`
+        }}
+        offset="10px 0"
       >
         <div
-          className="c-tooltip-global tooltip-content"
           style={this.getStyles()}
         />
+        { this.props.tooltip.opened &&
         <div
           ref={(node) => { this.el = node; }}
-          className={`c-tooltip-global ${this.props.tooltip.opened ? '' : '-hidden'}`}
         >
           {this.getContent()}
         </div>
-
+        }
       </TetherComponent>
     );
   }
