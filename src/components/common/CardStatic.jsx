@@ -4,7 +4,7 @@ import classNames from 'classnames';
 
 function CardStatic(props) {
   const isIntroString = typeof props.intro === 'string';
-  const style = { background: props.background };
+  const style = { background: props.background, backgroundSize: props.backgroundSize || 'cover' };
   const className = classNames({
     'c-card-static': true,
     [props.className]: props.className

@@ -6,6 +6,33 @@ import Rating from 'components/common/Rating';
 import Icon from 'components/ui/Icon';
 import MoveTo from 'moveto';
 
+const insightsCards = [
+  {
+    tag: 'INSIGHT OF THE WEEK',
+    title: 'A factory is being built in your neighborhood. Can you do anything about it?',
+    slug: 'interactive-edi',
+    source: { name: 'World Resources Institute', path: '#', img: 'https://vizzuality.github.io/WRW-Prototype/img/avatar-wri.png'},
+    ranking: 3531,
+    background: 'url(/images/backgrounds/chimney.png) center'
+  },
+  {
+    tag: 'Oct 5, 2015',
+    title: 'The Water Guardians of the Andes',
+    slug: 'slideshow-peru',
+    source: { name: 'World Resources Institute', path: '#', img: 'https://vizzuality.github.io/WRW-Prototype/img/avatar-wri.png'},
+    ranking: 4345,
+    background: 'url(/images/backgrounds/andes.png) center'
+  },
+  {
+    tag: 'Oct 5, 2015',
+    title: 'Farms to feel squeeze as competition for water increases',
+    slug: 'interactive-map',
+    source: { name: 'World Resources Institute', path: '#', img: 'https://vizzuality.github.io/WRW-Prototype/img/avatar-wri.png'},
+    ranking: 4345,
+    background: 'url(/images/backgrounds/world_farms.jpg)'
+  }
+];
+
 const exploreCards = [
   {
     tag: 'Explore datasets',
@@ -18,7 +45,7 @@ const exploreCards = [
         className: '-primary'
       }
     ],
-    background: 'url(/images/backgrounds/jellyfish.jpg)'
+    background: '#c32d7b'
   },
   {
     tag: 'Dashboards',
@@ -31,7 +58,7 @@ const exploreCards = [
         className: '-primary'
       }
     ],
-    background: 'url(/images/backgrounds/jellyfish.jpg)'
+    background: '#3dc4e6'
   },
   {
     tag: 'Planet Pulse',
@@ -44,34 +71,7 @@ const exploreCards = [
         className: '-primary'
       }
     ],
-    background: 'url(/images/backgrounds/jellyfish.jpg)'
-  }
-];
-
-const insightsCards = [
-  {
-    tag: 'INSIGHT OF THE WEEK',
-    title: 'A factory is being built in your neighborhood. Can you do anything about it?',
-    slug: 'interactive-edi',
-    source: { name: 'World Resources Institute', path: '#', img: 'https://vizzuality.github.io/WRW-Prototype/img/avatar-wri.png'},
-    ranking: 3531,
-    background: 'url(/images/backgrounds/jellyfish.jpg)'
-  },
-  {
-    tag: 'Oct 5, 2015',
-    title: 'The Water Guardians of the Andes',
-    slug: 'slideshow-peru',
-    source: { name: 'World Resources Institute', path: '#', img: 'https://vizzuality.github.io/WRW-Prototype/img/avatar-wri.png'},
-    ranking: 4345,
-    background: 'url(/images/backgrounds/jellyfish.jpg)'
-  },
-  {
-    tag: 'Oct 5, 2015',
-    title: 'Farms to feel squeeze as competition for water increases',
-    slug: 'interactive-map',
-    source: { name: 'World Resources Institute', path: '#', img: 'https://vizzuality.github.io/WRW-Prototype/img/avatar-wri.png'},
-    ranking: 4345,
-    background: 'url(/images/backgrounds/jellyfish.jpg)'
+    background: 'url(/images/backgrounds/planetpulse.png) 67% center'
   }
 ];
 
@@ -89,7 +89,6 @@ class Home extends React.Component {
       easing: 'easeOutQuart'
     });
 
-    moveTo.move(targetEl);
     moveTo.registerTrigger(triggerEl);
   }
 

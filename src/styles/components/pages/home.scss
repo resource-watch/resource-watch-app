@@ -2,7 +2,7 @@
 .p-home {
   .c-banner {
     &.intro {
-      background-image: url('http://resourcewatch.org/assets/bg-header.jpg');
+      background-image: url('/images/backgrounds/planet.png');
       background-position: top center;
 
       .title {
@@ -29,6 +29,7 @@
         }
       }
     }
+
     &.get-involved {
       background-image: url('http://resourcewatch.org/assets/bg-header.jpg');
       background-position: top center;
