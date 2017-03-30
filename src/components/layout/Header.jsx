@@ -96,12 +96,12 @@ class Header extends React.Component {
               </Link>
             </li>
             <li>
-              <Link
-                to="/dashboards"
+              <a
+                href="/countries"
                 onClick={(e) => this.toggleDataDropdown(e, 'dataDropdownActive')}
               >
                 Dashboards
-              </Link>
+              </a>
             </li>
             <li>
               <Link

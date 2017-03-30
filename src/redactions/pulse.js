@@ -17,6 +17,10 @@ const GET_LAYERS_LOADING = 'planetpulse/GET_LAYERS_LOADING';
 
 const SET_ACTIVE_LAYER = 'planetpulse/SET_ACTIVE_LAYER';
 
+const GET_LAYER_POINTS_SUCCESS = 'planetpulse/GET_LAYER_POINTS_SUCCESS';
+const GET_LAYER_POINTS_ERROR = 'planetpulse/GET_LAYER_POINTS_ERROR';
+
+
 /**
  * REDUCER
 */
@@ -24,7 +28,8 @@ const initialState = {
   layers: [],
   loading: false,
   error: false,
-  layerActive: null
+  layerActive: null,
+  layerPoints: []
 };
 
 export default function (state = initialState, action) {
@@ -39,6 +44,16 @@ export default function (state = initialState, action) {
       return Object.assign({}, state, {
         layerActive: (state.layerActive !== action.payload) ? action.payload : null
       });
+    case GET_LAYER_POINTS_SUCCESS:
+      return Object.assign({}, state, {
+        layerPoints: action.payload,
+        error: false
+      });
+    case GET_LAYER_POINTS_ERROR:
+      return Object.assign({}, state, {
+        layerPoints: action.payload,
+        error: true
+      });
     default:
       return state;
   }
@@ -48,6 +63,7 @@ export default function (state = initialState, action) {
  * ACTIONS
  * - getLayers
  * - setActiveDataset
+ * - getLayerPoints
 */
 export function getLayers() {
   function getLayerFromDataset(dataset) {
@@ -98,5 +114,31 @@ export function toggleActiveLayer(id) {
   return {
     type: SET_ACTIVE_LAYER,
     payload: id
+  };
+}
+
+export function getLayerPoints(datasetId, tableName) {
+  return (dispatch) => {
+    // Waiting for fetch from server -> Dispatch loading
+    // dispatch({ type: GET_LAYERS_LOADING });
+    // TODO: remove the date now
+    fetch(new Request(`${config.API_URL}/query/${datasetId}?sql=SELECT *, st_y(the_geom) AS lat, st_x(the_geom) AS lon FROM ${tableName}`))
+    .then((response) => {
+      if (response.ok) return response.json();
+      throw new Error(response.statusText);
+    })
+    .then((response) => {
+      dispatch({
+        type: GET_LAYER_POINTS_SUCCESS,
+        payload: response.data
+      });
+    })
+    .catch((err) => {
+      // Fetch from server ko -> Dispatch error
+      dispatch({
+        type: GET_LAYER_POINTS_ERROR,
+        payload: err.message
+      });
+    });
   };
 }

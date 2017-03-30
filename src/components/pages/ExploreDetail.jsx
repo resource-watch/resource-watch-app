@@ -178,8 +178,7 @@ class ExploreDetail extends React.Component {
     );
 
     const defaultLayerId = dataset.detail.attributes.layer.find(
-      value => value.attributes.default === true).attributes.id;
-
+      value => value.attributes.default === true).id;
     this.props.toggleLayerShown(defaultLayerId);
   }
 

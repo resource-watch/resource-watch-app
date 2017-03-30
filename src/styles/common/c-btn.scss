@@ -28,6 +28,10 @@
       color: $color-white;
 
       & * { color: $color-white; }
+
+      &:hover {
+        background-image: linear-gradient(to bottom, #ae286e, #a01d61);
+      }
     }
   }
 
