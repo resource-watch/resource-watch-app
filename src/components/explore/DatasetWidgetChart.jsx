@@ -1,5 +1,5 @@
 import React from 'react';
-import VegaChart from 'components/widgets/VegaChart';
+import VegaChart from 'containers/widgets/VegaChart';
 import Spinner from 'components/ui/Spinner';
 
 class DatasetWidgetChart extends React.Component {
