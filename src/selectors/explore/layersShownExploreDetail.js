@@ -11,7 +11,7 @@ const updateLayersShown = (_layers, _layersShownIds) => {
 
   if (_layers.length) {
     _layersShownIds.forEach((id) => {
-      const matchedLayer = _layers.filter(d => d.attributes.id === id)[0].attributes;
+      const matchedLayer = _layers.filter(d => d.id === id)[0].attributes;
       layerList.push(matchedLayer);
     });
   }

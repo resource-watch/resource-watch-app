@@ -12,24 +12,31 @@ class LayerNavDropdown extends React.Component {
 
   triggerClick(e) {
     this.props.toggleActiveLayer(e.currentTarget.dataset.id);
+    // this.props.getLayerPoints(e.currentTarget.dataset.datasetid, e.currentTarget.dataset.tablename);
   }
 
   render() {
     return (
       <div className="c-layer-nav-dropdown dropdown">
         <ul>
-          {this.props.layers.map(layer => (
-            <li
-              data-id={layer.id}
-              key={layer.id}
-              onClick={this.triggerClick}
-            >
-              <Switch active={(this.props.layerActive === layer.id)} />
-              <span className="name">
-                {layer.name}
-              </span>
-            </li>
-            ))}
+          {this.props.layers.map((layer) => {
+            // temporal
+            const tableName = layer.layerConfig.body.layers[0].options.sql.split('FROM')[1];
+            return (
+              <li
+                data-id={layer.id}
+                data-tableName={tableName}
+                data-datasetid={layer.dataset}
+                key={layer.id}
+                onClick={this.triggerClick}
+              >
+                <Switch active={(this.props.layerActive === layer.id)} />
+                <span className="name">
+                  {layer.name}
+                </span>
+              </li>
+            );
+          })}
         </ul>
       </div>
     );
@@ -40,7 +47,8 @@ class LayerNavDropdown extends React.Component {
 LayerNavDropdown.propTypes = {
   layers: React.PropTypes.array,
   layerActive: React.PropTypes.string,
-  toggleActiveLayer: React.PropTypes.func
+  toggleActiveLayer: React.PropTypes.func,
+  getLayerPoints: React.PropTypes.func
 };
 
 export default LayerNavDropdown;
