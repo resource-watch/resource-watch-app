@@ -60,7 +60,7 @@ const cards = [
         className: '-transparent -secondary'
       }
     ],
-    background: 'rgba(0, 0, 0, .6)'
+    background: 'url(/images/backgrounds/develop_app.png)'
   }
 ];
 
