@@ -21,6 +21,7 @@ const getActiveLayers = (_datasets, _activeLayers) => {
     activeDatasets.forEach((dataset, i) => {
       if (dataset && dataset.attributes.layer.length) {
         layer = {
+          id: dataset.attributes.layer.find(l => l.attributes.default === true).id,
           name: dataset.attributes.name,
           subtitle: dataset.attributes.subtitle,
           ...dataset.attributes.layer.find(l => l.attributes.default === true).attributes,
