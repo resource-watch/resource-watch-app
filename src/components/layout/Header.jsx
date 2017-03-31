@@ -163,7 +163,7 @@ class Header extends React.Component {
       { name: dataDropDown },
       { name: <a href="/insights">Insights</a> },
       { name: aboutDropDown },
-      { name: <a className="c-button -inverse -primary">Get Involved</a> }
+      { name: <Link to="/get-involved" className="c-button -inverse -primary">Get Involved</Link> }
     ];
 
     const mainClass = this.props.fullScreen ? '-fullScreen' : '';

@@ -60,7 +60,7 @@ export default class Sidebar extends React.Component {
 }
 
 Sidebar.propTypes = {
-  children: React.PropTypes.array,
+  children: React.PropTypes.any,
   sidebar: React.PropTypes.object,
   setSidebar: React.PropTypes.func
 };
