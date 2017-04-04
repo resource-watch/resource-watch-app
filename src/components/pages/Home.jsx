@@ -13,7 +13,7 @@ const insightsCards = [
     slug: 'interactive-edi',
     source: { name: 'World Resources Institute', path: '#', img: 'https://vizzuality.github.io/WRW-Prototype/img/avatar-wri.png'},
     ranking: 3531,
-    background: 'url(/images/backgrounds/chimney.png) center'
+    background: 'url(/images/backgrounds/discovery_insights_image.png) center'
   },
   {
     tag: 'Oct 5, 2015',
@@ -45,7 +45,7 @@ const exploreCards = [
         className: '-primary'
       }
     ],
-    background: '#c32d7b'
+    background: 'url(/images/backgrounds/explore_data_1.png)'
   },
   {
     tag: 'Dashboards',
@@ -58,7 +58,7 @@ const exploreCards = [
         className: '-primary'
       }
     ],
-    background: '#3dc4e6'
+    background: '#3dc4e6 url(/images/backgrounds/explore_data_2.png)'
   },
   {
     tag: 'Planet Pulse',
