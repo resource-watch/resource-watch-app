@@ -16,52 +16,38 @@ class Header extends React.Component {
       aboutDropdownActive: false
     };
 
+    this.listeners = {};
+
     // BINDINGS
     this.toggleDataDropdown = this.toggleDataDropdown.bind(this);
     this.onScreenClick = this.onScreenClick.bind(this);
-  }
-
-  componentDidMount() {
-    console.info('didMount');
   }
 
   componentWillUnmount() {
     window.removeEventListener('click', this.onScreenClick);
   }
 
-  onScreenClick(e, specificDropdown) {
+  onScreenClick(e) {
     const el = document.querySelector('.c-tooltip');
     const clickOutside = el && el.contains && !el.contains(e.target);
+    const isDataBtn = this.dataDropdownBtn.contains(e.target);
+    const isAboutBtn = this.aboutDropdownBtn.contains(e.target);
 
     if (clickOutside) {
-      if (specificDropdown) this.toggleDataDropdown(e, specificDropdown);
-      else {
-        this.toggleDataDropdown(e, 'dataDropdownActive');
-        this.toggleDataDropdown(e, 'aboutDropdownActive');
-      }
+      (!isDataBtn) ? this.toggleDataDropdown(e, 'dataDropdownActive', false) : null;
+      (!isAboutBtn) ? this.toggleDataDropdown(e, 'aboutDropdownActive', false) : null;
     }
   }
 
-  toggleDataDropdown(e, specificDropdown) {
-    e.stopPropagation();
-    const dropdown = this.state[specificDropdown];
-    const newObject = {};
-
-    // requestAnimationFrame
-    //   - Goal: Prevent double trigger at first atempt
-    //   - Issue: When you add the listener the click event is not finished yet
-    //            so it will trigger onScreenClick
-    //   - Stop propagation?: if I put e.stopPropagation clicking on another
-    //                        filter btn won't trigger the screenClick,
-    //                        so we will have 2 dropdown filters at the same time
-    requestAnimationFrame(() => {
-      window[dropdown ?
-        'removeEventListener' : 
-        'addEventListener']('click', (e) => this.onScreenClick(e, specificDropdown));
+  toggleDataDropdown(e, specificDropdown, to) {
+    this.setState({
+      [specificDropdown]: to
     });
 
-    newObject[specificDropdown] = !dropdown;
-    this.setState(newObject);
+    requestAnimationFrame(() => {
+      window[!to ?
+        'removeEventListener' : 'addEventListener']('click', this.onScreenClick, true);
+    });
   }
 
   render() {
@@ -78,19 +64,18 @@ class Header extends React.Component {
       >
         {/* First child: This is what the item will be tethered to */}
         <a
-          onClick={(e) => this.toggleDataDropdown(e, 'dataDropdownActive')}
+          ref={c => this.dataDropdownBtn = c}
+          onClick={e => this.toggleDataDropdown(e, 'dataDropdownActive', !this.state.dataDropdownActive)}
         >
-        Data
+          Data
         </a>
         {/* Second child: If present, this item will be tethered to the the first child */}
-        { this.state.dataDropdownActive &&
-          <ul
-            className="data-dropdown"
-          >
+        {this.state.dataDropdownActive &&
+          <ul className="data-dropdown">
             <li>
               <Link
                 to="/explore"
-                onClick={(e) => this.toggleDataDropdown(e, 'dataDropdownActive')}
+                onClick={e => this.toggleDataDropdown(e, 'dataDropdownActive', false)}
               >
                 Explore Datasets
               </Link>
@@ -98,7 +83,7 @@ class Header extends React.Component {
             <li>
               <a
                 href="/countries"
-                onClick={(e) => this.toggleDataDropdown(e, 'dataDropdownActive')}
+                onClick={e => this.toggleDataDropdown(e, 'dataDropdownActive', false)}
               >
                 Dashboards
               </a>
@@ -106,7 +91,7 @@ class Header extends React.Component {
             <li>
               <Link
                 to="/planet-pulse"
-                onClick={(e) => this.toggleDataDropdown(e, 'dataDropdownActive')}
+                onClick={e => this.toggleDataDropdown(e, 'dataDropdownActive', false)}
               >
                 Planet Pulse
               </Link>
@@ -129,19 +114,19 @@ class Header extends React.Component {
       >
         {/* First child: This is what the item will be tethered to */}
         <a
-          onClick={(e) => this.toggleDataDropdown(e, 'aboutDropdownActive')}
-        >
-        About
+          ref={c => this.aboutDropdownBtn = c}
+          onClick={e => this.toggleDataDropdown(e, 'aboutDropdownActive', !this.state.aboutDropdownActive)} >
+          About
         </a>
         {/* Second child: If present, this item will be tethered to the the first child */}
-        { this.state.aboutDropdownActive &&
+        {this.state.aboutDropdownActive &&
           <ul
             className="data-dropdown"
           >
             <li>
               <Link
                 to="/about"
-                onClick={(e) => this.toggleDataDropdown(e, 'aboutDropdownActive')}
+                onClick={e => this.toggleDataDropdown(e, 'aboutDropdownActive', false)}
               >
                 About
               </Link>
@@ -149,7 +134,7 @@ class Header extends React.Component {
             <li>
               <Link
                 to="/about/partners"
-                onClick={(e) => this.toggleDataDropdown(e, 'aboutDropdownActive')}
+                onClick={e => this.toggleDataDropdown(e, 'aboutDropdownActive', false)}
               >
                 Partners
               </Link>
