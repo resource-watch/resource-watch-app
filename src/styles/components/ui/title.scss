@@ -26,6 +26,18 @@
 
 
   // Colors
-  &.-primary { color: $color-text-1; }
-  &.-secondary { color: $color-secondary; }
+  &.-primary {
+    color: $color-text-1;
+    > a {
+      color: inherit;
+      &:hover { color: $color-secondary; }
+    }
+  }
+  &.-secondary {
+    color: $color-secondary;
+    > a {
+      color: inherit;
+      &:hover { color: $color-text-1; }
+    }
+  }
 }
