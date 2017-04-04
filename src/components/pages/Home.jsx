@@ -93,7 +93,7 @@ class Home extends React.Component {
   }
 
   exploreCardsStatic() {
-    return exploreCards.map((c, i) => 
+    return exploreCards.map((c, i) =>
       <div key={i} className="column small-12 medium-4">
         <CardStatic className='-light' background={c.background}>
           <div>
@@ -179,7 +179,7 @@ class Home extends React.Component {
               </div>
             </div>
           </section>
-          
+
 
           <section className="l-section -bg-grey explore">
             <div className="l-container">
@@ -200,7 +200,7 @@ class Home extends React.Component {
               </div>
             </div>
           </section>
-          
+
           <Banner className="get-involved">
             <div className="row">
               <div className="column small-12 medium-6">
@@ -222,7 +222,7 @@ class Home extends React.Component {
                 <button className="c-btn -transparent"><Link to="/get-involved#">Develop your app</Link></button>
               </div>
             </div>
-          </Banner>        
+          </Banner>
         </div>
       </div>
     );

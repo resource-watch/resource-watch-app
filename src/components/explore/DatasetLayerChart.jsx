@@ -30,7 +30,7 @@ class DatasetLayerChart extends React.Component {
     const layerConfig = this.state.layer.layerConfig;
 
     return (
-      <div className="c-dataset-chart">
+      <div className="c-layer-chart">
         <Spinner
           isLoading={this.state.loading}
           className="-light"

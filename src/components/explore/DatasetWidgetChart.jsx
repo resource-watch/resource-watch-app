@@ -1,5 +1,6 @@
 import React from 'react';
 import VegaChart from 'containers/widgets/VegaChart';
+import Title from 'components/ui/Title';
 import Spinner from 'components/ui/Spinner';
 
 class DatasetWidgetChart extends React.Component {
@@ -27,10 +28,10 @@ class DatasetWidgetChart extends React.Component {
   }
 
   render() {
-    const widgetConfig = this.state.widget.widgetConfig;
+    const { name, widgetConfig } = this.state.widget;
 
     return (
-      <div className="c-dataset-chart">
+      <div className="c-widget-chart">
         <Spinner
           isLoading={this.state.loading}
           className="-light"
@@ -39,6 +40,10 @@ class DatasetWidgetChart extends React.Component {
           data={widgetConfig}
           toggleLoading={this.triggerToggleLoading}
         />
+        <Title className="-small -center">
+          {name}
+        </Title>
+
       </div>
     );
   }
