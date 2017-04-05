@@ -2,7 +2,6 @@
 @import "c-intro";
 @import "common/partners/partner_block";
 @import "common/banner";
-@import "explore/dataset_chart";
 @import "common/card_static";
 @import "explore/dataset_list_header";
 @import "explore/dataset_list";
@@ -49,5 +48,6 @@
 @import "ui/zoom_control";
 @import "vis/globe";
 @import "vis/map";
+@import "widgets/chart";
 @import "widgets/layer_chart";
-@import "widgets/vega_chart";
+@import "widgets/widget_chart";

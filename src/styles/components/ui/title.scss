@@ -10,18 +10,34 @@
     font-weight: $font-weight-bold;
   }
 
+  &.-small {
+    font-size: 12px;
+  }
+
   &.-huge {
     font-size: 48px;
     font-weight: $font-weight-light;
   }
 
+  // Aligns
+  &.-left { text-align: left; }
+  &.-center { text-align: center; }
+  &.-right { text-align: right; }
+
+
   // Colors
   &.-primary {
     color: $color-text-1;
+    > a {
+      color: inherit;
+      &:hover { color: $color-secondary; }
+    }
   }
-
   &.-secondary {
     color: $color-secondary;
+    > a {
+      color: inherit;
+      &:hover { color: $color-text-1; }
+    }
   }
-
 }

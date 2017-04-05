@@ -1,6 +1,8 @@
 import React from 'react';
 import VegaChart from 'containers/widgets/VegaChart';
+import Title from 'components/ui/Title';
 import Spinner from 'components/ui/Spinner';
+import vegaThumbnailTheme from 'utils/widgets/vega-theme-thumbnails.json';
 
 class DatasetWidgetChart extends React.Component {
 
@@ -27,18 +29,24 @@ class DatasetWidgetChart extends React.Component {
   }
 
   render() {
-    const widgetConfig = this.state.widget.widgetConfig;
+    const { name, widgetConfig } = this.state.widget;
+
+    console.log(name, `https://api.resourcewatch.org/v1/dataset/${this.state.widget.dataset}/widget/${this.state.widget.id}`);
 
     return (
-      <div className="c-dataset-chart">
+      <div className="c-widget-chart">
         <Spinner
           isLoading={this.state.loading}
           className="-light"
         />
         <VegaChart
           data={widgetConfig}
+          theme={vegaThumbnailTheme}
           toggleLoading={this.triggerToggleLoading}
         />
+        <Title className="-small -center">
+          {name}
+        </Title>
       </div>
     );
   }
