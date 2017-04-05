@@ -3,6 +3,11 @@
   height: 140px;
   background-position: center;
   background-size: cover;
+  margin: 0 0 10px;
+
+  &:last-child {
+    margin: 0;
+  }
 
   .chart {
     width: 100%;

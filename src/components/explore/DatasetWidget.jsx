@@ -47,8 +47,18 @@ class DatasetWidget extends React.Component {
    * - getButton
   */
   getWidgetOrLayer() {
-    if (this.state.hasWidget) { return this.state.widget.attributes; }
-    if (this.state.hasLayer) { return this.state.layer.attributes; }
+    if (this.state.hasWidget) {
+      return {
+        ...this.state.widget.attributes,
+        ...{ id: this.state.widget.id }
+      };
+    }
+    if (this.state.hasLayer) {
+      return {
+        ...this.state.layer.attributes,
+        ...{ id: this.state.layer.id }
+      };
+    }
     return null;
   }
 
