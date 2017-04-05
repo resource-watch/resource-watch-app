@@ -7,17 +7,17 @@
   border-radius: 4px;
   background: none;
   outline: none;
-  text-transform: uppercase;
+  text-transform: none;
   font-size: rem(14);
-  font-weight: $font-weight-bold;
-  letter-spacing: rem(0.8);
+  font-weight: $font-weight-regular;
+  letter-spacing: 0;
   cursor: pointer;
 
   // Types
   &.-primary {
-    color: $color-text-2;
-    background: $color-grey;
-    border-color: $border-color-1;
+    color: $color-primary;
+    background: $color-white;
+    border-color: $color-primary;
 
     // States
     &:hover {
@@ -28,6 +28,7 @@
     &.-active {
       background: $color-green;
       color: $color-white;
+      border-color: $color-green;
 
       &:hover {
         background: darken($color-green, 10%);

@@ -47,8 +47,18 @@ class DatasetWidget extends React.Component {
    * - getButton
   */
   getWidgetOrLayer() {
-    if (this.state.hasWidget) { return this.state.widget.attributes; }
-    if (this.state.hasLayer) { return this.state.layer.attributes; }
+    if (this.state.hasWidget) {
+      return {
+        ...this.state.widget.attributes,
+        ...{ id: this.state.widget.id }
+      };
+    }
+    if (this.state.hasLayer) {
+      return {
+        ...this.state.layer.attributes,
+        ...{ id: this.state.layer.id }
+      };
+    }
     return null;
   }
 
@@ -125,7 +135,7 @@ class DatasetWidget extends React.Component {
         <div className="info">
           <div className="detail">
             {/* Title */}
-            <Title className="-default -secondary">
+            <Title className="-default -primary">
               <Link to={`/explore/${dataset.id}`}>
                 {dataset.attributes.name}
               </Link>
