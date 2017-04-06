@@ -87,7 +87,7 @@ export function getLayers() {
     // Waiting for fetch from server -> Dispatch loading
     dispatch({ type: GET_LAYERS_LOADING });
     // TODO: remove the date now
-    fetch(new Request(`${config.API_URL}/dataset?application=rw&status=saved&includes=vocabulary,layer&vocabulary[legacy]=real_time&page[size]=${Date.now() / 100000}`))
+    fetch(new Request(`${config.API_URL}/dataset?application=rw&status=saved&includes=vocabulary,layer&vocabulary[function]=planet_pulse&page[size]=${Date.now() / 100000}`))
     .then((response) => {
       if (response.ok) return response.json();
       throw new Error(response.statusText);
