@@ -16,7 +16,7 @@ import SubmitInsight from './components/pages/SubmitInsight';
 import ContributeData from './components/pages/ContributeData';
 import JoinCommunity from './components/pages/JoinCommunity';
 import DevelopApp from './components/pages/DevelopApp';
-import About from './components/pages/About';
+import About from './containers/pages/About';
 import Apps from './containers/pages/Apps';
 import AppDetail from './containers/pages/AppDetail';
 import Partners from './containers/pages/Partners';

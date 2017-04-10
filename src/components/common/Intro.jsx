@@ -12,7 +12,7 @@ function Intro(props) {
       <section className="l-section">
         <div className="row">
           <div className="column small-12">
-            <Banner className="intro"></Banner>
+            <Banner className="intro" styles={{ backgroundImage: `url(${props.background}` }}></Banner>
           </div>
           <div className="column small-12 medium-8 medium-offset-2">
             <h1 className="c-text -header-big -thin -dark">{props.title}</h1>
@@ -34,7 +34,8 @@ function Intro(props) {
 
 Intro.propTypes = {
   title: React.PropTypes.string.isRequired,
-  intro: React.PropTypes.any
+  intro: React.PropTypes.any,
+  background: React.PropTypes.string
 };
 
 Intro.defaultProps = {

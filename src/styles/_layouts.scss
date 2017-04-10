@@ -31,4 +31,11 @@
   &.-bg-grey { background-color: $pale-grey; }
   &.-bg-dark { background-color: $color-black; }
   &.-bg-light { background-color: $color-white; }
+
+  .description {
+    p {
+      font-size: $font-size-extra-big;
+      color: $color-text-headers;
+    }
+  }
 }
