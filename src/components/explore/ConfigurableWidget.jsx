@@ -9,7 +9,8 @@ import bar from 'utils/widgets/bar';
 import pie from 'utils/widgets/pie';
 import line from 'utils/widgets/line';
 import Spinner from 'components/ui/Spinner';
-import { getQueryByFilters, VegaChart } from 'rw-components';
+import getQueryByFilters from 'rw-components/dist/utils/getQueryByFilters';
+import VegaChart from 'rw-components/dist/components/Widget/VegaChart';
 
 const chartTypes = { bar, pie, line };
 

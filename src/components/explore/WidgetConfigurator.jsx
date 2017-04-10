@@ -2,8 +2,8 @@ import React from 'react';
 import Jiminy from 'jiminy';
 
 // Components
-
-import { Field, Select } from 'rw-components';
+import Field from 'rw-components/dist/components/Form/Field';
+import Select from 'rw-components/dist/components/Form/Select';
 
 const chartConfig = [
   {

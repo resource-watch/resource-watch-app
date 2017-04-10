@@ -1,5 +1,6 @@
 const webpack = require('webpack');
 const merge = require('webpack-merge');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 const sharedConfig = require('./shared.js');
 
@@ -25,6 +26,7 @@ module.exports = merge(sharedConfig, {
   },
 
   plugins: [
+    new BundleAnalyzerPlugin(),
     new webpack.LoaderOptionsPlugin({
       debug: true
     })
