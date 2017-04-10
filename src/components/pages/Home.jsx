@@ -13,7 +13,7 @@ const insightsCards = [
     slug: 'interactive-edi',
     source: { name: 'World Resources Institute', path: '#', img: 'https://vizzuality.github.io/WRW-Prototype/img/avatar-wri.png'},
     ranking: 3531,
-    background: 'url(/images/backgrounds/discovery_insights_image.png) center'
+    background: 'url(../images/backgrounds/discovery_insights_image.png) center'
   },
   {
     tag: 'Oct 5, 2015',
@@ -21,7 +21,7 @@ const insightsCards = [
     slug: 'slideshow-peru',
     source: { name: 'World Resources Institute', path: '#', img: 'https://vizzuality.github.io/WRW-Prototype/img/avatar-wri.png'},
     ranking: 4345,
-    background: 'url(/images/backgrounds/andes.png) center'
+    background: 'url(../images/backgrounds/andes.png) center'
   },
   {
     tag: 'Oct 5, 2015',
@@ -29,7 +29,7 @@ const insightsCards = [
     slug: 'interactive-map',
     source: { name: 'World Resources Institute', path: '#', img: 'https://vizzuality.github.io/WRW-Prototype/img/avatar-wri.png'},
     ranking: 4345,
-    background: 'url(/images/backgrounds/world_farms.jpg)'
+    background: 'url(../images/backgrounds/world_farms.jpg)'
   }
 ];
 
@@ -45,7 +45,7 @@ const exploreCards = [
         className: '-primary'
       }
     ],
-    background: 'url(/images/backgrounds/explore_data_1.png)'
+    background: 'url(../images/backgrounds/explore_data_1.png)'
   },
   {
     tag: 'Dashboards',
@@ -58,7 +58,7 @@ const exploreCards = [
         className: '-primary'
       }
     ],
-    background: '#3dc4e6 url(/images/backgrounds/explore_data_2.png)'
+    background: '#3dc4e6 url(../images/backgrounds/explore_data_2.png)'
   },
   {
     tag: 'Planet Pulse',
@@ -71,7 +71,7 @@ const exploreCards = [
         className: '-primary'
       }
     ],
-    background: 'url(/images/backgrounds/planetpulse.png) 67% center'
+    background: 'url(../images/backgrounds/planetpulse.png) 67% center'
   }
 ];
 

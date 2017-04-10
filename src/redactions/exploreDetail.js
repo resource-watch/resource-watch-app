@@ -1,8 +1,3 @@
-/* global config */
-// import 'whatwg-fetch';
-// import find from 'lodash/find';
-// import { replace } from 'react-router-redux';
-
 /**
  * CONSTANTS
 */

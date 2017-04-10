@@ -24,7 +24,7 @@ import PartnerDetail from './containers/pages/PartnerDetail';
 
 function Routes(props) {
   return (
-    <Router 
+    <Router
       history={props.history}
       render={applyRouterMiddleware(useScroll(shouldUpdateScroll))}
       onUpdate={trackPageView}
@@ -67,7 +67,7 @@ function Routes(props) {
           <Route path="contribute-data">
             <IndexRoute component={ContributeData} />
           </Route>
-          
+
           <Route path="join-community">
             <IndexRoute component={JoinCommunity} />
           </Route>
