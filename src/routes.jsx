@@ -11,7 +11,7 @@ import Home from './containers/pages/Home';
 import Explore from './containers/pages/Explore';
 import ExploreDetail from './containers/pages/ExploreDetail';
 import Pulse from './containers/pages/Pulse';
-import GetInvolved from './components/pages/GetInvolved';
+import GetInvolved from './containers/pages/GetInvolved';
 import SubmitInsight from './components/pages/SubmitInsight';
 import ContributeData from './components/pages/ContributeData';
 import JoinCommunity from './components/pages/JoinCommunity';

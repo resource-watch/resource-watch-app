@@ -56,11 +56,11 @@ export default function (state = initialState, action) {
  * ACTIONS
  * - getStaticData
 */
-export function getStaticData(name) {
+export function getStaticData(slug, ref) {
   return (dispatch) => {
     // Waiting for fetch from server -> Dispatch loading
     dispatch({ type: GET_STATIC_LOADING });
-    fetch(new Request(`${config.CMS_API_URL}/api/static_pages/${name}`))
+    fetch(new Request(`${config.CMS_API_URL}/api/static_pages/${slug}`))
       .then((response) => {
         if (response.ok) return response.json();
         throw new Error(response.statusText);
@@ -68,7 +68,7 @@ export function getStaticData(name) {
       .then((response) => {
         dispatch({
           type: GET_STATIC_SUCCESS,
-          payload: { name, data: response.data.attributes }
+          payload: { name: ref || slug, data: response.data.attributes }
         });
       })
       .catch((err) => {

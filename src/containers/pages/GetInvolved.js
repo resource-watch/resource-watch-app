@@ -1,9 +1,9 @@
 import { connect } from 'react-redux';
-import About from 'components/pages/About';
+import GetInvolved from 'components/pages/GetInvolved';
 import { getStaticData } from 'redactions/static_pages';
 
 const mapStateToProps = state => ({
-  data: state.staticPages.about
+  data: state.staticPages.getInvolved
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -12,4 +12,4 @@ const mapDispatchToProps = dispatch => ({
   },
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(About);
+export default connect(mapStateToProps, mapDispatchToProps)(GetInvolved);
