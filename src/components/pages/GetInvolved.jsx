@@ -71,6 +71,10 @@ class GetInvolved extends React.Component {
 
   render() {
     const { data } = this.props;
+    const styles = {};
+    if (data.photo) {
+      styles['backgroundImage'] = `url(${config.CMS_API_URL}${data.photo.medium})`;
+    }
 
     const introLines = intro => {
       return intro.map((line, i) => (
@@ -100,7 +104,7 @@ class GetInvolved extends React.Component {
     return (
       <div className="p-get-involved">
         <div className="c-page">
-          <Intro title={data.title} intro={data.summary} background={data.photo && `${config.CMS_API_URL}${data.photo.medium}`} />
+          <Intro title={data.title} intro={data.summary} styles={styles} />
           <section className="l-section -header">
             <div className="l-container">
               <div className="cards row collapse">

@@ -10,11 +10,15 @@ class About extends React.Component {
 
   render() {
     const { data } = this.props;
+    const styles = {};
+    if (data.photo) {
+      styles['backgroundImage'] = `url(${config.CMS_API_URL}${data.photo.medium})`;
+    }
 
     return (
       <div className="p-about">
         <div className="c-page">
-          <Intro title={data.title} intro={data.summary} background={data.photo && `${config.CMS_API_URL}${data.photo.medium}`} />
+          <Intro title={data.title} intro={data.summary} styles={styles} />
           <section className="l-section">
             <div className="l-container">
               <div className="row collapse">

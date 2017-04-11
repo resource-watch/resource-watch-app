@@ -15,7 +15,8 @@ const initialState = {
   loading: false,
   error: false,
   about: {},
-  getInvolved: {}
+  getInvolved: {},
+  submitInsight: {}
 };
 
 export default function (state = initialState, action) {

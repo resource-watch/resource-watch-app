@@ -1,8 +1,10 @@
 import React from 'react';
 import Banner from 'components/common/Banner';
+import classNames from 'classnames';
 
 function Intro(props) {
   const isIntroString = typeof props.intro === 'string';
+  const styles = props.styles || {};
   
   return (
     <div className="c-intro">
@@ -12,7 +14,7 @@ function Intro(props) {
       <section className="l-section">
         <div className="row">
           <div className="column small-12">
-            <Banner className="intro" styles={{ backgroundImage: `url(${props.background}` }}></Banner>
+            <Banner className="intro" styles={styles}></Banner>
           </div>
           <div className="column small-12 medium-8 medium-offset-2">
             <h1 className="c-text -header-big -thin -dark">{props.title}</h1>
