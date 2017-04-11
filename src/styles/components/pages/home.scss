@@ -104,10 +104,28 @@
           font-size: 16px;
         }
       }
+
+      .insight-cards {
+        .column {
+          &:nth-child(1) .c-card-static { background: url('../images/backgrounds/discovery_insights_image.jpg') center; }
+          &:nth-child(2) .c-card-static { 
+            &:nth-child(1) { background: url('../images/backgrounds/andes.jpg') center; }
+            &:nth-child(2) { background: url('../images/backgrounds/world_farms.jpg'); }
+          }
+        }
+      }
     }
 
     &.explore {
       button { width: 100%; }
+
+      .explore-cards {
+        .column {
+          &:nth-child(1) .c-card-static { background: url('../images/backgrounds/explore_data_1.png'); }
+          &:nth-child(2) .c-card-static { background: #3dc4e6 url('../images/backgrounds/explore_data_2.png'); }
+          &:nth-child(3) .c-card-static { background: url('../images/backgrounds/planetpulse.jpg') 67% center; }
+        }
+      }
     }
   }
 }

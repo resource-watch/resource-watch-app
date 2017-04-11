@@ -15,8 +15,7 @@ const cards = [
         path: '/get-involved/submit-insight',
         className: '-filled'
       }
-    ],
-    background: 'url(/images/backgrounds/jellyfish.jpg)'
+    ]
   },
   {
     id: 'data',
@@ -28,8 +27,7 @@ const cards = [
         path: '/get-involved/contribute-data',
         className: '-filled'
       }
-    ],
-    background: '#c32d7b url("/images/components/layout/header-bg-texture.png") no-repeat center'
+    ]
   },
   {
     id: 'join',
@@ -41,8 +39,7 @@ const cards = [
         path: '/get-involved/join-community',
         className: '-filled'
       }
-    ],
-    background: '#3bb2d0'
+    ]
   },
   {
     id: 'app',
@@ -59,8 +56,7 @@ const cards = [
         path: '/get-involved/apps',
         className: '-transparent -secondary'
       }
-    ],
-    background: 'url(/images/backgrounds/develop_app.png)'
+    ]
   }
 ];
 

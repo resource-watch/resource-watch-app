@@ -37,7 +37,7 @@ function Intro(props) {
 Intro.propTypes = {
   title: React.PropTypes.string.isRequired,
   intro: React.PropTypes.any,
-  background: React.PropTypes.string
+  styles: React.PropTypes.object
 };
 
 Intro.defaultProps = {

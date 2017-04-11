@@ -11,25 +11,19 @@ const insightsCards = [
     tag: 'INSIGHT OF THE WEEK',
     title: 'A factory is being built in your neighborhood. Can you do anything about it?',
     slug: 'interactive-edi',
-    source: { name: 'World Resources Institute', path: '#', img: 'https://vizzuality.github.io/WRW-Prototype/img/avatar-wri.png'},
-    ranking: '',
-    background: 'url(../images/backgrounds/discovery_insights_image.png) center'
+    source: { name: 'World Resources Institute', path: '#', img: 'https://vizzuality.github.io/WRW-Prototype/img/avatar-wri.png'}
   },
   {
     tag: 'Feb 25, 2017',
     title: 'The Water Guardians of the Andes',
     slug: 'slideshow-peru',
-    source: { name: 'World Resources Institute', path: '#', img: 'https://vizzuality.github.io/WRW-Prototype/img/avatar-wri.png'},
-    ranking: '',
-    background: 'url(../images/backgrounds/andes.png) center'
+    source: { name: 'World Resources Institute', path: '#', img: 'https://vizzuality.github.io/WRW-Prototype/img/avatar-wri.png'}
   },
   {
     tag: 'Mar 5, 2017',
     title: 'Farms to feel squeeze as competition for water increases',
     slug: 'interactive-map',
-    source: { name: 'World Resources Institute', path: '#', img: 'https://vizzuality.github.io/WRW-Prototype/img/avatar-wri.png'},
-    ranking: '',
-    background: 'url(../images/backgrounds/world_farms.jpg)'
+    source: { name: 'World Resources Institute', path: '#', img: 'https://vizzuality.github.io/WRW-Prototype/img/avatar-wri.png'}
   }
 ];
 
@@ -44,8 +38,7 @@ const exploreCards = [
         path: '/explore',
         className: '-primary'
       }
-    ],
-    background: 'url(../images/backgrounds/explore_data_1.png)'
+    ]
   },
   {
     tag: 'Dashboards',
@@ -57,8 +50,7 @@ const exploreCards = [
         path: '/dashboards',
         className: '-primary'
       }
-    ],
-    background: '#3dc4e6 url(../images/backgrounds/explore_data_2.png)'
+    ]
   },
   {
     tag: 'Planet Pulse',
@@ -70,8 +62,7 @@ const exploreCards = [
         path: '/planet-pulse',
         className: '-primary'
       }
-    ],
-    background: 'url(../images/backgrounds/planetpulse.png) 67% center'
+    ]
   }
 ];
 
@@ -127,7 +118,7 @@ class Home extends React.Component {
               by <a href={c.source.path}>{c.source.name}</a>
             </div>
           </div>
-          <Rating rating={c.ranking}/>
+          {c.ranking && <Rating rating={c.ranking}/>}
         </div>
       </CardStatic>
     );
@@ -159,7 +150,7 @@ class Home extends React.Component {
                 </article>
               </div>
 
-              <div className="row">
+              <div className="row insight-cards">
                 <div className="column small-12 medium-8">
                   {this.insightsCardsStatic()[0]}
                 </div>
@@ -194,7 +185,7 @@ class Home extends React.Component {
                 </article>
               </div>
 
-              <div className="row">
+              <div className="row explore-cards">
                 {exploreCardsStatic}
               </div>
             </div>

@@ -26,6 +26,11 @@
       &:nth-child(odd) {
         padding-right: 20px;
       }
+      
+      &:nth-child(1) .c-card-static.-light { background: url('../images/backgrounds/jellyfish.jpg'); }
+      &:nth-child(2) .c-card-static.-light { background: $color-primary url('../images/components/layout/header-bg-texture.png') no-repeat center; }
+      &:nth-child(3) .c-card-static.-light { background: $color-secondary; }
+      &:nth-child(4) .c-card-static.-light { background: url('../images/backgrounds/develop_app.jpg'); }
     }
   }
 }
