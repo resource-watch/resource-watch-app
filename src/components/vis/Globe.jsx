@@ -1,11 +1,15 @@
 import React from 'react';
-import { debounce } from 'lodash';
-import * as THREE from 'three';
-import orbitControls from 'three-orbit-controls';
+import debounce from 'lodash/debounce';
+import { TextureLoader, Raycaster, Vector2, CylinderGeometry,
+  SphereGeometry, MeshBasicMaterial, Matrix4, Mesh,
+  ShaderMaterial, BackSide, Scene, PerspectiveCamera, WebGLRenderer,
+  MeshPhongMaterial, AdditiveBlending, Vector3,
+  AmbientLight, PointLight } from 'three/build/three.module';
+import orbitControls from './OrbitControls';
 
 /* global Stats */
-const OrbitControls = orbitControls(THREE);
-const imageLoader = new THREE.TextureLoader();
+const OrbitControls = orbitControls();
+const imageLoader = new TextureLoader();
 
 class Globe extends React.Component {
 
@@ -18,8 +22,8 @@ class Globe extends React.Component {
       markers: []
     };
 
-    this.raycaster = new THREE.Raycaster(); // create once
-    this.mouse = new THREE.Vector2();
+    this.raycaster = new Raycaster(); // create once
+    this.mouse = new Vector2();
 
     // Bindings
     this.onClick = this.onClick.bind(this);
@@ -64,17 +68,17 @@ class Globe extends React.Component {
       }
       const pointObjects = nextProps.layerPoints.map((value) => {
         const normalVector = this.convertLatLonToCoordinates(value.lat, value.lon);
-        const cylinderGeometry = new THREE.CylinderGeometry(1, 1, 1);
+        const cylinderGeometry = new CylinderGeometry(1, 1, 1);
 
         // Translate the geometry so the base sits at the origin.
-        cylinderGeometry.applyMatrix(new THREE.Matrix4().makeTranslation(0, 0, 0));
+        cylinderGeometry.applyMatrix(new Matrix4().makeTranslation(0, 0, 0));
 
         // Rotate the geometry so the top points in the direction of the positive-Z axis.
-        cylinderGeometry.applyMatrix(new THREE.Matrix4().makeRotationX(Math.PI / 2));
+        cylinderGeometry.applyMatrix(new Matrix4().makeRotationX(Math.PI / 2));
 
         // Create the mesh.
-        const cylinderMaterial = new THREE.MeshBasicMaterial({ color: 0xffff00 });
-        const cylinder = new THREE.Mesh(cylinderGeometry, cylinderMaterial);
+        const cylinderMaterial = new MeshBasicMaterial({ color: 0xffff00 });
+        const cylinder = new Mesh(cylinderGeometry, cylinderMaterial);
         cylinder.lookAt(normalVector);
         cylinder.position.copy(normalVector);
         cylinder.name = value;
@@ -118,12 +122,12 @@ class Globe extends React.Component {
     const { radius, segments, rings, textureExtraRadiusPercentage } = this.props;
     const newRadius = radius + ((radius * textureExtraRadiusPercentage) / 100);
     if (!this.currentTexture) {
-      const geometry = new THREE.SphereGeometry(newRadius, segments, rings);
-      const material = new THREE.MeshBasicMaterial({
+      const geometry = new SphereGeometry(newRadius, segments, rings);
+      const material = new MeshBasicMaterial({
         map: mapImage,
         transparent: true
       });
-      this.currentTexture = new THREE.Mesh(geometry, material);
+      this.currentTexture = new Mesh(geometry, material);
     } else {
       this.currentTexture.material.map = mapImage;
       this.currentTexture.material.needsUpdate = true;
@@ -153,9 +157,9 @@ class Globe extends React.Component {
     const { width, height } = this.state;
     const { cameraFov, cameraFar, cameraNear, cameraPositionZ } = this.props;
 
-    this.scene = new THREE.Scene();
-    this.camera = new THREE.PerspectiveCamera(cameraFov, width / height, cameraNear, cameraFar);
-    this.renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+    this.scene = new Scene();
+    this.camera = new PerspectiveCamera(cameraFov, width / height, cameraNear, cameraFar);
+    this.renderer = new WebGLRenderer({ alpha: true, antialias: true });
 
     this.renderer.setSize(width, height);
     this.renderer.setPixelRatio(window.devicePixelRatio);
@@ -179,13 +183,13 @@ class Globe extends React.Component {
       throw new Error('Scene should be created before.');
     }
     const { radius, segments, rings, earthImagePath, earthBumpImagePath, bumpScale } = this.props;
-    const material = new THREE.MeshPhongMaterial({
+    const material = new MeshPhongMaterial({
       map: imageLoader.load(earthImagePath),
       bumpMap: imageLoader.load(earthBumpImagePath),
       bumpScale: bumpScale
     });
-    const geometry = new THREE.SphereGeometry(radius, segments, rings);
-    this.earth = new THREE.Mesh(geometry, material);
+    const geometry = new SphereGeometry(radius, segments, rings);
+    this.earth = new Mesh(geometry, material);
     this.earth.updateMatrix();
     this.earth.name = 'earth';
     this.scene.add(this.earth);
@@ -212,19 +216,19 @@ class Globe extends React.Component {
         gl_FragColor = vec4( 0.32, 0.32, 0.9, 0.7 ) * intensity;
       }
     `;
-    const material = new THREE.ShaderMaterial({
+    const material = new ShaderMaterial({
       uniforms: {},
       vertexShader: vertexShaderString,
       fragmentShader: fragmentShaderString,
-      side: THREE.BackSide,
-      blending: THREE.AdditiveBlending,
+      side: BackSide,
+      blending: AdditiveBlending,
       transparent: true
     });
 
     const { segments } = this.props;
     const haloRadius = this.getHaloRadius();
-    const geometry = new THREE.SphereGeometry(haloRadius, segments, segments);
-    this.halo = new THREE.Mesh(geometry, material);
+    const geometry = new SphereGeometry(haloRadius, segments, segments);
+    this.halo = new Mesh(geometry, material);
     this.halo.name = 'halo';
 
     this.scene.add(this.halo);
@@ -269,7 +273,7 @@ class Globe extends React.Component {
     const x = -(this.props.radius * Math.sin(phi) * Math.cos(theta));
     const z = (this.props.radius * Math.sin(phi) * Math.sin(theta));
     const y = (this.props.radius * Math.cos(phi));
-    return new THREE.Vector3(x, y, z);
+    return new Vector3(x, y, z);
   }
 
   /**
@@ -328,8 +332,8 @@ class Globe extends React.Component {
     const { pointLightIntensity, pointLightColor, ambientLightColor,
       pointLightPosition, pointLightX, pointLightY, pointLightZ } = this.props;
 
-    const ambientLight = new THREE.AmbientLight(ambientLightColor);
-    const pointLight = new THREE.PointLight(pointLightColor, pointLightIntensity);
+    const ambientLight = new AmbientLight(ambientLightColor);
+    const pointLight = new PointLight(pointLightColor, pointLightIntensity);
 
     if (pointLightPosition === 'left') {
       pointLight.position.set(-pointLightX, pointLightY, pointLightZ);
@@ -405,7 +409,7 @@ class Globe extends React.Component {
 
     this.raycaster.setFromCamera(this.mouse, this.camera);
 
-    // this.scene.add(new THREE.ArrowHelper(this.raycaster.ray.direction,
+    // this.scene.add(new ArrowHelper(this.raycaster.ray.direction,
     // this.raycaster.ray.origin, 100, Math.random() * 0xffffff ));
 
     const intersects = this.raycaster.intersectObjects(this.scene.children);

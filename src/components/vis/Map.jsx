@@ -132,7 +132,7 @@ class Map extends React.Component {
   }
 
   setBasemap() {
-    this.tileLayer = L.tileLayer(config.BASEMAP_TILE_URL, {})
+    this.tileLayer = L.tileLayer(process.env.BASEMAP_TILE_URL, {})
                       .addTo(this.map)
                       .setZIndex(0);
   }

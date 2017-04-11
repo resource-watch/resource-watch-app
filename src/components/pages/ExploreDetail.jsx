@@ -13,7 +13,8 @@ import Map from 'containers/explore/Map';
 import Legend from 'components/ui/Legend';
 import LayerManager from 'utils/layers/LayerManager';
 import ConfigurableWidget from 'components/explore/ConfigurableWidget';
-import { DatasetService, getQueryByFilters } from 'rw-components';
+import getQueryByFilters from 'rw-components/dist/utils/getQueryByFilters';
+import DatasetService from 'rw-components/dist/services/DatasetService';
 
 const breadcrumbs = [
   { name: 'Home', url: '/' },

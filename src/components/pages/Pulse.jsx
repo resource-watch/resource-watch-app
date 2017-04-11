@@ -12,9 +12,9 @@ import Spinner from 'components/ui/Spinner';
 import ZoomControl from 'components/ui/ZoomControl';
 import GlobeTooltip from 'components/pulse/GlobeTooltip';
 
-import earthImage from '../../../public/images/components/vis/earth-min.jpg';
-import earthBumpImage from '../../../public/images/components/vis/earth-bump.jpg';
-import cloudsImage from '../../../public/images/components/vis/clouds-min.png';
+import earthImage from '../../images/components/vis/earth-min.jpg';
+import earthBumpImage from '../../images/components/vis/earth-bump.jpg';
+import cloudsImage from '../../images/components/vis/clouds-min.png';
 
 class Pulse extends React.Component {
 

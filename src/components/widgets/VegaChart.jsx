@@ -1,5 +1,5 @@
 import React from 'react';
-import * as d3 from 'd3';
+import { bisector } from 'd3';
 import vega from 'vega';
 import debounce from 'lodash/debounce';
 import isEqual from 'lodash/isEqual';
@@ -87,7 +87,7 @@ class VegaChart extends React.Component {
           }
 
           if (typeof x0 === 'number') {
-            const bisectDate = d3.bisector(d => d.x).left;
+            const bisectDate = bisector(d => d.x).left;
             const i = bisectDate(visData, x0, 1);
             const d0 = visData[i - 1];
             const d1 = visData[i];

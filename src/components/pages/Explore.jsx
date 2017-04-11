@@ -13,7 +13,7 @@ import LayerManager from 'utils/layers/LayerManager';
 import Breadcrumbs from 'components/ui/Breadcrumbs';
 import Spinner from 'components/ui/Spinner';
 
-import issuesList from '!json!json/issues.json';
+import issuesList from 'json/issues.json';
 
 const mapConfig = {
   zoom: 3,
