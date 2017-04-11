@@ -9,7 +9,7 @@ function PartnerBlock(props) {
     <article className="c-partners-block column small-12 medium-6">
       <div className="logo-container">
         <Link to={`/about/partners/${props.item.id}`}>
-          <img src={imgPath} className="logo" title={partner.name} />
+          <img src={imgPath} className="logo" title={partner.name} alt={partner.name} />
         </Link>
       </div>
       <p className="description c-text -extra-big">{partner.summary}</p>

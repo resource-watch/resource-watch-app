@@ -1,18 +1,13 @@
 import React from 'react';
-import PartnerBlock from 'components/common/Partners/PartnerBlock';
 import Banner from 'components/common/Banner';
 
 class PartnerDetail extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   componentWillMount() {
     this.props.getPartnerData(this.props.params.id);
   }
 
   componentWillReceiveProps(newProps) {
-    this.props.getPartnerData(this.props.params.id);
+    this.props.getPartnerData(newProps.params.id);
   }
 
   splitInTwoParts(str) {
@@ -26,18 +21,18 @@ class PartnerDetail extends React.Component {
 
   render() {
     const { data } = this.props;
-    const description = data.summary ? this.splitInTwoParts(data.summary): ['', ''];
+    const description = data.summary ? this.splitInTwoParts(data.summary) : ['', ''];
     const imgPath = data['white-logo'] ? data['white-logo'].medium : '';
     const logo = data.website !== '' ?
-      <a href={data.website} target="_blank">
-        <img src={`${config.CMS_API_URL}${imgPath}`} className="logo" title={data.name} />
-      </a> :
-      <img src={`${config.CMS_API_URL}${imgPath}`} className="logo" title={data.name} />;
+      (<a href={data.website} target="_blank" rel="noopener noreferrer">
+        <img src={`${config.CMS_API_URL}${imgPath}`} className="logo" title={data.name} alt={data.name} />
+      </a>) :
+      <img src={`${config.CMS_API_URL}${imgPath}`} className="logo" title={data.name} alt={data.name} />;
 
     return (
       <div className="c-page partner-detail">
         <Banner className="intro">
-           <div className="row">
+          <div className="row">
             <div className="column small-12">
               <h4 className="title c-text -default -bold -uppercase">RESOURCE WATCH PARTNER</h4>
               <div className="logo-container">
@@ -61,7 +56,7 @@ class PartnerDetail extends React.Component {
         <Banner className="learn-more">
           <div className="row">
             <div className="column small-12">
-              <h3 className="c-text -header-big -thin">Important work,<br/> beautifully crafted</h3>
+              <h3 className="c-text -header-big -thin">Important work,<br /> beautifully crafted</h3>
               <button className="c-btn -primary -filled">
                 LEARN ABOUT OUR WORK
               </button>
@@ -71,12 +66,12 @@ class PartnerDetail extends React.Component {
       </div>
     );
   }
-
-
 }
 
 PartnerDetail.propTypes = {
-  data: React.PropTypes.object
+  data: React.PropTypes.object,
+  params: React.PropTypes.object,
+  getPartnerData: React.PropTypes.func
 };
 
 PartnerDetail.defaultProps = {

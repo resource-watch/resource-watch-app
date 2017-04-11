@@ -23,7 +23,7 @@ function AppDetail(props) {
               <Breadcrumbs items={breadcrumbs} />
               <h1 className="title c-text -header-big -dark -thin">
                 {props.app.name}
-                <Rating rating={props.app.stars} className="c-text -big -normal -yellow"/>
+                <Rating rating={props.app.stars} className="c-text -big -normal -yellow" />
               </h1>
               <p className="source">by <a href="#">{props.app.source}</a></p>
             </div>
@@ -59,7 +59,7 @@ function AppDetail(props) {
             <div className="column small-12">
               <h1 className="c-text -huger -primary -thin">Planet Pulse</h1>
               <Banner className="pulse">
-                <h3 className="c-text -header-normal -normal">Real-time data<br/> monitoring the planet</h3>
+                <h3 className="c-text -header-normal -normal">Real-time data<br /> monitoring the planet</h3>
                 <button className="c-btn -primary -filled">
                   <Link to="/planet-pulse">LAUNCH PLANET PULSE</Link>
                 </button>

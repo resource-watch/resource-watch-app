@@ -7,11 +7,10 @@ function Breadcrumbs(props) {
       {props.items.map((item, i) => {
         if (!props.current) {
           return <li key={i} className="item"><Link to={item.url}>{item.name}</Link></li>;
-        } else {
-          return i < (props.items.length - 1) ?
-            <li key={i} className="item"><Link to={item.url}>{item.name}</Link></li> :
-            <li key={i} className="item -current">{item.name}</li>;
         }
+        return i < (props.items.length - 1) ?
+          <li key={i} className="item"><Link to={item.url}>{item.name}</Link></li> :
+          <li key={i} className="item -current">{item.name}</li>;
       })}
     </ul>
   );

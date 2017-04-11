@@ -14,7 +14,7 @@ const defaultSettings = {
 };
 
 function Carousel(props) {
-  const settings = props.setting || defaultSettings;
+  const settings = props.settings || defaultSettings;
 
   return (
     <div className="c-carousel">
@@ -31,7 +31,7 @@ Carousel.propTypes = {
 };
 
 Carousel.defaultProps = {
-  items: [],
+  items: []
 };
 
 export default Carousel;

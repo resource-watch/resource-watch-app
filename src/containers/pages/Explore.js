@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import Explore from 'components/pages/Explore';
-import { getDatasets, setDatasetsPage, setUrlParams, setDatasetsActive, setDatasetsFilters } from 'redactions/explore';
+import { getDatasets, setDatasetsPage, setUrlParams, setDatasetsActive, setDatasetsFilters, toggleDatasetActive } from 'redactions/explore';
 import { redirectTo } from 'redactions/common';
 import getpaginatedDatasets from 'selectors/explore/datasetsPaginatedExplore';
 import getFilteredDatasets from 'selectors/explore/filterDatasets';
@@ -28,6 +28,10 @@ const mapDispatchToProps = dispatch => ({
   redirectTo: (url) => { dispatch(redirectTo(url)); },
   setDatasetsPage: (page) => {
     dispatch(setDatasetsPage(page));
+    dispatch(setUrlParams());
+  },
+  toggleDatasetActive: (id) => {
+    dispatch(toggleDatasetActive(id));
     dispatch(setUrlParams());
   }
 });
