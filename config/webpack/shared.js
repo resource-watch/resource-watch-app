@@ -54,7 +54,8 @@ const config = {
     extensions: ['.js', '.jsx'],
     modules: [
       path.join(rootPath, 'src'),
-      path.join(rootPath, 'node_modules')
+      path.join(rootPath, 'node_modules'),
+      path.resolve('node_modules', 'rw-components', 'node_modules')
     ]
   },
 
