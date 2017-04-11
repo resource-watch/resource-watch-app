@@ -1,9 +1,9 @@
 import React from 'react';
-import { SortableContainer, SortableElement, SortableHandle, arrayMove} from 'react-sortable-hoc';
+import { SortableContainer, SortableElement, SortableHandle, arrayMove } from 'react-sortable-hoc';
 import LegendType from 'components/pulse/LegendType';
 import Icon from 'components/ui/Icon';
 
-const SortableItem = SortableElement(({value}) => value);
+const SortableItem = SortableElement(({ value }) => value);
 
 const DragHandle = SortableHandle(() => (
   <span className="handler">
@@ -11,7 +11,7 @@ const DragHandle = SortableHandle(() => (
   </span>
 ));
 
-const SortableList = SortableContainer(({items}) => {
+const SortableList = SortableContainer(({ items }) => {
   return (
     <ul className="legend-list">
       {items.map((value, index) =>
@@ -22,7 +22,6 @@ const SortableList = SortableContainer(({items}) => {
 });
 
 class Legend extends React.Component {
-
   constructor(props) {
     super(props);
 
@@ -32,17 +31,17 @@ class Legend extends React.Component {
     this.onSortMove = this.onSortMove.bind(this);
   }
 
-  onSortEnd({oldIndex, newIndex}) {
+  onSortEnd({ oldIndex, newIndex }) {
     const reversed = this.props.layersActive.reverse();
     const newLayersOrder = arrayMove(reversed, oldIndex, newIndex);
     // Unreverse layers to set them in their real order
     const newLayersActive = newLayersOrder.map(l => l.dataset).reverse();
 
     this.props.setDatasetsActive(newLayersActive);
-  };
+  }
 
   onSortStart(opts) {
-    const node = opts.node;
+    // const node = opts.node;
   }
 
   onSortMove(ev) {
@@ -58,7 +57,7 @@ class Legend extends React.Component {
     );
   }
 
-  getLegendItems(layer) {
+  getLegendItems() {
     // Reverse layers to show first the last one added
     const layersActiveReversed = this.props.layersActive.slice().reverse();
     return layersActiveReversed.map((layer, i) => (
@@ -102,7 +101,8 @@ Legend.propTypes = {
   layersActive: React.PropTypes.array,
   className: React.PropTypes.object,
   // Functions
-  toggleDatasetActive: React.PropTypes.func
+  toggleDatasetActive: React.PropTypes.func,
+  setDatasetsActive: React.PropTypes.func
 };
 
 export default Legend;

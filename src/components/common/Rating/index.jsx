@@ -1,5 +1,6 @@
 import React from 'react';
 import classnames from 'classnames';
+import Icon from 'components/ui/Icon';
 
 function Rating(props) {
   const className = classnames({
@@ -9,14 +10,15 @@ function Rating(props) {
 
   return (
     <div className={className}>
-      <svg className="c-icon -small icon-star-full"><use xlinkHref="#icon-star-full"></use></svg>
+      <Icon name="icon-star-full" className="-small icon-star-full" />
       <span>{props.rating}</span>
     </div>
   );
 }
 
 Rating.propTypes = {
-  rating: React.PropTypes.number
+  rating: React.PropTypes.number,
+  className: React.PropTypes.any
 };
 
 export default Rating;

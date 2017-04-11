@@ -11,7 +11,7 @@ const insightsCards = [
     tag: 'INSIGHT OF THE WEEK',
     title: 'A factory is being built in your neighborhood. Can you do anything about it?',
     slug: 'interactive-edi',
-    source: { name: 'World Resources Institute', path: '#', img: 'https://vizzuality.github.io/WRW-Prototype/img/avatar-wri.png'},
+    source: { name: 'World Resources Institute', path: '#', img: 'https://vizzuality.github.io/WRW-Prototype/img/avatar-wri.png' },
     ranking: '',
     background: 'url(../images/backgrounds/discovery_insights_image.png) center'
   },
@@ -19,7 +19,7 @@ const insightsCards = [
     tag: 'Feb 25, 2017',
     title: 'The Water Guardians of the Andes',
     slug: 'slideshow-peru',
-    source: { name: 'World Resources Institute', path: '#', img: 'https://vizzuality.github.io/WRW-Prototype/img/avatar-wri.png'},
+    source: { name: 'World Resources Institute', path: '#', img: 'https://vizzuality.github.io/WRW-Prototype/img/avatar-wri.png' },
     ranking: '',
     background: 'url(../images/backgrounds/andes.png) center'
   },
@@ -27,7 +27,7 @@ const insightsCards = [
     tag: 'Mar 5, 2017',
     title: 'Farms to feel squeeze as competition for water increases',
     slug: 'interactive-map',
-    source: { name: 'World Resources Institute', path: '#', img: 'https://vizzuality.github.io/WRW-Prototype/img/avatar-wri.png'},
+    source: { name: 'World Resources Institute', path: '#', img: 'https://vizzuality.github.io/WRW-Prototype/img/avatar-wri.png' },
     ranking: '',
     background: 'url(../images/backgrounds/world_farms.jpg)'
   }
@@ -81,7 +81,6 @@ class Home extends React.Component {
   }
 
   setAnchorScroll(target, trigger) {
-    const targetEl = document.getElementById(target);
     const triggerEl = document.getElementsByClassName(trigger)[0];
     const moveTo = new MoveTo({
       tolerance: 0,
@@ -95,18 +94,18 @@ class Home extends React.Component {
   exploreCardsStatic() {
     return exploreCards.map((c, i) =>
       <div key={i} className="column small-12 medium-4">
-        <CardStatic className='-light' background={c.background}>
+        <CardStatic className="-light" background={c.background}>
           <div>
             <h5 className="tag c-text -small -bold -uppercase">{c.tag}</h5>
             <h1 className="card-title c-text -extra-big -bold">{c.title}</h1>
             <p className="c-text -big">{c.intro}</p>
           </div>
           <div className="buttons">
-              {c.buttons.map((b, i) => (
-                <button key={i} className={`c-btn ${b.className}`}>
-                  <Link to={b.path}>{b.text}</Link>
-                </button>
-              ))}
+            {c.buttons.map((b, j) => (
+              <button key={j} className={`c-btn ${b.className}`}>
+                <Link to={b.path}>{b.text}</Link>
+              </button>
+            ))}
           </div>
         </CardStatic>
       </div>
@@ -115,19 +114,19 @@ class Home extends React.Component {
 
   insightsCardsStatic() {
     return insightsCards.map((c, i) =>
-      <CardStatic key={i} className='-light' background={c.background}>
+      <CardStatic key={i} className="-light" background={c.background}>
         <div>
           <h5 className="tag c-text -small -bold -uppercase">{c.tag}</h5>
           <h1 className="card-title c-text -extra-big -bold"><a href={`/insights/${c.slug}`}>{c.title}</a></h1>
         </div>
         <div className="footer">
           <div className="source">
-            <img src={c.source.img || ''} />
+            <img src={c.source.img || ''} alt={c.slug} />
             <div className="source-name">
               by <a href={c.source.path}>{c.source.name}</a>
             </div>
           </div>
-          <Rating rating={c.ranking}/>
+          <Rating rating={c.ranking} />
         </div>
       </CardStatic>
     );
@@ -141,7 +140,7 @@ class Home extends React.Component {
       <div className="p-home">
         <div className="c-page">
           <Banner className="intro" containerGrid={false}>
-            <h1 className="title c-text -header-huge -thin">Quick and easy access<br/>to data that matters</h1>
+            <h1 className="title c-text -header-huge -thin">Quick and easy access<br />to data that matters</h1>
             <p className="c-text -huge -thin">Explore the latest data, find insights, and help build a more sustainable planet</p>
             <a className="scroll-icon js-scroll" href="#discoverIsights"><Icon name="icon-arrow-down" /></a>
           </Banner>
@@ -161,13 +160,13 @@ class Home extends React.Component {
 
               <div className="row">
                 <div className="column small-12 medium-8">
-                  {this.insightsCardsStatic()[0]}
+                  {insightsCardsStatic[0]}
                 </div>
 
                 <div className="column small-12 medium-4">
                   <div className="dual">
-                    {this.insightsCardsStatic()[1]}
-                    {this.insightsCardsStatic()[2]}
+                    {insightsCardsStatic[1]}
+                    {insightsCardsStatic[2]}
                   </div>
                 </div>
               </div>
