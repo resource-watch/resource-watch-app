@@ -16,7 +16,10 @@ const initialState = {
   error: false,
   about: {},
   getInvolved: {},
-  submitInsight: {}
+  submitInsight: {},
+  joinCommunity: {},
+  developApp: {},
+  contributeData: {}
 };
 
 export default function (state = initialState, action) {

@@ -24,7 +24,10 @@
     background-position: center;
   }
 
-  &.-header { padding-bottom: 0; }
+  &.-header { 
+    padding-top: 30px;
+    padding-bottom: 20px;
+  }
 
   &.-light * { color: $color-white; }
 
@@ -36,6 +39,18 @@
     p {
       font-size: $font-size-extra-big;
       color: $color-text-headers;
+    }
+  }
+
+  .cols {
+    display: flex;
+
+    p {
+      margin-right: 30px;
+
+      &:last-child {
+        margin-right: 0;
+      }
     }
   }
 }
