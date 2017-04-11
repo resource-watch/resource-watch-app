@@ -136,6 +136,7 @@ class Explore extends React.Component {
               layersActive={this.state.layersActive}
               className={{ color: '-dark' }}
               setDatasetsActive={this.props.setDatasetsActive}
+              toggleDatasetActive={this.props.toggleDatasetActive}
             />
           }
         </div>

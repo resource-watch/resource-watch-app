@@ -48,10 +48,19 @@ class Legend extends React.Component {
   onSortMove(ev) {
   }
 
-  getLegendItems() {
+  getItemsActions(layer) {
+    return (
+      <div className="item-actions">
+        <button onClick={() => this.props.toggleDatasetActive(layer.dataset)}>
+          <Icon name="icon-cross" className="-smaller" />
+        </button>
+      </div>
+    );
+  }
+
+  getLegendItems(layer) {
     // Reverse layers to show first the last one added
     const layersActiveReversed = this.props.layersActive.slice().reverse();
-
     return layersActiveReversed.map((layer, i) => (
       <li key={i} className="c-legend-unit">
         <div className="legend-info">
@@ -59,6 +68,7 @@ class Legend extends React.Component {
             <h3 className={this.props.className.color}>
               <span className="name">{layer.name}</span>
             </h3>
+            {this.getItemsActions(layer)}
           </header>
           <LegendType config={layer.legendConfig} className={this.props.className} />
         </div>
@@ -90,7 +100,9 @@ class Legend extends React.Component {
 
 Legend.propTypes = {
   layersActive: React.PropTypes.array,
-  className: React.PropTypes.object
+  className: React.PropTypes.object,
+  // Functions
+  toggleDatasetActive: React.PropTypes.func
 };
 
 export default Legend;
