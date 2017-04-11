@@ -80,15 +80,6 @@ class Partners extends React.Component {
             </div>
           </div>
         </div>
-
-        <Banner>
-          <h3 className="c-text -header-normal -normal">
-            See yourself as part<br /> of this team?
-          </h3>
-          <button className="c-btn -primary -filled">
-            Get in touch
-          </button>
-        </Banner>
       </div>
     );
   }
