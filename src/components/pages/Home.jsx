@@ -11,59 +11,56 @@ const insightsCards = [
     tag: 'INSIGHT OF THE WEEK',
     title: 'A factory is being built in your neighborhood. Can you do anything about it?',
     slug: 'interactive-edi',
-    source: { name: 'World Resources Institute', path: '#', img: 'https://vizzuality.github.io/WRW-Prototype/img/avatar-wri.png'},
-    ranking: 3531,
-    background: 'url(/images/backgrounds/discovery_insights_image.png) center'
+    source: { name: 'World Resources Institute', path: '#', img: 'https://vizzuality.github.io/WRW-Prototype/img/avatar-wri.png' },
+    background: 'url(/tempImages/backgrounds/discovery_insights_image.jpg) center'
   },
   {
-    tag: 'Oct 5, 2015',
+    tag: 'Feb 25, 2017',
     title: 'The Water Guardians of the Andes',
     slug: 'slideshow-peru',
-    source: { name: 'World Resources Institute', path: '#', img: 'https://vizzuality.github.io/WRW-Prototype/img/avatar-wri.png'},
-    ranking: 4345,
-    background: 'url(/images/backgrounds/andes.png) center'
+    source: { name: 'World Resources Institute', path: '#', img: 'https://vizzuality.github.io/WRW-Prototype/img/avatar-wri.png' },
+    background: 'url(/tempImages/backgrounds/andes.jpg) center'
   },
   {
-    tag: 'Oct 5, 2015',
+    tag: 'Mar 5, 2017',
     title: 'Farms to feel squeeze as competition for water increases',
     slug: 'interactive-map',
-    source: { name: 'World Resources Institute', path: '#', img: 'https://vizzuality.github.io/WRW-Prototype/img/avatar-wri.png'},
-    ranking: 4345,
-    background: 'url(/images/backgrounds/world_farms.jpg)'
+    source: { name: 'World Resources Institute', path: '#', img: 'https://vizzuality.github.io/WRW-Prototype/img/avatar-wri.png' },
+    background: 'url(/tempImages/backgrounds/world_farms.jpg)'
   }
 ];
 
 const exploreCards = [
   {
-    tag: 'Explore datasets',
+    tag: 'Explore data',
     title: 'Dive into the data',
-    intro: 'Create and download custom visualisations using our collection of over [XX] datasets related to natural resources.',
+    intro: 'Create and download custom visualisations using our collection of over 180 datasets related to natural resources.',
     buttons: [
       {
-        text: 'Explore datasets',
+        text: 'Explore data',
         path: '/explore',
         className: '-primary'
       }
     ],
-    background: 'url(/images/backgrounds/explore_data_1.png)'
+    background: 'url(/tempImages/backgrounds/explore_data_1.png)'
   },
   {
     tag: 'Dashboards',
     title: 'Review the topic or country you care about most',
-    intro: 'Find all the data about a country or topic, or build your own dashboard to monitor the data you care about.',
+    intro: 'Find facts and figures about a country or topic, or build your own dashboard to monitor the data you care about.',
     buttons: [
       {
-        text: 'Check dashboards',
+        text: 'View dashboards',
         path: '/dashboards',
         className: '-primary'
       }
     ],
-    background: '#3dc4e6 url(/images/backgrounds/explore_data_2.png)'
+    background: 'url(/tempImages/backgrounds/explore_data_2.png)'
   },
   {
     tag: 'Planet Pulse',
     title: 'Take the pulse of our planet',
-    intro: 'A global picture of key impacts on livelihoods over the last 30 days.',
+    intro: 'A global snapshot of key impacts on livelihoods from the latest data.',
     buttons: [
       {
         text: 'Launch planet pulse',
@@ -71,7 +68,7 @@ const exploreCards = [
         className: '-primary'
       }
     ],
-    background: 'url(/images/backgrounds/planetpulse.png) 67% center'
+    background: 'url(/tempImages/backgrounds/planetpulse.jpg) 67% center'
   }
 ];
 
@@ -81,7 +78,6 @@ class Home extends React.Component {
   }
 
   setAnchorScroll(target, trigger) {
-    const targetEl = document.getElementById(target);
     const triggerEl = document.getElementsByClassName(trigger)[0];
     const moveTo = new MoveTo({
       tolerance: 0,
@@ -95,18 +91,18 @@ class Home extends React.Component {
   exploreCardsStatic() {
     return exploreCards.map((c, i) =>
       <div key={i} className="column small-12 medium-4">
-        <CardStatic className='-light' background={c.background}>
+        <CardStatic className="-light" background={c.background}>
           <div>
             <h5 className="tag c-text -small -bold -uppercase">{c.tag}</h5>
             <h1 className="card-title c-text -extra-big -bold">{c.title}</h1>
             <p className="c-text -big">{c.intro}</p>
           </div>
           <div className="buttons">
-              {c.buttons.map((b, i) => (
-                <button key={i} className={`c-btn ${b.className}`}>
-                  <Link to={b.path}>{b.text}</Link>
-                </button>
-              ))}
+            {c.buttons.map((b, j) => (
+              <button key={j} className={`c-btn ${b.className}`}>
+                <Link to={b.path}>{b.text}</Link>
+              </button>
+            ))}
           </div>
         </CardStatic>
       </div>
@@ -115,19 +111,19 @@ class Home extends React.Component {
 
   insightsCardsStatic() {
     return insightsCards.map((c, i) =>
-      <CardStatic key={i} className='-light' background={c.background}>
+      <CardStatic key={i} className="-light" background={c.background}>
         <div>
           <h5 className="tag c-text -small -bold -uppercase">{c.tag}</h5>
           <h1 className="card-title c-text -extra-big -bold"><a href={`/insights/${c.slug}`}>{c.title}</a></h1>
         </div>
         <div className="footer">
           <div className="source">
-            <img src={c.source.img || ''} />
+            <img src={c.source.img || ''} alt={c.slug} />
             <div className="source-name">
               by <a href={c.source.path}>{c.source.name}</a>
             </div>
           </div>
-          <Rating rating={c.ranking}/>
+          {c.ranking && <Rating rating={c.ranking} />}
         </div>
       </CardStatic>
     );
@@ -141,11 +137,16 @@ class Home extends React.Component {
       <div className="p-home">
         <div className="c-page">
           <Banner className="intro" containerGrid={false}>
-            <h1 className="title c-text -header-huge -thin">Quick and easy access<br/>to a world of resource data</h1>
-            <p className="c-text -huge -thin">Explore the latest data, make insights, and help build a more sustainable planet</p>
-            <a className="scroll-icon js-scroll" href="#discoverIsights"><Icon name="icon-arrow-down" /></a>
+            <h1 className="title c-text -header-huge -thin">
+                Quick and easy access<br />to data that matters
+            </h1>
+            <p className="c-text -huge -thin">
+              Explore the latest data, find insights, and help build a more sustainable planet
+            </p>
+            <a className="scroll-icon js-scroll" href="#discoverIsights">
+              <Icon name="icon-arrow-down" />
+            </a>
           </Banner>
-
           <section id="discoverIsights" className="l-section insights">
             <div className="l-container">
               <header className="row">
@@ -156,19 +157,21 @@ class Home extends React.Component {
 
               <div className="row">
                 <article className="column small-12 medium-5">
-                  <p className="intro c-text -extra-big">Read the latest  analysis from our community or submit your own original story.</p>
+                  <p className="intro c-text -extra-big">
+                    Read the latest analysis from our community or submit your own original story.
+                  </p>
                 </article>
               </div>
 
-              <div className="row">
+              <div className="row insight-cards">
                 <div className="column small-12 medium-8">
-                  {this.insightsCardsStatic()[0]}
+                  {insightsCardsStatic[0]}
                 </div>
 
                 <div className="column small-12 medium-4">
                   <div className="dual">
-                    {this.insightsCardsStatic()[1]}
-                    {this.insightsCardsStatic()[2]}
+                    {insightsCardsStatic[1]}
+                    {insightsCardsStatic[2]}
                   </div>
                 </div>
               </div>
@@ -191,11 +194,13 @@ class Home extends React.Component {
 
               <div className="row">
                 <article className="column small-12 medium-5">
-                  <p className="intro c-text -extra-big">Explore, create visualizations, receive updates and contribute with your data.</p>
+                  <p className="intro c-text -extra-big">
+                    Explore, create visualizations, receive updates and contribute with your data.
+                  </p>
                 </article>
               </div>
 
-              <div className="row">
+              <div className="row explore-cards">
                 {exploreCardsStatic}
               </div>
             </div>
@@ -205,21 +210,34 @@ class Home extends React.Component {
             <div className="row">
               <div className="column small-12 medium-6">
                 <h1 className="title c-text -header-huge -thin">Get Involved</h1>
-                <p className="c-text -big">We've brought together the best datasets related to natural resources, so you can find new insights, influence decisions and change the world. There's a world of opportunity to take this futher; here’s some ideas to get you started...</p>
+                <p className="c-text -big">
+                  We've brought together the best datasets related to natural resources,
+                   so you can find new insights, influence decisions and change the world.
+                   There's a world of opportunity to take this futher. Here are
+                   some ideas to get you started.
+                </p>
               </div>
             </div>
             <div className="row">
               <div className="column small-12 medium-3">
-                <button className="c-btn -transparent"><Link to="/get-involved#">Submit an insight</Link></button>
+                <button className="c-btn -transparent">
+                  <Link to="/get-involved/contribute-data">Contribute data</Link>
+                </button>
               </div>
               <div className="column small-12 medium-3">
-                <button className="c-btn -transparent"><Link to="/get-involved#">Contribute data</Link></button>
+                <button className="c-btn -transparent">
+                  <Link to="/get-involved/join-community">Join the community</Link>
+                </button>
               </div>
               <div className="column small-12 medium-3">
-                <button className="c-btn -transparent"><Link to="/get-involved#">Join the community</Link></button>
+                <button className="c-btn -transparent">
+                  <Link to="/get-involved/submit-insight">Submit an insight</Link>
+                </button>
               </div>
               <div className="column small-12 medium-3">
-                <button className="c-btn -transparent"><Link to="/get-involved#">Develop your app</Link></button>
+                <button className="c-btn -transparent">
+                  <Link to="/get-involved/develop-app">Develop your app</Link>
+                </button>
               </div>
             </div>
           </Banner>

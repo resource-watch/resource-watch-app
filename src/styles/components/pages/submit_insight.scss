@@ -3,12 +3,11 @@
   // Page banners backgrounds
   .c-banner {
     &.intro {
-      background: url('/images/backgrounds/jellyfish.jpg');
       background-position: center;
   }
 
     &.partners {
-      background-image: url('/images/backgrounds/partners-02@2x.png');
+      background-image: url('../images/backgrounds/partners-02@2x.jpg');
       background-position: top center;
     }
   }

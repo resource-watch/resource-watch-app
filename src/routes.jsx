@@ -11,12 +11,12 @@ import Home from './containers/pages/Home';
 import Explore from './containers/pages/Explore';
 import ExploreDetail from './containers/pages/ExploreDetail';
 import Pulse from './containers/pages/Pulse';
-import GetInvolved from './components/pages/GetInvolved';
-import SubmitInsight from './components/pages/SubmitInsight';
-import ContributeData from './components/pages/ContributeData';
-import JoinCommunity from './components/pages/JoinCommunity';
-import DevelopApp from './components/pages/DevelopApp';
-import About from './components/pages/About';
+import GetInvolved from './containers/pages/GetInvolved';
+import SubmitInsight from './containers/pages/SubmitInsight';
+import ContributeData from './containers/pages/ContributeData';
+import JoinCommunity from './containers/pages/JoinCommunity';
+import DevelopApp from './containers/pages/DevelopApp';
+import About from './containers/pages/About';
 import Apps from './containers/pages/Apps';
 import AppDetail from './containers/pages/AppDetail';
 import Partners from './containers/pages/Partners';
@@ -24,7 +24,7 @@ import PartnerDetail from './containers/pages/PartnerDetail';
 
 function Routes(props) {
   return (
-    <Router 
+    <Router
       history={props.history}
       render={applyRouterMiddleware(useScroll(shouldUpdateScroll))}
       onUpdate={trackPageView}
@@ -67,7 +67,7 @@ function Routes(props) {
           <Route path="contribute-data">
             <IndexRoute component={ContributeData} />
           </Route>
-          
+
           <Route path="join-community">
             <IndexRoute component={JoinCommunity} />
           </Route>

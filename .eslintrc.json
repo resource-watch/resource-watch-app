@@ -23,8 +23,11 @@
   "settings": {
     "import/resolver": {
       "webpack": {
-        "config": "config/webpack.config.js"
+        "config": "config/webpack/development.js"
       }
     }
+  },
+  "rules": {
+    "react/no-array-index-key": 0
   }
 }

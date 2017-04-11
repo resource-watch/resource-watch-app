@@ -16,7 +16,7 @@ const cards = [
         className: '-filled'
       }
     ],
-    background: 'url(/images/backgrounds/jellyfish.jpg)'
+    className: 'insights'
   },
   {
     id: 'data',
@@ -29,7 +29,7 @@ const cards = [
         className: '-filled'
       }
     ],
-    background: '#c32d7b url("/images/components/layout/header-bg-texture.png") no-repeat center'
+    className: 'contribute'
   },
   {
     id: 'join',
@@ -42,7 +42,7 @@ const cards = [
         className: '-filled'
       }
     ],
-    background: '#3bb2d0'
+    className: 'join'
   },
   {
     id: 'app',
@@ -60,64 +60,80 @@ const cards = [
         className: '-transparent -secondary'
       }
     ],
-    background: 'url(/images/backgrounds/develop_app.png)'
+    className: 'develop'
   }
 ];
 
-function GetInvolved() {
-  const title = 'Get Involved';
-  const intro = ['Lorem ipsum sit amet casius sem', 'lacinia quam venenatis vestibulum'];
+class GetInvolved extends React.Component {
+  componentWillMount() {
+    this.props.getStaticData('get-involved', 'getInvolved');
+  }
 
-  const introLines = intro => {
-    return intro.map((line, i) => (
-      <span key={i}>
-        {line}{(i !== intro.length - 1) && <br/>}
-      </span>));
-  };
+  render() {
+    const { data } = this.props;
+    const styles = {};
+    if (data.photo) {
+      styles.backgroundImage = `url(${config.CMS_API_URL}${data.photo.medium})`;
+    }
 
-  const cardsStatic = cards.map((c, i) => 
-    <div key={i} className="column small-12 medium-6">
-      <CardStatic className='-light' background={c.background}>
-        <div>
-          <h2 className="title c-text -header-normal -thin">{c.title}</h2>
-          <p className="c-text -big">{introLines(c.intro)}</p>
-        </div>
-        <div className="buttons">
-            {c.buttons.map((b, i) => (
-              <button key={i} className={`c-btn ${b.className}`}>
+    const introLines = intro => (
+      intro.map((line, i) => (
+        <span key={i}>
+          {line}{(i !== intro.length - 1) && <br />}
+        </span>))
+    );
+
+    const cardsStatic = cards.map((c, i) =>
+      <div key={i} className="column small-12 medium-6">
+        <CardStatic className={`-light ${c.className}`} background={c.background}>
+          <div>
+            <h2 className="title c-text -header-normal -thin">{c.title}</h2>
+            <p className="c-text -big">{introLines(c.intro)}</p>
+          </div>
+          <div className="buttons">
+            {c.buttons.map((b, j) => (
+              <button key={j} className={`c-btn ${b.className}`}>
                 <Link to={b.path}>{b.text}</Link>
               </button>
             ))}
-        </div>
-      </CardStatic>
-    </div>
-  );
-
-  return (
-    <div className="p-get-involved">
-      <div className="c-page about">
-        <Intro title={title} intro={intro} />
-        <section className="l-section -header">
-          <div className="l-container">
-            <div className="cards row collapse">
-              {cardsStatic}
-            </div>
           </div>
-        </section>
+        </CardStatic>
+      </div>
+    );
 
-        <div className="row collapse">
-          <div className="column small-12">
-            <Banner className="partners">
-              <h3 className="c-text -header-normal -thin">See yourself as part <br/>of this team?</h3>
-              <button className="c-btn -primary">
-                Get in touch
-              </button>
-            </Banner>
+    return (
+      <div className="p-get-involved">
+        <div className="c-page">
+          <Intro title={data.title} intro={data.summary} styles={styles} />
+          <section className="l-section -header">
+            <div className="l-container">
+              <div className="cards row collapse">
+                {cardsStatic}
+              </div>
+            </div>
+          </section>
+
+          <div className="row collapse">
+            <div className="column small-12">
+              <Banner className="partners">
+                <h3 className="c-text -header-normal -thin">
+                  See yourself as part <br />of this team?
+                </h3>
+                <button className="c-btn -primary">
+                  Get in touch
+                </button>
+              </Banner>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  );
+    );
+  }
 }
+
+GetInvolved.propTypes = {
+  data: React.PropTypes.object,
+  getStaticData: React.PropTypes.func
+};
 
 export default GetInvolved;
