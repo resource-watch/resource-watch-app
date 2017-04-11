@@ -17,7 +17,7 @@ class JoinCommunity extends React.Component {
 
   render() {
     const { data } = this.props;
-    
+
     return (
       <div className="p-join-community">
         <div className="c-page">
@@ -41,8 +41,7 @@ class JoinCommunity extends React.Component {
                 <div
                   className="cols column small-12"
                   dangerouslySetInnerHTML={{ __html: data.description }}
-                >
-                </div>
+                />
               </div>
             </div>
           </section>
@@ -50,7 +49,9 @@ class JoinCommunity extends React.Component {
           <div className="row collapse">
             <div className="column small-12">
               <Banner className="partners">
-                <h3 className="c-text -header-normal -normal">We have a massive opportunity<br/>to build a sustainable society</h3>
+                <h3 className="c-text -header-normal -normal">
+                  We have a massive opportunity<br />to build a sustainable society
+                </h3>
                 <button className="c-btn -primary -filled">
                   <Link to="/about/partners">Partners list</Link>
                 </button>
@@ -62,5 +63,10 @@ class JoinCommunity extends React.Component {
     );
   }
 }
+
+JoinCommunity.propTypes = {
+  data: React.PropTypes.object,
+  getStaticData: React.PropTypes.func
+};
 
 export default JoinCommunity;

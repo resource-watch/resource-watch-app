@@ -10,7 +10,6 @@ import Map from 'containers/explore/Map';
 import Legend from 'components/ui/Legend';
 import CustomSelect from 'components/ui/CustomSelect';
 import LayerManager from 'utils/layers/LayerManager';
-import Breadcrumbs from 'components/ui/Breadcrumbs';
 import Spinner from 'components/ui/Spinner';
 
 import issuesList from 'json/issues.json';
@@ -23,18 +22,13 @@ const mapConfig = {
   }
 };
 
-const breadcrumbs = [
-  { name: 'Home', url: '/' }
-];
-
-
 class Explore extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
       layersActive: props.layersActive
-    }
+    };
 
     // Bindings
     this.handleRedirect = this.handleRedirect.bind(this);
@@ -54,7 +48,7 @@ class Explore extends React.Component {
   }
 
   handleFilterDatasets(item) {
-    const filter = item && [{ key: 'issues', value: item.value}]  || [];
+    const filter = item ? [{ key: 'issues', value: item.value }] : [];
     this.props.setDatasetsFilters(filter);
   }
 
@@ -85,7 +79,7 @@ class Explore extends React.Component {
                     <CustomSelect
                       options={datasetsSearchList}
                       onValueChange={this.handleRedirect}
-                      search={true}
+                      search
                       placeholder="Search dataset"
                     />
                   </div>
@@ -136,6 +130,7 @@ class Explore extends React.Component {
               layersActive={this.state.layersActive}
               className={{ color: '-dark' }}
               setDatasetsActive={this.props.setDatasetsActive}
+              toggleDatasetActive={this.props.toggleDatasetActive}
             />
           }
         </div>
@@ -154,7 +149,10 @@ Explore.propTypes = {
   // ACTIONS
   getDatasets: React.PropTypes.func,
   setDatasetsPage: React.PropTypes.func,
-  setDatasetsActive: React.PropTypes.func
+  redirectTo: React.PropTypes.func,
+  setDatasetsActive: React.PropTypes.func,
+  setDatasetsFilters: React.PropTypes.func,
+  toggleDatasetActive: React.PropTypes.func
 };
 
 

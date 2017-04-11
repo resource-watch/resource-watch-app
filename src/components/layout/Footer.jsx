@@ -39,7 +39,7 @@ class Footer extends React.Component {
     return this.props.list.map((p, i) => (
       <div key={i} className="item">
         <Link to={`/about/partners/${p.id}`}>
-          <img className="-img" src={`${config.CMS_API_URL}${p.attributes.logo.thumb}`}/>
+          <img className="-img" src={`${config.CMS_API_URL}${p.attributes.logo.thumb}`} alt={p.attributes.name} />
         </Link>
       </div>
     ));
@@ -76,5 +76,10 @@ class Footer extends React.Component {
     );
   }
 }
+
+Footer.propTypes = {
+  getPartners: React.PropTypes.func,
+  list: React.PropTypes.array
+};
 
 export default Footer;

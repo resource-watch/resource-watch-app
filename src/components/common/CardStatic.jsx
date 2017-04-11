@@ -1,9 +1,7 @@
 import React from 'react';
-import { Link } from 'react-router';
 import classNames from 'classnames';
 
 function CardStatic(props) {
-  const isIntroString = typeof props.intro === 'string';
   const style = { background: props.background, backgroundSize: props.backgroundSize || 'cover' };
   const className = classNames({
     'c-card-static': true,
@@ -19,7 +17,9 @@ function CardStatic(props) {
 
 CardStatic.propTypes = {
   children: React.PropTypes.any.isRequired,
-  background: React.PropTypes.string
+  background: React.PropTypes.string,
+  backgroundSize: React.PropTypes.any,
+  className: React.PropTypes.any
 };
 
 CardStatic.defaultProps = {

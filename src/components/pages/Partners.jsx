@@ -9,10 +9,6 @@ const breadcrumbs = [
 
 
 class Partners extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   componentWillMount() {
     this.props.getPartners();
   }
@@ -34,16 +30,30 @@ class Partners extends React.Component {
             <div className="l-container">
               <header className="row">
                 <div className="column small-12 medium-8">
-                  <h1 className="c-text -header-big -primary -thin">We have a massive opportunity to build a sustainable society</h1>
+                  <h1 className="c-text -header-big -primary -thin">
+                    We have a massive opportunity to build a sustainable society
+                  </h1>
                 </div>
               </header>
 
               <div className="row">
                 <article className="column small-12 medium-6">
-                  <p className="c-text -extra-big">Mauris non tempor quam, et lacinia sapien. Mauris accumsan eros eget libero posuere vulputate. Etiam elit elit, elementum sed varius at, adipiscing vitae est. Sed nec felis pellentesque, lacinia dui sed, ultricies sapien. Pellentesque orci lectus, consectetur vel posuere posuere, rutrum eu ipsum. Aliquam</p>
+                  <p className="c-text -extra-big">
+                    Mauris non tempor quam, et lacinia sapien. Mauris accumsan
+                     eros eget libero posuere vulputate. Etiam elit elit, elementum
+                     sed varius at, adipiscing vitae est. Sed nec felis pellentesque,
+                     lacinia dui sed, ultricies sapien. Pellentesque orci lectus,
+                     consectetur vel posuere posuere, rutrum eu ipsum. Aliquam
+                  </p>
                 </article>
                 <article className="column small-12 medium-6">
-                  <p className="c-text -extra-big">eget odio sed ligula iaculis consequat at eget orci. Mauris molestie sit amet metus mattis varius.  Mauris non tempor quam, et lacinia sapien. Mauris accumsan eros eget libero posuere vulputate. Etiam elit elit, elementum sed varius at, adipiscing vitae est. Sed nec felis pellentesque.</p>
+                  <p className="c-text -extra-big">
+                    eget odio sed ligula iaculis consequat at eget orci. Mauris
+                     molestie sit amet metus mattis varius.  Mauris non tempor quam,
+                     et lacinia sapien. Mauris accumsan eros eget libero posuere vulputate.
+                     Etiam elit elit, elementum sed varius at, adipiscing vitae est.
+                     Sed nec felis pellentesque.
+                   </p>
                 </article>
               </div>
             </div>
@@ -60,7 +70,9 @@ class Partners extends React.Component {
           <div className="row">
             <div className="column small-12">
               <Banner>
-                <h3 className="c-text -header-normal -normal">See yourself as part<br/> of this team?</h3>
+                <h3 className="c-text -header-normal -normal">
+                  See yourself as part<br /> of this team?
+                </h3>
                 <button className="c-btn -primary -filled">
                   Get in touch
                 </button>
@@ -68,6 +80,15 @@ class Partners extends React.Component {
             </div>
           </div>
         </div>
+
+        <Banner>
+          <h3 className="c-text -header-normal -normal">
+            See yourself as part<br /> of this team?
+          </h3>
+          <button className="c-btn -primary -filled">
+            Get in touch
+          </button>
+        </Banner>
       </div>
     );
   }

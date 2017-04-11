@@ -63,7 +63,7 @@ class ExploreDetail extends React.Component {
         similarDatasetsLoaded: false,
         datasetRawDataLoaded: false,
         datasetDataError: false,
-        datasetLoaded: false,
+        datasetLoaded: false
       }, () => {
         this.props.getDataset(this.props.params.id);
       });
@@ -92,13 +92,11 @@ class ExploreDetail extends React.Component {
         if (!this.state.datasetRawDataLoaded) {
           this.getDatasetRawData(dataset);
         }
-      } else {
-        if (this.state.datasetLoaded || dataset.application) {
-          this.setState({
-            datasetRawDataLoaded: true,
-            datasetDataError: true
-          });
-        }
+      } else if (this.state.datasetLoaded || dataset.application) {
+        this.setState({
+          datasetRawDataLoaded: true,
+          datasetDataError: true
+        });
       }
     }
   }
@@ -281,24 +279,23 @@ class ExploreDetail extends React.Component {
           {pageStructure}
         </div>
       );
-    } else {
-      return (
-        <div className="c-page c-page-explore-detail">
-          <Sidebar>
-            {pageStructure}
-          </Sidebar>
-          <Map
-            LayerManager={LayerManager}
-            mapConfig={mapConfig}
-            layersActive={layersShown}
-          />
-          <Legend
-            layersActive={layersShown}
-            className={{ color: '-dark' }}
-          />
-        </div>
-      );
     }
+    return (
+      <div className="c-page c-page-explore-detail">
+        <Sidebar>
+          {pageStructure}
+        </Sidebar>
+        <Map
+          LayerManager={LayerManager}
+          mapConfig={mapConfig}
+          layersActive={layersShown}
+        />
+        <Legend
+          layersActive={layersShown}
+          className={{ color: '-dark' }}
+        />
+      </div>
+    );
   }
 }
 

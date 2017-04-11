@@ -9,7 +9,7 @@ const breadcrumbs = [
   }
 ];
 
-function Apps(props) {
+function Apps() {
   return (
     <div className="p-apps">
       <div className="c-page">
@@ -41,7 +41,7 @@ function Apps(props) {
         <div className="row collapse">
           <div className="column small-12">
             <Banner>
-              <h3 className="c-text -header-normal -thin">Awesome ideas?<br/>Develop your app</h3>
+              <h3 className="c-text -header-normal -thin">Awesome ideas?<br />Develop your app</h3>
               <button className="c-btn -primary -filled">
                 Learn more
               </button>

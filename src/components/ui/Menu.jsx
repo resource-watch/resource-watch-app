@@ -19,7 +19,7 @@ const Menu = ({ items, orientation, align }) => {
       </ul>
     </nav>
   );
-}
+};
 
 Menu.propTypes = {
   items: React.PropTypes.array,

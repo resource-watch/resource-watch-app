@@ -75,23 +75,23 @@ class GetInvolved extends React.Component {
     const introLines = intro => {
       return intro.map((line, i) => (
         <span key={i}>
-          {line}{(i !== intro.length - 1) && <br/>}
+          {line}{(i !== intro.length - 1) && <br />}
         </span>));
     };
 
-    const cardsStatic = cards.map((c, i) => 
+    const cardsStatic = cards.map((c, i) =>
       <div key={i} className="column small-12 medium-6">
-        <CardStatic className='-light' background={c.background}>
+        <CardStatic className="-light" background={c.background}>
           <div>
             <h2 className="title c-text -header-normal -thin">{c.title}</h2>
             <p className="c-text -big">{introLines(c.intro)}</p>
           </div>
           <div className="buttons">
-              {c.buttons.map((b, i) => (
-                <button key={i} className={`c-btn ${b.className}`}>
-                  <Link to={b.path}>{b.text}</Link>
-                </button>
-              ))}
+            {c.buttons.map((b, j) => (
+              <button key={j} className={`c-btn ${b.className}`}>
+                <Link to={b.path}>{b.text}</Link>
+              </button>
+            ))}
           </div>
         </CardStatic>
       </div>
@@ -112,7 +112,9 @@ class GetInvolved extends React.Component {
           <div className="row collapse">
             <div className="column small-12">
               <Banner className="partners">
-                <h3 className="c-text -header-normal -thin">See yourself as part <br/>of this team?</h3>
+                <h3 className="c-text -header-normal -thin">
+                  See yourself as part <br />of this team?
+                </h3>
                 <button className="c-btn -primary">
                   Get in touch
                 </button>
@@ -124,5 +126,10 @@ class GetInvolved extends React.Component {
     );
   }
 }
+
+GetInvolved.propTypes = {
+  data: React.PropTypes.object,
+  getStaticData: React.PropTypes.func
+};
 
 export default GetInvolved;
