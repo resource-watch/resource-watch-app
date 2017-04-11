@@ -12,21 +12,21 @@ const insightsCards = [
     title: 'A factory is being built in your neighborhood. Can you do anything about it?',
     slug: 'interactive-edi',
     source: { name: 'World Resources Institute', path: '#', img: 'https://vizzuality.github.io/WRW-Prototype/img/avatar-wri.png' },
-    background: 'url(/images/backgrounds/discovery_insights_image.jpg) center'
+    background: 'url(/tempImages/backgrounds/discovery_insights_image.jpg) center'
   },
   {
     tag: 'Feb 25, 2017',
     title: 'The Water Guardians of the Andes',
     slug: 'slideshow-peru',
     source: { name: 'World Resources Institute', path: '#', img: 'https://vizzuality.github.io/WRW-Prototype/img/avatar-wri.png' },
-    background: 'url(/images/backgrounds/andes.jpg) center'
+    background: 'url(/tempImages/backgrounds/andes.jpg) center'
   },
   {
     tag: 'Mar 5, 2017',
     title: 'Farms to feel squeeze as competition for water increases',
     slug: 'interactive-map',
     source: { name: 'World Resources Institute', path: '#', img: 'https://vizzuality.github.io/WRW-Prototype/img/avatar-wri.png' },
-    background: 'url(/images/backgrounds/world_farms.jpg)'
+    background: 'url(/tempImages/backgrounds/world_farms.jpg)'
   }
 ];
 
@@ -42,7 +42,7 @@ const exploreCards = [
         className: '-primary'
       }
     ],
-    background: 'url(/images/backgrounds/explore_data_1.png)'
+    background: 'url(/tempImages/backgrounds/explore_data_1.png)'
   },
   {
     tag: 'Dashboards',
@@ -55,7 +55,7 @@ const exploreCards = [
         className: '-primary'
       }
     ],
-    background: 'url(/images/backgrounds/explore_data_2.png)'
+    background: 'url(/tempImages/backgrounds/explore_data_2.png)'
   },
   {
     tag: 'Planet Pulse',
@@ -68,7 +68,7 @@ const exploreCards = [
         className: '-primary'
       }
     ],
-    background: 'url(/images/backgrounds/planetpulse.jpg) 67% center'
+    background: 'url(/tempImages/backgrounds/planetpulse.jpg) 67% center'
   }
 ];
 
