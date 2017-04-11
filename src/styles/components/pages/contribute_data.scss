@@ -3,7 +3,7 @@
   // Page banners backgrounds
   .c-banner {
     &.intro {
-      background: url("../images/backgrounds/polar.jpg") no-repeat;
+      background-repeat: no-repeat;
       background-position: center;
       background-size: cover;
   }
