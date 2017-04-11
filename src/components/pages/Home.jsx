@@ -12,24 +12,21 @@ const insightsCards = [
     title: 'A factory is being built in your neighborhood. Can you do anything about it?',
     slug: 'interactive-edi',
     source: { name: 'World Resources Institute', path: '#', img: 'https://vizzuality.github.io/WRW-Prototype/img/avatar-wri.png' },
-    ranking: '',
-    background: 'url(../images/backgrounds/discovery_insights_image.png) center'
+    background: 'url(/images/backgrounds/discovery_insights_image.jpg) center'
   },
   {
     tag: 'Feb 25, 2017',
     title: 'The Water Guardians of the Andes',
     slug: 'slideshow-peru',
     source: { name: 'World Resources Institute', path: '#', img: 'https://vizzuality.github.io/WRW-Prototype/img/avatar-wri.png' },
-    ranking: '',
-    background: 'url(../images/backgrounds/andes.png) center'
+    background: 'url(/images/backgrounds/andes.jpg) center'
   },
   {
     tag: 'Mar 5, 2017',
     title: 'Farms to feel squeeze as competition for water increases',
     slug: 'interactive-map',
     source: { name: 'World Resources Institute', path: '#', img: 'https://vizzuality.github.io/WRW-Prototype/img/avatar-wri.png' },
-    ranking: '',
-    background: 'url(../images/backgrounds/world_farms.jpg)'
+    background: 'url(/images/backgrounds/world_farms.jpg)'
   }
 ];
 
@@ -45,7 +42,7 @@ const exploreCards = [
         className: '-primary'
       }
     ],
-    background: 'url(../images/backgrounds/explore_data_1.png)'
+    background: 'url(/images/backgrounds/explore_data_1.png)'
   },
   {
     tag: 'Dashboards',
@@ -58,7 +55,7 @@ const exploreCards = [
         className: '-primary'
       }
     ],
-    background: '#3dc4e6 url(../images/backgrounds/explore_data_2.png)'
+    background: 'url(/images/backgrounds/explore_data_2.png)'
   },
   {
     tag: 'Planet Pulse',
@@ -71,7 +68,7 @@ const exploreCards = [
         className: '-primary'
       }
     ],
-    background: 'url(../images/backgrounds/planetpulse.png) 67% center'
+    background: 'url(/images/backgrounds/planetpulse.jpg) 67% center'
   }
 ];
 
@@ -126,7 +123,7 @@ class Home extends React.Component {
               by <a href={c.source.path}>{c.source.name}</a>
             </div>
           </div>
-          <Rating rating={c.ranking} />
+          {c.ranking && <Rating rating={c.ranking} />}
         </div>
       </CardStatic>
     );
@@ -140,9 +137,15 @@ class Home extends React.Component {
       <div className="p-home">
         <div className="c-page">
           <Banner className="intro" containerGrid={false}>
-            <h1 className="title c-text -header-huge -thin">Quick and easy access<br />to data that matters</h1>
-            <p className="c-text -huge -thin">Explore the latest data, find insights, and help build a more sustainable planet</p>
-            <a className="scroll-icon js-scroll" href="#discoverIsights"><Icon name="icon-arrow-down" /></a>
+            <h1 className="title c-text -header-huge -thin">
+                Quick and easy access<br />to data that matters
+            </h1>
+            <p className="c-text -huge -thin">
+              Explore the latest data, find insights, and help build a more sustainable planet
+            </p>
+            <a className="scroll-icon js-scroll" href="#discoverIsights">
+              <Icon name="icon-arrow-down" />
+            </a>
           </Banner>
           <section id="discoverIsights" className="l-section insights">
             <div className="l-container">
@@ -154,11 +157,13 @@ class Home extends React.Component {
 
               <div className="row">
                 <article className="column small-12 medium-5">
-                  <p className="intro c-text -extra-big">Read the latest analysis from our community or submit your own original story.</p>
+                  <p className="intro c-text -extra-big">
+                    Read the latest analysis from our community or submit your own original story.
+                  </p>
                 </article>
               </div>
 
-              <div className="row">
+              <div className="row insight-cards">
                 <div className="column small-12 medium-8">
                   {insightsCardsStatic[0]}
                 </div>
@@ -189,11 +194,13 @@ class Home extends React.Component {
 
               <div className="row">
                 <article className="column small-12 medium-5">
-                  <p className="intro c-text -extra-big">Explore, create visualizations, receive updates and contribute with your data.</p>
+                  <p className="intro c-text -extra-big">
+                    Explore, create visualizations, receive updates and contribute with your data.
+                  </p>
                 </article>
               </div>
 
-              <div className="row">
+              <div className="row explore-cards">
                 {exploreCardsStatic}
               </div>
             </div>
@@ -203,21 +210,34 @@ class Home extends React.Component {
             <div className="row">
               <div className="column small-12 medium-6">
                 <h1 className="title c-text -header-huge -thin">Get Involved</h1>
-                <p className="c-text -big">We've brought together the best datasets related to natural resources, so you can find new insights, influence decisions and change the world. There's a world of opportunity to take this futher. Here are some ideas to get you started.</p>
+                <p className="c-text -big">
+                  We've brought together the best datasets related to natural resources,
+                   so you can find new insights, influence decisions and change the world.
+                   There's a world of opportunity to take this futher. Here are
+                   some ideas to get you started.
+                </p>
               </div>
             </div>
             <div className="row">
               <div className="column small-12 medium-3">
-                <button className="c-btn -transparent"><Link to="/get-involved/contribute-data">Contribute data</Link></button>
+                <button className="c-btn -transparent">
+                  <Link to="/get-involved/contribute-data">Contribute data</Link>
+                </button>
               </div>
               <div className="column small-12 medium-3">
-                <button className="c-btn -transparent"><Link to="/get-involved/join-community">Join the community</Link></button>
+                <button className="c-btn -transparent">
+                  <Link to="/get-involved/join-community">Join the community</Link>
+                </button>
               </div>
               <div className="column small-12 medium-3">
-                <button className="c-btn -transparent"><Link to="/get-involved/submit-insight">Submit an insight</Link></button>
+                <button className="c-btn -transparent">
+                  <Link to="/get-involved/submit-insight">Submit an insight</Link>
+                </button>
               </div>
               <div className="column small-12 medium-3">
-                <button className="c-btn -transparent"><Link to="/get-involved/develop-app">Develop your app</Link></button>
+                <button className="c-btn -transparent">
+                  <Link to="/get-involved/develop-app">Develop your app</Link>
+                </button>
               </div>
             </div>
           </Banner>

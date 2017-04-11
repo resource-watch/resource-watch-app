@@ -56,7 +56,9 @@ class PartnerDetail extends React.Component {
         <Banner className="learn-more">
           <div className="row">
             <div className="column small-12">
-              <h3 className="c-text -header-big -thin">Important work,<br /> beautifully crafted</h3>
+              <h3 className="c-text -header-big -thin">
+                Important work,<br /> beautifully crafted
+              </h3>
               <button className="c-btn -primary -filled">
                 LEARN ABOUT OUR WORK
               </button>

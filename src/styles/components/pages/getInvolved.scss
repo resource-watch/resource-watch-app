@@ -3,7 +3,6 @@
   // Page banners backgrounds
   .c-banner {
     &.intro {
-      background-image: url('../images/backgrounds/california-01.jpg');
       background-position: top center;
     }
 
@@ -26,6 +25,13 @@
 
       &:nth-child(odd) {
         padding-right: 20px;
+      }
+
+      .c-card-static {
+        &.insights { background: url('../images/backgrounds/jellyfish.jpg'); }
+        &.contribute { background: $color-primary url('../images/components/layout/header-bg-texture.png') no-repeat center; }
+        &.join { background: $color-secondary; }
+        &.develop { background: url('../images/backgrounds/develop_app.jpg'); }
       }
     }
   }
