@@ -26,7 +26,10 @@ module.exports = merge(sharedConfig, {
   },
 
   plugins: [
-    new BundleAnalyzerPlugin(),
+    new BundleAnalyzerPlugin({
+      analyzerMode: 'static',
+      openAnalyzer: false
+    }),
     new webpack.LoaderOptionsPlugin({
       debug: true
     })

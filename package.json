@@ -69,7 +69,6 @@
     "slick-carousel": "^1.6.0",
     "style-loader": "^0.13.1",
     "three": "^0.83.0",
-    "three-orbit-controls": "^82.1.0",
     "url-loader": "^0.5.7",
     "vega": "2.5.2",
     "webpack": "^2.3.3",

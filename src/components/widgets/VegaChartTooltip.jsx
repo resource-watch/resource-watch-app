@@ -1,12 +1,12 @@
 import React from 'react';
-import * as d3 from 'd3';
+import { format } from 'd3';
 
 class VegaChartTooltip extends React.Component {
 
   getParsedX() {
     const { item } = this.props;
     if (item && typeof item.x === 'number') {
-      return d3.format('.0f')(item.x);
+      return format('.0f')(item.x);
     }
 
     if (item && typeof item.x === 'string') {
@@ -19,7 +19,7 @@ class VegaChartTooltip extends React.Component {
   getParsedY() {
     const { item } = this.props;
     if (item && typeof item.y === 'number') {
-      return d3.format('.2s')(item.y);
+      return format('.2s')(item.y);
     }
 
     if (item && typeof item.y === 'string') {
