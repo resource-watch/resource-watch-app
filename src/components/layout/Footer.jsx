@@ -68,7 +68,7 @@ class Footer extends React.Component {
           <div className="terms row">
             <div className="column small-12">
               <p>Terms of Service — Privacy</p>
-              <p>© 2015 - World Resources Watch</p>
+              <p>© 2017 - Resource Watch</p>
             </div>
           </div>
         </div>
