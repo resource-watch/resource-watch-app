@@ -7,7 +7,8 @@ const data = [
   { name: 'Data', path: '#' },
   { name: 'Explore Datasets', path: '/explore' },
   { name: 'Dashboards', path: '/dashboards' },
-  { name: 'Planet Pulse', path: '/planet-pulse' }
+  { name: 'Planet Pulse', path: '/planet-pulse' },
+  { name: 'Explore Tools', path: '/get-involved/apps' }
 ];
 
 const about = [
@@ -26,7 +27,6 @@ const getInvolved = [
   { name: 'Submit an insight', path: '/get-involved/submit-insight' },
   { name: 'Contribute data', path: '/get-involved/contribute-data' },
   { name: 'Join the community', path: '/get-involved/join-community' },
-  { name: 'Apps', path: '/get-involved/apps' }
 ];
 
 class Footer extends React.Component {

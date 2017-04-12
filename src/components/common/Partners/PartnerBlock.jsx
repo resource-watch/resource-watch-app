@@ -13,7 +13,7 @@ function PartnerBlock(props) {
         </Link>
       </div>
       <p className="description c-text -extra-big">{partner.summary}</p>
-      <Link to={`/about/partners/${props.item.id}`} className="c-text -extra-big">Read more</Link>
+      <Link to={`/about/partners/${props.item.id}`} className="action c-btn -transparent -primary c-text -extra-big">Read more</Link>
     </article>
   );
 }
