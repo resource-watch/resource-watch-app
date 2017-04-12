@@ -18,7 +18,7 @@ const insightsCards = [
     tag: 'Feb 25, 2017',
     title: 'The Water Guardians of the Andes',
     slug: 'slideshow-peru',
-    source: { name: 'World Resources Institute', path: '#', img: 'https://vizzuality.github.io/WRW-Prototype/img/avatar-wri.png' },
+    source: { name: 'ESPA', path: '#', img: require('../../images/avatars/espa_avatar.png') },
     background: 'url(/tempImages/backgrounds/andes.jpg) center'
   },
   {
