@@ -14,6 +14,9 @@ class Partners extends React.Component {
   }
 
   render() {
+    const featured = this.props.list.filter(p => p.attributes.featured);
+    const nonFeatured = this.props.list.filter(p => !p.attributes.featured);
+
     return (
       <div className="p-partners">
         <div className="c-page">
@@ -59,7 +62,7 @@ class Partners extends React.Component {
             </div>
           </section>
 
-          <section className="l-section partners -first">
+          <section className="l-section -partners -first">
             <div className="l-container">
               <div className="row">
                 <div className="column small-12">
@@ -67,12 +70,12 @@ class Partners extends React.Component {
                 </div>
               </div>
               <div className="row">
-                {this.props.featured.map((p, i) => <PartnerBlock key={i} item={p} />)}
+                {featured.map((p, i) => <PartnerBlock key={i} item={p} />)}
               </div>
             </div>
           </section>
 
-          <section className="l-section partners">
+          <section className="l-section -partners">
             <div className="l-container">
               <div className="row">
                 <div className="column small-12">
@@ -80,7 +83,7 @@ class Partners extends React.Component {
                 </div>
               </div>
               <div className="row">
-                {this.props.nonFeatured.map((p, i) => <PartnerBlock key={i} item={p} />)}
+                {nonFeatured.map((p, i) => <PartnerBlock key={i} item={p} />)}
               </div>
             </div>
           </section>
@@ -104,8 +107,7 @@ class Partners extends React.Component {
 }
 
 Partners.propTypes = {
-  featured: React.PropTypes.array.isRequired,
-  nonFeatured: React.PropTypes.array.isRequired,
+  list: React.PropTypes.array.isRequired,
   getPartners: React.PropTypes.func
 };
 

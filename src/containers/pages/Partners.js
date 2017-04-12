@@ -1,11 +1,9 @@
 import { connect } from 'react-redux';
 import Partners from 'components/pages/Partners';
 import { getPartners } from 'redactions/partners';
-import { getFeaturedPartners } from 'utils/partners/getRequiredPartners';
 
 const mapStateToProps = state => ({
-  featured: getFeaturedPartners(state.partners.list, true),
-  nonFeatured: getFeaturedPartners(state.partners.list, false)
+  list: state.partners.list
 });
 
 const mapDispatchToProps = dispatch => ({
