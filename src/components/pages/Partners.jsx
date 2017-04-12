@@ -14,6 +14,9 @@ class Partners extends React.Component {
   }
 
   render() {
+    const featured = this.props.list.filter(p => p.attributes.featured);
+    const nonFeatured = this.props.list.filter(p => !p.attributes.featured);
+
     return (
       <div className="p-partners">
         <div className="c-page">
@@ -59,10 +62,28 @@ class Partners extends React.Component {
             </div>
           </section>
 
-          <section className="l-section">
+          <section className="l-section -partners -first">
             <div className="l-container">
               <div className="row">
-                {this.props.list.map((p, i) => <PartnerBlock key={i} item={p} />)}
+                <div className="column small-12">
+                  <h2 className="title c-text -huger -primary -thin">Founding partners</h2>
+                </div>
+              </div>
+              <div className="row">
+                {featured.map((p, i) => <PartnerBlock key={i} item={p} />)}
+              </div>
+            </div>
+          </section>
+
+          <section className="l-section -partners">
+            <div className="l-container">
+              <div className="row">
+                <div className="column small-12">
+                  <h2 className="title c-text -huger -primary -thin">Funders</h2>
+                </div>
+              </div>
+              <div className="row">
+                {nonFeatured.map((p, i) => <PartnerBlock key={i} item={p} />)}
               </div>
             </div>
           </section>
