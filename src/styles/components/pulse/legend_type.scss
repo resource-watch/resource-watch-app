@@ -4,8 +4,7 @@
 
     & .type-list {
       display: flex;
-      // Column breaks explore legend type
-      // flex-direction: column;
+      flex-flow: row wrap;
 
       &:last-child { margin-top: 6px; }
 

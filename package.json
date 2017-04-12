@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "test": "./node_modules/.bin/eslint --ext .js --ext .jsx .",
-    "build": "NODE_ENV=production ./node_modules/.bin/webpack --progress --colors --config ./config/webpack/production.js -p"
+    "build": "NODE_ENV=production ./node_modules/.bin/webpack --progress --colors --config ./config/webpack/production.js"
   },
   "repository": {
     "type": "git",
