@@ -96,6 +96,14 @@ class Header extends React.Component {
                 Planet Pulse
               </Link>
             </li>
+            <li>
+              <Link
+                to="/get-involved/apps"
+                onClick={e => this.toggleDataDropdown(e, 'dataDropdownActive', false)}
+              >
+                Explore Tools
+              </Link>
+            </li>
           </ul>
         }
       </TetherComponent>
@@ -148,7 +156,7 @@ class Header extends React.Component {
       { name: dataDropDown },
       { name: <a href="/insights">Insights</a> },
       { name: aboutDropDown },
-      { name: <Link to="/get-involved" className="c-button -inverse -primary">Get Involved</Link> }
+      { name: 'Get Involved', path: '/get-involved' }
     ];
 
     const mainClass = this.props.fullScreen ? '-fullScreen' : '';
