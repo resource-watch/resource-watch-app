@@ -59,7 +59,7 @@ class Header extends React.Component {
         }]}
         targetOffset="0px 100%"
         classes={{
-          element: 'c-tooltip -arrow-right menu'
+          element: 'c-tooltip -arrow-right -menu'
         }}
       >
         {/* First child: This is what the item will be tethered to */}
@@ -117,7 +117,7 @@ class Header extends React.Component {
         }]}
         targetOffset="0px 100%"
         classes={{
-          element: 'c-tooltip -arrow-right menu'
+          element: 'c-tooltip -arrow-right -menu'
         }}
       >
         {/* First child: This is what the item will be tethered to */}
