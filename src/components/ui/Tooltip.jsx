@@ -1,5 +1,4 @@
 import React from 'react';
-import Spinner from 'rw-components/dist/components/UI/Spinner';
 import TetherComponent from 'react-tether';
 
 export default class Tooltip extends React.Component {
