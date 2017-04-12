@@ -59,10 +59,28 @@ class Partners extends React.Component {
             </div>
           </section>
 
-          <section className="l-section">
+          <section className="l-section partners -first">
             <div className="l-container">
               <div className="row">
-                {this.props.list.map((p, i) => <PartnerBlock key={i} item={p} />)}
+                <div className="column small-12">
+                  <h2 className="title c-text -huger -primary -thin">Founding partners</h2>
+                </div>
+              </div>
+              <div className="row">
+                {this.props.featured.map((p, i) => <PartnerBlock key={i} item={p} />)}
+              </div>
+            </div>
+          </section>
+
+          <section className="l-section partners">
+            <div className="l-container">
+              <div className="row">
+                <div className="column small-12">
+                  <h2 className="title c-text -huger -primary -thin">Funders</h2>
+                </div>
+              </div>
+              <div className="row">
+                {this.props.nonFeatured.map((p, i) => <PartnerBlock key={i} item={p} />)}
               </div>
             </div>
           </section>
@@ -86,7 +104,8 @@ class Partners extends React.Component {
 }
 
 Partners.propTypes = {
-  list: React.PropTypes.array.isRequired,
+  featured: React.PropTypes.array.isRequired,
+  nonFeatured: React.PropTypes.array.isRequired,
   getPartners: React.PropTypes.func
 };
 
