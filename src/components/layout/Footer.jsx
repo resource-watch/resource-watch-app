@@ -26,13 +26,13 @@ const getInvolved = [
   { name: 'Get involved', path: '/get-involved' },
   { name: 'Submit an insight', path: '/get-involved/submit-insight' },
   { name: 'Contribute data', path: '/get-involved/contribute-data' },
-  { name: 'Join the community', path: '/get-involved/join-community' },
+  { name: 'Join the community', path: '/get-involved/join-community' }
 ];
 
 class Footer extends React.Component {
 
   componentWillMount() {
-    this.props.getPartners();
+    this.props.getPartners(true);
   }
 
   setPartnersList() {

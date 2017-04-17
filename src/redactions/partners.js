@@ -50,12 +50,14 @@ export default function (state = initialState, action) {
  * ACTIONS
  * - getPartners
 */
-export function getPartners() {
+export function getPartners(isFeatured) {
+  const featuredParam = isFeatured !== null ? `?featured=${isFeatured}` : '';
+
   return (dispatch) => {
     // Waiting for fetch from server -> Dispatch loading
     dispatch({ type: GET_PARTNERS_LOADING });
     // TODO: remove the date now
-    fetch(new Request(`${config.CMS_API_URL}/api/partners`))
+    fetch(new Request(`${config.CMS_API_URL}/api/partners${featuredParam}`))
       .then((response) => {
         if (response.ok) return response.json();
         throw new Error(response.statusText);

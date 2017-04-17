@@ -14,8 +14,8 @@ class Partners extends React.Component {
   }
 
   render() {
-    const featured = this.props.list.filter(p => p.attributes.featured);
-    const nonFeatured = this.props.list.filter(p => !p.attributes.featured);
+    const founders = this.props.list.filter(p => p.attributes['partner-type'] === 'founding_partners');
+    const funders = this.props.list.filter(p => p.attributes['partner-type'] === 'funders');
 
     return (
       <div className="p-partners">
@@ -70,7 +70,7 @@ class Partners extends React.Component {
                 </div>
               </div>
               <div className="row">
-                {featured.map((p, i) => <PartnerBlock key={i} item={p} />)}
+                {founders.map((p, i) => <PartnerBlock key={i} item={p} />)}
               </div>
             </div>
           </section>
@@ -83,7 +83,7 @@ class Partners extends React.Component {
                 </div>
               </div>
               <div className="row">
-                {nonFeatured.map((p, i) => <PartnerBlock key={i} item={p} />)}
+                {funders.map((p, i) => <PartnerBlock key={i} item={p} />)}
               </div>
             </div>
           </section>

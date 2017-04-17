@@ -7,7 +7,9 @@ class PartnerDetail extends React.Component {
   }
 
   componentWillReceiveProps(newProps) {
-    this.props.getPartnerData(newProps.params.id);
+    if (this.props.params.id !== newProps.params.id) {
+      this.props.getPartnerData(newProps.params.id);
+    }
   }
 
   splitInTwoParts(str) {
