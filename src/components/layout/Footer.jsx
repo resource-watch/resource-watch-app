@@ -32,11 +32,13 @@ const getInvolved = [
 class Footer extends React.Component {
 
   componentWillMount() {
-    this.props.getPartners(true);
+    this.props.getPartners();
   }
 
   setPartnersList() {
-    return this.props.list.map((p, i) => (
+    const featured = this.props.list.filter(p => p.attributes.featured);
+    
+    return featured.map((p, i) => (
       <div key={i} className="item">
         <Link to={`/about/partners/${p.id}`}>
           <img className="-img" src={`${config.CMS_API_URL}${p.attributes.logo.thumb}`} alt={p.attributes.name} />

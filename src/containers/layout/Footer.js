@@ -7,7 +7,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  getPartners: (isFeatured) => { dispatch(getPartners(isFeatured)); }
+  getPartners: () => { dispatch(getPartners()); }
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Footer);
