@@ -26,7 +26,7 @@ const getInvolved = [
   { name: 'Get involved', path: '/get-involved' },
   { name: 'Submit an insight', path: '/get-involved/submit-insight' },
   { name: 'Contribute data', path: '/get-involved/contribute-data' },
-  { name: 'Join the community', path: '/get-involved/join-community' },
+  { name: 'Join the community', path: '/get-involved/join-community' }
 ];
 
 class Footer extends React.Component {
@@ -36,7 +36,9 @@ class Footer extends React.Component {
   }
 
   setPartnersList() {
-    return this.props.list.map((p, i) => (
+    const featured = this.props.list.filter(p => p.attributes.featured);
+    
+    return featured.map((p, i) => (
       <div key={i} className="item">
         <Link to={`/about/partners/${p.id}`}>
           <img className="-img" src={`${config.CMS_API_URL}${p.attributes.logo.thumb}`} alt={p.attributes.name} />
