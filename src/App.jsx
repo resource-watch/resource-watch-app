@@ -1,4 +1,5 @@
 import React from 'react';
+import { Modal } from 'rw-components';
 import Header from './components/layout/Header';
 import Footer from './containers/layout/Footer';
 import Tooltip from './containers/ui/Tooltip';
@@ -9,23 +10,48 @@ const fullScreenPages = [
   '/planet-pulse'
 ];
 
-function App(props) {
-  const fullScreen = fullScreenPages.indexOf(props.location.pathname) !== -1;
+class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      modalOpen: props.modal.open || false
+    };
+  }
 
-  return (
-    <div>
-      <Header fullScreen={fullScreen} />
-      { props.children }
-      {!fullScreen && <Footer />}
+  componentWillReceiveProps(newProps) {
+    if (this.state.modalOpen !== newProps.modal.open) {
+      this.setState({ modalOpen: newProps.modal.open });
+    }
+  }
+  render() {
+    const { modal } = this.props;
+    const fullScreen = fullScreenPages.indexOf(this.props.location.pathname) !== -1;
 
-      <Tooltip />
-    </div>
-  );
+    return (
+      <div>
+        <Header fullScreen={fullScreen} />
+        { this.props.children }
+        {!fullScreen && <Footer />}
+
+        <Tooltip />
+        <Modal
+          open={this.state.modalOpen}
+          options={modal.options}
+          loading={modal.loading}
+          toggleModal={this.props.toggleModal}
+          setModalOptions={this.props.setModalOptions}
+        />
+      </div>
+    );
+  }
 }
 
 App.propTypes = {
+  children: React.PropTypes.element.isRequired,
   location: React.PropTypes.object,
-  children: React.PropTypes.element.isRequired
+  modal: React.PropTypes.object,
+  toggleModal: React.PropTypes.func,
+  setModalOptions: React.PropTypes.func
 };
 
 export default App;

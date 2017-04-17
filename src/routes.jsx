@@ -6,7 +6,7 @@ import { onEnterExploreUrlParams, onChangeExploreUrlParams, shouldUpdateScroll, 
 
 
 // Components
-import App from './App';
+import App from './containers/App';
 import Home from './containers/pages/Home';
 import Explore from './containers/pages/Explore';
 import ExploreDetail from './containers/pages/ExploreDetail';
