@@ -12,7 +12,7 @@ class About extends React.Component {
     const { data } = this.props;
     const styles = {};
     if (data.photo) {
-      styles['backgroundImage'] = `url(${config.CMS_API_URL}${data.photo.medium})`;
+      styles.backgroundImage = `url(${config.CMS_API_URL}${data.photo.large})`;
     }
 
     return (
@@ -26,8 +26,7 @@ class About extends React.Component {
                 <div
                   className="description column small-12 medium-8 medium-offset-2"
                   dangerouslySetInnerHTML={{ __html: data.description }}
-                >
-                </div>
+                />
               </div>
             </div>
           </section>
@@ -35,7 +34,7 @@ class About extends React.Component {
           <div className="row collapse">
             <div className="column small-12">
               <Banner className="partners">
-                <h3 className="c-text -header-normal -normal">We have a massive opportunity<br/>to build a sustainable society</h3>
+                <h3 className="c-text -header-normal -normal">We have a massive opportunity<br />to build a sustainable society</h3>
                 <button className="c-btn -primary -filled">
                   <Link to="/about/partners">Partners list</Link>
                 </button>
@@ -47,5 +46,10 @@ class About extends React.Component {
     );
   }
 }
+
+About.propTypes = {
+  data: React.PropTypes.object,
+  getStaticData: React.PropTypes.func
+};
 
 export default About;
