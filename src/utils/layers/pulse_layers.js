@@ -2,10 +2,10 @@ export const LAYERS_PLANET_PULSE = [
   {
     label: 'Forests',
     layers: [
-      {
-        label: 'VIIRS Active Fires',
-        id: '22c9c1bc-fc40-4c85-ae70-a7c837c126f2'
-      },
+      // {
+      //   label: 'VIIRS Active Fires',
+      //   id: '22c9c1bc-fc40-4c85-ae70-a7c837c126f2'
+      // },
       {
         label: 'Deforestation Alert System, SAD alerts (Imazon)',
         id: '17b9bf19-e116-4a22-b71a-fe67ce7fd552'
