@@ -1,4 +1,5 @@
 import React from 'react';
+import { Autobind } from 'es-decorators';
 
 // Helpers
 import LayerGlobeManager from 'utils/layers/LayerGlobeManager';
@@ -27,35 +28,30 @@ class Pulse extends React.Component {
       selectedMarker: null
     };
     this.layerGlobeManager = new LayerGlobeManager();
-
-    // Bindings
-    this.onZoomIn = this.onZoomIn.bind(this);
-    this.onZoomOut = this.onZoomOut.bind(this);
-    this.onMouseDown = this.onMouseDown.bind(this);
-    this.setTooltipValue = this.setTooltipValue.bind(this);
-    this.handleMarkerSelected = this.handleMarkerSelected.bind(this);
-    this.handleEarthClicked = this.handleEarthClicked.bind(this);
   }
 
+  /**
+   * COMPONENT LIFECYCLE
+   * - componentWillMount
+   * - componentWillReceiveProps
+   * - componentWillUnmount
+  */
   componentWillMount() {
     // This is not sending anything, for the moment
     this.props.getLayers();
-    document.addEventListener('click', this.onMouseDown);
+    document.addEventListener('click', this.triggerMouseDown);
   }
-
-  componentWillUnmount() {
-    document.removeEventListener('click', this.onMouseDown);
-  }
-
   componentWillReceiveProps(nextProps) {
-    const lastId = (this.props.layerActive) ? this.props.layerActive.id : null;
-    const newId = (nextProps.layerActive) ? nextProps.layerActive.id : null;
+    const { layerActive } = this.props.pulse;
+    const nextLayerActive = nextProps.pulse.layerActive;
+    const lastId = (layerActive) ? layerActive.id : null;
+    const newId = (nextLayerActive) ? nextLayerActive.id : null;
     if (lastId !== newId) {
-      if (nextProps.layerActive) {
+      if (nextLayerActive) {
         this.setState({
           loading: true
         });
-        this.layerGlobeManager.addLayer(nextProps.layerActive, {
+        this.layerGlobeManager.addLayer(nextLayerActive.attributes, {
           onLayerAddedSuccess: function success(texture) {
             console.info(texture);
             this.setState({
@@ -81,29 +77,40 @@ class Pulse extends React.Component {
     //   this.setState({ layerPoints: nextProps.pulse.layerPoints });
     // }
   }
+  componentWillUnmount() {
+    document.removeEventListener('click', this.triggerMouseDown);
+  }
 
-  onZoomIn() {
+  /**
+  * UI EVENTS
+  * - triggerZoomIn
+  * - triggerZoomOut
+  * - triggerMouseDown
+  * - handleMarkerSelected
+  * - handleEarthClicked
+  */
+  @Autobind
+  triggerZoomIn() {
     this.globe.camera.translateZ(-5);
   }
-
-  onZoomOut() {
+  @Autobind
+  triggerZoomOut() {
     this.globe.camera.translateZ(5);
   }
-
-  onMouseDown() {
+  @Autobind
+  triggerMouseDown() {
     this.props.toggleTooltip(false);
   }
-
+  @Autobind
   handleMarkerSelected(marker) {
     console.info('handleMarkerSelected', marker);
     this.setState({ selectedMarker: JSON.stringify(marker) });
   }
-
+  @Autobind
   handleEarthClicked(latLon, clientX, clientY) {
     this.props.toggleTooltip(false);
 
-    const currentLayer = this.props.pulse.layers.find(
-      val => val.id === this.props.pulse.layerActive);
+    const currentLayer = this.props.pulse.layerActive.attributes;
     if (currentLayer) {
       const datasetId = currentLayer.dataset;
       const options = currentLayer.layerConfig.body.layers[0].options;
@@ -115,7 +122,7 @@ class Pulse extends React.Component {
       });
       let requestURL;
       if (geomColumn) {
-        requestURL = `${config.API_URL}/query/${datasetId}?sql=SELECT ST_Value(st_transform(${geomColumn},4326), st_setsrid(st_geomfromgeojson(${geoJSON}),4326), true) FROM ${tableName} WHERE st_intersects(${geomColumn},st_setsrid(st_geomfromgeojson(${geoJSON}),4326))`;
+        requestURL = `${config.API_URL}/query/${datasetId}?sql=SELECT ST_Value(st_transform(${geomColumn},4326), st_setsrid(st_geomfromgeojson('${geoJSON}'),4326), true) FROM ${tableName} WHERE st_intersects(${geomColumn},st_setsrid(st_geomfromgeojson('${geoJSON}'),4326))`;
       } else {
         requestURL = `${config.API_URL}/query/${datasetId}?sql=SELECT * FROM ${tableName} WHERE st_intersects(the_geom,st_buffer(ST_SetSRID(st_geomfromgeojson('${geoJSON}'),4326),1))`;
       }
@@ -123,6 +130,11 @@ class Pulse extends React.Component {
     }
   }
 
+  /**
+  * HELPER FUNCTIONS
+  * - setTooltipValue
+  */
+  @Autobind
   setTooltipValue(requestURL, tooltipX, tooltipY) {
     fetch(new Request(requestURL))
       .then((response) => {
@@ -166,7 +178,7 @@ class Pulse extends React.Component {
           isLoading={this.state.loading}
         />
         <Globe
-          ref={globe => this.globe = globe}
+          ref={globe => (this.globe = globe)}
           width={window.innerWidth}
           height={window.innerHeight - 130} // TODO: 130 is the header height
           pointLightColor={0xcccccc}
@@ -186,9 +198,9 @@ class Pulse extends React.Component {
           onEarthClicked={this.handleEarthClicked}
         />
         <ZoomControl
-          ref={zoomControl => this.zoomControl = zoomControl}
-          onZoomIn={this.onZoomIn}
-          onZoomOut={this.onZoomOut}
+          ref={zoomControl => (this.zoomControl = zoomControl)}
+          onZoomIn={this.triggerZoomIn}
+          onZoomOut={this.triggerZoomOut}
         />
       </div>
     );
