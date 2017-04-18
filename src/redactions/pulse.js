@@ -1,11 +1,6 @@
 /* global config */
 import 'whatwg-fetch';
-import find from 'lodash/find';
-import compact from 'lodash/compact';
-import flatten from 'lodash/flatten';
-
-// We should merge the layerSpecPulse with the response of the layers
-import layerSpecPulse from 'utils/layers/layerSpecPulse.json';
+import { LAYERS_PLANET_PULSE } from 'utils/layers/pulse_layers';
 
 
 /**
@@ -19,7 +14,6 @@ const SET_ACTIVE_LAYER = 'planetpulse/SET_ACTIVE_LAYER';
 
 const GET_LAYER_POINTS_SUCCESS = 'planetpulse/GET_LAYER_POINTS_SUCCESS';
 const GET_LAYER_POINTS_ERROR = 'planetpulse/GET_LAYER_POINTS_ERROR';
-
 
 /**
  * REDUCER
@@ -66,54 +60,40 @@ export default function (state = initialState, action) {
  * - getLayerPoints
 */
 export function getLayers() {
-  function getLayerFromDataset(dataset) {
-    const hasVocabulary = dataset.attributes.vocabulary && dataset.attributes.vocabulary.length;
-
-    if (hasVocabulary) {
-      const vocabulary = dataset.attributes.vocabulary.find(v => v.attributes.name === 'legacy');
-      if (vocabulary) {
-        return compact(dataset.attributes.layer.map((layer) => {
-          if (!layer.attributes.default && layer.attributes.staticImageConfig) {
-            const layerSpec = find(layerSpecPulse, { id: layer.id });
-            return Object.assign({}, layerSpec, layer.attributes);
-          }
-          return null;
-        }));
-      }
-    }
-    return null;
-  }
   return (dispatch) => {
     // Waiting for fetch from server -> Dispatch loading
     dispatch({ type: GET_LAYERS_LOADING });
-    // TODO: remove the date now
-    fetch(new Request(`${config.API_URL}/dataset?application=rw&status=saved&includes=vocabulary,layer&vocabulary[function]=planet_pulse&page[size]=${Date.now() / 100000}`))
-    .then((response) => {
-      if (response.ok) return response.json();
-      throw new Error(response.statusText);
-    })
-    .then((response) => {
-      const datasets = response.data;
-      const layers = compact(flatten(datasets.map(getLayerFromDataset)));
-      dispatch({
-        type: GET_LAYERS_SUCCESS,
-        payload: layers
-      });
-    })
-    .catch((err) => {
-      // Fetch from server ko -> Dispatch error
-      dispatch({
-        type: GET_LAYERS_ERROR,
-        payload: err.message
-      });
+
+    const layers = LAYERS_PLANET_PULSE;
+    dispatch({
+      type: GET_LAYERS_SUCCESS,
+      payload: layers
     });
   };
 }
 
 export function toggleActiveLayer(id) {
-  return {
-    type: SET_ACTIVE_LAYER,
-    payload: id
+  return (dispatch) => {
+    fetch(new Request(`${config.API_URL}/layer/${id}`))
+      .then((response) => {
+        if (response.ok) return response.json();
+        throw new Error(response.statusText);
+      })
+      .then((response) => {
+        console.info('response.data', response.data);
+        const layer = response.data;
+        dispatch({
+          type: SET_ACTIVE_LAYER,
+          payload: layer
+        });
+      })
+      .catch((err) => {
+        // Fetch from server ko -> Dispatch error
+        dispatch({
+          type: SET_ACTIVE_LAYER,
+          payload: null
+        });
+      });
   };
 }
 
