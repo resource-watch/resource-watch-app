@@ -3,11 +3,11 @@ import LayerNavDropdown from 'containers/pulse/LayerNavDropdown';
 
 const LayerNav = ({ layerActive, layersGroup }) => {
   function createItemGroup(group) {
-    const activeGroup = layerActive && layerActive.group === group.name ? '-active' : '';
+    const activeGroup = layerActive && layerActive.group === group.label ? '-active' : '';
     return (
-      <li key={`item-group-${group.name}`} className={activeGroup}>
+      <li key={`item-group-${group.label}`} className={activeGroup}>
         <span className="name">
-          {group.name}
+          {group.label}
         </span>
         <LayerNavDropdown layers={group.layers} />
       </li>
@@ -17,7 +17,7 @@ const LayerNav = ({ layerActive, layersGroup }) => {
     <div className="c-layer-nav">
       <div className="l-container">
         <ul className="layer-nav-list">
-          {layersGroup.map(createItemGroup)}
+          {layersGroup.length > 0 && layersGroup[0].layers.map(createItemGroup)}
         </ul>
       </div>
     </div>
