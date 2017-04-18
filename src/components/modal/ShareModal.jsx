@@ -34,7 +34,7 @@ class ShareModal extends React.Component {
 
     return (
       <div className="share-content">
-        <h3>Share into my web</h3>
+        <h1 className="c-text -header-normal -thin title">Share this page</h1>
         {content}
         <div className="media">
           <a
@@ -58,7 +58,7 @@ class ShareModal extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className="share-modal">
         {this.getContent()}
       </div>
     );

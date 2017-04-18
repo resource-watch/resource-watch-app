@@ -12,6 +12,7 @@ import Legend from 'components/ui/Legend';
 import CustomSelect from 'components/ui/CustomSelect';
 import LayerManager from 'utils/layers/LayerManager';
 import Spinner from 'components/ui/Spinner';
+import Icon from 'components/ui/Icon';
 
 import issuesList from 'json/issues.json';
 
@@ -137,7 +138,9 @@ class Explore extends React.Component {
             toggledDataset={this.props.toggledDataset}
           />
 
-          <button onClick={() => this.handleShareModal()} style={{ position: 'absolute', zIndex: 999999 }}>Share</button>
+          <button className="share-button" onClick={() => this.handleShareModal()}>
+            <Icon name="icon-share" className="-small" />
+          </button>
 
           {this.state.layersActive && this.state.layersActive.length &&
             <Legend
