@@ -80,7 +80,6 @@ export function toggleActiveLayer(id) {
         throw new Error(response.statusText);
       })
       .then((response) => {
-        console.info('response.data', response.data);
         const layer = response.data;
         dispatch({
           type: SET_ACTIVE_LAYER,
