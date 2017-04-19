@@ -448,12 +448,17 @@ class Globe extends React.Component {
     const intersects = this.raycaster.intersectObjects(this.scene.children);
 
     if (intersects.length > 0) {
-      intersects.map((el) => {
+      let markerClicked = false;
+      intersects.forEach((el) => {
         const nameVal = el.object.name;
         if (nameVal !== 'halo' && nameVal !== 'earth' && nameVal !== 'texture') {
           this.props.onMarkerSelected(el.object.name, event);
+          markerClicked = true;
         }
       });
+      if (!markerClicked) {
+        this.props.onClickInEmptyRegion();
+      }
     }
     if (this.props.layerPoints.length === 0) {
       const earthIntersect = this.raycaster.intersectObjects([this.earth]);
@@ -598,7 +603,8 @@ Globe.propTypes = {
 
   // Functions
   onMarkerSelected: React.PropTypes.func,
-  onEarthClicked: React.PropTypes.func
+  onEarthClicked: React.PropTypes.func,
+  onClickInEmptyRegion: React.PropTypes.func
 };
 
 export default Globe;

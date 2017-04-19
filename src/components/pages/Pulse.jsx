@@ -103,6 +103,7 @@ class Pulse extends React.Component {
   * - triggerMouseDown
   * - handleMarkerSelected
   * - handleEarthClicked
+  * - handleClickInEmptyRegion
   */
   @Autobind
   triggerZoomIn() {
@@ -114,7 +115,6 @@ class Pulse extends React.Component {
   }
   @Autobind
   triggerMouseDown() {
-    console.info('triggerMouseDown');
     this.props.toggleTooltip(false);
   }
   @Autobind
@@ -138,7 +138,6 @@ class Pulse extends React.Component {
   @Autobind
   handleEarthClicked(latLon, clientX, clientY) {
     this.props.toggleTooltip(false);
-    debugger;
     if (this.props.pulse.layerActive) {
       const currentLayer = this.props.pulse.layerActive.attributes;
       const datasetId = currentLayer.dataset;
@@ -157,6 +156,10 @@ class Pulse extends React.Component {
       }
       this.setTooltipValue(requestURL, clientX, clientY);
     }
+  }
+  @Autobind
+  handleClickInEmptyRegion() {
+    this.props.toggleTooltip(false);
   }
 
   /**
@@ -225,6 +228,7 @@ class Pulse extends React.Component {
           useDefaultLayer
           onMarkerSelected={this.handleMarkerSelected}
           onEarthClicked={this.handleEarthClicked}
+          onClickInEmptyRegion={this.handleClickInEmptyRegion}
         />
         <ZoomControl
           ref={zoomControl => (this.zoomControl = zoomControl)}
