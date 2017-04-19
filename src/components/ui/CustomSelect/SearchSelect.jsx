@@ -8,7 +8,8 @@ export default class CustomSelect extends React.Component {
       selectedItem: props.options ? props.options.find(item => item.value === props.value) : null,
       closed: true,
       filteredOptions: props.options || [],
-      selectedIndex: 0
+      selectedIndex: 0,
+      value: null
     };
 
     // Bindings
@@ -74,19 +75,14 @@ export default class CustomSelect extends React.Component {
       // Typing text
       default: {
         const value = evt.currentTarget.value;
-        const filteredOptions = this.props.options.filter(item => item.label.toLowerCase().match(value.toLowerCase()));
-        this.setState({ filteredOptions });
+        const filteredOptions = this.props.options.filter(item => item.label
+          .toLowerCase().match(value.toLowerCase()));
+        this.setState({ filteredOptions }, () => {
+          this.props.onKeyPressed && this.props.onKeyPressed({ value }, [], 'name');
+        });
         break;
       }
     }
-  }
-
-  resetSelectedIndex() {
-    this.setSelectedIndex(0);
-  }
-
-  setSelectedIndex(index) {
-    this.setState({ selectedIndex: index });
   }
 
   // Event handler for enter event on search input
@@ -94,18 +90,26 @@ export default class CustomSelect extends React.Component {
     this.setState({ closed: false });
   }
 
-  // Event handler for mouseup event on options list item
-  selectItem(item) {
-    this.setState({ selectedItem: item });
-    this.close();
-    this.props.onValueChange && this.props.onValueChange(item);
-  }
-
   onScreenClick(evt) {
     if (this.el.contains && !this.el.contains(evt.target)) {
       this.close();
       window.removeEventListener('click', this.onScreenClick);
     }
+  }
+
+  setSelectedIndex(index) {
+    this.setState({ selectedIndex: index });
+  }
+
+  resetSelectedIndex() {
+    this.setSelectedIndex(0);
+  }
+
+  // Event handler for mouseup event on options list item
+  selectItem(item) {
+    this.setState({ selectedItem: item });
+    this.close();
+    this.props.onValueChange && this.props.onValueChange(item);
   }
 
   toggle() {
@@ -123,16 +127,14 @@ export default class CustomSelect extends React.Component {
   }
 
   // Method that closes the options list
-  close() {
+  close(e) {
     window.removeEventListener('click', this.onScreenClick);
 
     this.setState({
       closed: true,
-      filteredOptions: this.props.options
+      filteredOptions: this.props.options,
+      value: e.currentTarget.value
     }, this.resetSelectedIndex);
-    if (this.input) {
-      this.input.value = '';
-    }
   }
 
   render() {
@@ -147,7 +149,10 @@ export default class CustomSelect extends React.Component {
       <div ref={(node) => { this.el = node; }} className={cNames.join(' ')}>
         <span className="custom-select-text" onClick={this.toggle}>
           <div>
-            <span>{this.state.selectedItem ? this.state.selectedItem.label : this.props.placeholder}</span>
+            <span>{this.state.value ?
+              this.state.value :
+              this.props.placeholder}
+            </span>
           </div>
           <input
             ref={(node) => { this.input = node; }}
@@ -166,10 +171,10 @@ export default class CustomSelect extends React.Component {
             {this.state.filteredOptions.map((item, index) => {
               const cName = (index === this.state.selectedIndex) ? '-selected' : '';
               return (
-                <li 
-                  className={cName} 
-                  key={index} 
-                  onMouseEnter={() => { this.setSelectedIndex(index); }} 
+                <li
+                  className={cName}
+                  key={index}
+                  onMouseEnter={() => { this.setSelectedIndex(index); }}
                   onMouseDown={() => this.selectItem(item)}
                 >
                   <span className="label">{item.label}</span>

@@ -12,8 +12,6 @@ import CustomSelect from 'components/ui/CustomSelect';
 import LayerManager from 'utils/layers/LayerManager';
 import Spinner from 'components/ui/Spinner';
 
-import issuesList from 'json/issues.json';
-
 const mapConfig = {
   zoom: 3,
   latLng: {
@@ -52,8 +50,8 @@ class Explore extends React.Component {
     item && item.value && this.props.redirectTo(`explore/${item.value}`);
   }
 
-  handleFilterDatasets(item, levels) {
-    const filter = item ? [{ levels, value: item.value }] : [];
+  handleFilterDatasets(item, levels, key) {
+    const filter = item ? [{ levels, value: item.value, key }] : [];
     this.props.setDatasetsFilters(filter);
   }
 
@@ -84,6 +82,7 @@ class Explore extends React.Component {
                     <CustomSelect
                       options={datasetsSearchList}
                       onValueChange={this.handleRedirect}
+                      onKeyPressed={this.handleFilterDatasets}
                       search
                       placeholder="Search dataset"
                     />

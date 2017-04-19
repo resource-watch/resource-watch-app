@@ -113,7 +113,7 @@ export default class CustomSelect extends React.Component {
     const levels = this.state.selectedLevels.map(lev => lev.value);
     this.setState({ selectedItem: item });
     this.close();
-    this.props.onValueChange && this.props.onValueChange(item, levels);
+    this.props.onValueChange && this.props.onValueChange(item, levels, 'vocabulary');
   }
 
   onScreenClick(evt) {
