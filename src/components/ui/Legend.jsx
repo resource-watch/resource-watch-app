@@ -2,6 +2,7 @@ import React from 'react';
 import { SortableContainer, SortableElement, SortableHandle, arrayMove } from 'react-sortable-hoc';
 import LegendType from 'components/pulse/LegendType';
 import Icon from 'components/ui/Icon';
+import Switch from 'components/ui/Switch';
 
 const SortableItem = SortableElement(({ value }) => value);
 
@@ -11,15 +12,13 @@ const DragHandle = SortableHandle(() => (
   </span>
 ));
 
-const SortableList = SortableContainer(({ items }) => {
-  return (
-    <ul className="legend-list">
-      {items.map((value, index) =>
-        <SortableItem key={`item-${index}`} index={index} value={value} />
-      )}
-    </ul>
-  );
-});
+const SortableList = SortableContainer(({ items }) => (
+  <ul className="legend-list">
+    {items.map((value, index) =>
+      <SortableItem key={`item-${index}`} index={index} value={value} />
+    )}
+  </ul>
+));
 
 class Legend extends React.Component {
   constructor(props) {
@@ -47,10 +46,29 @@ class Legend extends React.Component {
   onSortMove(ev) {
   }
 
+  onDeactivateLayer(dataset) {
+    this.props.toggleDatasetActive(dataset);
+    this.props.layersHidden.includes(dataset) && this.onHideLayer(dataset);
+  }
+
+  onHideLayer(dataset) {
+    let newLayersHidden = this.props.layersHidden.slice();
+    this.props.layersHidden.includes(dataset) ?
+      newLayersHidden = this.props.layersHidden.filter(l => l !== dataset) :
+      newLayersHidden.push(dataset);
+
+    this.props.setDatasetsHidden(newLayersHidden);
+  }
+
   getItemsActions(layer) {
     return (
       <div className="item-actions">
-        <button onClick={() => this.props.toggleDatasetActive(layer.dataset)}>
+        <Switch
+          onChange={() => this.onHideLayer(layer.dataset)}
+          active={!layer.hidden}
+          classNames="-secondary"
+        />
+        <button onClick={() => this.onDeactivateLayer(layer.dataset)}>
           <Icon name="icon-cross" className="-smaller" />
         </button>
       </div>
@@ -99,10 +117,12 @@ class Legend extends React.Component {
 
 Legend.propTypes = {
   layersActive: React.PropTypes.array,
+  layersHidden: React.PropTypes.array,
   className: React.PropTypes.object,
   // Functions
   toggleDatasetActive: React.PropTypes.func,
-  setDatasetsActive: React.PropTypes.func
+  setDatasetsActive: React.PropTypes.func,
+  setDatasetsHidden: React.PropTypes.func
 };
 
 export default Legend;

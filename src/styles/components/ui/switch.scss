@@ -4,6 +4,21 @@ $switch-margin: 1px;
 
 .c-switch {
   display: flex;
+  cursor: pointer;
+
+  &.-secondary {
+    .switch-element {
+      background-color: $color-grey;
+
+      &.-active {
+        background-color: $color-secondary;
+
+        & > span { background-color: $color-white; }
+      }
+
+      & > span { background-color: $color-white; }
+    }
+  }
 
   .switch-element {
     width: $switch-width;
@@ -16,13 +31,16 @@ $switch-margin: 1px;
       position: absolute;
       width: $switch-height - ($switch-margin * 2);
       height: $switch-height - ($switch-margin * 2);
-      background: $color-primary;
+      background: $color-white;
       border-radius: 50%;
       margin: $switch-margin;
       transition: transform $animation-time $ease-in-out-sine;
     }
 
     // Switch position
-    &.-active > span { transform: translate(($switch-width / 2),0); }
+    &.-active > span {
+      background-color: $color-primary;
+      transform: translate(($switch-width / 2) - 2px,0);
+    }
   }
 }

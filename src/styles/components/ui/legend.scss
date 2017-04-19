@@ -51,6 +51,19 @@
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
+
+    .item-actions {
+      display: flex;
+      align-items: center;
+
+      button { display: flex; }
+      
+      > * {
+        margin-right: 5px;
+
+        &:last-child { margin-right: 0; }
+      }
+    }
   }
 
   .handler {

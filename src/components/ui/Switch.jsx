@@ -31,7 +31,7 @@ class Switch extends React.Component {
   render() {
     const activeClass = (this.state.active) ? '-active' : null;
     return (
-      <div className="c-switch">
+      <div className={`c-switch ${this.props.classNames}`}>
         <span
           className={`switch-element ${activeClass}`}
           onClick={this.onToggle}
@@ -50,6 +50,7 @@ Switch.defaultProps = {
 
 Switch.propTypes = {
   active: React.PropTypes.bool,
+  classNames: React.PropTypes.string,
   onChange: React.PropTypes.func
 };
 

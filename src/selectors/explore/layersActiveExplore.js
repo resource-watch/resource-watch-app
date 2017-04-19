@@ -5,9 +5,10 @@ import { createSelector } from 'reselect';
 // Get the datasets and filters from state
 const datasets = state => state.explore.datasets.list;
 const activeLayers = state => state.explore.datasets.active;
+const hiddenLayers = state => state.explore.datasets.hidden;
 
 // Create a function to compare the current active datatasets and the current datasetsIds
-const getActiveLayers = (_datasets, _activeLayers) => {
+const getActiveLayers = (_datasets, _activeLayers, _hiddenLayers) => {
   const layerList = [];
   const activeDatasets = [];
   let layer;
@@ -25,7 +26,8 @@ const getActiveLayers = (_datasets, _activeLayers) => {
           name: dataset.attributes.name,
           subtitle: dataset.attributes.subtitle,
           ...dataset.attributes.layer.find(l => l.attributes.default === true).attributes,
-          order: i + 1
+          order: i + 1,
+          hidden: _hiddenLayers.includes(dataset.id)
         };
 
         layerList.push(Object.assign({}, layer));
@@ -40,5 +42,6 @@ const getActiveLayers = (_datasets, _activeLayers) => {
 export default createSelector(
   datasets,
   activeLayers,
+  hiddenLayers,
   getActiveLayers
 );

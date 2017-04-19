@@ -128,9 +128,11 @@ class Explore extends React.Component {
           {this.state.layersActive && this.state.layersActive.length &&
             <Legend
               layersActive={this.state.layersActive}
+              layersHidden={this.props.explore.datasets.hidden}
               className={{ color: '-dark' }}
               setDatasetsActive={this.props.setDatasetsActive}
               toggleDatasetActive={this.props.toggleDatasetActive}
+              setDatasetsHidden={this.props.setDatasetsHidden}
             />
           }
         </div>
@@ -151,6 +153,7 @@ Explore.propTypes = {
   setDatasetsPage: React.PropTypes.func,
   redirectTo: React.PropTypes.func,
   setDatasetsActive: React.PropTypes.func,
+  setDatasetsHidden: React.PropTypes.func,
   setDatasetsFilters: React.PropTypes.func,
   toggleDatasetActive: React.PropTypes.func
 };
