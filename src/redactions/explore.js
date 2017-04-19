@@ -1,6 +1,7 @@
 /* global config */
 import 'whatwg-fetch';
 import flatten from 'lodash/flatten';
+import uniq from 'lodash/uniq';
 import { replace } from 'react-router-redux';
 
 /**
@@ -187,9 +188,10 @@ export function getVocabularies() {
           {
             label: voc.attributes.name
               .replace(/([A-Z])/g, ' $1')
+              .replace(/([-_])/g, ' ')
               .replace(/^./, str => str.toUpperCase()),
             value: voc.attributes.name,
-            items: flatten(voc.attributes.resources.map(t => t.tags), e => e)
+            items: uniq(flatten(voc.attributes.resources.map(t => t.tags), e => e))
               .map(it => ({ label: it, value: it }))
           }
         ));
