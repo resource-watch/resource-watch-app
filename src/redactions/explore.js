@@ -1,6 +1,6 @@
 /* global config */
 import 'whatwg-fetch';
-import find from 'lodash/find';
+import flatten from 'lodash/flatten';
 import { replace } from 'react-router-redux';
 
 /**
@@ -9,6 +9,10 @@ import { replace } from 'react-router-redux';
 const GET_DATASETS_SUCCESS = 'explore/GET_DATASETS_SUCCESS';
 const GET_DATASETS_ERROR = 'explore/GET_DATASETS_ERROR';
 const GET_DATASETS_LOADING = 'explore/GET_DATASETS_LOADING';
+
+const GET_VOCABULARIES_SUCCESS = 'explore/GET_VOCABULARIES_SUCCESS';
+const GET_VOCABULARIES_ERROR = 'explore/GET_VOCABULARIES_ERROR';
+const GET_VOCABULARIES_LOADING = 'explore/GET_VOCABULARIES_LOADING';
 
 const SET_DATASETS_ACTIVE = 'explore/SET_DATASETS_ACTIVE';
 const SET_DATASETS_PAGE = 'explore/SET_DATASETS_PAGE';
@@ -31,6 +35,11 @@ const initialState = {
     mode: 'grid' // 'grid' or 'list'
   },
   filters: [],
+  vocabularies: {
+    list: [],
+    loading: false,
+    error: false
+  },
   sidebar: {
     open: true,
     width: 0
@@ -62,6 +71,31 @@ export default function (state = initialState, action) {
         error: false
       });
       return Object.assign({}, state, { datasets });
+    }
+
+    case GET_VOCABULARIES_SUCCESS: {
+      const vocabularies = Object.assign({}, state.vocabularies, {
+        list: action.payload,
+        loading: false,
+        error: false
+      });
+      return Object.assign({}, state, { vocabularies });
+    }
+
+    case GET_VOCABULARIES_ERROR: {
+      const vocabularies = Object.assign({}, state.vocabularies, {
+        loading: false,
+        error: true
+      });
+      return Object.assign({}, state, { vocabularies });
+    }
+
+    case GET_VOCABULARIES_LOADING: {
+      const vocabularies = Object.assign({}, state.vocabularies, {
+        loading: true,
+        error: false
+      });
+      return Object.assign({}, state, { vocabularies });
     }
 
     case SET_DATASETS_ACTIVE: {
@@ -112,7 +146,7 @@ export function getDatasets() {
     // Waiting for fetch from server -> Dispatch loading
     dispatch({ type: GET_DATASETS_LOADING });
     // TODO: remove the date now
-    fetch(new Request(`${config.API_URL}/dataset?application=rw&status=saved&includes=widget,layer,metadata&page[size]=${Date.now() / 100000}`))
+    fetch(new Request(`${config.API_URL}/dataset?application=rw&status=saved&includes=widget,layer,metadata,vocabulary&page[size]=${Date.now() / 100000}`))
       .then((response) => {
         if (response.ok) return response.json();
         throw new Error(response.statusText);
@@ -132,6 +166,43 @@ export function getDatasets() {
         // Fetch from server ko -> Dispatch error
         dispatch({
           type: GET_DATASETS_ERROR,
+          payload: err.message
+        });
+      });
+  };
+}
+
+export function getVocabularies() {
+  return (dispatch) => {
+    // Waiting for fetch from server -> Dispatch loading
+    dispatch({ type: GET_VOCABULARIES_LOADING });
+    // TODO: remove the date now
+    fetch(new Request(`${config.API_URL}/vocabulary`))
+      .then((response) => {
+        if (response.ok) return response.json();
+        throw new Error(response.statusText);
+      })
+      .then((response) => {
+        const vocabularies = response.data.map(voc => (
+          {
+            label: voc.attributes.name
+              .replace(/([A-Z])/g, ' $1')
+              .replace(/^./, str => str.toUpperCase()),
+            value: voc.attributes.name,
+            items: flatten(voc.attributes.resources.map(t => t.tags), e => e)
+              .map(it => ({ label: it, value: it }))
+          }
+        ));
+
+        dispatch({
+          type: GET_VOCABULARIES_SUCCESS,
+          payload: vocabularies
+        });
+      })
+      .catch((err) => {
+        // Fetch from server ko -> Dispatch error
+        dispatch({
+          type: GET_VOCABULARIES_ERROR,
           payload: err.message
         });
       });

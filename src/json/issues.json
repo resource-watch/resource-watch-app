@@ -3,15 +3,15 @@
     "label": "Background Maps",
     "value": "background-maps",
     "items": [
-      { "label": "Political Boundaries", "value": "political-boundaries" },
+      { "label": "Political Boundaries", "value": "political boundaries" },
       { "label": "Satellite Imagery", "value": "satellite-imagery" },
       { "label": "Elevation", "value": "levation" },
-      { "label": "Land Cover and Use", "value": "land-cover-and-use" }
+      { "label": "Land Cover and Use", "value": "land_cover" }
     ]
   },
   {
     "label": "Planet Pulse (near-real-time)",
-    "value": "planet-pulse-(near-real-time)",
+    "value": "near_real_time",
     "items": [
       { "label": "Forests", "value": "forests" },
       { "label": "Water", "value": "water" },
@@ -45,7 +45,7 @@
       { "label": "Water Hazards", "value": "water-hazards" },
       { "label": "Water Infrastructure", "value": "water-infrastructure" }
     ]
-  }, 
+  },
   {
     "label": "Food (N)",
     "value": "food-(N)",
@@ -55,7 +55,7 @@
       { "label": "Food Consumption", "value": "food-consumption" },
       { "label": "Food Access", "value": "food-access" }
     ]
-  }, 
+  },
   {
     "label": "Climate (L)",
     "value": "climate-(L)",

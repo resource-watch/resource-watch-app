@@ -27,7 +27,8 @@ class Explore extends React.Component {
     super(props);
 
     this.state = {
-      layersActive: props.layersActive
+      layersActive: props.layersActive,
+      vocabularies: props.explore.vocabularies.list || []
     };
 
     // Bindings
@@ -37,29 +38,33 @@ class Explore extends React.Component {
 
   componentWillMount() {
     this.props.getDatasets();
+    this.props.getVocabularies();
   }
 
   componentWillReceiveProps(nextProps) {
-    this.setState({ layersActive: nextProps.layersActive });
+    this.setState({
+      layersActive: nextProps.layersActive,
+      vocabularies: nextProps.explore.vocabularies.list
+    });
   }
 
   handleRedirect(item) {
     item && item.value && this.props.redirectTo(`explore/${item.value}`);
   }
 
-  handleFilterDatasets(item) {
-    const filter = item ? [{ key: 'issues', value: item.value }] : [];
+  handleFilterDatasets(item, levels) {
+    const filter = item ? [{ levels, value: item.value }] : [];
     this.props.setDatasetsFilters(filter);
   }
 
   render() {
     const { explore, paginatedDatasets } = this.props;
-    const datasetsSearchList = explore.datasets.list.map(d => {
-      return {
+    const datasetsSearchList = explore.datasets.list.map(d => (
+      {
         value: d.id,
         label: d.attributes.name
       }
-    });
+    ));
 
     return (
       <div className="p-explore">
@@ -85,7 +90,7 @@ class Explore extends React.Component {
                   </div>
                   <div className="column small-12 medium-6">
                     <CustomSelect
-                      options={issuesList}
+                      options={this.state.vocabularies}
                       onValueChange={this.handleFilterDatasets}
                       placeholder="Select issue"
                     />
@@ -148,6 +153,7 @@ Explore.propTypes = {
 
   // ACTIONS
   getDatasets: React.PropTypes.func,
+  getVocabularies: React.PropTypes.func,
   setDatasetsPage: React.PropTypes.func,
   redirectTo: React.PropTypes.func,
   setDatasetsActive: React.PropTypes.func,
