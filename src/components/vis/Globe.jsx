@@ -95,7 +95,7 @@ class Globe extends React.Component {
               cylinderColor = 0xffff00;
           }
         }
-        const cylinderGeometry = new CylinderGeometry(0.5, 0.5, height);
+        const cylinderGeometry = new CylinderGeometry(0.3, 0.3, height);
 
         // Translate the geometry so the base sits at the origin.
         cylinderGeometry.applyMatrix(new Matrix4().makeTranslation(0, 0, 0));
@@ -104,7 +104,7 @@ class Globe extends React.Component {
         cylinderGeometry.applyMatrix(new Matrix4().makeRotationX(Math.PI / 2));
 
         // Create the mesh.
-        const cylinderMaterial = new MeshBasicMaterial({ color: cylinderColor });
+        const cylinderMaterial = new MeshPhongMaterial({ color: cylinderColor });
         const cylinder = new Mesh(cylinderGeometry, cylinderMaterial);
         cylinder.lookAt(normalVector);
         cylinder.position.copy(normalVector);
@@ -459,6 +459,8 @@ class Globe extends React.Component {
       if (!markerClicked) {
         this.props.onClickInEmptyRegion();
       }
+    } else {
+      this.props.onClickInEmptyRegion();
     }
     if (this.props.layerPoints.length === 0) {
       const earthIntersect = this.raycaster.intersectObjects([this.earth]);

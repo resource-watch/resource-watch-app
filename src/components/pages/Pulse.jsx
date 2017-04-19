@@ -119,9 +119,6 @@ class Pulse extends React.Component {
   }
   @Autobind
   handleMarkerSelected(marker, event) {
-    console.info('handleMarkerSelected', marker);
-    this.setState({ selectedMarker: JSON.stringify(marker) });
-
     const obj = {};
     Object.keys(marker).forEach((key) => {
       if (key !== 'cartodb_id' && key !== 'the_geom' && key !== 'the_geom_webmercator') {
