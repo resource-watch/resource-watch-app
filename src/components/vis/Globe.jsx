@@ -68,7 +68,34 @@ class Globe extends React.Component {
       }
       const pointObjects = nextProps.layerPoints.map((value) => {
         const normalVector = this.convertLatLonToCoordinates(value.lat, value.lon);
-        const cylinderGeometry = new CylinderGeometry(1, 1, 1);
+        const distance = value.distance_km;
+        const displaced = value.displaced;
+        const severity = value.severity;
+        const affectedSqKm = value.affected_sq_km;
+        let height = 1;
+        let cylinderColor = 0xffff00;
+        if (displaced) {
+          height = Math.log(displaced);
+        }
+        if (distance) {
+          height = Math.log(distance) * 3;
+        }
+        if (severity) {
+          switch (severity) {
+            case 1:
+              cylinderColor = 0x8eb67b;
+              break;
+            case 2:
+              cylinderColor = 0xf4d14d;
+              break;
+            case 3:
+              cylinderColor = 0xdd4e56;
+              break;
+            default:
+              cylinderColor = 0xffff00;
+          }
+        }
+        const cylinderGeometry = new CylinderGeometry(0.5, 0.5, height);
 
         // Translate the geometry so the base sits at the origin.
         cylinderGeometry.applyMatrix(new Matrix4().makeTranslation(0, 0, 0));
@@ -77,7 +104,7 @@ class Globe extends React.Component {
         cylinderGeometry.applyMatrix(new Matrix4().makeRotationX(Math.PI / 2));
 
         // Create the mesh.
-        const cylinderMaterial = new MeshBasicMaterial({ color: 0xffff00 });
+        const cylinderMaterial = new MeshBasicMaterial({ color: cylinderColor });
         const cylinder = new Mesh(cylinderGeometry, cylinderMaterial);
         cylinder.lookAt(normalVector);
         cylinder.position.copy(normalVector);
@@ -88,6 +115,8 @@ class Globe extends React.Component {
         return cylinder;
       });
       this.setState({ markers: pointObjects });
+    } else if (this.props.layerPoints.length > 0) {
+      this.removeMarkers();
     }
   }
 
@@ -303,6 +332,9 @@ class Globe extends React.Component {
   removeMarkers() {
     if (this.state.markers) {
       this.state.markers.forEach(element => this.scene.remove(element));
+      this.setState({
+        markers: []
+      });
     }
   }
 
@@ -394,6 +426,7 @@ class Globe extends React.Component {
   }
 
   onClick(event) {
+    event.nativeEvent.stopImmediatePropagation();
     // console.info('event.nativeEvent.offsetX',event.nativeEvent.offsetX);
     // console.info('event.nativeEvent.offsetY',event.nativeEvent.offsetY);
     // console.info('event.clientX',event.clientX);
@@ -418,15 +451,16 @@ class Globe extends React.Component {
       intersects.map((el) => {
         const nameVal = el.object.name;
         if (nameVal !== 'halo' && nameVal !== 'earth' && nameVal !== 'texture') {
-          this.props.onMarkerSelected(el.object.name);
+          this.props.onMarkerSelected(el.object.name, event);
         }
       });
     }
-
-    const earthIntersect = this.raycaster.intersectObjects([this.earth]);
-    if (earthIntersect.length > 0) {
-      const latLon = this.convertCoordinatesToLatLon(earthIntersect[0]);
-      this.props.onEarthClicked(latLon, event.clientX, event.clientY);
+    if (this.props.layerPoints.length === 0) {
+      const earthIntersect = this.raycaster.intersectObjects([this.earth]);
+      if (earthIntersect.length > 0) {
+        const latLon = this.convertCoordinatesToLatLon(earthIntersect[0]);
+        this.props.onEarthClicked(latLon, event.clientX, event.clientY);
+      }
     }
   }
 

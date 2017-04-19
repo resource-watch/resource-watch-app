@@ -51,32 +51,47 @@ class Pulse extends React.Component {
         this.setState({
           loading: true
         });
-        this.layerGlobeManager.addLayer(nextLayerActive.attributes, {
-          onLayerAddedSuccess: function success(texture) {
-            console.info(texture);
-            this.setState({
-              texture,
-              loading: false
-            });
-          }.bind(this),
-          onLayerAddedError: function error(err) {
-            console.error(err);
-            this.setState({
-              texture: null,
-              loading: false
-            });
-          }.bind(this)
-        });
+
+        if (nextLayerActive.threedimensional === 'true') {
+          const datasetId = nextLayerActive.attributes.dataset;
+          const options = nextLayerActive.attributes.layerConfig.body.layers[0].options;
+          const tableName = options.sql.toUpperCase().split('FROM')[1];
+          this.props.getLayerPoints(datasetId, tableName);
+        } else {
+          this.layerGlobeManager.addLayer(nextLayerActive.attributes, {
+            onLayerAddedSuccess: function success(texture) {
+              console.info(texture);
+              this.setState({
+                texture,
+                loading: false,
+                layerPoints: []
+              });
+            }.bind(this),
+            onLayerAddedError: function error(err) {
+              console.error(err);
+              this.setState({
+                texture: null,
+                loading: false,
+                layerPoints: []
+              });
+            }.bind(this)
+          });
+        }
       } else {
         this.layerGlobeManager.abortRequest();
         this.setState({ texture: null });
       }
     }
 
-    // if (nextProps.pulse.layerPoints) {
-    //   this.setState({ layerPoints: nextProps.pulse.layerPoints });
-    // }
+    if (nextProps.pulse.layerPoints.length > 0) {
+      this.setState({
+        loading: false,
+        layerPoints: nextProps.pulse.layerPoints,
+        texture: null
+      });
+    }
   }
+
   componentWillUnmount() {
     document.removeEventListener('click', this.triggerMouseDown);
   }
@@ -99,19 +114,33 @@ class Pulse extends React.Component {
   }
   @Autobind
   triggerMouseDown() {
+    console.info('triggerMouseDown');
     this.props.toggleTooltip(false);
   }
   @Autobind
-  handleMarkerSelected(marker) {
+  handleMarkerSelected(marker, event) {
     console.info('handleMarkerSelected', marker);
     this.setState({ selectedMarker: JSON.stringify(marker) });
+
+    const obj = {};
+    Object.keys(marker).forEach((key) => {
+      if (key !== 'cartodb_id' && key !== 'the_geom' && key !== 'the_geom_webmercator') {
+        obj[key] = marker[key];
+      }
+    });
+    this.props.toggleTooltip(true, {
+      follow: false,
+      children: GlobeTooltip,
+      childrenProps: { value: obj },
+      position: { x: event.clientX, y: event.clientY }
+    });
   }
   @Autobind
   handleEarthClicked(latLon, clientX, clientY) {
     this.props.toggleTooltip(false);
-
-    const currentLayer = this.props.pulse.layerActive.attributes;
-    if (currentLayer) {
+    debugger;
+    if (this.props.pulse.layerActive) {
+      const currentLayer = this.props.pulse.layerActive.attributes;
       const datasetId = currentLayer.dataset;
       const options = currentLayer.layerConfig.body.layers[0].options;
       const geomColumn = options.geom_column;
@@ -211,6 +240,7 @@ Pulse.propTypes = {
   layersGroup: React.PropTypes.array,
   layerActive: React.PropTypes.object,
   getLayers: React.PropTypes.func,
+  getLayerPoints: React.PropTypes.func,
   toggleTooltip: React.PropTypes.func
 };
 

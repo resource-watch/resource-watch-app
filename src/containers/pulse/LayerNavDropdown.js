@@ -7,8 +7,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  toggleActiveLayer: (id) => {
-    dispatch(toggleActiveLayer(id));
+  toggleActiveLayer: (id, threedimensional) => {
+    dispatch(toggleActiveLayer(id, threedimensional));
   },
   getLayerPoints: (id, tableName) => {
     dispatch(getLayerPoints(id, tableName));
