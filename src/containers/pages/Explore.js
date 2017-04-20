@@ -1,4 +1,5 @@
 import { connect } from 'react-redux';
+import { toggleModal, setModalOptions } from 'rw-components';
 import Explore from 'components/pages/Explore';
 import { getDatasets, setDatasetsPage, setUrlParams, setDatasetsActive, setDatasetsFilters, toggleDatasetActive, getVocabularies } from 'redactions/explore';
 import { redirectTo } from 'redactions/common';
@@ -27,6 +28,8 @@ const mapDispatchToProps = dispatch => ({
   setDatasetsActive: (active) => { dispatch(setDatasetsActive(active)); },
   setDatasetsFilters: (filters) => { dispatch(setDatasetsFilters(filters)); },
   redirectTo: (url) => { dispatch(redirectTo(url)); },
+  toggleModal: (open) => { dispatch(toggleModal(open)); },
+  setModalOptions: (options) => { dispatch(setModalOptions(options)); },
   setDatasetsPage: (page) => {
     dispatch(setDatasetsPage(page));
     dispatch(setUrlParams());

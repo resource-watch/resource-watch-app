@@ -7,10 +7,12 @@ import DatasetListHeader from 'containers/explore/DatasetListHeader';
 import DatasetList from 'components/explore/DatasetList';
 import Paginator from 'components/ui/Paginator';
 import Map from 'containers/explore/Map';
+import ShareModal from 'components/modal/ShareModal';
 import Legend from 'components/ui/Legend';
 import CustomSelect from 'components/ui/CustomSelect';
 import LayerManager from 'utils/layers/LayerManager';
 import Spinner from 'components/ui/Spinner';
+import Icon from 'components/ui/Icon';
 
 const mapConfig = {
   zoom: 3,
@@ -53,6 +55,17 @@ class Explore extends React.Component {
   handleFilterDatasets(item, levels, key) {
     const filter = item ? [{ levels, value: item.value, key }] : [];
     this.props.setDatasetsFilters(filter);
+  }
+
+  handleShareModal() {
+    const options = {
+      children: ShareModal,
+      childrenProps: {
+        url: window.location.href
+      }
+    };
+    this.props.toggleModal(true);
+    this.props.setModalOptions(options);
   }
 
   render() {
@@ -129,6 +142,10 @@ class Explore extends React.Component {
             toggledDataset={this.props.toggledDataset}
           />
 
+          <button className="share-button" onClick={() => this.handleShareModal()}>
+            <Icon name="icon-share" className="-small" />
+          </button>
+
           {this.state.layersActive && this.state.layersActive.length &&
             <Legend
               layersActive={this.state.layersActive}
@@ -157,6 +174,8 @@ Explore.propTypes = {
   redirectTo: React.PropTypes.func,
   setDatasetsActive: React.PropTypes.func,
   setDatasetsFilters: React.PropTypes.func,
+  toggleModal: React.PropTypes.func,
+  setModalOptions: React.PropTypes.func,
   toggleDatasetActive: React.PropTypes.func
 };
 
