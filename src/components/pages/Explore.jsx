@@ -7,10 +7,12 @@ import DatasetListHeader from 'containers/explore/DatasetListHeader';
 import DatasetList from 'components/explore/DatasetList';
 import Paginator from 'components/ui/Paginator';
 import Map from 'containers/explore/Map';
+import ShareModal from 'components/modal/ShareModal';
 import Legend from 'components/ui/Legend';
 import CustomSelect from 'components/ui/CustomSelect';
 import LayerManager from 'utils/layers/LayerManager';
 import Spinner from 'components/ui/Spinner';
+import Icon from 'components/ui/Icon';
 
 import issuesList from 'json/issues.json';
 
@@ -52,14 +54,25 @@ class Explore extends React.Component {
     this.props.setDatasetsFilters(filter);
   }
 
+  handleShareModal() {
+    const options = {
+      children: ShareModal,
+      childrenProps: {
+        url: window.location.href
+      }
+    };
+    this.props.toggleModal(true);
+    this.props.setModalOptions(options);
+  }
+
   render() {
     const { explore, paginatedDatasets } = this.props;
-    const datasetsSearchList = explore.datasets.list.map(d => {
-      return {
+    const datasetsSearchList = explore.datasets.list.map(d => (
+      {
         value: d.id,
         label: d.attributes.name
       }
-    });
+    ));
 
     return (
       <div className="p-explore">
@@ -125,6 +138,10 @@ class Explore extends React.Component {
             toggledDataset={this.props.toggledDataset}
           />
 
+          <button className="share-button" onClick={() => this.handleShareModal()}>
+            <Icon name="icon-share" className="-small" />
+          </button>
+
           {this.state.layersActive && this.state.layersActive.length &&
             <Legend
               layersActive={this.state.layersActive}
@@ -152,6 +169,8 @@ Explore.propTypes = {
   redirectTo: React.PropTypes.func,
   setDatasetsActive: React.PropTypes.func,
   setDatasetsFilters: React.PropTypes.func,
+  toggleModal: React.PropTypes.func,
+  setModalOptions: React.PropTypes.func,
   toggleDatasetActive: React.PropTypes.func
 };
 
