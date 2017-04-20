@@ -1,5 +1,4 @@
 import React from 'react';
-import isEqual from 'lodash/isEqual';
 import Icon from 'components/ui/Icon';
 
 export default class CustomSelect extends React.Component {
@@ -27,12 +26,21 @@ export default class CustomSelect extends React.Component {
     this.onSliderPrev = this.onSliderPrev.bind(this);
   }
 
+  componentWillReceiveProps(newProps) {
+    if (newProps.options.length && !this.state.fullList.length) {
+      this.setState({
+        fullList: newProps.options || [],
+        filteredOptions: this.filterItemsList(newProps.options) || []
+      });
+    }
+  }
+
   componentWillUnmount() {
     window.removeEventListener('click', this.onScreenClick);
   }
-  
+
   filterItemsList(items) {
-    return items.map(it => ({ 
+    return items.map(it => ({
       label: it.label, value: it.value, hasItems: !!it.items
     }));
   }
@@ -74,7 +82,8 @@ export default class CustomSelect extends React.Component {
       default: {
         const value = evt.currentTarget.value;
         const listTofilter = this.searchItems(this.state.selectedLevels);
-        const foundItems = listTofilter.filter(item => item.label.toLowerCase().match(value.toLowerCase()));
+        const foundItems = listTofilter.filter(item => item.label.toLowerCase()
+          .match(value.toLowerCase()));
         const filteredOptions = foundItems.map(it => ({
           value: it.value,
           label: it.label,
@@ -101,9 +110,10 @@ export default class CustomSelect extends React.Component {
 
   // Event handler for mouseup event on options list item
   selectItem(item) {
+    const levels = this.state.selectedLevels.map(lev => lev.value);
     this.setState({ selectedItem: item });
     this.close();
-    this.props.onValueChange && this.props.onValueChange(item);
+    this.props.onValueChange && this.props.onValueChange(item, levels, 'vocabulary');
   }
 
   onScreenClick(evt) {
@@ -134,7 +144,7 @@ export default class CustomSelect extends React.Component {
     window.removeEventListener('click', this.onScreenClick);
 
     this.setState({
-      closed: true,
+      closed: true
     }, this.resetSelectedIndex);
     if (this.input) {
       this.input.value = '';
@@ -148,7 +158,7 @@ export default class CustomSelect extends React.Component {
       for (let i = 0; i < selectedLevels.length; i++) {
         list = list.find(it => it.value === selectedLevels[i].value).items;
       }
-    } 
+    }
 
     return list;
   }
@@ -159,9 +169,9 @@ export default class CustomSelect extends React.Component {
     newSelectedLevels.push({ value: item.value, label: item.label });
     const items = this.searchItems(newSelectedLevels);
 
-    this.setState({ 
+    this.setState({
       selectedLevels: newSelectedLevels,
-      filteredOptions: this.filterItemsList(items),
+      filteredOptions: this.filterItemsList(items)
     });
   }
 
@@ -171,16 +181,16 @@ export default class CustomSelect extends React.Component {
     newSelectedLevels.pop();
     const items = this.searchItems(newSelectedLevels);
 
-    this.setState({ 
+    this.setState({
       selectedLevels: newSelectedLevels,
-      filteredOptions: this.filterItemsList(items),
+      filteredOptions: this.filterItemsList(items)
     });
   }
 
   resetSelect() {
-    this.setState({ 
+    this.setState({
       selectedLevels: [],
-      filteredOptions: this.filterItemsList(this.state.fullList),
+      filteredOptions: this.filterItemsList(this.state.fullList)
     });
   }
 
@@ -240,15 +250,16 @@ export default class CustomSelect extends React.Component {
 
               return (
                 <li className={cName} key={index}>
-                  <span 
+                  <span
                     className="label"
-                    onMouseEnter={() => { this.setSelectedIndex(index); }} 
-                    onMouseDown={() => this.selectItem(item)}>
+                    onMouseEnter={() => { this.setSelectedIndex(index); }}
+                    onMouseDown={() => this.selectItem(item)}
+                  >
                     {item.label}
                   </span>
 
                   {item.hasItems &&
-                    <div className="next" onClick={(e) => {this.onSliderNext(e, item)}}>
+                    <div className="next" onClick={e => this.onSliderNext(e, item)}>
                       <Icon name="icon-arrow-right" className="-tiny icon-arrow-right" />
                     </div>
                   }

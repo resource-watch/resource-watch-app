@@ -93,6 +93,7 @@
       white-space: nowrap;
       line-height: 17px;
       align-items: center;
+      text-transform: capitalize;
     }
   }
 
@@ -132,9 +133,9 @@
           margin-right: 10px;
         }
 
-        &:hover { 
+        &:hover {
           background-color: $color-white;
-          color: $color-primary; 
+          color: $color-primary;
         }
       }
 
@@ -151,6 +152,7 @@
         flex-grow: 1;
         display: inline-block;
         padding: 12px 12px;
+        text-transform: capitalize;
       }
 
       .next {

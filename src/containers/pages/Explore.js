@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import { toggleModal, setModalOptions } from 'rw-components';
 import Explore from 'components/pages/Explore';
-import { getDatasets, setDatasetsPage, setUrlParams, setDatasetsActive, setDatasetsFilters, toggleDatasetActive } from 'redactions/explore';
+import { getDatasets, setDatasetsPage, setUrlParams, setDatasetsActive, setDatasetsFilters, toggleDatasetActive, getVocabularies } from 'redactions/explore';
 import { redirectTo } from 'redactions/common';
 import getpaginatedDatasets from 'selectors/explore/datasetsPaginatedExplore';
 import getFilteredDatasets from 'selectors/explore/filterDatasets';
@@ -24,6 +24,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = dispatch => ({
   getDatasets: () => { dispatch(getDatasets()); },
+  getVocabularies: () => { dispatch(getVocabularies()); },
   setDatasetsActive: (active) => { dispatch(setDatasetsActive(active)); },
   setDatasetsFilters: (filters) => { dispatch(setDatasetsFilters(filters)); },
   redirectTo: (url) => { dispatch(redirectTo(url)); },

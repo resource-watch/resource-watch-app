@@ -12,6 +12,10 @@
 
         &:last-child { padding-right: 0; }
       }
+
+      .custom-select-search {
+        color: $color-text-1;
+      }
     }
 
     .c-title {

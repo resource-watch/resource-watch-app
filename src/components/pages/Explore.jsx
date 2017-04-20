@@ -14,8 +14,6 @@ import LayerManager from 'utils/layers/LayerManager';
 import Spinner from 'components/ui/Spinner';
 import Icon from 'components/ui/Icon';
 
-import issuesList from 'json/issues.json';
-
 const mapConfig = {
   zoom: 3,
   latLng: {
@@ -29,7 +27,8 @@ class Explore extends React.Component {
     super(props);
 
     this.state = {
-      layersActive: props.layersActive
+      layersActive: props.layersActive,
+      vocabularies: props.explore.vocabularies.list || []
     };
 
     // Bindings
@@ -39,18 +38,22 @@ class Explore extends React.Component {
 
   componentWillMount() {
     this.props.getDatasets();
+    this.props.getVocabularies();
   }
 
   componentWillReceiveProps(nextProps) {
-    this.setState({ layersActive: nextProps.layersActive });
+    this.setState({
+      layersActive: nextProps.layersActive,
+      vocabularies: nextProps.explore.vocabularies.list
+    });
   }
 
   handleRedirect(item) {
     item && item.value && this.props.redirectTo(`explore/${item.value}`);
   }
 
-  handleFilterDatasets(item) {
-    const filter = item ? [{ key: 'issues', value: item.value }] : [];
+  handleFilterDatasets(item, levels, key) {
+    const filter = item ? [{ levels, value: item.value, key }] : [];
     this.props.setDatasetsFilters(filter);
   }
 
@@ -92,13 +95,14 @@ class Explore extends React.Component {
                     <CustomSelect
                       options={datasetsSearchList}
                       onValueChange={this.handleRedirect}
+                      onKeyPressed={this.handleFilterDatasets}
                       search
                       placeholder="Search dataset"
                     />
                   </div>
                   <div className="column small-12 medium-6">
                     <CustomSelect
-                      options={issuesList}
+                      options={this.state.vocabularies}
                       onValueChange={this.handleFilterDatasets}
                       placeholder="Select issue"
                     />
@@ -165,6 +169,7 @@ Explore.propTypes = {
 
   // ACTIONS
   getDatasets: React.PropTypes.func,
+  getVocabularies: React.PropTypes.func,
   setDatasetsPage: React.PropTypes.func,
   redirectTo: React.PropTypes.func,
   setDatasetsActive: React.PropTypes.func,
