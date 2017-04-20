@@ -7,12 +7,12 @@ import DatasetListHeader from 'containers/explore/DatasetListHeader';
 import DatasetList from 'components/explore/DatasetList';
 import Paginator from 'components/ui/Paginator';
 import Map from 'containers/explore/Map';
+import ShareModal from 'components/modal/ShareModal';
 import Legend from 'components/ui/Legend';
 import CustomSelect from 'components/ui/CustomSelect';
 import LayerManager from 'utils/layers/LayerManager';
 import Spinner from 'components/ui/Spinner';
-
-import issuesList from 'json/issues.json';
+import Icon from 'components/ui/Icon';
 
 const mapConfig = {
   zoom: 3,
@@ -27,7 +27,8 @@ class Explore extends React.Component {
     super(props);
 
     this.state = {
-      layersActive: props.layersActive
+      layersActive: props.layersActive,
+      vocabularies: props.explore.vocabularies.list || []
     };
 
     // Bindings
@@ -37,29 +38,44 @@ class Explore extends React.Component {
 
   componentWillMount() {
     this.props.getDatasets();
+    this.props.getVocabularies();
   }
 
   componentWillReceiveProps(nextProps) {
-    this.setState({ layersActive: nextProps.layersActive });
+    this.setState({
+      layersActive: nextProps.layersActive,
+      vocabularies: nextProps.explore.vocabularies.list
+    });
   }
 
   handleRedirect(item) {
     item && item.value && this.props.redirectTo(`explore/${item.value}`);
   }
 
-  handleFilterDatasets(item) {
-    const filter = item ? [{ key: 'issues', value: item.value }] : [];
+  handleFilterDatasets(item, levels, key) {
+    const filter = item ? [{ levels, value: item.value, key }] : [];
     this.props.setDatasetsFilters(filter);
+  }
+
+  handleShareModal() {
+    const options = {
+      children: ShareModal,
+      childrenProps: {
+        url: window.location.href
+      }
+    };
+    this.props.toggleModal(true);
+    this.props.setModalOptions(options);
   }
 
   render() {
     const { explore, paginatedDatasets } = this.props;
-    const datasetsSearchList = explore.datasets.list.map(d => {
-      return {
+    const datasetsSearchList = explore.datasets.list.map(d => (
+      {
         value: d.id,
         label: d.attributes.name
       }
-    });
+    ));
 
     return (
       <div className="p-explore">
@@ -79,13 +95,15 @@ class Explore extends React.Component {
                     <CustomSelect
                       options={datasetsSearchList}
                       onValueChange={this.handleRedirect}
+                      onKeyPressed={this.handleFilterDatasets}
                       search
                       placeholder="Search dataset"
+                      hideList
                     />
                   </div>
                   <div className="column small-12 medium-6">
                     <CustomSelect
-                      options={issuesList}
+                      options={this.state.vocabularies}
                       onValueChange={this.handleFilterDatasets}
                       placeholder="Select issue"
                     />
@@ -125,6 +143,10 @@ class Explore extends React.Component {
             toggledDataset={this.props.toggledDataset}
           />
 
+          <button className="share-button" onClick={() => this.handleShareModal()}>
+            <Icon name="icon-share" className="-small" />
+          </button>
+
           {this.state.layersActive && this.state.layersActive.length &&
             <Legend
               layersActive={this.state.layersActive}
@@ -150,11 +172,14 @@ Explore.propTypes = {
 
   // ACTIONS
   getDatasets: React.PropTypes.func,
+  getVocabularies: React.PropTypes.func,
   setDatasetsPage: React.PropTypes.func,
   redirectTo: React.PropTypes.func,
   setDatasetsActive: React.PropTypes.func,
   setDatasetsHidden: React.PropTypes.func,
   setDatasetsFilters: React.PropTypes.func,
+  toggleModal: React.PropTypes.func,
+  setModalOptions: React.PropTypes.func,
   toggleDatasetActive: React.PropTypes.func
 };
 
