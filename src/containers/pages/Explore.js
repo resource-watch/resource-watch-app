@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import { toggleModal, setModalOptions } from 'rw-components';
 import Explore from 'components/pages/Explore';
-import { getDatasets, setDatasetsPage, setUrlParams, setDatasetsActive, setDatasetsFilters, toggleDatasetActive, getVocabularies } from 'redactions/explore';
+import { getDatasets, setDatasetsPage, setUrlParams, setDatasetsActive, setDatasetsHidden, setDatasetsFilters, toggleDatasetActive, getVocabularies } from 'redactions/explore';
 import { redirectTo } from 'redactions/common';
 import getpaginatedDatasets from 'selectors/explore/datasetsPaginatedExplore';
 import getFilteredDatasets from 'selectors/explore/filterDatasets';
@@ -26,6 +26,7 @@ const mapDispatchToProps = dispatch => ({
   getDatasets: () => { dispatch(getDatasets()); },
   getVocabularies: () => { dispatch(getVocabularies()); },
   setDatasetsActive: (active) => { dispatch(setDatasetsActive(active)); },
+  setDatasetsHidden: (hidden) => { dispatch(setDatasetsHidden(hidden)); },
   setDatasetsFilters: (filters) => { dispatch(setDatasetsFilters(filters)); },
   redirectTo: (url) => { dispatch(redirectTo(url)); },
   toggleModal: (open) => { dispatch(toggleModal(open)); },
