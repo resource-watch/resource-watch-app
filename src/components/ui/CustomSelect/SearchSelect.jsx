@@ -166,7 +166,7 @@ export default class CustomSelect extends React.Component {
         {noResults &&
           <span className="no-results">No results</span>
         }
-        {this.state.closed ||
+        {!this.state.closed && !this.props.hideList ?
           <ul className="custom-select-options">
             {this.state.filteredOptions.map((item, index) => {
               const cName = (index === this.state.selectedIndex) ? '-selected' : '';
@@ -181,7 +181,7 @@ export default class CustomSelect extends React.Component {
                 </li>
               );
             })}
-          </ul>
+          </ul> : ''
         }
       </div>
     );
@@ -190,6 +190,7 @@ export default class CustomSelect extends React.Component {
 
 CustomSelect.propTypes = {
   options: React.PropTypes.array,
+  hideList: React.PropTypes.bool,
   onValueChange: React.PropTypes.func,
   value: React.PropTypes.string,
   className: React.PropTypes.string,

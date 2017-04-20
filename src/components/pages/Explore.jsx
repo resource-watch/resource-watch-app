@@ -98,6 +98,7 @@ class Explore extends React.Component {
                       onKeyPressed={this.handleFilterDatasets}
                       search
                       placeholder="Search dataset"
+                      hideList
                     />
                   </div>
                   <div className="column small-12 medium-6">
