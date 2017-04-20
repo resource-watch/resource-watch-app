@@ -3,6 +3,7 @@ import { SortableContainer, SortableElement, SortableHandle, arrayMove } from 'r
 import LegendType from 'components/pulse/LegendType';
 import Icon from 'components/ui/Icon';
 import Switch from 'components/ui/Switch';
+import LayerInfoModal from 'components/modal/LayerInfoModal';
 
 const SortableItem = SortableElement(({ value }) => value);
 
@@ -60,15 +61,29 @@ class Legend extends React.Component {
     this.props.setDatasetsHidden(newLayersHidden);
   }
 
+  onLayerInfoModal(layer) {
+    const options = {
+      children: LayerInfoModal,
+      childrenProps: {
+        data: layer
+      }
+    };
+    this.props.toggleModal(true);
+    this.props.setModalOptions(options);
+  }
+
   getItemsActions(layer) {
     return (
       <div className="item-actions">
+        <button className="info" onClick={() => this.onLayerInfoModal(layer)}>
+          <Icon name="icon-info" className="-smaller" />
+        </button>
         <Switch
           onChange={() => this.onHideLayer(layer.dataset)}
           active={!layer.hidden}
           classNames="-secondary"
         />
-        <button onClick={() => this.onDeactivateLayer(layer.dataset)}>
+        <button className="close" onClick={() => this.onDeactivateLayer(layer.dataset)}>
           <Icon name="icon-cross" className="-smaller" />
         </button>
       </div>
@@ -119,9 +134,12 @@ Legend.propTypes = {
   layersActive: React.PropTypes.array,
   layersHidden: React.PropTypes.array,
   className: React.PropTypes.object,
+
   // Functions
   toggleDatasetActive: React.PropTypes.func,
   setDatasetsActive: React.PropTypes.func,
+  toggleModal: React.PropTypes.func,
+  setModalOptions: React.PropTypes.func,
   setDatasetsHidden: React.PropTypes.func
 };
 

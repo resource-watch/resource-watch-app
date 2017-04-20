@@ -155,6 +155,8 @@ class Explore extends React.Component {
               setDatasetsActive={this.props.setDatasetsActive}
               toggleDatasetActive={this.props.toggleDatasetActive}
               setDatasetsHidden={this.props.setDatasetsHidden}
+              toggleModal={this.props.toggleModal}
+              setModalOptions={this.props.setModalOptions}
             />
           }
         </div>
