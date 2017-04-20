@@ -25,7 +25,8 @@ class Pulse extends React.Component {
       texture: null,
       loading: false,
       layerPoints: [],
-      selectedMarker: null
+      selectedMarker: null,
+      useDefaultLayer: true
     };
     this.layerGlobeManager = new LayerGlobeManager();
   }
@@ -87,7 +88,8 @@ class Pulse extends React.Component {
       this.setState({
         loading: false,
         layerPoints: nextProps.pulse.layerPoints,
-        texture: null
+        texture: null,
+        useDefaultLayer: false
       });
     }
   }
@@ -222,7 +224,7 @@ class Pulse extends React.Component {
           segments={64}
           rings={64}
           useHalo
-          useDefaultLayer
+          useDefaultLayer={this.state.useDefaultLayer}
           onMarkerSelected={this.handleMarkerSelected}
           onEarthClicked={this.handleEarthClicked}
           onClickInEmptyRegion={this.handleClickInEmptyRegion}

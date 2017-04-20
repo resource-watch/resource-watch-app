@@ -19,7 +19,8 @@ class Globe extends React.Component {
       texture: props.texture,
       height: props.height,
       width: props.width,
-      markers: []
+      markers: [],
+      selectedMarker: null
     };
 
     this.raycaster = new Raycaster(); // create once
@@ -73,6 +74,7 @@ class Globe extends React.Component {
         const severity = value.severity;
         const affectedSqKm = value.affected_sq_km;
         let height = 1;
+        let cylinderTopRadius = 0.3;
         let cylinderColor = 0xffff00;
         if (displaced) {
           height = Math.log(displaced);
@@ -83,19 +85,22 @@ class Globe extends React.Component {
         if (severity) {
           switch (severity) {
             case 1:
-              cylinderColor = 0x8eb67b;
+              cylinderColor = this.props.markerLowColor;
               break;
             case 2:
-              cylinderColor = 0xf4d14d;
+              cylinderColor = this.props.markerMediumColor;
               break;
             case 3:
-              cylinderColor = 0xdd4e56;
+              cylinderColor = this.props.markerHighColor;
               break;
             default:
-              cylinderColor = 0xffff00;
+              cylinderColor = this.props.markerLowColor;
           }
         }
-        const cylinderGeometry = new CylinderGeometry(0.3, 0.3, height);
+        // if (affectedSqKm) {
+        //   cylinderTopRadius = Math.log(Math.log(affectedSqKm));
+        // }
+        const cylinderGeometry = new CylinderGeometry(0.3, cylinderTopRadius, height);
 
         // Translate the geometry so the base sits at the origin.
         cylinderGeometry.applyMatrix(new Matrix4().makeTranslation(0, 0, 0));
@@ -129,6 +134,12 @@ class Globe extends React.Component {
       (prevState.height !== this.state.height)) {
       this.update();
     }
+    // if (this.state.selectedMarker) {
+    //   this.state.selectedMarker;
+    // }
+    // if (this.state.texture === null) {
+    //   this.removeTexture();
+    // }
   }
 
   componentWillUnmount() {
@@ -164,6 +175,14 @@ class Globe extends React.Component {
     this.currentTexture.updateMatrix();
     this.currentTexture.name = 'texture';
     this.scene.add(this.currentTexture);
+  }
+
+  removeTexture() {
+    if (this.currentTexture) {
+      this.scene.remove(this.currentTexture);
+      this.currentTexture = null;
+    }
+    debugger;
   }
 
   /**
@@ -452,6 +471,7 @@ class Globe extends React.Component {
       intersects.forEach((el) => {
         const nameVal = el.object.name;
         if (nameVal !== 'halo' && nameVal !== 'earth' && nameVal !== 'texture') {
+          this.setState({ selectedMarker: el });
           this.props.onMarkerSelected(el.object.name, event);
           markerClicked = true;
         }
@@ -537,7 +557,12 @@ Globe.defaultProps = {
   taking into account that for a given radius of 50 the new radius should be 58 */
 
   // Stats
-  showStats: false
+  showStats: false,
+
+  // Markers
+  markerLowColor: 0xA6005A,
+  markerMediumColor: 0xFC00A6,
+  markerHighColor: 0x1E272D
 };
 
 Globe.propTypes = {
@@ -606,7 +631,12 @@ Globe.propTypes = {
   // Functions
   onMarkerSelected: React.PropTypes.func,
   onEarthClicked: React.PropTypes.func,
-  onClickInEmptyRegion: React.PropTypes.func
+  onClickInEmptyRegion: React.PropTypes.func,
+
+  // Markers
+  markerLowColor: React.PropTypes.number,
+  markerMediumColor: React.PropTypes.number,
+  markerHighColor: React.PropTypes.number
 };
 
 export default Globe;
