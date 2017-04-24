@@ -72,22 +72,19 @@ class Globe extends React.Component {
       }
       const pointObjects = nextProps.layerPoints.map((value) => {
         const normalVector = this.convertLatLonToCoordinates(value.lat, value.lon);
-        const distance = value.distance_km;
-        const displaced = value.displaced;
         const affectedSqKm = value.affected_sq_km;
-        let height = 1;
         const cylinderTopRadius = 0.3;
         const cylinderColor = this.getMarkerColor(value);
-        if (displaced) {
-          height = Math.log(displaced);
-        }
-        if (distance) {
-          height = Math.log(distance) * 3;
-        }
+        const height = this.getMarkerHeight(value);
+
 
         // if (affectedSqKm) {
         //   cylinderTopRadius = Math.log(Math.log(affectedSqKm));
         // }
+        if (nextProps.useHemisphereMarkers){
+          
+          console.info("hemisphere!!")
+        }
         const cylinderGeometry = new CylinderGeometry(0.3, cylinderTopRadius, height);
 
         // Translate the geometry so the base sits at the origin.
@@ -128,13 +125,40 @@ class Globe extends React.Component {
     }
   }
 
+  getMarkerHeight(value) {
+    let data = value;
+    if (value.object) {
+      data = value.object.name;
+    }
+    let height = 1;
+    const distance = data.distance_km;
+    const displaced = data.displaced;
+    const mag = data.mag;
+    const fatalities = data.fatalities;
+
+    if (displaced) {
+      height = Math.log(displaced);
+    }
+    if (distance) {
+      height = Math.log(distance) * 3;
+    }
+    if (mag) {
+      height = mag;
+    }
+    if (fatalities) {
+      height = fatalities;
+    }
+
+    return height;
+  }
+
   getMarkerColor(value) {
     let data = value;
     if (value.object) {
       data = value.object.name;
     }
     const severity = data.severity;
-    let color = 0xffffff;
+    let color = this.props.markerDefaultColor;
 
     if (severity) {
       switch (severity) {
@@ -574,9 +598,11 @@ Globe.defaultProps = {
   // Markers
   markerLowColor: 0xA6005A,
   markerMediumColor: 0xFC00A6,
-  markerHighColor: 0x1E272D,
+  markerHighColor: 0xffb4f0,
+  markerDefaultColor: 0xFC00A6,
   markerSelectedColor: 0xFFFFFF,
-  markerSelectedSizeFactor: 2
+  markerSelectedSizeFactor: 2,
+  useHemisphereMarkers: false
 };
 
 Globe.propTypes = {
@@ -625,7 +651,7 @@ Globe.propTypes = {
   texture: React.PropTypes.string,
   // Default layer
   defaultLayerImagePath: React.PropTypes.string,
-  useDefaultLayer: React.PropTypes.bool,
+  useDefaultLayer: React.PropTypes.boolean,
   // Layer points
   layerPoints: React.PropTypes.array,
 
@@ -652,7 +678,9 @@ Globe.propTypes = {
   markerMediumColor: React.PropTypes.number,
   markerHighColor: React.PropTypes.number,
   markerSelectedColor: React.PropTypes.number,
-  markerSelectedSizeFactor: React.PropTypes.number
+  markerDefaultColor: React.PropTypes.number,
+  markerSelectedSizeFactor: React.PropTypes.number,
+  useHemisphereMarkers: React.PropTypes.boolean
 };
 
 export default Globe;
