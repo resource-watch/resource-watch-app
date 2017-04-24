@@ -72,7 +72,7 @@ export function getLayers() {
   };
 }
 
-export function toggleActiveLayer(id, threedimensional, hemisphere) {
+export function toggleActiveLayer(id, threedimensional, markerType) {
   return (dispatch) => {
     fetch(new Request(`${config.API_URL}/layer/${id}`))
       .then((response) => {
@@ -82,7 +82,7 @@ export function toggleActiveLayer(id, threedimensional, hemisphere) {
       .then((response) => {
         const layer = response.data;
         layer.threedimensional = threedimensional;
-        layer.hemisphere = hemisphere;
+        layer.markerType = markerType;
         dispatch({
           type: SET_ACTIVE_LAYER,
           payload: layer

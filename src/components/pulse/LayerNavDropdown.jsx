@@ -11,8 +11,8 @@ class LayerNavDropdown extends React.Component {
   }
 
   triggerClick(e) {
-    const { id, threedimensional, hemisphere } = e.currentTarget.dataset;
-    this.props.toggleActiveLayer(id, threedimensional, hemisphere);
+    const { id, threedimensional, markertype } = e.currentTarget.dataset;
+    this.props.toggleActiveLayer(id, threedimensional, markertype);
   }
 
   render() {
@@ -24,7 +24,7 @@ class LayerNavDropdown extends React.Component {
               (<li
                 data-id={layer.id}
                 data-threedimensional={layer['3d']}
-                data-hemisphere={layer.hemisphere}
+                data-markertype={layer.markerType}
                 key={layer.id}
                 onClick={this.triggerClick}
               >

@@ -6,6 +6,7 @@ import { TextureLoader, Raycaster, Vector2, CylinderGeometry,
   MeshPhongMaterial, AdditiveBlending, Vector3,
   AmbientLight, PointLight } from 'three/build/three.module';
 import orbitControls from './OrbitControls';
+import chroma from 'chroma-js';
 
 /* global Stats */
 const OrbitControls = orbitControls();
@@ -25,6 +26,8 @@ class Globe extends React.Component {
 
     this.raycaster = new Raycaster(); // create once
     this.mouse = new Vector2();
+
+    this.redGreenScale = chroma.scale(['red', 'lightgreen']).domain([-10, 10]);
 
     // Bindings
     this.onClick = this.onClick.bind(this);
@@ -70,18 +73,26 @@ class Globe extends React.Component {
       if (this.state.markers.length > 0) {
         this.removeMarkers();
       }
+      const { markerType } = nextProps;
       const pointObjects = nextProps.layerPoints.map((value) => {
         const normalVector = this.convertLatLonToCoordinates(value.lat, value.lon);
-        const cylinderTopRadius = 0.3;
         const geometryColor = this.getMarkerColor(value);
         const height = this.getMarkerHeight(value);
 
         let geometry;
 
-        if (nextProps.useHemisphereMarkers) {
-          geometry = new SphereGeometry(0.8, 6, 6);
-        } else {
-          geometry = new CylinderGeometry(0.3, cylinderTopRadius, height);
+        switch (markerType) {
+          case 'bar':
+            geometry = new CylinderGeometry(0.3, 0.3, height);
+            break;
+          case 'volcano':
+            geometry = new CylinderGeometry(0.3, 1.3, height);
+            break;
+          case 'hemisphere':
+            geometry = new SphereGeometry(0.5, 8, 8);
+            break;
+          default:
+            geometry = new CylinderGeometry(0.3, 0.3, height);
         }
 
         // Translate the geometry so the base sits at the origin.
@@ -155,6 +166,7 @@ class Globe extends React.Component {
       data = value.object.name;
     }
     const severity = data.severity;
+    const urlTone = data.urltone;
     let color = this.props.markerDefaultColor;
 
     if (severity) {
@@ -171,6 +183,10 @@ class Globe extends React.Component {
         default:
           color = this.props.markerLowColor;
       }
+    }
+
+    if (urlTone && urlTone.length > 0) {
+      color = this.redGreenScale(urlTone).hex();
     }
     return color;
   }
@@ -596,10 +612,10 @@ Globe.defaultProps = {
   markerLowColor: 0xA6005A,
   markerMediumColor: 0xFC00A6,
   markerHighColor: 0xffb4f0,
-  markerDefaultColor: 0xFC00A6,
+  markerDefaultColor: 0xffb4f0,
   markerSelectedColor: 0xFFFFFF,
   markerSelectedSizeFactor: 2,
-  useHemisphereMarkers: false
+  markerType: 'default'
 };
 
 Globe.propTypes = {
@@ -677,7 +693,7 @@ Globe.propTypes = {
   markerSelectedColor: React.PropTypes.number,
   markerDefaultColor: React.PropTypes.number,
   markerSelectedSizeFactor: React.PropTypes.number,
-  useHemisphereMarkers: React.PropTypes.bool
+  markerType: React.PropTypes.string
 };
 
 export default Globe;

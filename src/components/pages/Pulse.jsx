@@ -27,7 +27,7 @@ class Pulse extends React.Component {
       layerPoints: [],
       selectedMarker: null,
       useDefaultLayer: true,
-      hemisphereMarkers: false
+      markerType: 'default'
     };
     this.layerGlobeManager = new LayerGlobeManager();
   }
@@ -91,7 +91,7 @@ class Pulse extends React.Component {
         layerPoints: nextProps.pulse.layerPoints.slice(0),
         texture: null,
         useDefaultLayer: false,
-        hemisphereMarkers: nextLayerActive.hemisphere === 'true'
+        markerType: nextLayerActive.markerType
       });
     }
   }
@@ -193,7 +193,7 @@ class Pulse extends React.Component {
   }
 
   render() {
-    const { hemisphereMarkers } = this.state;
+    const { markerType } = this.state;
     return (
       <div
         className="c-page -dark"
@@ -221,7 +221,7 @@ class Pulse extends React.Component {
           lightPosition={'right'}
           texture={this.state.texture}
           layerPoints={this.state.layerPoints}
-          useHemisphereMarkers={hemisphereMarkers}
+          markerType={markerType}
           earthImagePath={earthImage}
           earthBumpImagePath={earthBumpImage}
           defaultLayerImagePath={cloudsImage}
