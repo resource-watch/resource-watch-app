@@ -40,6 +40,17 @@
     display: flex;
     flex-flow: column;
     max-height: 230px;
+    height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: all $animation-time-2 $ease-out-cubic;
+
+
+    &.-active {
+      height: 200px;
+      opacity: 1;
+      overflow: auto;
+    }
 
     > .legend-list {
       margin: 0;
@@ -50,6 +61,12 @@
   }
 
   .close-legend {
+    display: none;
+
+    &.-active {
+      display: inherit;
+    }
+
     .toggle-legend {
       position: relative;
       top: auto;

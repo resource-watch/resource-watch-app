@@ -116,36 +116,34 @@ class Legend extends React.Component {
   render() {
     return (
       <div className="c-legend-map">
-        {this.state.open ?
-          <div className="open-legend">
-            <h1 className="legend-title">
-              Legend
-              <button className="toggle-legend" onClick={() => this.setState({ open: false })}>
-                <Icon name="icon-arrow-down" className="-small" />
-              </button>
-            </h1>
-            <SortableList
-              items={this.getLegendItems()}
-              helperClass="c-legend-unit -sort"
-              onSortEnd={this.onSortEnd}
-              onSortStart={this.onSortStart}
-              onSortMove={this.onSortMove}
-              axis="y"
-              lockAxis="y"
-              lockToContainerEdges
-              lockOffset="50%"
-              useDragHandle
-            />
-          </div> :
-          <div className="close-legend">
-            <h1 className="legend-title">
-              Legend
-              <button className="toggle-legend" onClick={() => this.setState({ open: true })}>
-                <Icon name="icon-arrow-up" className="-small" />
-              </button>
-            </h1>
-          </div>
-        }
+        <div className={`open-legend ${this.state.open ? '-active' : ''}`}>
+          <h1 className="legend-title">
+            Legend
+            <button className="toggle-legend" onClick={() => this.setState({ open: false })}>
+              <Icon name="icon-arrow-down" className="-small" />
+            </button>
+          </h1>
+          <SortableList
+            items={this.getLegendItems()}
+            helperClass="c-legend-unit -sort"
+            onSortEnd={this.onSortEnd}
+            onSortStart={this.onSortStart}
+            onSortMove={this.onSortMove}
+            axis="y"
+            lockAxis="y"
+            lockToContainerEdges
+            lockOffset="50%"
+            useDragHandle
+          />
+        </div>
+        <div className={`close-legend ${!this.state.open ? '-active' : ''}`}>
+          <h1 className="legend-title">
+            Legend
+            <button className="toggle-legend" onClick={() => this.setState({ open: true })}>
+              <Icon name="icon-arrow-up" className="-small" />
+            </button>
+          </h1>
+        </div>
       </div>
     );
   }
