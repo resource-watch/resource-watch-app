@@ -3,27 +3,85 @@
   bottom: 30px;
   right: 30px;
   width: 400px;
-  max-height: 230px;
-  display: flex;
-  flex-flow: column;
   background: white;
   z-index: 2;
   border-radius: 3px;
 
-  > .title {
+  .legend-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     margin: 0;
     padding: 10px 15px;
     text-transform: uppercase;
     color: $color-dark-grey;
+    font-size: 11px;
+
+    .toggle-legend {
+      position: absolute;
+      right: 0px;
+      width: 32px;
+      height: 32px;
+      top: -32px;
+      border: 0;
+      background-color: rgba($color-black, .7);
+      cursor: pointer;
+
+      &:focus { outline: none; }
+
+      svg {
+        margin-top: 4px;
+        fill: $color-white;
+      }
+    }
   }
 
-  > .legend-list {
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    overflow: auto;
+  .open-legend {
+    display: flex;
+    flex-flow: column;
+    max-height: 230px;
+    height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: all $animation-time-2 $ease-out-cubic;
+
+
+    &.-active {
+      height: 200px;
+      opacity: 1;
+      overflow: auto;
+    }
+
+    > .legend-list {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      overflow: auto;
+    }
   }
 
+  .close-legend {
+    display: none;
+
+    &.-active {
+      display: inherit;
+    }
+
+    .toggle-legend {
+      position: relative;
+      top: auto;
+      padding: 0;
+      width: auto;
+      height: auto;
+      padding: 0;
+      background-color: $color-white;
+
+      svg {
+        margin-top: 0;
+        fill: $color-dark-grey;
+      }
+    }
+  }
 }
 
 .c-legend-unit {

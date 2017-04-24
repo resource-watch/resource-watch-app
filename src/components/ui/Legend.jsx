@@ -25,6 +25,10 @@ class Legend extends React.Component {
   constructor(props) {
     super(props);
 
+    this.state = {
+      open: true
+    };
+
     // BINDINGS
     this.onSortEnd = this.onSortEnd.bind(this);
     this.onSortStart = this.onSortStart.bind(this);
@@ -112,19 +116,34 @@ class Legend extends React.Component {
   render() {
     return (
       <div className="c-legend-map">
-        <h5 className="title">Legend</h5>
-        <SortableList
-          items={this.getLegendItems()}
-          helperClass="c-legend-unit -sort"
-          onSortEnd={this.onSortEnd}
-          onSortStart={this.onSortStart}
-          onSortMove={this.onSortMove}
-          axis="y"
-          lockAxis="y"
-          lockToContainerEdges
-          lockOffset="50%"
-          useDragHandle
-        />
+        <div className={`open-legend ${this.state.open ? '-active' : ''}`}>
+          <h1 className="legend-title">
+            Legend
+            <button className="toggle-legend" onClick={() => this.setState({ open: false })}>
+              <Icon name="icon-arrow-down" className="-small" />
+            </button>
+          </h1>
+          <SortableList
+            items={this.getLegendItems()}
+            helperClass="c-legend-unit -sort"
+            onSortEnd={this.onSortEnd}
+            onSortStart={this.onSortStart}
+            onSortMove={this.onSortMove}
+            axis="y"
+            lockAxis="y"
+            lockToContainerEdges
+            lockOffset="50%"
+            useDragHandle
+          />
+        </div>
+        <div className={`close-legend ${!this.state.open ? '-active' : ''}`}>
+          <h1 className="legend-title">
+            Legend
+            <button className="toggle-legend" onClick={() => this.setState({ open: true })}>
+              <Icon name="icon-arrow-up" className="-small" />
+            </button>
+          </h1>
+        </div>
       </div>
     );
   }
