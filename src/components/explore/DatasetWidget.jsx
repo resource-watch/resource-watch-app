@@ -42,10 +42,29 @@ class DatasetWidget extends React.Component {
 
   /**
    * HELPERS
+   * - hideLayer
    * - getWidgetOrLayer
    * - getDescription
    * - getButton
   */
+  hideLayer(dataset) {
+    let newLayersHidden = this.props.layersHidden.slice();
+    this.props.layersHidden.includes(dataset) ?
+      newLayersHidden = this.props.layersHidden.filter(l => l !== dataset) :
+      newLayersHidden.push(dataset);
+
+    this.props.setDatasetsHidden(newLayersHidden);
+  }
+
+  getDescription(_text) {
+    let text = _text;
+    if (typeof text === 'string' && text.length > 70) {
+      text = text.replace(/^(.{70}[^\s]*).*/, '$1');
+      return `${text}...`;
+    }
+    return text;
+  }
+
   getWidgetOrLayer() {
     if (this.state.hasWidget) {
       return {
@@ -60,15 +79,6 @@ class DatasetWidget extends React.Component {
       };
     }
     return null;
-  }
-
-  getDescription(_text) {
-    let text = _text;
-    if (typeof text === 'string' && text.length > 70) {
-      text = text.replace(/^(.{70}[^\s]*).*/, '$1');
-      return `${text}...`;
-    }
-    return text;
   }
 
   getButton() {
@@ -102,7 +112,6 @@ class DatasetWidget extends React.Component {
     );
   }
 
-
   /**
    * UI EVENTS
    * - triggerToggleLayer (e)
@@ -110,6 +119,7 @@ class DatasetWidget extends React.Component {
   triggerToggleLayer() {
     const { dataset } = this.state;
     this.props.toggleDatasetActive(dataset.id);
+    this.props.layersHidden.includes(dataset.id) && this.hideLayer(dataset.id);
   }
 
   render() {
@@ -167,12 +177,14 @@ class DatasetWidget extends React.Component {
 DatasetWidget.propTypes = {
   // STATE
   active: React.PropTypes.bool,
+  layersHidden: React.PropTypes.array,
   dataset: React.PropTypes.object,
   widget: React.PropTypes.object,
   layer: React.PropTypes.object,
   mode: React.PropTypes.string,
   // ACTIONS
-  toggleDatasetActive: React.PropTypes.func
+  toggleDatasetActive: React.PropTypes.func,
+  setDatasetsHidden: React.PropTypes.func
 };
 
 export default DatasetWidget;

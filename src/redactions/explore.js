@@ -16,6 +16,7 @@ const GET_VOCABULARIES_ERROR = 'explore/GET_VOCABULARIES_ERROR';
 const GET_VOCABULARIES_LOADING = 'explore/GET_VOCABULARIES_LOADING';
 
 const SET_DATASETS_ACTIVE = 'explore/SET_DATASETS_ACTIVE';
+const SET_DATASETS_HIDDEN = 'explore/SET_DATASETS_HIDDEN';
 const SET_DATASETS_PAGE = 'explore/SET_DATASETS_PAGE';
 const SET_DATASETS_FILTERS = 'explore/SET_DATASETS_FILTERS';
 const SET_DATASETS_MODE = 'explore/SET_DATASETS_MODE';
@@ -31,6 +32,7 @@ const initialState = {
     loading: false,
     error: false,
     active: [],
+    hidden: [],
     page: 1,
     limit: 9,
     mode: 'grid' // 'grid' or 'list'
@@ -102,6 +104,14 @@ export default function (state = initialState, action) {
     case SET_DATASETS_ACTIVE: {
       const datasets = Object.assign({}, state.datasets, {
         active: action.payload
+      });
+
+      return Object.assign({}, state, { datasets });
+    }
+
+    case SET_DATASETS_HIDDEN: {
+      const datasets = Object.assign({}, state.datasets, {
+        hidden: action.payload
       });
 
       return Object.assign({}, state, { datasets });
@@ -225,19 +235,22 @@ export function setDatasetsActive(active) {
   };
 }
 
+export function setDatasetsHidden(hidden) {
+  return {
+    type: SET_DATASETS_HIDDEN,
+    payload: hidden
+  };
+}
+
 
 export function toggleDatasetActive(id) {
   return (dispatch, getState) => {
     const { explore } = getState();
-    const active = explore.datasets.active.slice();
-    const index = active.indexOf(id);
+    let active = explore.datasets.active.slice();
 
-    // Toggle the active dataset
-    if (index !== -1) {
-      active.splice(index, 1);
-    } else {
-      active.push(id);
-    }
+    active = active.includes(id) ?
+      active.filter(a => a !== id) :
+      active.concat(id);
 
     dispatch({
       type: SET_DATASETS_ACTIVE,

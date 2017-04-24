@@ -155,9 +155,9 @@ export default class LayerManager {
   _addCartoLayer(layerSpec, opts) {
     const layer = Object.assign({}, layerSpec.layerConfig, {
       id: layerSpec.id,
-      order: layerSpec.order
+      order: layerSpec.order,
+      hidden: layerSpec.hidden
     });
-    const options = opts;
 
     this._layersLoading[layer.id] = true;
 
@@ -169,13 +169,13 @@ export default class LayerManager {
     const params = `?stat_tag=API&config=${encodeURIComponent(JSON.stringify(layerTpl))}`;
 
     fetch(`https://${layer.account}.carto.com/api/v1/map${params}`)
-      .then((response) => {
-        return response.json();
-      })
+      .then(response => (
+        response.json()
+      ))
       .then((data) => {
         const tileUrl = `https://${layer.account}.carto.com/api/v1/map/${data.layergroupid}/{z}/{x}/{y}.png`;
-
-        this._mapLayers[layer.id] = L.tileLayer(tileUrl).addTo(this._map).setZIndex(layer.order);
+        this._mapLayers[layer.id] = L.tileLayer(tileUrl).addTo(this._map)
+          .setZIndex(layer.hidden ? -1 : layer.order);
 
         this._mapLayers[layer.id].on('load', () => {
           delete this._layersLoading[layer.id];
@@ -184,15 +184,16 @@ export default class LayerManager {
           this._rejectLayersLoading = true;
         });
       })
-      .then((err) => {
+      .then(() => {
         this._rejectLayersLoading = true;
       });
   }
 
   setZIndex(layersActive) {
-    Object.keys(this._mapLayers).forEach(key => {
+    Object.keys(this._mapLayers).forEach((key) => {
       const order = layersActive.filter(l => l.id === key)[0].order;
-      this._mapLayers[key].setZIndex(order);
+      const hidden = layersActive.filter(l => l.id === key)[0].hidden;
+      this._mapLayers[key].setZIndex(hidden ? -1 : order);
     });
   }
 }

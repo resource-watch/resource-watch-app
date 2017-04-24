@@ -2,6 +2,8 @@ import React from 'react';
 import { SortableContainer, SortableElement, SortableHandle, arrayMove } from 'react-sortable-hoc';
 import LegendType from 'components/pulse/LegendType';
 import Icon from 'components/ui/Icon';
+import Switch from 'components/ui/Switch';
+import LayerInfoModal from 'components/modal/LayerInfoModal';
 
 const SortableItem = SortableElement(({ value }) => value);
 
@@ -11,19 +13,21 @@ const DragHandle = SortableHandle(() => (
   </span>
 ));
 
-const SortableList = SortableContainer(({ items }) => {
-  return (
-    <ul className="legend-list">
-      {items.map((value, index) =>
-        <SortableItem key={`item-${index}`} index={index} value={value} />
-      )}
-    </ul>
-  );
-});
+const SortableList = SortableContainer(({ items }) => (
+  <ul className="legend-list">
+    {items.map((value, index) =>
+      <SortableItem key={`item-${index}`} index={index} value={value} />
+    )}
+  </ul>
+));
 
 class Legend extends React.Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      open: true
+    };
 
     // BINDINGS
     this.onSortEnd = this.onSortEnd.bind(this);
@@ -47,10 +51,43 @@ class Legend extends React.Component {
   onSortMove(ev) {
   }
 
+  onDeactivateLayer(dataset) {
+    this.props.toggleDatasetActive(dataset);
+    this.props.layersHidden.includes(dataset) && this.onHideLayer(dataset);
+  }
+
+  onHideLayer(dataset) {
+    let newLayersHidden = this.props.layersHidden.slice();
+    this.props.layersHidden.includes(dataset) ?
+      newLayersHidden = this.props.layersHidden.filter(l => l !== dataset) :
+      newLayersHidden.push(dataset);
+
+    this.props.setDatasetsHidden(newLayersHidden);
+  }
+
+  onLayerInfoModal(layer) {
+    const options = {
+      children: LayerInfoModal,
+      childrenProps: {
+        data: layer
+      }
+    };
+    this.props.toggleModal(true);
+    this.props.setModalOptions(options);
+  }
+
   getItemsActions(layer) {
     return (
       <div className="item-actions">
-        <button onClick={() => this.props.toggleDatasetActive(layer.dataset)}>
+        <button className="info" onClick={() => this.onLayerInfoModal(layer)}>
+          <Icon name="icon-info" className="-smaller" />
+        </button>
+        <Switch
+          onChange={() => this.onHideLayer(layer.dataset)}
+          active={!layer.hidden}
+          classNames="-secondary"
+        />
+        <button className="close" onClick={() => this.onDeactivateLayer(layer.dataset)}>
           <Icon name="icon-cross" className="-smaller" />
         </button>
       </div>
@@ -79,19 +116,34 @@ class Legend extends React.Component {
   render() {
     return (
       <div className="c-legend-map">
-        <h5 className="title">Legend</h5>
-        <SortableList
-          items={this.getLegendItems()}
-          helperClass="c-legend-unit -sort"
-          onSortEnd={this.onSortEnd}
-          onSortStart={this.onSortStart}
-          onSortMove={this.onSortMove}
-          axis="y"
-          lockAxis="y"
-          lockToContainerEdges
-          lockOffset="50%"
-          useDragHandle
-        />
+        <div className={`open-legend ${this.state.open ? '-active' : ''}`}>
+          <h1 className="legend-title">
+            Legend
+            <button className="toggle-legend" onClick={() => this.setState({ open: false })}>
+              <Icon name="icon-arrow-down" className="-small" />
+            </button>
+          </h1>
+          <SortableList
+            items={this.getLegendItems()}
+            helperClass="c-legend-unit -sort"
+            onSortEnd={this.onSortEnd}
+            onSortStart={this.onSortStart}
+            onSortMove={this.onSortMove}
+            axis="y"
+            lockAxis="y"
+            lockToContainerEdges
+            lockOffset="50%"
+            useDragHandle
+          />
+        </div>
+        <div className={`close-legend ${!this.state.open ? '-active' : ''}`}>
+          <h1 className="legend-title">
+            Legend
+            <button className="toggle-legend" onClick={() => this.setState({ open: true })}>
+              <Icon name="icon-arrow-up" className="-small" />
+            </button>
+          </h1>
+        </div>
       </div>
     );
   }
@@ -99,10 +151,15 @@ class Legend extends React.Component {
 
 Legend.propTypes = {
   layersActive: React.PropTypes.array,
+  layersHidden: React.PropTypes.array,
   className: React.PropTypes.object,
+
   // Functions
   toggleDatasetActive: React.PropTypes.func,
-  setDatasetsActive: React.PropTypes.func
+  setDatasetsActive: React.PropTypes.func,
+  toggleModal: React.PropTypes.func,
+  setModalOptions: React.PropTypes.func,
+  setDatasetsHidden: React.PropTypes.func
 };
 
 export default Legend;
