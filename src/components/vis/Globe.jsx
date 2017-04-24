@@ -72,37 +72,34 @@ class Globe extends React.Component {
       }
       const pointObjects = nextProps.layerPoints.map((value) => {
         const normalVector = this.convertLatLonToCoordinates(value.lat, value.lon);
-        const affectedSqKm = value.affected_sq_km;
         const cylinderTopRadius = 0.3;
-        const cylinderColor = this.getMarkerColor(value);
+        const geometryColor = this.getMarkerColor(value);
         const height = this.getMarkerHeight(value);
 
+        let geometry;
 
-        // if (affectedSqKm) {
-        //   cylinderTopRadius = Math.log(Math.log(affectedSqKm));
-        // }
-        if (nextProps.useHemisphereMarkers){
-          
-          console.info("hemisphere!!")
+        if (nextProps.useHemisphereMarkers) {
+          geometry = new SphereGeometry(0.8, 6, 6);
+        } else {
+          geometry = new CylinderGeometry(0.3, cylinderTopRadius, height);
         }
-        const cylinderGeometry = new CylinderGeometry(0.3, cylinderTopRadius, height);
 
         // Translate the geometry so the base sits at the origin.
-        cylinderGeometry.applyMatrix(new Matrix4().makeTranslation(0, 0, 0));
+        geometry.applyMatrix(new Matrix4().makeTranslation(0, 0, 0));
 
         // Rotate the geometry so the top points in the direction of the positive-Z axis.
-        cylinderGeometry.applyMatrix(new Matrix4().makeRotationX(Math.PI / 2));
+        geometry.applyMatrix(new Matrix4().makeRotationX(Math.PI / 2));
 
         // Create the mesh.
-        const cylinderMaterial = new MeshPhongMaterial({ color: cylinderColor });
-        const cylinder = new Mesh(cylinderGeometry, cylinderMaterial);
-        cylinder.lookAt(normalVector);
-        cylinder.position.copy(normalVector);
-        cylinder.name = value;
+        const material = new MeshPhongMaterial({ color: geometryColor });
+        const obj = new Mesh(geometry, material);
+        obj.lookAt(normalVector);
+        obj.position.copy(normalVector);
+        obj.name = value;
 
-        this.scene.add(cylinder);
+        this.scene.add(obj);
 
-        return cylinder;
+        return obj;
       });
       this.setState({ markers: pointObjects });
     } else if (this.props.layerPoints.length > 0) {
@@ -651,7 +648,7 @@ Globe.propTypes = {
   texture: React.PropTypes.string,
   // Default layer
   defaultLayerImagePath: React.PropTypes.string,
-  useDefaultLayer: React.PropTypes.boolean,
+  useDefaultLayer: React.PropTypes.bool,
   // Layer points
   layerPoints: React.PropTypes.array,
 
@@ -680,7 +677,7 @@ Globe.propTypes = {
   markerSelectedColor: React.PropTypes.number,
   markerDefaultColor: React.PropTypes.number,
   markerSelectedSizeFactor: React.PropTypes.number,
-  useHemisphereMarkers: React.PropTypes.boolean
+  useHemisphereMarkers: React.PropTypes.bool
 };
 
 export default Globe;
