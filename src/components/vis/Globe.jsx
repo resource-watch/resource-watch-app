@@ -64,6 +64,9 @@ class Globe extends React.Component {
       this.setState({ height: nextProps.height });
     }
     if (nextProps.layerPoints.length > 0) {
+      if (this.currentTexture != null) {
+        this.removeTexture();
+      }
       if (this.state.markers.length > 0) {
         this.removeMarkers();
       }
@@ -71,32 +74,17 @@ class Globe extends React.Component {
         const normalVector = this.convertLatLonToCoordinates(value.lat, value.lon);
         const distance = value.distance_km;
         const displaced = value.displaced;
-        const severity = value.severity;
         const affectedSqKm = value.affected_sq_km;
         let height = 1;
-        let cylinderTopRadius = 0.3;
-        let cylinderColor = 0xffff00;
+        const cylinderTopRadius = 0.3;
+        const cylinderColor = this.getMarkerColor(value);
         if (displaced) {
           height = Math.log(displaced);
         }
         if (distance) {
           height = Math.log(distance) * 3;
         }
-        if (severity) {
-          switch (severity) {
-            case 1:
-              cylinderColor = this.props.markerLowColor;
-              break;
-            case 2:
-              cylinderColor = this.props.markerMediumColor;
-              break;
-            case 3:
-              cylinderColor = this.props.markerHighColor;
-              break;
-            default:
-              cylinderColor = this.props.markerLowColor;
-          }
-        }
+
         // if (affectedSqKm) {
         //   cylinderTopRadius = Math.log(Math.log(affectedSqKm));
         // }
@@ -134,12 +122,36 @@ class Globe extends React.Component {
       (prevState.height !== this.state.height)) {
       this.update();
     }
-    // if (this.state.selectedMarker) {
-    //   this.state.selectedMarker;
-    // }
-    // if (this.state.texture === null) {
-    //   this.removeTexture();
-    // }
+    if (this.state.selectedMarker) {
+      this.state.selectedMarker.object.material = new MeshPhongMaterial(
+        { color: this.props.markerSelectedColor });
+    }
+  }
+
+  getMarkerColor(value) {
+    let data = value;
+    if (value.object) {
+      data = value.object.name;
+    }
+    const severity = data.severity;
+    let color = 0xffffff;
+
+    if (severity) {
+      switch (severity) {
+        case 1:
+          color = this.props.markerMediumColor;
+          break;
+        case 2:
+          color = this.props.markerHighColor;
+          break;
+        case 3:
+          color = this.props.markerHighColor;
+          break;
+        default:
+          color = this.props.markerLowColor;
+      }
+    }
+    return color;
   }
 
   componentWillUnmount() {
@@ -181,8 +193,8 @@ class Globe extends React.Component {
     if (this.currentTexture) {
       this.scene.remove(this.currentTexture);
       this.currentTexture = null;
+      this.setState({ texture: null });
     }
-    debugger;
   }
 
   /**
@@ -290,10 +302,12 @@ class Globe extends React.Component {
     if (this.controls) {
       this.controls.update();
     }
-    if (!this.state.texture) {
-      this.currentTexture.rotation.y += 0.0002;
-    } else if (this.currentTexture.rotation.y !== 0) {
-      this.currentTexture.rotation.y = 0;
+    if (this.currentTexture) {
+      if (!this.state.texture) {
+        this.currentTexture.rotation.y += 0.0002;
+      } else if (this.currentTexture.rotation.y !== 0) {
+        this.currentTexture.rotation.y = 0;
+      }
     }
     this.renderer.render(this.scene, this.camera);
   }
@@ -446,36 +460,34 @@ class Globe extends React.Component {
 
   onClick(event) {
     event.nativeEvent.stopImmediatePropagation();
-    // console.info('event.nativeEvent.offsetX',event.nativeEvent.offsetX);
-    // console.info('event.nativeEvent.offsetY',event.nativeEvent.offsetY);
-    // console.info('event.clientX',event.clientX);
-    // console.info('event.clientY',event.clientY);
-    // console.info('this.el.clientWidth',this.el.clientWidth);
-    // console.info('this.el.clientHeight',this.el.clientHeight);
 
     this.mouse.x = (event.nativeEvent.offsetX / this.el.clientWidth ) * 2 - 1;
     this.mouse.y = -(event.nativeEvent.offsetY / this.el.clientHeight ) * 2 + 1;
-
-    // console.info('this.mouse.x', this.mouse.x);
-    // console.info('this.mouse.y', this.mouse.y);
 
     this.raycaster.setFromCamera(this.mouse, this.camera);
 
     // this.scene.add(new ArrowHelper(this.raycaster.ray.direction,
     // this.raycaster.ray.origin, 100, Math.random() * 0xffffff ));
 
+    const oldSelectedMarker = this.state.selectedMarker;
+    if (oldSelectedMarker) {
+      oldSelectedMarker.object.material = new MeshPhongMaterial(
+        { color: this.getMarkerColor(oldSelectedMarker) });
+    }
+
     const intersects = this.raycaster.intersectObjects(this.scene.children);
 
     if (intersects.length > 0) {
       let markerClicked = false;
-      intersects.forEach((el) => {
-        const nameVal = el.object.name;
-        if (nameVal !== 'halo' && nameVal !== 'earth' && nameVal !== 'texture') {
-          this.setState({ selectedMarker: el });
-          this.props.onMarkerSelected(el.object.name, event);
-          markerClicked = true;
-        }
-      });
+      const obj = intersects[0];
+      const objName = obj.object.name;
+
+      if (objName !== 'halo' && objName !== 'earth' && objName !== 'texture') {
+        this.setState({ selectedMarker: obj });
+        this.props.onMarkerSelected(objName, event);
+        markerClicked = true;
+      }
+
       if (!markerClicked) {
         this.props.onClickInEmptyRegion();
       }
@@ -562,7 +574,9 @@ Globe.defaultProps = {
   // Markers
   markerLowColor: 0xA6005A,
   markerMediumColor: 0xFC00A6,
-  markerHighColor: 0x1E272D
+  markerHighColor: 0x1E272D,
+  markerSelectedColor: 0xFFFFFF,
+  markerSelectedSizeFactor: 2
 };
 
 Globe.propTypes = {
@@ -636,7 +650,9 @@ Globe.propTypes = {
   // Markers
   markerLowColor: React.PropTypes.number,
   markerMediumColor: React.PropTypes.number,
-  markerHighColor: React.PropTypes.number
+  markerHighColor: React.PropTypes.number,
+  markerSelectedColor: React.PropTypes.number,
+  markerSelectedSizeFactor: React.PropTypes.number
 };
 
 export default Globe;
