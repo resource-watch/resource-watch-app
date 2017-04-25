@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import Pulse from 'components/pages/Pulse';
-import { getLayers } from 'redactions/pulse';
+import { getLayers, getLayerPoints } from 'redactions/pulse';
 import getLayersGroupPulse from 'selectors/pulse/layersGroupPulse';
 import getActiveLayersPulse from 'selectors/pulse/layersActivePulse';
 import { toggleTooltip } from 'redactions/tooltip';
@@ -17,6 +17,9 @@ const mapDispatchToProps = dispatch => ({
   },
   toggleTooltip: (opened, opts) => {
     dispatch(toggleTooltip(opened, opts));
+  },
+  getLayerPoints: (id, tableName) => {
+    dispatch(getLayerPoints(id, tableName));
   }
 });
 
