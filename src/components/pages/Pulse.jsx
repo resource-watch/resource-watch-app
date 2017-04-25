@@ -25,7 +25,9 @@ class Pulse extends React.Component {
       texture: null,
       loading: false,
       layerPoints: [],
-      selectedMarker: null
+      selectedMarker: null,
+      useDefaultLayer: true,
+      markerType: 'default'
     };
     this.layerGlobeManager = new LayerGlobeManager();
   }
@@ -51,32 +53,49 @@ class Pulse extends React.Component {
         this.setState({
           loading: true
         });
-        this.layerGlobeManager.addLayer(nextLayerActive.attributes, {
-          onLayerAddedSuccess: function success(texture) {
-            console.info(texture);
-            this.setState({
-              texture,
-              loading: false
-            });
-          }.bind(this),
-          onLayerAddedError: function error(err) {
-            console.error(err);
-            this.setState({
-              texture: null,
-              loading: false
-            });
-          }.bind(this)
-        });
+
+        if (nextLayerActive.threedimensional === 'true') {
+          const datasetId = nextLayerActive.attributes.dataset;
+          const options = nextLayerActive.attributes.layerConfig.body.layers[0].options;
+          const tableName = options.sql.toUpperCase().split('FROM')[1];
+          this.props.getLayerPoints(datasetId, tableName);
+        } else {
+          this.layerGlobeManager.addLayer(nextLayerActive.attributes, {
+            onLayerAddedSuccess: function success(texture) {
+              console.info(texture);
+              this.setState({
+                texture,
+                loading: false,
+                layerPoints: []
+              });
+            }.bind(this),
+            onLayerAddedError: function error(err) {
+              console.error(err);
+              this.setState({
+                texture: null,
+                loading: false,
+                layerPoints: []
+              });
+            }.bind(this)
+          });
+        }
       } else {
         this.layerGlobeManager.abortRequest();
         this.setState({ texture: null });
       }
     }
 
-    // if (nextProps.pulse.layerPoints) {
-    //   this.setState({ layerPoints: nextProps.pulse.layerPoints });
-    // }
+    if (nextProps.pulse.layerPoints.length > 0) {
+      this.setState({
+        loading: false,
+        layerPoints: nextProps.pulse.layerPoints.slice(0),
+        texture: null,
+        useDefaultLayer: false,
+        markerType: nextLayerActive.markerType
+      });
+    }
   }
+
   componentWillUnmount() {
     document.removeEventListener('click', this.triggerMouseDown);
   }
@@ -88,6 +107,7 @@ class Pulse extends React.Component {
   * - triggerMouseDown
   * - handleMarkerSelected
   * - handleEarthClicked
+  * - handleClickInEmptyRegion
   */
   @Autobind
   triggerZoomIn() {
@@ -102,16 +122,25 @@ class Pulse extends React.Component {
     this.props.toggleTooltip(false);
   }
   @Autobind
-  handleMarkerSelected(marker) {
-    console.info('handleMarkerSelected', marker);
-    this.setState({ selectedMarker: JSON.stringify(marker) });
+  handleMarkerSelected(marker, event) {
+    const obj = {};
+    Object.keys(marker).forEach((key) => {
+      if (key !== 'cartodb_id' && key !== 'the_geom' && key !== 'the_geom_webmercator') {
+        obj[key] = marker[key];
+      }
+    });
+    this.props.toggleTooltip(true, {
+      follow: false,
+      children: GlobeTooltip,
+      childrenProps: { value: obj },
+      position: { x: event.clientX, y: event.clientY }
+    });
   }
   @Autobind
   handleEarthClicked(latLon, clientX, clientY) {
     this.props.toggleTooltip(false);
-
-    const currentLayer = this.props.pulse.layerActive.attributes;
-    if (currentLayer) {
+    if (this.props.pulse.layerActive) {
+      const currentLayer = this.props.pulse.layerActive.attributes;
       const datasetId = currentLayer.dataset;
       const options = currentLayer.layerConfig.body.layers[0].options;
       const geomColumn = options.geom_column;
@@ -128,6 +157,10 @@ class Pulse extends React.Component {
       }
       this.setTooltipValue(requestURL, clientX, clientY);
     }
+  }
+  @Autobind
+  handleClickInEmptyRegion() {
+    this.props.toggleTooltip(false);
   }
 
   /**
@@ -160,6 +193,7 @@ class Pulse extends React.Component {
   }
 
   render() {
+    const { markerType } = this.state;
     return (
       <div
         className="c-page -dark"
@@ -187,15 +221,17 @@ class Pulse extends React.Component {
           lightPosition={'right'}
           texture={this.state.texture}
           layerPoints={this.state.layerPoints}
+          markerType={markerType}
           earthImagePath={earthImage}
           earthBumpImagePath={earthBumpImage}
           defaultLayerImagePath={cloudsImage}
           segments={64}
           rings={64}
           useHalo
-          useDefaultLayer
+          useDefaultLayer={this.state.useDefaultLayer}
           onMarkerSelected={this.handleMarkerSelected}
           onEarthClicked={this.handleEarthClicked}
+          onClickInEmptyRegion={this.handleClickInEmptyRegion}
         />
         <ZoomControl
           ref={zoomControl => (this.zoomControl = zoomControl)}
@@ -211,6 +247,7 @@ Pulse.propTypes = {
   layersGroup: React.PropTypes.array,
   layerActive: React.PropTypes.object,
   getLayers: React.PropTypes.func,
+  getLayerPoints: React.PropTypes.func,
   toggleTooltip: React.PropTypes.func
 };
 

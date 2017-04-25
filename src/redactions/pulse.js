@@ -45,8 +45,8 @@ export default function (state = initialState, action) {
       });
     case GET_LAYER_POINTS_ERROR:
       return Object.assign({}, state, {
-        layerPoints: action.payload,
-        error: true
+        error: true,
+        errorMessage: action.payload
       });
     default:
       return state;
@@ -72,7 +72,7 @@ export function getLayers() {
   };
 }
 
-export function toggleActiveLayer(id) {
+export function toggleActiveLayer(id, threedimensional, markerType) {
   return (dispatch) => {
     fetch(new Request(`${config.API_URL}/layer/${id}`))
       .then((response) => {
@@ -81,6 +81,8 @@ export function toggleActiveLayer(id) {
       })
       .then((response) => {
         const layer = response.data;
+        layer.threedimensional = threedimensional;
+        layer.markerType = markerType;
         dispatch({
           type: SET_ACTIVE_LAYER,
           payload: layer

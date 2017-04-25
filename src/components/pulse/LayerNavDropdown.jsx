@@ -11,8 +11,8 @@ class LayerNavDropdown extends React.Component {
   }
 
   triggerClick(e) {
-    this.props.toggleActiveLayer(e.currentTarget.dataset.id);
-    // this.props.getLayerPoints(e.currentTarget.dataset.datasetid, e.currentTarget.dataset.tablename);
+    const { id, threedimensional, markertype } = e.currentTarget.dataset;
+    this.props.toggleActiveLayer(id, threedimensional, markertype);
   }
 
   render() {
@@ -21,9 +21,10 @@ class LayerNavDropdown extends React.Component {
       <div className="c-layer-nav-dropdown dropdown">
         <ul>
           {layers.map(layer =>
-            (
-              <li
+              (<li
                 data-id={layer.id}
+                data-threedimensional={layer['3d']}
+                data-markertype={layer.markerType}
                 key={layer.id}
                 onClick={this.triggerClick}
               >
@@ -31,8 +32,7 @@ class LayerNavDropdown extends React.Component {
                 <span className="name">
                   {layer.label}
                 </span>
-              </li>
-            )
+              </li>)
           )}
         </ul>
       </div>
@@ -44,8 +44,7 @@ class LayerNavDropdown extends React.Component {
 LayerNavDropdown.propTypes = {
   layers: React.PropTypes.array,
   layerActive: React.PropTypes.object,
-  toggleActiveLayer: React.PropTypes.func
-  // getLayerPoints: React.PropTypes.func
+  toggleActiveLayer: React.PropTypes.func,
 };
 
 export default LayerNavDropdown;
