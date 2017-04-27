@@ -85,14 +85,16 @@ class Pulse extends React.Component {
       }
     }
 
-    if (nextProps.pulse.layerPoints.length > 0) {
-      this.setState({
-        loading: false,
-        layerPoints: nextProps.pulse.layerPoints.slice(0),
-        texture: null,
-        useDefaultLayer: false,
-        markerType: nextLayerActive.markerType
-      });
+    if (nextProps.pulse.layerPoints !== this.props.pulse.layerPoints) {
+      if (nextProps.pulse.layerPoints.length > 0) {
+        this.setState({
+          loading: false,
+          layerPoints: nextProps.pulse.layerPoints.slice(0),
+          texture: null,
+          useDefaultLayer: false,
+          markerType: nextLayerActive.markerType
+        });
+      }
     }
   }
 
