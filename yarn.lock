@@ -1205,6 +1205,10 @@ chokidar@^1.4.3:
   optionalDependencies:
     fsevents "^1.0.0"
 
+chroma-js@^1.3.3:
+  version "1.3.3"
+  resolved "https://registry.yarnpkg.com/chroma-js/-/chroma-js-1.3.3.tgz#91b3a2b3856c18443ebd8c9719faea108b56263b"
+
 cipher-base@^1.0.0, cipher-base@^1.0.1:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/cipher-base/-/cipher-base-1.0.3.tgz#eeabf194419ce900da3018c207d212f2a6df0a07"
