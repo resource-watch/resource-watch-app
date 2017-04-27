@@ -66,6 +66,9 @@ class Globe extends React.Component {
     if (nextProps.height !== this.props.height) {
       this.setState({ height: nextProps.height });
     }
+    if (nextProps.layerPoints !== this.props.layerPoints) {
+      this.slideToRight();
+    }
     if (nextProps.layerPoints.length > 0) {
       if (this.currentTexture != null) {
         this.removeTexture();
@@ -120,7 +123,9 @@ class Globe extends React.Component {
 
   componentDidUpdate(prevProps, prevState) {
     if (prevState.texture !== this.state.texture) {
-      this.setTexture();
+      if (prevState.texture === null && this.state.texture !== null) {
+        this.setTexture();
+      }
       this.slideToRight();
     }
     if ((prevState.width !== this.state.width) ||
@@ -145,10 +150,18 @@ class Globe extends React.Component {
     const fatalities = data.fatalities;
 
     if (displaced) {
-      height = Math.log(displaced);
+      if (displaced > 0) {
+        height = Math.log(displaced);
+      } else {
+        height = 0;
+      }
     }
     if (distance) {
-      height = Math.log(distance) * 3;
+      if (distance > 0) {
+        height = Math.log(distance) * 3;
+      } else {
+        height = 0;
+      }
     }
     if (mag) {
       height = mag;
@@ -185,7 +198,7 @@ class Globe extends React.Component {
       }
     }
 
-    if (urlTone && urlTone.length > 0) {
+    if (urlTone) {
       color = this.redGreenScale(urlTone).hex();
     }
     return color;
@@ -196,7 +209,6 @@ class Globe extends React.Component {
   }
 
   onResize() {
-    console.info('onResize');
     const nextWidth = this.el.clientWidth || this.el.innerWidth;
     const nextHeight = this.el.clientHeight || this.el.innerHeight;
     this.setState({ width: nextWidth, height: nextHeight });
@@ -469,11 +481,7 @@ class Globe extends React.Component {
   }
 
   slideToRight() {
-    if (this.state.texture) {
-      this.changePosition(180, 0);
-    } else {
-      this.resetPosition();
-    }
+    this.changePosition(180, 0);
   }
 
   /**
