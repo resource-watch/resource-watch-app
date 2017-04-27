@@ -8,7 +8,12 @@ module.exports = merge(sharedConfig, {
   output: { filename: '[name]-[hash].js' },
 
   module: {
-    rules: []
+    rules: [
+      {
+        test: /\.(jpe?g|png|gif|svg)$/i,
+        use: ['file-loader']
+      }
+    ]
   },
 
   plugins: [

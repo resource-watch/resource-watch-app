@@ -4,7 +4,6 @@
   "description": "Resource Watch is an open platform for everyone to explore accurate, up-to-date insights about our planet.",
   "main": "server.js",
   "scripts": {
-    "webpack": "./node_modules/.bin/webpack --progress --colors --config ./config/webpack/development.js --watch",
     "lint": "./node_modules/.bin/eslint --ext .js --ext .jsx .",
     "test": "npm run lint",
     "build": "NODE_ENV=production ./node_modules/.bin/webpack --progress --colors --config ./config/webpack/production.js"
@@ -73,7 +72,7 @@
     "slick-carousel": "^1.6.0",
     "style-loader": "^0.13.1",
     "three": "^0.83.0",
-    "url-loader": "^0.5.7",
+    "url-loader": "^0.5.8",
     "vega": "2.5.2",
     "webpack": "^2.3.3",
     "webpack-bundle-analyzer": "^2.3.1",
